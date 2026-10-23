@@ -1,0 +1,33 @@
+=== GRU baseline ===
+ep  1 | dev=0.0528 test=0.0043 | 4s
+ep  5 | dev=0.3473 test=0.0048 | 17s
+ep 10 | dev=0.3711 test=0.0023 | 34s
+ep 15 | dev=0.5973 test=0.0033 | 51s
+ep 20 | dev=0.6108 test=0.0110 | 67s
+ep 25 | dev=0.7004 test=0.0194 | 84s
+ep 30 | dev=0.6360 test=0.0140 | 100s
+GRU final: dev=0.6360 test=0.0140
+=== LatentSeq2Seq ===
+ep  1 | k=2 dev=0.0000 test=0.0033 | 9s
+ep  5 | k=2 dev=0.2120 test=0.0171 | 37s
+ep 10 | k=2 dev=0.2307 test=0.0079 | 73s
+ep 15 | k=2 dev=0.1991 test=0.0033 | 109s
+ep 20 | k=2 dev=0.0116 test=0.0000 | 144s
+ep 25 | k=2 dev=0.2751 test=0.0010 | 181s
+ep 30 | k=2 dev=0.2552 test=0.0000 | 217s
+=== fixed-k curve (frozen weights) ===
+k=1 | dev=0.3776 test=0.0003 cpt(test)=1.00
+k=2 | dev=0.2552 test=0.0000 cpt(test)=2.00
+k=3 | dev=0.2732 test=0.0000 cpt(test)=3.00
+k=4 | dev=0.1875 test=0.0000 cpt(test)=4.00
+{
+  "seed": 0,
+  "gru_dev": 0.6359536082474226,
+  "gru_test": 0.01403061224489796,
+  "fixed_k": {
+    "1": 0.00025510204081632655,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0
+  }
+}
