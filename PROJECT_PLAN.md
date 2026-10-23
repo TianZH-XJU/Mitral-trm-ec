@@ -193,3 +193,29 @@ H = GRU_enc(E(x))；a_t = Attention(h_{t-1}, H)；h_t = GRU_dec(E(y_{t-1}); a_t,
 - [ ] 第五关：组合泛化确认（add-prim + template split）→ 论文定位与 SRW 投稿
 
 **最高原则**：可证伪的实验问题优先，不包装成新型 TRM；每步不通过就停下分析，不扩大方法。
+
+---
+
+## 8. 第三阶段计划：SCAN 全划分机制验证与组合泛化（专家任务书 v3，2025-10-23 冻结）
+
+### 8.1 六阶段执行结构
+
+1. **数据审计** → 2. **冻结实验协议** → 3. **Add-primitive 试运行** → 4. **覆盖 8 主划分** → 5. **扩展全部官方细分** → 6. **最终测试与综合分析**。
+
+详细执行规范见 `docs/SCAN_EXPERIMENT_PROTOCOL.md`（冻结协议）与 `configs/scan_manifest.json`（104 个官方条件的完整审计：8 主划分 + 96 扩展）。
+
+### 8.2 关键纪律（新增，全阶段有效）
+
+- 每一划分独立训练/评估；禁止合并训练或用 tasks.txt 替代官方 train 文件。
+- 内部 dev 按输入指令组划分（同指令重复行同侧）；保留官方过采样设计，不全局去重。
+- 官方 test 只做冻结后确认评估；历史 simple test 数字标为探索性。
+- 禁止事项：CMA-ES/GA（至用户批准）、动态 gate 训练、按 test 调参、静默删除差划分、单种子当稳健结论。
+- 模型组 E0（基线）/ R1（final-only 监督）/ R2（多深度 α=(0.1,0.2,0.3,0.4)）；深度曲线在同一 checkpoint 上评 extra∈{0,1,3}。
+- Checkpoint 主指标（冻结）：递归模型取 dev free-running seq EM @ extra=3；E0 取 dev seq EM。
+- 产物必须可追溯（dataset_id/split/seed/model/checkpoint/extra_loops），四类转移同时记录计数与比例，信号分析报告 AUC+样本数+按指令组 bootstrap CI；harm<20 例判证据不足。
+
+### 8.3 阶段通过标准（沿用第二关 A–D）
+
+A 递归行为可测量且轨迹经验证；B free-running 主指标有可复现收益或明确权衡（局部 token 修复率不单独作为依据）；C 至少一种信号跨种子、足样本地预测下一轮收益/伤害；D 效应在部分组合泛化条件可复现且如实区分支持/不支持的条件。
+
+**决策规则**：A–D 全过 → 提 gate 对照方案，用户决定是否进 CMA-ES；A/B 过 C 不过 → 继续信号研究，不启动搜索；仅 simple 有效 → 重审监督与架构；A 或 B 不过 → 查实现，不搜索。
