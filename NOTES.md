@@ -134,3 +134,54 @@ OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 python scripts/check_env.py
 ### 项目结构（v2）
 
 `src/data_scan.py`（全部划分的读取）、`src/model_seq2seq.py`（基线）、`src/train.py`（训练/评估）、`scripts/run_phase1_gate1.py`（第一关验收）。后续：`src/model_recursive.py`（递归版）、`src/trajectories.py`（轨迹记录）、`src/compute_gate.py`、`src/evolve_policy.py`。
+
+## 第二关：机制验证实验（单种子 R1/R2，种子 0）——完成
+
+日期：2025-10-23。范围：审核批准的机制验证（无 CMA-ES、不用测试集选模型、不做组合泛化结论）。
+
+### 实现（新）
+
+- `src/model_recursive.py`：`RecursiveSeq2Seq`。基础解码步 h_t 之后，共享参数 refinement GRUCell 执行 z^(k+1)=GRUCell([e(y_{t-1});a_t;ẽ(p^(k))], z^(k))，soft feedback（预测分布加权的输出 embedding），输出头跨深度共享。总深度 = 1 + extra_loops（审核统一约定）。R1（只监督最终深度）/ R2（多深度 α=(0.1,0.2,0.3,0.4)）独立训练。参数 382,538（不随深度增长）。
+- `src/trajectories.py`：逐 (样本, 位置, 深度) 轨迹记录（top1_prob/top2_margin/entropy/hidden_delta/is_correct...）、四类转移统计、信号区分度（benefit=harm 对照 AUC）。
+- `scripts/run_gate2_small.py`：单种子 R1/R2 小规模实验（simple split train/dev，15 epochs）。
+
+### 核心结果（dev，teacher-forced 轨迹 + free-running 解码）
+
+**R1（只监督最终深度）**：
+
+| 深度转移 | repair | harm | unresolved | maintain |
+|—|—|—|—|—|
+| 0→1 | **44.4%** | 0.17% | 0.34% | 55.1% |
+| 1→2 | 0.19% | 0.12% | 0.32% | 99.4% |
+| 2→3 | 0.03% | 0.02% | 0.42% | 99.5% |
+
+token acc per depth：55.2% → 99.5% → 99.6% → 99.6%。free-running dev seq acc：extra_loops=0 时 **1.97%**，=1 时 **93.1%**，=3 时 93.7%。
+
+**R2（多深度监督 α=(0.1,0.2,0.3,0.4)）**：
+
+| 深度转移 | repair | harm | unresolved | maintain |
+|—|—|—|—|—|
+| 0→1 | 0.03% | 0.03% | 0.25% | 99.7% |
+| 1→2 | 0.00% | 0.02% | 0.28% | 99.7% |
+| 2→3 | 0.00% | 0.00% | 0.29% | 99.7% |
+
+token acc per depth 全部 ≈99.7%。free-running dev seq acc：94.6% / 94.8% / 94.4%（几乎无深度差异）。
+
+图：`results/figures/gate2_figA_accuracy_vs_depth.png`、`gate2_figB_transitions.png`。轨迹：`runs/gate2_traj_{final,multi}_s0.csv`。
+
+### 解读（对照审核通过条件）
+
+- **条件 A（可测量的行为变化）：通过**。R1 的 0→1 修正率 44.4%，且 free-running 序列准确率从 2%→93% 的悬崖直接对应；不同深度预测分布差异巨大且可复现。
+- **条件 B（实际收益/权衡）：部分通过，需诚实解读**。收益几乎全部集中在**第一次额外递归**（0→1）；第二次、第三次额外递归的修正率 <0.2%，接近纯开销。R1 的“44% 修正率”部分是监督设计使然（中间深度未受监督，输出未校准，审核意见已预警），但其 free-running 收益（2%→93%）是真实的行为改变。R2 中间深度被监督后全部 ≈99.7%，额外递归无差异——**多深度监督消除了深度间差异，递归收益只在“未监督的第一次跳跃”中出现**。
+- **条件 C（可利用的收益信号）：初步证据弱**。R1 在 k=0 上 margin/entropy 对 benefit-vs-harm 的 AUC 仅 0.60/0.43（harm 样本仅 11 个，统计力不足）；R2 中 benefit/harm 各仅 2 例，无结论。信号分析需在错误更多的分布（组合偏移）下重做才有统计力。
+- **条件 D（组合泛化）**：按审核意见未测；add-prim/template 官方划分实验待方案冻结后执行。
+
+### 对下一阶段的含义
+
+1. simple split 上递归收益集中且饱和（dev ~94–99%），**必须**在错误更丰富的 add-primitive/template 官方划分上重做轨迹分析，benefit/harm 样本量才足以支撑条件 C 的判断。
+2. R1 与 R2 的巨大差异本身是可报告的机制发现：监督方式决定递归“修复空间”的分布——R1 把计算负担压到深度 0→1 的一跳，R2 让每层都直接可解码。
+3. CMA-ES 搜索的前提（存在可分配的递归收益）在 simple split 上仅有 0→1 一处悬崖，且 free-running 下 extra=1 与 extra=3 差别 <1pp——**建议在组合泛化划分的证据出来前继续冻结搜索类实验**（与审核决定一致）。
+
+### 复现
+
+`OMP_NUM_THREADS=2 python scripts/run_gate2_small.py`（约 25 分钟，2 线程 CPU）。汇总：`runs/gate2_summary_s0.json`。

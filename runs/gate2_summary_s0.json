@@ -1,0 +1,167 @@
+{
+  "seed": 0,
+  "alphas": [
+    0.1,
+    0.2,
+    0.3,
+    0.4
+  ],
+  "modes": {
+    "final": {
+      "dev_seq_curve": [
+        {
+          "extra_loops": 0,
+          "total_depth": 1,
+          "dev_seq_acc": 0.019736842105263157
+        },
+        {
+          "extra_loops": 1,
+          "total_depth": 2,
+          "dev_seq_acc": 0.93122009569378
+        },
+        {
+          "extra_loops": 3,
+          "total_depth": 4,
+          "dev_seq_acc": 0.937200956937799
+        }
+      ],
+      "dev_tok_acc_per_depth": {
+        "0": 0.5523956723338486,
+        "1": 0.9948995363214838,
+        "2": 0.995517774343122,
+        "3": 0.9956723338485317
+      },
+      "transitions": {
+        "0": {
+          "repair": 0.44420401854714064,
+          "harm": 0.0017001545595054096,
+          "unresolved": 0.0034003091190108192,
+          "maintain": 0.5506955177743431,
+          "n": 6470
+        },
+        "1": {
+          "repair": 0.0018547140649149924,
+          "harm": 0.0012364760432766616,
+          "unresolved": 0.0032457496136012367,
+          "maintain": 0.993663060278207,
+          "n": 6470
+        },
+        "2": {
+          "repair": 0.0003091190108191654,
+          "harm": 0.0001545595054095827,
+          "unresolved": 0.004173106646058733,
+          "maintain": 0.9953632148377125,
+          "n": 6470
+        }
+      },
+      "signals": {
+        "entropy": {
+          "benefit_mean": 1.1697871987873179,
+          "harm_mean": 1.2760380181399258,
+          "auc": 0.4339533118238755,
+          "n_benefit": 2874,
+          "n_harm": 11
+        },
+        "top1_prob": {
+          "benefit_mean": 0.6109121322953295,
+          "harm_mean": 0.5363048911094666,
+          "auc": 0.5873030935661416,
+          "n_benefit": 2874,
+          "n_harm": 11
+        },
+        "top2_margin": {
+          "benefit_mean": 0.4397508542551792,
+          "harm_mean": 0.30643223090605304,
+          "auc": 0.6047637122793699,
+          "n_benefit": 2874,
+          "n_harm": 11
+        },
+        "hidden_delta": {
+          "benefit_mean": 0.0,
+          "harm_mean": 0.0,
+          "auc": 0.5,
+          "n_benefit": 2874,
+          "n_harm": 11
+        }
+      }
+    },
+    "multi": {
+      "dev_seq_curve": [
+        {
+          "extra_loops": 0,
+          "total_depth": 1,
+          "dev_seq_acc": 0.9455741626794258
+        },
+        {
+          "extra_loops": 1,
+          "total_depth": 2,
+          "dev_seq_acc": 0.9479665071770335
+        },
+        {
+          "extra_loops": 3,
+          "total_depth": 4,
+          "dev_seq_acc": 0.944377990430622
+        }
+      ],
+      "dev_tok_acc_per_depth": {
+        "0": 0.9972179289026275,
+        "1": 0.9972179289026275,
+        "2": 0.997063369397218,
+        "3": 0.997063369397218
+      },
+      "transitions": {
+        "0": {
+          "repair": 0.0003091190108191654,
+          "harm": 0.0003091190108191654,
+          "unresolved": 0.002472952086553323,
+          "maintain": 0.9969088098918083,
+          "n": 6470
+        },
+        "1": {
+          "repair": 0.0,
+          "harm": 0.0001545595054095827,
+          "unresolved": 0.0027820710973724882,
+          "maintain": 0.997063369397218,
+          "n": 6470
+        },
+        "2": {
+          "repair": 0.0,
+          "harm": 0.0,
+          "unresolved": 0.002936630602782071,
+          "maintain": 0.997063369397218,
+          "n": 6470
+        }
+      },
+      "signals": {
+        "entropy": {
+          "benefit_mean": 0.7112908065319061,
+          "harm_mean": 0.6727838218212128,
+          "auc": 1.0,
+          "n_benefit": 2,
+          "n_harm": 2
+        },
+        "top1_prob": {
+          "benefit_mean": 0.5343723297119141,
+          "harm_mean": 0.5938435196876526,
+          "auc": 0.5,
+          "n_benefit": 2,
+          "n_harm": 2
+        },
+        "top2_margin": {
+          "benefit_mean": 0.07170888781547546,
+          "harm_mean": 0.1893288791179657,
+          "auc": 0.5,
+          "n_benefit": 2,
+          "n_harm": 2
+        },
+        "hidden_delta": {
+          "benefit_mean": 0.0,
+          "harm_mean": 0.0,
+          "auc": 0.5,
+          "n_benefit": 2,
+          "n_harm": 2
+        }
+      }
+    }
+  }
+}

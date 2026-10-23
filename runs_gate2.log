@@ -1,0 +1,21 @@
+=== training mode=final (R1 final / R2 multi) ===
+  ep5 loss=0.0326 | 235s
+  ep10 loss=0.0198 | 472s
+  ep15 loss=0.0149 | 716s
+  [final] depth 0->1: repair=0.4442, harm=0.0017, unresolved=0.0034, maintain=0.5507
+  [final] depth 1->2: repair=0.0019, harm=0.0012, unresolved=0.0032, maintain=0.9937
+  [final] depth 2->3: repair=0.0003, harm=0.0002, unresolved=0.0042, maintain=0.9954
+  [final] extra_loops=0 (depth 1) dev_seq=0.0197
+  [final] extra_loops=1 (depth 2) dev_seq=0.9312
+  [final] extra_loops=3 (depth 4) dev_seq=0.9372
+=== training mode=multi (R1 final / R2 multi) ===
+  ep5 loss=0.0364 | 243s
+  ep10 loss=0.0202 | 494s
+  ep15 loss=0.0122 | 745s
+  [multi] depth 0->1: repair=0.0003, harm=0.0003, unresolved=0.0025, maintain=0.9969
+  [multi] depth 1->2: repair=0.0000, harm=0.0002, unresolved=0.0028, maintain=0.9971
+  [multi] depth 2->3: repair=0.0000, harm=0.0000, unresolved=0.0029, maintain=0.9971
+  [multi] extra_loops=0 (depth 1) dev_seq=0.9456
+  [multi] extra_loops=1 (depth 2) dev_seq=0.9480
+  [multi] extra_loops=3 (depth 4) dev_seq=0.9444
+saved runs/gate2_summary_s0.json
