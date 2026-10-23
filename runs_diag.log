@@ -1,0 +1,6 @@
+ep10 train=0.9800 dev_k2=0.1424 dev_k1=0.1765
+ep20 train=1.0000 dev_k2=0.3982 dev_k1=0.2751
+ep30 train=1.0000 dev_k2=0.3943 dev_k1=0.1959
+ep40 train=0.9990 dev_k2=0.4259 dev_k1=0.3093
+ep50 train=0.9990 dev_k2=0.2513 dev_k1=0.2854
+ep60 train=1.0000 dev_k2=0.3557 dev_k1=0.3344

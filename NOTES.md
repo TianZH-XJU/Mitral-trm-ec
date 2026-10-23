@@ -74,3 +74,35 @@ OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 python scripts/check_env.py
 
 1. 训练 GRU 基线（30 epochs），在 dev/test 上报告 exact match；
 2. 训练 LatentSeq2Seq，画固定 k 曲线（第一道关口）。
+
+## Phase 1：基础模型训练（种子 0，30 epochs）——第一道关口判定
+
+日期：2025-10-23
+
+### 结果（`runs/phase1_summary_s0.json`，训练曲线见 `runs/phase1_training_s0.csv`）
+
+| 模型 | dev exact match | test exact match |
+|—|—|—|
+| GRU 基线 | **63.6%** | **1.4%** |
+| LatentSeq2Seq k=1 | 37.8% | 0.03% |
+| LatentSeq2Seq k=2 | 25.5% | 0.0% |
+| LatentSeq2Seq k=3 | 27.3% | 0.0% |
+| LatentSeq2Seq k=4 | 18.8% | 0.0% |
+
+### 诊断（60 epochs 延长训练，`runs_diag.log`）
+
+- 训练集在第 20 epoch 左右达到 **100% exact match**（1000 条训练样本上），欠拟合排除。
+- dev 在 ep20–60 之间只有 **25–43%**，且各 epoch 间波动很大（0.14→0.43）。
+- 固定 k 曲线：dev 上 k=1 (0.38) ≥ k=4 (0.19)；test 上所有 k ≈ 0。
+
+### 分析
+
+1. **管线正确性已验证**：GRU 在 dev 上 63.6%、test 上 1.4%——与 Lake & Baroni (2018) 报告的"标准 seq2seq 在 length split 上接近 0%"一致。数据、训练、评估都是对的。
+2. **按计划第一道关口的判定：未通过。** "多想几步"（更大 k）在 dev 和 test 上都没有带来提升；且所有固定 k 的 test 准确率都接近零。当前设定下，GA 在一个 test 准确率 ≈ 0 的模型上搜索推理策略，无法展示任何泛化收益。
+3. Latent 模型 dev 低于 GRU，且随机 k 训练导致解码行为不稳定（各 epoch 波动大），这是冻结权重后策略搜索的上游瓶颈。
+
+### 备选方向（需要决策，见 PROJECT_PLAN §11 结果 F 的处理原则：不反复换划分，调整需写明理由）
+
+- 方向 A：**软化长度偏移**——把训练/开发/测试的长度梯度放缓（如训练 ≤10、dev 11–16、测试用官方 length split 中较短的桶），使基线 test 准确率非零，再检验推理策略的边际收益。
+- 方向 B：**换用 simple split 先验证方法链路**（test 有 20% 数据、长度与训练同分布），确认 GA 框架能工作，再回到 length split。
+- 方向 C：**改进基线训练**（更大 hid、更多 epochs、teacher forcing 课程、beam search），先把固定 k 基线在 dev/test 上拉起来，再进入 GA 阶段。
