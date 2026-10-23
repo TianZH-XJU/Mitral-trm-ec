@@ -106,3 +106,31 @@ OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 python scripts/check_env.py
 - 方向 A：**软化长度偏移**——把训练/开发/测试的长度梯度放缓（如训练 ≤10、dev 11–16、测试用官方 length split 中较短的桶），使基线 test 准确率非零，再检验推理策略的边际收益。
 - 方向 B：**换用 simple split 先验证方法链路**（test 有 20% 数据、长度与训练同分布），确认 GA 框架能工作，再回到 length split。
 - 方向 C：**改进基线训练**（更大 hid、更多 epochs、teacher forcing 课程、beam search），先把固定 k 基线在 dev/test 上拉起来，再进入 GA 阶段。
+
+## 计划 v2（专家修订版）执行记录
+
+### 计划切换（2025-10-23）
+
+按专家新计划重写 `PROJECT_PLAN.md`（核心提示词 v2：可修复性/可预测性/可泛化性 + CMA-ES 门控），旧版存档为 `ARCHIVE_plan_v1.md`。
+
+### 数据与参考仓库（全部下载完成）
+
+- **数据**：SCAN（simple/add-prim/template/length 全划分，`reference/SCAN-official/` 与 `SCAN/`）、COGS（`reference/COGS/data/*.tsv`，仓库自带）、CFQ（`data/raw/CFQ/`，官方 cfq1.1.tar.gz，4.7GB）。
+- **参考仓库**（`reference/`，浅克隆去 .git）：TinyRecursiveModels、coconut、TaH（Think-at-Hard）、pycma、COGS、SCAN-official。
+- 大体积数据/仓库已加入 `.gitignore`（本地保留），复现方式见各官方仓库 README。
+
+### 第一关验收（PROJECT_PLAN §3.2）：**通过**
+
+模型：GRU(1 层, hid=128) + Bahdanau Attention + emb=64，234,314 参数（`src/model_seq2seq.py`）。
+
+1. **记忆能力**：256 训练样本上 300 epochs 达到 **seq exact match = 100%，token acc = 100%**（128 样本在 600 epochs 内于 83–93% 波动，失败均为长重复结构 "around X twice/thrice" 的计数偏差——贪心解码暴露偏差，非管线 bug）。验收脚本：`scripts/run_phase1_gate1.py`。
+2. **simple split 完整训练**（15 epochs，train 15,056 / dev 1,672 / test 4,182）：
+   - dev seq acc **99.2%**、test seq acc **99.3%**（best epoch 14：**99.88%**）
+   - token acc >99.5%；数据管线、EOS、padding mask、greedy decoding 全部正确。
+3. 权重：`runs/seq2seq_attn_s0.pt`；训练曲线：`runs/gate1_training_s0.csv`。
+
+**结论**：第一关通过。SCANN simple split 上基线已近饱和（~99.9%），这正是专家选择 add-prim/template split 作为组合泛化确认集的原因——simple split 只用于链路验收。下一关（第二关）：共享参数递归 + 深度 1/2/4 + 四类转移矩阵（图 A/B）。
+
+### 项目结构（v2）
+
+`src/data_scan.py`（全部划分的读取）、`src/model_seq2seq.py`（基线）、`src/train.py`（训练/评估）、`scripts/run_phase1_gate1.py`（第一关验收）。后续：`src/model_recursive.py`（递归版）、`src/trajectories.py`（轨迹记录）、`src/compute_gate.py`、`src/evolve_policy.py`。

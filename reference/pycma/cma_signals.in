@@ -1,0 +1,57 @@
+# This file can change versatile options while running CMA-ES.
+#
+# To take effect, the option 'signals_filename' of the `cma.CMAOptions`
+# argument to `cma.fmin` or `cma.CMAEvolutionStrategy` must be set to
+# 'cma_signals.in', i.e. the name of this file (set to `None` or '' if
+# no file should be checked).
+#
+# To be effective, this file must contain valid Python code, namely
+# a single `dict`. The opening brace must be in the first column.
+# Keys are strings, values of filenames must be strings.
+#
+# {k: cma.options_parameters.cma_default_options[k] for k in cma.options_parameters.cma_versatile_options}
+#
+# Outcomment the desired option to change (the options list could be outdated):
+#
+{
+    #  'CMA_active_injected': '0  #v weight multiplier for negative weights of injected solutions',
+    #  'CMA_diagonal_decoding': '0  #v learning rate multiplier for additional diagonal update',
+    #  'CMA_elitist': 'False  #v or "initial" or True, elitism likely impairs global search performance',
+    #  'CMA_injections_threshold_keep_len': '1  #v keep length if Mahalanobis length is below the given relative threshold',
+    #  'CMA_on': '1  #v multiplier for all covariance matrix updates',
+    #  'CSA_clip_length_value': 'None  #v poorly tested, [0, 0] means const length N**0.5, [-1, 1] allows a variation of +- N/(N+2), etc.',
+    #  'CSA_dampfac': '1  #v positive multiplier for step-size damping, 0.3 is close to optimal on the sphere',
+    #  'CSA_invariant_path': 'False  #v pc is invariant and ps (default) is unbiased',
+    #  'CSA_squared': 'False  #v use squared length for sigma-adaptation ',
+    #  'TPA_dampfac': '1  #v positive multiplier for step-size damping with TPA',
+    #  'ftarget': '-inf  #v target function value, minimization',
+    #  'is_feasible': 'is_feasible  #v a function that computes feasibility, by default lambda x, f: f not in (None, np.nan)',
+    #  'maxfevals': 'inf  #v maximum number of function evaluations',
+    #  'maxiter': '100 + 150 * (N+3)**2 // popsize**0.5  #v maximum number of iterations',
+    #  'maxstd': 'None  #v maximal std (scalar or vector) in any coordinate direction',
+    #  'mean_shift_line_samples': 'False #v sample two new solutions colinear to previous mean shift',
+    #  'mindx': '0  #v minimal std in any arbitrary direction, cave interference with tol*',
+    #  'minstd': '0  #v minimal std (scalar or vector) in any coordinate direction, cave interference with tol*',
+    #  'pc_line_samples': 'False #v one line sample along the evolution path pc',
+    #  'randn': 'np.random.randn  #v randn(lam, N) must return an np.array of shape (lam, N), see also cma.utilities.math.randhss',
+    #  'stall_sigma_change_on_divergence_iterations': 'False  #v number of iterations of median worsenings threshold at which the sigma change is stalled; the default may become 2',
+    #  'termination_callback': '[]  #v a function or list of functions returning True for termination, called in `stop` with `self` as argument, could be abused for side effects',
+#  'timeout': '0  #v stop if timeout seconds are exceeded, the string "2.5 * 60**2" evaluates to 2 hours and 30 minutes',
+    #  'tolconditioncov': '1e14  #v stop if the condition of the covariance matrix is above `tolconditioncov`',
+    #  'tolfacupx': '1e3  #v termination when step-size increases by tolfacupx (diverges). That is, the initial step-size was chosen far too small and better solutions were found far away from the initial solution x0',
+    #  'tolflatfitness': '1  #v iterations tolerated with flat fitness before termination',
+    #  'tolfun': '1e-11  #v termination criterion: tolerance in function value, quite useful',
+    #  'tolfunhist': '1e-12  #v termination criterion: tolerance in function value history',
+    #  'tolfunrel': '0  #v termination criterion: relative tolerance in function value: Delta f current < tolfunrel * (median0 - median_min)',
+    #  'tolstagnation': 'int(100 + 100 * N**1.5 / popsize)  #v termination if no improvement over tolstagnation iterations',
+    #  'tolupsigma': '1e20  #v sigma/sigma0 > tolupsigma * max(eivenvals(C)**0.5) indicates "creeping behavior" with usually minor improvements',
+    #  'tolx': '1e-11  #v termination criterion: tolerance in x-changes',
+    #  'tolxstagnation': '[1e-9, 20, 0.1]  #v termination thresholds for Delta of [mean, iterations, iterations fraction], the latter two are summed; trigger termination if Dmean stays below the threshold over Diter iterations, pass `False` or a negative value to turn off tolxstagnation',
+    #  'updatecovwait': 'None  #v number of iterations without distribution update, name is subject to future changes',
+#  'verb_disp': '1  #v verbosity: display console output every verb_disp iteration',
+#   verb_disp_overwrite='0  #v start overwriting after given iteration, 0==never',
+    #  'verb_log': '1  #v verbosity: write data to files every verb_log iteration, writing can be time critical on fast to evaluate functions',
+    #  'verb_plot': '0  #v in fmin2(): plot() is called every verb_plot iteration',
+    #  'verb_time': 'True  #v output timings on console',
+    #  'verbose': '3  #v verbosity e.g. of initial/final message and logging,\n -1 is very quiet, <=-9 is maximally quiet, <=-10 ignores the signals_filename'
+}
