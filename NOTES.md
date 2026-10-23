@@ -185,3 +185,31 @@ token acc per depth 全部 ≈99.7%。free-running dev seq acc：94.6% / 94.8% /
 ### 复现
 
 `OMP_NUM_THREADS=2 python scripts/run_gate2_small.py`（约 25 分钟，2 线程 CPU）。汇总：`runs/gate2_summary_s0.json`。
+
+## 第三阶段：数据审计 + 协议冻结 + addprim_jump pilot + 主划分 screening
+
+日期：2025-10-23。任务依据：专家任务书 v3（六阶段计划）。
+
+### 阶段一：数据审计（完成）
+
+- `scripts/build_scan_manifest.py` → `configs/scan_manifest.json` + `results/scan_inventory.csv`：**104 个官方条件**（8 主划分 + 96 扩展：filler 4、few-shot 50（N∈{1..1024}×5rep）、size 7、additional 30（num∈{1..32}×5rep））。
+- 全部文件可解析；SHA-256 已记录；train/test 无指令重叠；add-prim 系列的官方过采样重复原语如实保留（jump 1,466 行、turn_left 2,188 行重复指令，未去重）。
+- simple split train 16,728 = 官方 80%；length 16,990/3,920；addprim_jump 14,670/7,706。
+
+### 阶段二：协议冻结（完成）
+
+`docs/SCAN_EXPERIMENT_PROTOCOL.md`（v1.0）：按指令组划分内部 dev、E0/R1/R2 模型组、checkpoint 主指标（递归模型 dev free-running seq EM @ extra=3）、记录规范（转移计数+比例、AUC+样本数+bootstrap CI、实测耗时）、test 解封规则、运行顺序。CMA-ES/GA 冻结。
+
+### 阶段三：addprim_jump pilot（种子 0，完成，验收通过）
+
+| 模型 | dev seq EM（extra=0/1/3） | 关键转移（0→1） |
+|—|—|—|
+| E0 | 96.6% / — / — | — |
+| R1 | **15.2% / 94.8% / 93.9%** | repair=**18.6%**, harm=0.11%, n=20,068 |
+| R2 | 96.1% / 95.6% / 95.2% | repair=0.07%（各深度无差异） |
+
+与 gate-2（simple）模式完全一致：R1 的收益集中在第一次额外递归；R2 监督使各深度均衡。E0（96.6%）> R2（95.2%）> R1（93.9%）@extra=3——在 addprim_jump dev 上递归未超过基线。轨迹已保存（`runs/stage3/traj_*`）。
+
+### 阶段四：8 主划分 screening（进行中）
+
+`scripts/run_screening.sh`：7 条件 × 3 模型 × 种子 0（addprim_jump 已完成）。结果逐个写入 `runs/stage3/`。完成后做主划分 confirmation（种子 0/1/2），再扩展细分条件，最后按协议解封 test。

@@ -1,0 +1,3 @@
+[addprim_jump] train=13350 dev=1320 test=7706
+  dev extra=0 seq=0.9659 tok=0.9900 calls/seq=0.0 0.3s
+saved runs/stage3/result_addprim_jump_E0_s0.json
