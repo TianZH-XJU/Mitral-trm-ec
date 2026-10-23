@@ -49,3 +49,28 @@ OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 python scripts/check_env.py
 1. 实现 `data.py`（数据读取、词表、collate）并随机抽 5 条手工核对；
 2. GRU 基线跑通 exact match；
 3. LatentSeq2Seq 训练，固定 k 曲线（第一道关口）。
+
+## Phase 1（数据准备部分）：完成
+
+日期：2025-10-23
+
+### 交付
+
+- `data.py`：SCAN 读取、训练/开发划分（≤18 / 19–22）、词表、`collate`。
+- `model.py`：`GRUSeq2Seq`（普通基线，含贪心解码）、`LatentSeq2Seq`（共享权重递归）、`train_epoch`（随机 k）、`train_epoch_gru`。
+- `evaluate.py`：exact-match 评估、`decode_with_policy`（schedule + tau 提前停止）、`evaluate_gru`。
+- `scripts/check_data.py`：数据自检（见下）。
+- `reference/SCAN-official/`：官方 SCAN 仓库浅克隆（仅作参考，已去 `.git`）。本地数据与其 SHA-256 完全一致。
+
+### 自检结果（`scripts/check_data.py` 全部通过）
+
+- 划分：train_all 16,990 → train(≤18) **15,438**，dev(19–22) **1,552**，test **3,920**；测试长度 24–48，训练池 ≤22。与 PROJECT_PLAN §0 核对值一致。
+- 词表：源 17、目标 10（含 4 个特殊 token）。
+- 随机抽样 7 条人工核对：输入输出对应正确（`I_` 前缀动作 token）。
+- `collate` 形状正确；`LatentSeq2Seq` 参数量 **201,162**（≈0.80 MB fp32），与计划估算 20 万一致。
+- GRU 基线单步训练跑通。
+
+### 下一步（Phase 1 余下部分）
+
+1. 训练 GRU 基线（30 epochs），在 dev/test 上报告 exact match；
+2. 训练 LatentSeq2Seq，画固定 k 曲线（第一道关口）。
