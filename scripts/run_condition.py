@@ -152,6 +152,28 @@ def main():
               f"{r['decode_seconds']:.1f}s", flush=True)
 
     if kind in ("R1", "R2"):
+        # A-2 修复：free-running 逐深度预测序列（greedy_decode record=True）
+        fr_rows = []
+        with torch.no_grad():
+            for i in range(0, len(dev), 256):
+                chunk = dev[i:i + 256]
+                src_list = [[src_stoi.get(t, 3) for t in s0] for s0, _ in chunk]
+                srcb, slenb = pad_batch(src_list)
+                _, depth_recs = model.greedy_decode(
+                    srcb, slenb, extra=MAX_EXTRA, record=True)
+                for j, (_, gold) in enumerate(chunk):
+                    fr_rows.append({
+                        "example_id": i + j,
+                        "gold": " ".join(gold),
+                        "preds_by_depth": " | ".join(
+                            " ".join(ids_to_tokens(depth_recs[j, t].tolist(),
+                                                   tgt_itos))
+                            for t in range(MAX_EXTRA + 1)),
+                    })
+        frp = f"runs/stage3/freerun_{cond}_{kind}_s{seed}.jsonl"
+        with open(frp, "w") as f:
+            for r in fr_rows:
+                f.write(json.dumps(r) + "\n")
         rows = record_teacher_forced(
             model, dev, src_stoi, tgt_itos, tgt_stoi,
             split="dev", seed=seed)
