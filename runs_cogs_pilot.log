@@ -1,0 +1,73 @@
+train=24155 dev=3000
+vocab: src=747 tgt=687
+--- minimal check (1 batch) ---
+  E0: loss=6.560, decode shape=(4, 60)
+  R1: loss=6.549, decode shape=(4, 60)
+minimal check OK
+=== training E0 (seed 0) ===
+  params=411,695
+  ep1 loss=0.8961 | 90s
+  ep2 loss=0.2279 | 179s
+  ep3 loss=0.0640 | 266s
+  ep4 loss=0.0267 | 354s
+  ep5 loss=0.0166 | 442s
+  ep6 loss=0.0110 | 530s
+  ep7 loss=0.0097 | 621s
+  ep8 loss=0.0074 | 712s
+  ep9 loss=0.0067 | 801s
+  ep10 loss=0.0057 | 890s
+  ep11 loss=0.0055 | 982s
+  ep12 loss=0.0043 | 1071s
+  ep13 loss=0.0038 | 1160s
+  ep14 loss=0.0029 | 1248s
+  ep15 loss=0.0044 | 1336s
+  dev extra=0: seq EM=0.7707 (2s)
+saved runs/cogs/result_E0_s0.json
+=== training R1 (seed 0) ===
+  params=559,919
+  ep1 loss=0.7981 | 319s
+  ep2 loss=0.1875 | 647s
+  ep3 loss=0.0439 | 990s
+  ep4 loss=0.0183 | 1336s
+  ep5 loss=0.0108 | 1668s
+  ep6 loss=0.0103 | 2000s
+  ep7 loss=0.0065 | 2340s
+  ep8 loss=0.0051 | 2680s
+  ep9 loss=0.0044 | 3008s
+  ep10 loss=0.0047 | 3326s
+  ep11 loss=0.0042 | 3647s
+  ep12 loss=0.0036 | 3967s
+  ep13 loss=0.0027 | 4308s
+  ep14 loss=0.0028 | 4645s
+  ep15 loss=0.0033 | 4973s
+  dev extra=0: seq EM=0.0000 (8s)
+  dev extra=1: seq EM=0.6120 (13s)
+  dev extra=3: seq EM=0.9897 (14s)
+  trans 0->1: repair=0.4037, harm=0.0001, unresolved=0.0188, maintain=0.5774 (n=23217)
+  trans 1->2: repair=0.0159, harm=0.0000, unresolved=0.0030, maintain=0.9811 (n=23217)
+  trans 2->3: repair=0.0028, harm=0.0000, unresolved=0.0003, maintain=0.9969 (n=23217)
+saved runs/cogs/result_R1_s0.json
+=== training R2 (seed 0) ===
+  params=559,919
+  ep1 loss=0.8421 | 357s
+  ep2 loss=0.2084 | 708s
+  ep3 loss=0.0599 | 1069s
+  ep4 loss=0.0309 | 1426s
+  ep5 loss=0.0200 | 1787s
+  ep6 loss=0.0143 | 2141s
+  ep7 loss=0.0110 | 2479s
+  ep8 loss=0.0084 | 2810s
+  ep9 loss=0.0089 | 3157s
+  ep10 loss=0.0055 | 3498s
+  ep11 loss=0.0056 | 3853s
+  ep12 loss=0.0053 | 4207s
+  ep13 loss=0.0040 | 4561s
+  ep14 loss=0.0032 | 4905s
+  ep15 loss=0.0037 | 5261s
+  dev extra=0: seq EM=0.9407 (5s)
+  dev extra=1: seq EM=0.9540 (7s)
+  dev extra=3: seq EM=0.9547 (12s)
+  trans 0->1: repair=0.0015, harm=0.0002, unresolved=0.0017, maintain=0.9966 (n=23217)
+  trans 1->2: repair=0.0001, harm=0.0002, unresolved=0.0017, maintain=0.9980 (n=23217)
+  trans 2->3: repair=0.0001, harm=0.0000, unresolved=0.0018, maintain=0.9981 (n=23217)
+saved runs/cogs/result_R2_s0.json

@@ -295,3 +295,54 @@ token acc per depth 全部 ≈99.7%。free-running dev seq acc：94.6% / 94.8% /
 - 协议冻结：`docs/COGS_EXPERIMENT_PROTOCOL.md`（dev 唯一选择依据，gen 封存至解封）。
 - 加载器：`src/data_cogs.py`（逻辑形式括号独立 token 化，对齐官方 evaluate.py 口径）。
 - 待办：seed 0 试运行（E0/R1/R2，仅 train/dev）——待资源空闲后执行，完成后汇报预算再决定多种子。
+
+## 最终评估与 COGS 试运行（2025-10-24，两线完成后在汇报点暂停）
+
+### 线一：台账修正 + SCAN 一次性 test 评估
+
+**台账**（`docs/run_ledger.md`）：
+- screening 21 vs 24 澄清：screening 批次 21 = 7 条件×3 模型；addprim_jump 3 个训练在 pilot 阶段完成并复用。8×3=24 份结果完整，无缺失。
+- Gate 2 confirmation：**12 新增训练 + 6 复用 seed-0** = 18 个条件×种子×模型组合，全部终点 checkpoint。
+- seed-0 的 free-running 逐深度轨迹已用冻结 checkpoint 补录（`runs/stage3/freerun_*_s0.jsonl`），与种子 1/2 口径一致。
+
+**SCAN 官方 test（一次性、已解封并记录时间戳，`runs/stage3/scan_final_test_results.json`）**：
+
+| 条件 | 模型 | test seq EM（种子 0/1/2，e0→e3） | token acc |
+|—|—|—|—|
+| addprim_jump | E0 | 0.2% / 0.0% / 0.1% | ~63–68% |
+| addprim_jump | R1 | 0.4/0.5/1.2% → 0.5/0.7/0.0% | ~60–64% |
+| addprim_jump | R2 | 0.1/0.0/0.0% → 0.3/0.0/0.0% | ~60–63% |
+| template_opposite_right | 全部 | **全部 ≈ 0–0.4%** | ~56–60% |
+
+**判定（对照任务书通过条件 D）**：官方 test 上组合泛化完全失败（seq EM ≈ 0，token acc 56–68%），E0/R1/R2 无一存活。dev 上的全部差异（含 R2 > E0 趋势）在 test 上不可辨。** SCAN 两条件下，递归模型与普通模型都没有获得组合泛化能力；额外递归不改变该结论。**这是明确的负面结果，如实报告。**
+
+### 线二：COGS 子类别修正 + seed-0 试运行
+
+**记录矛盾修正**：train.tsv 实际 = 24,000 in_distribution + **143 primitive** + 12 exposure_example_*（各 1）= 24,155。此前"24,000+12+43"的拆分中 primitive 43 为抄写错误（实际 143）。manifest 已修正（`configs/cogs_manifest.json`）。
+
+**四 split 完整重复检查**（`results/cogs_split_overlap_report.json`）：train/dev/test/gen 两两之间输入重复 = 0、输入-输出配对重复 = 0。
+
+**评估口径核对**：官方管线（OpenNMT）对逻辑形式做纯空格 tokenize（括号原生空格分隔），我们的 `_post_tokenize` 与其等价；官方推理 max_length 2000、greedy；我们的 exact match = token 序列完全匹配，一致。
+
+**seed-0 试运行（仅 train/dev；test/gen 未触碰）**：
+
+| 模型 | 参数 | dev seq EM（e0/e1/e3） | 训练耗时 |
+|—|—|---|---|
+| E0 | 411,695 | **77.1%** | 22 分钟 |
+| R1 | 559,919 | 0.0% / **61.2% / 99.0%** | 80 分钟 |
+| R2 | 559,919 | 94.1% / 95.4% / **95.5%** | 85 分钟 |
+
+R1 转移（teacher-forced, dev 前 500 条）：0→1 repair 40.4%、1→2 repair 1.6%、2→3 repair 0.3%，harm ≈ 0。
+
+### 关键新现象（COGS 上与 SCAN 不同）
+
+1. **R1@e3 = 99.0% 明显超过 E0 = 77.1%**（差 +21.9pp，单种子）。与 SCAN dev（R1 ≤ E0）方向相反。
+2. **深度悬崖变为多级阶梯**：e0→e1→e3 为 0%→61%→99%，第二、三次递归仍有大幅增量（SCAN 上几乎全部收益集中在第一次）。
+3. **R2@e3 = 95.5% 也超过 E0 +18.4pp**——多深度监督的递归模型同样大幅超越普通模型。
+4. 机制解释候选：COGS 逻辑形式更长（train 最长 162 token，dev 均 ~40），E0 的固定单步解码在长序列上弱（token 级错误累积）；递归 refinement 为每步提供额外计算，收益不被 dev 饱和掩盖。**注意参数量不匹配**（R1/R2 559,919 vs E0 411,695，+36%），部分收益可能来自容量——任务书已提示的对照限制，多种子阶段需参数量匹配对照（如加宽 E0）。
+5. dev 分布内即可看到区分度（77% vs 99%），COGS 的 gen（组合泛化）解封后预期区分更大。
+
+### 汇报点暂停（未做的事）
+
+- 未读取 COGS test/gen；未启动 COGS 多种子；未扩展其余 SCAN 条件；未启动 GA/CMA-ES/gate；CFQ 冻结。
+- 待批准事项：① COGS 多种子比较（建议含参数量匹配的 E0-wide 对照）；② COGS gen 解封的时机与清单。
