@@ -1,0 +1,4 @@
+=== training E0 seed 1 ===
+  ep1 loss=0.8951 | 92s
+  ep2 loss=0.3345 | 179s
+  ep3 loss=0.1446 | 270s
