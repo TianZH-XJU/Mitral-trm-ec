@@ -78,3 +78,11 @@ saved runs/stage3/result_template_opposite_right_E0_s2.json
 saved runs/stage3/result_template_opposite_right_R1_s2.json
 [template_opposite_right R1 s2 done] 07:18
 [template_opposite_right] train=13703 dev=1522 test=4476
+  dev extra=0 seq=0.9198 tok=0.9860 calls/seq=0.0 0.4s
+  dev extra=1 seq=0.9185 tok=0.9855 calls/seq=14.4 0.5s
+  dev extra=3 seq=0.9152 tok=0.9852 calls/seq=43.3 0.8s
+  trans 0->1: repair=0.0004, harm=0.0005, unresolved=0.0052, maintain=0.9939 (n=23689)
+  trans 1->2: repair=0.0002, harm=0.0002, unresolved=0.0056, maintain=0.9941 (n=23689)
+  trans 2->3: repair=0.0000, harm=0.0003, unresolved=0.0057, maintain=0.9940 (n=23689)
+saved runs/stage3/result_template_opposite_right_R2_s2.json
+[template_opposite_right R2 s2 done] 07:30

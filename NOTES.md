@@ -251,3 +251,47 @@ token acc per depth 全部 ≈99.7%。free-running dev seq acc：94.6% / 94.8% /
 |—|—|—|—|
 | 8 主划分 | ✅ 完成 | ⬜ 待跑 | ⬜ 冻结后 |
 | 96 扩展条件 | ⬜ 待跑 | ⬜ | ⬜ |
+
+## Gate 2 多种子确认结果（addprim_jump + template_opposite_right，种子 0/1/2，仅 train/dev）
+
+### Dev free-running seq EM（mean ± std，n=3 种子）
+
+**addprim_jump**：
+
+| 模型 | e0 | e1 | e3 |
+|—|—|—|—|
+| E0 | **92.0 ± 4.1%** | — | — |
+| R1 | 13.3 ± 1.6% | 90.9 ± 4.8% | 91.9 ± 1.9% |
+| R2 | 96.2 ± 3.1% | 95.9 ± 3.2% | 95.8 ± 3.3% |
+
+**template_opposite_right**：
+
+| 模型 | e0 | e1 | e3 |
+|—|—|—|—|
+| E0 | **99.0 ± 0.5%** | — | — |
+| R1 | 1.8 ± 1.6% | 83.1 ± 7.6% | 87.3 ± 7.1% |
+| R2 | 91.8 ± 1.5% | 92.0 ± 1.7% | 92.0 ± 1.8% |
+
+四类转移绝对计数（R1, 0→1）：addprim_jump repair≈2,919–4,220 / harm≈10–36（n=20,068/种子）；template_opposite_right repair≈7,450–12,458 / harm≈9–96（n=24,489/种子）。A-2 修复已生效：种子 1/2 的 free-running 逐深度预测已保存（`runs/stage3/freerun_*.jsonl`）。
+
+### 审核五问的回答
+
+1. **R1 深度悬崖跨种子复现？** ✅ 是。两个条件 × 3 种子，R1 e0 均 1–15%、e1/e3 均 78–95%，方向与幅度一致。
+2. **R1/R2 与 E0 的最终差异是否稳定？** ✅ 稳定为负。E0 在 addprim_jump 92.0±4.1%、template_opposite_right 99.0±0.5%；R1@e3 分别 91.9±1.9%、87.3±7.1%（均 ≤ E0）；R2@e3 分别 95.8±3.3%、92.0±1.8%。**R2 在 addprim_jump 上 mean 超过 E0（95.8 vs 92.0），但种子方差大（E0 std 4.1pp），3 种子不足以判定显著**——如实记录为"方向为正但不确定"。
+3. **修复率与最终序列准确率一致？** 部分。teacher-forced 修复率高（15–51%），但 free-running 序列级收益被自回归误差累积抵消；两条件 dev 均近饱和。
+4. **内部信号能否预测下一轮收益？** ❌ 目前证据不足。AUC 跨种子不稳定（entropy：0.53/0.88/0.67 与 0.52/0.78/0.60；margin 0.28–0.68 波动，方向都不一致），harm 类样本 9–96 个，类别失衡严重。按协议判"证据不足"，不进入 gate/CMA-ES。
+5. **是否满足进入官方 test 确认的条件？** 满足 Gate 3 前置：Gate 1 审计通过（`docs/stage3_audit.md`）、Gate 2 三种子记录完整、方案冻结。**但按指令暂停在汇报点**，不自动解封 test。
+
+### Go/No-Go 建议
+
+- **机制结论（可写入分析）**：R1 的深度悬崖是**监督目标的产物**（final-only 监督使深度 0 不构成合格预测器），第一次额外递归的"修复"主要是把一个未校准的预测器推到校准状态；R2 的多深度监督消除该悬崖。递归本身在 dev 饱和条件下不带来序列级净收益。
+- **test 解封建议**：dev 饱和使条件 B 的检验必须靠官方 test（组合泛化错误更丰富），且协议已冻结 E0 vs R1/R2@e0/e1/e3 的预指定比较。**建议在 COGS seed-0 试运行完成后，一并汇报资源预算后申请解封**。暂不扩展其余 6 主划分的三种子（screening 已给出方向，且 dev 同样饱和）。
+- CFQ 维持候选。GA/CMA-ES/gate 维持冻结。
+
+### COGS 第二基准接入（同日完成审计）
+
+- 版本固定：官方仓库数据（含 2022/09/13 gen.tsv 语义角色修正），SHA-256 见 `configs/cogs_manifest.json`。
+- 审计：train 24,155 / dev 3,000 / test 3,000 / gen 21,000（21 类 × 1,000）；train/dev/test/gen 与 train 输入零重叠；源词表 743、目标 token 683；目标最长 train 162 / gen 480 token。
+- 协议冻结：`docs/COGS_EXPERIMENT_PROTOCOL.md`（dev 唯一选择依据，gen 封存至解封）。
+- 加载器：`src/data_cogs.py`（逻辑形式括号独立 token 化，对齐官方 evaluate.py 口径）。
+- 待办：seed 0 试运行（E0/R1/R2，仅 train/dev）——待资源空闲后执行，完成后汇报预算再决定多种子。
