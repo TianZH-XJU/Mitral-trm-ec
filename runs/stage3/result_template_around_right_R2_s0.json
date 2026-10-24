@@ -1,0 +1,82 @@
+{
+  "condition": "template_around_right",
+  "model": "R2",
+  "seed": 0,
+  "checkpoint": "runs/stage3/template_around_right_R2_s0.pt",
+  "train_loss_last": 0.011362666771695612,
+  "dev": {
+    "0": {
+      "seq_acc": 0.9796320630749015,
+      "tok_acc": 0.9955480753569683,
+      "extra_calls_per_seq": 0.0,
+      "decode_seconds": 0.3698861598968506
+    },
+    "1": {
+      "seq_acc": 0.9789750328515112,
+      "tok_acc": 0.9947308381769786,
+      "extra_calls_per_seq": 12.06898817345598,
+      "decode_seconds": 0.5232267379760742
+    },
+    "3": {
+      "seq_acc": 0.9796320630749015,
+      "tok_acc": 0.9948389199760961,
+      "extra_calls_per_seq": 36.2030223390276,
+      "decode_seconds": 0.8435089588165283
+    }
+  },
+  "test": null,
+  "test_first_eval": null,
+  "transitions": {
+    "0": {
+      "repair": 0.00020087380103450008,
+      "harm": 0.0002510922512931251,
+      "unresolved": 0.0015065535077587505,
+      "maintain": 0.9980414804399136,
+      "n": 19913
+    },
+    "1": {
+      "repair": 5.021845025862502e-05,
+      "harm": 5.021845025862502e-05,
+      "unresolved": 0.0017074273087932506,
+      "maintain": 0.9981921357906895,
+      "n": 19913
+    },
+    "2": {
+      "repair": 5.021845025862502e-05,
+      "harm": 0.0,
+      "unresolved": 0.0017074273087932506,
+      "maintain": 0.9982423542409481,
+      "n": 19913
+    }
+  },
+  "signals": {
+    "entropy": {
+      "benefit_mean": 0.6358915418386459,
+      "harm_mean": 0.7505084812641144,
+      "auc": 0.35,
+      "n_benefit": 4,
+      "n_harm": 5
+    },
+    "top1_prob": {
+      "benefit_mean": 0.6669554114341736,
+      "harm_mean": 0.6512729048728942,
+      "auc": 0.55,
+      "n_benefit": 4,
+      "n_harm": 5
+    },
+    "top2_margin": {
+      "benefit_mean": 0.3414860963821411,
+      "harm_mean": 0.35554684400558473,
+      "auc": 0.5,
+      "n_benefit": 4,
+      "n_harm": 5
+    },
+    "hidden_delta": {
+      "benefit_mean": 0.0,
+      "harm_mean": 0.0,
+      "auc": 0.5,
+      "n_benefit": 4,
+      "n_harm": 5
+    }
+  }
+}

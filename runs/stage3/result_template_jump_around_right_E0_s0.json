@@ -1,0 +1,17 @@
+{
+  "condition": "template_jump_around_right",
+  "model": "E0",
+  "seed": 0,
+  "checkpoint": "runs/stage3/template_jump_around_right_E0_s0.pt",
+  "train_loss_last": 0.00015613773733257473,
+  "dev": {
+    "0": {
+      "seq_acc": 1.0,
+      "tok_acc": 1.0,
+      "extra_calls_per_seq": 0.0,
+      "decode_seconds": 0.4515089988708496
+    }
+  },
+  "test": null,
+  "test_first_eval": null
+}

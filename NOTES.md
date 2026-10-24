@@ -213,3 +213,41 @@ token acc per depth 全部 ≈99.7%。free-running dev seq acc：94.6% / 94.8% /
 ### 阶段四：8 主划分 screening（进行中）
 
 `scripts/run_screening.sh`：7 条件 × 3 模型 × 种子 0（addprim_jump 已完成）。结果逐个写入 `runs/stage3/`。完成后做主划分 confirmation（种子 0/1/2），再扩展细分条件，最后按协议解封 test。
+
+## 第三阶段：8 主划分 screening 结果（种子 0，train/dev only，未触碰 test）
+
+**全划分 dev free-running seq EM（E0 基线 / R1@e3 / R2@e3）与 R1 的 0→1 修复率：**
+
+| 条件 | E0 | R1 e0→e1→e3 | R1 repair(0→1) | R2 e0→e3 |
+|—|—|—|—|—|
+| simple | 98.6% | 2.3→96.4→**97.4%** | 38.5% | 98.9→98.6% |
+| length | **99.5%** | 0.1→96.5→98.6% | **55.2%** | 97.5→97.6% |
+| addprim_jump | **96.6%** | 15.2→94.8→93.9% | 18.6% | 96.1→95.2% |
+| addprim_turn_left | **99.3%** | 0.3→99.5→99.3% | 45.6% | 97.9→97.9% |
+| template_around_right | **99.8%** | 1.7→95.9→99.1% | 43.8% | 98.0→98.0% |
+| template_jump_around_right | **100.0%** | 2.3→92.3→94.9% | 42.0% | 95.5→95.3% |
+| template_opposite_right | **98.4%** | 0.5→91.9→95.3% | 50.9% | 90.3→90.4% |
+| template_right | **98.6%** | 1.9→94.6→95.9% | 38.4% | 99.2→99.2% |
+
+图：`results/figures/stage3_figA_all_splits.png`、`stage3_figB_repairs_all_splits.png`；汇总 CSV：`results/stage3_screening_summary.csv`。
+
+### Screening 结论（探索性，单种子）
+
+1. **条件 A（递归行为）在全部 8 划分复现**：R1 的 0→1 修复率 18.6%–55.2%，harm 均 <0.2%；R1 的深度悬崖（e0≈0–15% → e1≈92–99%）在所有划分上出现。
+2. **条件 B（收益/权衡）目前为负**：在 dev 上，**没有任何划分中 R1/R2 的最好深度超过 E0 基线**。E0（GRU+Attention 本身）在全部 8 划分的 dev 上都接近饱和（96.6–100%）。R1@e3 落后 E0 0.5–5.1pp；R2@e3 落后 0–8pp。
+3. R2 的多深度监督一致地消除深度间差异（全部条件 repair<0.1%），与 gate-2 一致。
+4. **关键观察**：这些 dev 划分错误率太低（0.2–3.4%），即使递归修复了 40–55% 的 token 错误，序列级收益也被自回归误差累积抵消。真正能区分模型的上限应在官方 test（组合泛化错误率更高），但 test 在协议冻结前不解封。
+
+### 按协议的下一步（未执行，等待批准/继续）
+
+1. 主划分 confirmation（种子 0/1/2）——screening 模式已稳定，confirmation 主要为 R1-R2-E0 排序提供跨种子方差。
+2. 扩展条件 screening（filler/few-shot/size/additional）。
+3. 协议冻结后的官方 test 确认性评估——**这是检验条件 B 的真正场所**（dev 饱和，test 上组合泛化错误更丰富）。
+4. 图 C 信号分析在 dev 上做意义有限（harm 样本 <20/划分）；应在 test 评估时一并做（但 test 只评一次，须先冻结一切）。
+
+### 状态表
+
+| 条件 | screening(种子0) | confirmation(3种子) | test 评估 |
+|—|—|—|—|
+| 8 主划分 | ✅ 完成 | ⬜ 待跑 | ⬜ 冻结后 |
+| 96 扩展条件 | ⬜ 待跑 | ⬜ | ⬜ |

@@ -1,0 +1,17 @@
+{
+  "condition": "simple",
+  "model": "E0",
+  "seed": 0,
+  "checkpoint": "runs/stage3/simple_E0_s0.pt",
+  "train_loss_last": 0.008232225322746919,
+  "dev": {
+    "0": {
+      "seq_acc": 0.986244019138756,
+      "tok_acc": 0.9962300914944087,
+      "extra_calls_per_seq": 0.0,
+      "decode_seconds": 0.36396193504333496
+    }
+  },
+  "test": null,
+  "test_first_eval": null
+}
