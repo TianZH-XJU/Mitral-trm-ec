@@ -2,7 +2,7 @@
 
 ## Phase 0：环境准备（完成）
 
-日期：2025-10-23
+日期：2026-10-23【2025 为笔误，已更正】
 
 ### 环境核对结果
 
@@ -52,7 +52,7 @@ OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 python scripts/check_env.py
 
 ## Phase 1（数据准备部分）：完成
 
-日期：2025-10-23
+日期：2026-10-23【2025 为笔误，已更正】
 
 ### 交付
 
@@ -77,7 +77,7 @@ OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 python scripts/check_env.py
 
 ## Phase 1：基础模型训练（种子 0，30 epochs）——第一道关口判定
 
-日期：2025-10-23
+日期：2026-10-23【2025 为笔误，已更正】
 
 ### 结果（`runs/phase1_summary_s0.json`，训练曲线见 `runs/phase1_training_s0.csv`）
 
@@ -137,7 +137,7 @@ OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 python scripts/check_env.py
 
 ## 第二关：机制验证实验（单种子 R1/R2，种子 0）——完成
 
-日期：2025-10-23。范围：审核批准的机制验证（无 CMA-ES、不用测试集选模型、不做组合泛化结论）。
+日期：2026-10-23【2025 为笔误，已更正】。范围：审核批准的机制验证（无 CMA-ES、不用测试集选模型、不做组合泛化结论）。
 
 ### 实现（新）
 
@@ -188,7 +188,7 @@ token acc per depth 全部 ≈99.7%。free-running dev seq acc：94.6% / 94.8% /
 
 ## 第三阶段：数据审计 + 协议冻结 + addprim_jump pilot + 主划分 screening
 
-日期：2025-10-23。任务依据：专家任务书 v3（六阶段计划）。
+日期：2026-10-23【2025 为笔误，已更正】。任务依据：专家任务书 v3（六阶段计划）。
 
 ### 阶段一：数据审计（完成）
 
@@ -428,6 +428,6 @@ E0 s0 训练子集（500 条）free-running seq EM = **97.6%**，输出长度正
 
 ### 封存状态更新
 
-- gen.tsv：**已解封并使用**（2025-10-25，一次性）。test.tsv：继续封存。
+- gen.tsv：**已解封并使用**（2026-10-25，一次性，年份笔误已更正）。test.tsv：继续封存。
 - 冻结维持：CFQ、GA、CMA-ES、学习式 gate、其余 SCAN 条件、COGS test。
 - 在汇报点暂停，等待审核对后续方向的指示。
