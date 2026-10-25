@@ -1,0 +1,125 @@
+{
+  "config_hash": "ed03dcb4e5342e23",
+  "files": {
+    "R1_s0_e0": {
+      "file": "runs/cogs/dump/R1_s0_e0.jsonl",
+      "sha256": "0c9b28b17e4ae48efc0c5fc9bd5d06f32858c373ddd6a62273770d98a3537ce4",
+      "n": 21000
+    },
+    "R1_s0_e1": {
+      "file": "runs/cogs/dump/R1_s0_e1.jsonl",
+      "sha256": "cea8f04e0855c7d637e8ffb8d35adac16f4ff9e52bbf807a37d4a2a60428161c",
+      "n": 21000
+    },
+    "R1_s0_e2": {
+      "file": "runs/cogs/dump/R1_s0_e2.jsonl",
+      "sha256": "0b41b538aeb2d2a93bb8851dca5379e1d599f1abeb95e6c1163bcc36bcdf1a1b",
+      "n": 21000
+    },
+    "R1_s0_e3": {
+      "file": "runs/cogs/dump/R1_s0_e3.jsonl",
+      "sha256": "be1b2c98b3f76a96e3226382f30a1b503a0df90739530924c67ce819ba917f78",
+      "n": 21000
+    },
+    "R1_s1_e0": {
+      "file": "runs/cogs/dump/R1_s1_e0.jsonl",
+      "sha256": "11f7100a0e7fa37994c6c1722c572dfe1691e1b5377c02f79edb858b8f1a46b2",
+      "n": 21000
+    },
+    "R1_s1_e1": {
+      "file": "runs/cogs/dump/R1_s1_e1.jsonl",
+      "sha256": "460bc8845a68fdba06c0b6edd0389dfe46fc6adc8a07b901c3f4861c8c0c8e1a",
+      "n": 21000
+    },
+    "R1_s1_e2": {
+      "file": "runs/cogs/dump/R1_s1_e2.jsonl",
+      "sha256": "089fe2537336228d02a9b725bd55bee5a860e1f9d2bc6be0388fa2c1f4aec914",
+      "n": 21000
+    },
+    "R1_s1_e3": {
+      "file": "runs/cogs/dump/R1_s1_e3.jsonl",
+      "sha256": "2905279f3ead8d3f9b636cffa83b66ecc5457c60aac4373894b2a2bfeb5a0b32",
+      "n": 21000
+    },
+    "R1_s2_e0": {
+      "file": "runs/cogs/dump/R1_s2_e0.jsonl",
+      "sha256": "82debcdd685fb8c52aa0344fc77eade9bad1d90970c671feae5004049b932b95",
+      "n": 21000
+    },
+    "R1_s2_e1": {
+      "file": "runs/cogs/dump/R1_s2_e1.jsonl",
+      "sha256": "b606933c3f7bd3adaafedf853b29303c762656a295786ed32d767f9de68bb3ea",
+      "n": 21000
+    },
+    "R1_s2_e2": {
+      "file": "runs/cogs/dump/R1_s2_e2.jsonl",
+      "sha256": "b597f95cd289a5db975ea04fefb877ac80f415709af7e8aa66718d12779c027f",
+      "n": 21000
+    },
+    "R1_s2_e3": {
+      "file": "runs/cogs/dump/R1_s2_e3.jsonl",
+      "sha256": "5bd566b1cf0e604304ee2669c4360594341ab8a2136532f21dbf0bb5c8d592c7",
+      "n": 21000
+    },
+    "R2_s0_e0": {
+      "file": "runs/cogs/dump/R2_s0_e0.jsonl",
+      "sha256": "6c7b04bae4c8cce6d59fca745281d5915ffd6ea674e9ae83605601b95d1f5c9e",
+      "n": 21000
+    },
+    "R2_s0_e1": {
+      "file": "runs/cogs/dump/R2_s0_e1.jsonl",
+      "sha256": "bde0e5afe843fd2b189761df23fbd81f9fae12c63a0ec3c61cda868a80880d8d",
+      "n": 21000
+    },
+    "R2_s0_e2": {
+      "file": "runs/cogs/dump/R2_s0_e2.jsonl",
+      "sha256": "e80c27d83ceb333f7ebbb84e71259a33a7d7fd6924c5edab3e2b250fdb03088c",
+      "n": 21000
+    },
+    "R2_s0_e3": {
+      "file": "runs/cogs/dump/R2_s0_e3.jsonl",
+      "sha256": "2071f2ad5fb471665ddc3750868f7506224fcb4a50e6ffcb9c4437f945af49b5",
+      "n": 21000
+    },
+    "R2_s1_e0": {
+      "file": "runs/cogs/dump/R2_s1_e0.jsonl",
+      "sha256": "4191064e104fb4ddce45a9c7233489b5cf56157f33e084b3782a5fc8520ac81b",
+      "n": 21000
+    },
+    "R2_s1_e1": {
+      "file": "runs/cogs/dump/R2_s1_e1.jsonl",
+      "sha256": "397baed761b932923287f6b0f32e435efaf753d3d9d1a77e82d2427223e94ec0",
+      "n": 21000
+    },
+    "R2_s1_e2": {
+      "file": "runs/cogs/dump/R2_s1_e2.jsonl",
+      "sha256": "96d0bd6e2e0ebbffcee90835a3395d7832b8f6604d417c3f56bc99b8422f793d",
+      "n": 21000
+    },
+    "R2_s1_e3": {
+      "file": "runs/cogs/dump/R2_s1_e3.jsonl",
+      "sha256": "fb3f30559ba18010a1b17b0b5564686dc05a12b3426692f6f4858f5a517cb945",
+      "n": 21000
+    },
+    "R2_s2_e0": {
+      "file": "runs/cogs/dump/R2_s2_e0.jsonl",
+      "sha256": "8d4d7d8c37ed0053295ba8243994d8b07f5f7db8dd994495881feb97f709b9f7",
+      "n": 21000
+    },
+    "R2_s2_e1": {
+      "file": "runs/cogs/dump/R2_s2_e1.jsonl",
+      "sha256": "5a6e7939f172348c5ff267d93ea818f3b383ee23bcf8c5fd4a81a5cdb79e403f",
+      "n": 21000
+    },
+    "R2_s2_e2": {
+      "file": "runs/cogs/dump/R2_s2_e2.jsonl",
+      "sha256": "3a5f108fc9d81a583bbdb3332a3b23caaeceb98cd18653907e77b36ce00e008f",
+      "n": 21000
+    },
+    "R2_s2_e3": {
+      "file": "runs/cogs/dump/R2_s2_e3.jsonl",
+      "sha256": "0011ee6a3fdde801a98e0e5f8070e09bc8ec39ae9bd15ec202a71b4c570cf7d2",
+      "n": 21000
+    }
+  }
+}
