@@ -1,0 +1,29 @@
+{
+ "cp_recursion": {
+  "n": 1000,
+  "gt200": 665,
+  "eq200": 2,
+  "gt199_em_impossible": 667,
+  "eq199_boundary": 2,
+  "median": 249,
+  "max": 480
+ },
+ "pp_recursion": {
+  "n": 1000,
+  "gt200": 539,
+  "eq200": 4,
+  "gt199_em_impossible": 543,
+  "eq199_boundary": 11,
+  "median": 212,
+  "max": 347
+ },
+ "obj_pp_to_subj_pp": {
+  "n": 1000,
+  "gt200": 0,
+  "eq200": 0,
+  "gt199_em_impossible": 0,
+  "eq199_boundary": 0,
+  "median": 66,
+  "max": 140
+ }
+}
