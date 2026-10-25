@@ -1,16 +1,25 @@
-Traceback (most recent call last):
-  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/dump_gen_predictions.py", line 119, in <module>
-    main()
-  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/dump_gen_predictions.py", line 90, in main
-    model.load_state_dict(torch.load(ckpt))
-                          ^^^^^^^^^^^^^^^^
-  File "/home/appuser/.local/lib/python3.12/site-packages/torch/serialization.py", line 1565, in load
-    with _open_file_like(f, "rb") as opened_file:
-         ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/appuser/.local/lib/python3.12/site-packages/torch/serialization.py", line 795, in _open_file_like
-    return _open_file(name_or_buffer, mode)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/appuser/.local/lib/python3.12/site-packages/torch/serialization.py", line 776, in __init__
-    super().__init__(open(name, mode))  # noqa: SIM115
-                     ^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: 'runs/cogs/E0_s0.pt'
+R1_s0_e0: dump_em=0.000000 first_eval_em=0.000000 diff=+0.000000 (71s)
+R1_s0_e1: dump_em=0.063714 first_eval_em=0.063714 diff=+0.000000 (172s)
+R1_s0_e2: dump_em=0.244762 first_eval_em=0.244762 diff=+0.000000 (304s)
+R1_s0_e3: dump_em=0.237048 first_eval_em=0.237048 diff=+0.000000 (448s)
+R1_s1_e0: dump_em=0.000000 first_eval_em=0.000000 diff=+0.000000 (516s)
+R1_s1_e1: dump_em=0.000048 first_eval_em=0.000048 diff=+0.000000 (619s)
+R1_s1_e2: dump_em=0.234905 first_eval_em=0.234905 diff=+0.000000 (759s)
+R1_s1_e3: dump_em=0.312143 first_eval_em=0.312143 diff=+0.000000 (911s)
+R1_s2_e0: dump_em=0.000000 first_eval_em=0.000000 diff=+0.000000 (972s)
+R1_s2_e1: dump_em=0.192286 first_eval_em=0.192286 diff=+0.000000 (1068s)
+R1_s2_e2: dump_em=0.398381 first_eval_em=0.398381 diff=+0.000000 (1190s)
+R1_s2_e3: dump_em=0.391429 first_eval_em=0.391429 diff=+0.000000 (1341s)
+R2_s0_e0: dump_em=0.029714 first_eval_em=0.029714 diff=+0.000000 (1412s)
+R2_s0_e1: dump_em=0.277619 first_eval_em=0.277619 diff=+0.000000 (1499s)
+R2_s0_e2: dump_em=0.279381 first_eval_em=0.279381 diff=+0.000000 (1611s)
+R2_s0_e3: dump_em=0.261381 first_eval_em=0.261381 diff=+0.000000 (1743s)
+R2_s1_e0: dump_em=0.041095 first_eval_em=0.041095 diff=+0.000000 (1807s)
+R2_s1_e1: dump_em=0.267190 first_eval_em=0.267190 diff=+0.000000 (1899s)
+R2_s1_e2: dump_em=0.289524 first_eval_em=0.289524 diff=+0.000000 (2020s)
+R2_s1_e3: dump_em=0.284143 first_eval_em=0.284143 diff=+0.000000 (2167s)
+R2_s2_e0: dump_em=0.061286 first_eval_em=0.061286 diff=+0.000000 (2238s)
+R2_s2_e1: dump_em=0.346619 first_eval_em=0.346619 diff=+0.000000 (2335s)
+R2_s2_e2: dump_em=0.375476 first_eval_em=0.375476 diff=+0.000000 (2463s)
+R2_s2_e3: dump_em=0.351190 first_eval_em=0.351190 diff=+0.000000 (2617s)
+dump persisted to git
