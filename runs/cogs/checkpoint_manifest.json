@@ -1,0 +1,23 @@
+{
+  "R1_s0": {
+    "checkpoint": "runs/cogs/R1_s0.pt",
+    "sha256": "cff243443020f52ba92cea3b23280817d8953f99e0f58586316e230cce0b49cb",
+    "dev_seq_em_by_extra": {
+      "0": 0.0,
+      "1": 0.612,
+      "2": 0.94,
+      "3": 0.9896666666666667
+    },
+    "trained_at": "2026-10-25 14:46:57",
+    "torch": "2.14.1+cu130",
+    "config": {
+      "emb": 64,
+      "hid": 128,
+      "batch": 32,
+      "lr": 0.001,
+      "epochs": 15,
+      "max_extra": 3,
+      "seed": 0
+    }
+  }
+}
