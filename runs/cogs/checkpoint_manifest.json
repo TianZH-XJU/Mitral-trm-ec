@@ -61,5 +61,26 @@
       "max_extra": 3,
       "seed": 2
     }
+  },
+  "R2_s0": {
+    "checkpoint": "runs/cogs/R2_s0.pt",
+    "sha256": "c95385e2dd6878f58bd6e0c3563b0dbe0619d2b707b136611633e61ea6c2bb54",
+    "dev_seq_em_by_extra": {
+      "0": 0.9406666666666667,
+      "1": 0.954,
+      "2": 0.9556666666666667,
+      "3": 0.9546666666666667
+    },
+    "trained_at": "2026-10-25 19:21:27",
+    "torch": "2.14.1+cu130",
+    "config": {
+      "emb": 64,
+      "hid": 128,
+      "batch": 32,
+      "lr": 0.001,
+      "epochs": 15,
+      "max_extra": 3,
+      "seed": 0
+    }
   }
 }
