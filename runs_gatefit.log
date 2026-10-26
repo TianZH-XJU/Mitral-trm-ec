@@ -1,0 +1,7 @@
+R1_s0: best_fixed=3 confirm: fixed_em=0.9223 gate_em=0.8995 fixed_nc=380 gate_nc=934 emCI=(-0.0313,-0.0159) ncCI=(542,562)
+R1_s1: best_fixed=3 confirm: fixed_em=0.9706 gate_em=0.9504 fixed_nc=391 gate_nc=924 emCI=(-0.0335,-0.0094) ncCI=(522,544)
+R1_s2: best_fixed=3 confirm: fixed_em=0.9702 gate_em=0.8793 fixed_nc=384 gate_nc=718 emCI=(-0.1310,-0.0555) ncCI=(306,359)
+R2_s0: best_fixed=3 confirm: fixed_em=0.9537 gate_em=0.9177 fixed_nc=400 gate_nc=103 emCI=(-0.0474,-0.0259) ncCI=(-299,-294)
+R2_s1: best_fixed=3 confirm: fixed_em=0.9653 gate_em=0.9380 fixed_nc=412 gate_nc=112 emCI=(-0.0389,-0.0172) ncCI=(-304,-297)
+R2_s2: best_fixed=1 confirm: fixed_em=0.9669 gate_em=0.9289 fixed_nc=203 gate_nc=121 emCI=(-0.0506,-0.0276) ncCI=(-83,-80)
+saved runs/gate_exp/gate_results/gate_confirm_results.json

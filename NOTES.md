@@ -499,3 +499,11 @@ test.tsv / SCAN test / GA / CMA-ES / gate 训练 / CFQ 全部维持冻结。
 OOV 记录矛盾修正（审核指出）：准确表述为"目标侧存在一个 bake OOV 样本（gate_train 的 1 例 exposure 句）；未发现结构 token 或变量 token OOV"；该样本保留、按 UNK 机制处理并在结果中披露。v0.4 文档已含此表述。
 
 状态：训练产物核验 PASS。下一步（待单独批准）：Gate 拟合（固定深度基线 → 阈值 gate → 逻辑回归 gate，组均衡 + Gate2 交叉拟合 + gate-confirm 一次性评估）。gen/test.tsv/SCAN test/CFQ/GA/CMA-ES 冻结不变。
+
+## 第十二阶段：Gate 拟合与一次性确认评估（2026-10-25 完成）
+
+- 轨迹：6 checkpoint × 3 分区 × e0/e1/e3 全部生成（含 top1/margin/熵/Δz 信号与生成步数）。
+- 流程合规：Gate1 组均衡逻辑回归；Gate2 用 gate_train 上 Gate1 组级 K=5 交叉拟合的样本外动作构造；最优固定深度在 validation 选定（R1 全 3、R2_s2=1）；confirm 一次性评估。
+- **结果（负面，预注册判据下未通过）**：6 配置中 gate EM 全部低于最优固定深度，EM 差 95% CI 全部严格为负（−1.6 至 −13.1pp 下界量级）；R1 的 gate 反而多花计算（N_cell 718–934 vs 384–391），R2 省算（103–121）但 EM 损失 2.6–4.7pp。
+- 结论：轻量内部信号不足以支撑计算分配决策；与 SCAN 信号分析的不稳定 AUC 一致。该负面结果如实入档（`docs/gate_results_report.md`），不因结果不理想返工。
+- 上传完成：COGS 数据、CFQ splits（375 文件，dataset.json 4.5GB 超限不入库+下载脚本）、全部 .pt（12 个）、runs/results 全量、系统提示词总档（docs/SYSTEM_PROMPT.md）。
