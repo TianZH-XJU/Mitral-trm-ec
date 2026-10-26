@@ -1,0 +1,12 @@
+These are the splits used for Figure 2 as well as 8-11 in our paper which were generated as described in Section 4.
+
+The filenames contain the following three parameters:
+* d[0-1.0]: The target divergence given to the generation algorithm.
+* s[0.05-.4]: The size of the training data used (as a fraction of the whole dataset).
+* r: The random seed.
+
+Regarding the MCD1-3 labels for CFQ, we have added them as separate files in this directory for clarity, but they
+correspond to the following generated splits:
+* mcd1.json = divergence_split_s0.4_d1_r4_0.json
+* mcd2.json = divergence_split_s0.4_d1_r5.5_55.json
+* mcd3.json = divergence_split_s0.4_d1_r4.5_0.json
