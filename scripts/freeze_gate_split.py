@@ -46,19 +46,40 @@ def build_keys(train):
             if (t[i + 1] == '.' and i + 2 < len(t) and t[i + 2].isalpha()
                     and t[i] not in nouns):
                 verbs.add(t[i])
+    # 屈折映射：输入侧未知小写 token 与句内逻辑形式动词原形的共现（可复算）
+    co = {}
+    from collections import Counter as _C, defaultdict as _D
+    cov = _D(_C)
+    for s, t, _ in train:
+        lv = {w for w in verbs if w in t}
+        for tok in s:
+            if (tok not in verbs and tok not in nouns and tok not in FUNC
+                    and tok not in proper and not tok[0].isupper()):
+                for v in lv:
+                    cov[tok][v] += 1
+    infl = {}
+    amb = []
+    for tok, cnt in cov.items():
+        top = cnt.most_common()
+        if len(top) == 1 or top[0][1] > top[1][1]:
+            infl[tok] = top[0][0]
+        else:
+            amb.append(tok)
+
     def key(s):
         out = []
         for t in s:
+            v = infl.get(t, t if t in verbs else None)
             if t in proper:
                 out.append('<ARG>')
-            elif t in verbs and t not in FUNC:
-                out.append(t)
+            elif v is not None and v not in FUNC:
+                out.append(v)
             elif t in FUNC:
                 out.append(t.lower())
             else:
                 out.append('<ARG>')
         return ' '.join(out)
-    return key
+    return key, infl, amb
 
 
 def allocate(train, groups):
@@ -88,7 +109,7 @@ def allocate(train, groups):
 
 def main():
     train = load_cogs(f'{COGS_ROOT}/train.tsv')
-    keyf = build_keys(train)
+    keyf, infl, amb = build_keys(train)
     for s, _, _ in train[:3]:
         pass  # keyf 闭包
     groups = {}
@@ -138,6 +159,12 @@ def main():
     }
     blob = json.dumps(manifest, sort_keys=True).encode()
     sha = hashlib.sha256(blob).hexdigest()
+    import hashlib as _h
+    data_sha = _h.sha256(open(f'{COGS_ROOT}/train.tsv','rb').read()).hexdigest()
+    stats['inflection_mapping'] = {
+        'n_surface_forms': len(infl), 'ambiguous': amb,
+        'data_train_tsv_sha256': data_sha,
+        'note': 'surface->lemma by co-occurrence with logical-form verbs'}
     out = {'stats': stats, 'manifest_sha256': sha}
     os.makedirs('configs', exist_ok=True)
     with open('configs/gate_split.json', 'w') as f:
