@@ -449,3 +449,20 @@ E0 s0 训练子集（500 条）free-running seq EM = **97.6%**，输出长度正
 ### 冻结状态
 
 test.tsv / SCAN test / GA / CMA-ES / gate 训练 / CFQ 全部维持冻结。
+
+## 第九阶段：相关工作矩阵 + 论文修订 + Gate v0.2（2026-10-25 完成，汇报点暂停，无新实验）
+
+### 论文（`docs/paper_draft.md` v0.2）
+- 结构失败表述按审核收紧：三类"均与变量索引/结构生成错误有关，obj_pp 证据最明确；cp/pp 的长度敏感性削弱'写不完'解释但保留截断限定，不归因单一机制"。
+- 新增限制 6（ReCOGS）：测量的是 COGS 原始逻辑形式上的序列 EM，变量索引错误不等于语义能力缺失。
+- 相关工作矩阵 v0.2：直接重叠三篇（Think-at-Hard / Loop-Think-Generalize / When More Thinking Hurts，明确不主张 overthinking/选择性迭代/决策器为新颖性）；自适应计算分配两篇为背景（Learning How Hard to Think / Confident Adaptive LM）；深度-组合泛化对照（Impact of Depth）；Lindemann 架构对照；ReCOGS 评估警告。新颖性暂定：参数受限递归 Seq2Seq 的类别依赖收益边界 + 逐深度完整序列转移刻画（两轮检索均非穷尽，待正式矩阵审查）。
+
+### Gate 设计（`docs/gate_and_holdout_design.md` v0.2，未训练）
+四个审核问题的修复：
+1. **out-of-sample 划分**：模板组键（非实体词序列）分组，base-train 70% / gate-train 10% / gate-validation 10% / gate-confirm 10%；基础模型只训 base-train（6 重训预注册），gate 三组特征全部 out-of-sample，消除 v0.1 的记忆-未记忆分布不匹配。
+2. **执行语义与成本**：目标 A 改为"估计期望收益选最终深度"（两决策点 e0→e1→e3）；继续 = 重新自由生成，成本=总生成步数（全计，非仅额外调用）；"保持"歧义由最终 EM+成本的动作价值绕开。
+3. **token 对齐**：目标 B 仅在共同前缀内对位（分歧后不配对），100 例抽检 >10% 错误即放弃；teacher-forced 仅诊断。
+4. **统计判据**：按模板组配对 bootstrap 95% CI（1000 次）；不确定判定（CI 同时容许 ±1pp）；证据不足门槛（<100 破坏/种子）保留。
+
+### 状态
+无新实验；test.tsv / SCAN test / GA / CMA-ES / gate 训练 / CFQ 冻结。待 v0.3 审查。
