@@ -1,0 +1,7 @@
+{
+ "cfq_version": "1.1",
+ "download_url": "https://storage.googleapis.com/cfq_dataset/cfq1.1.tar.gz",
+ "dataset_json_size": 4655893185,
+ "note": "dataset.json (4.5GB) exceeds GitHub 100MB limit, NOT in git; all splits (mcd1-3, random, pattern/complexity, 364 divergence) ARE in git. Download dataset.json via scripts/download_all_data.sh",
+ "dataset_json_sha256": "114c65ab0642b8c97654d7fa2d773106e54c7a422cf92aee5ccd1d4ac9304fe9"
+}
