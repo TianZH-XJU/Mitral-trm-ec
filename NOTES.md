@@ -431,3 +431,21 @@ E0 s0 训练子集（500 条）free-running seq EM = **97.6%**，输出长度正
 - gen.tsv：**已解封并使用**（2026-10-25，一次性，年份笔误已更正）。test.tsv：继续封存。
 - 冻结维持：CFQ、GA、CMA-ES、学习式 gate、其余 SCAN 条件、COGS test。
 - 在汇报点暂停，等待审核对后续方向的指示。
+
+## 第八阶段：长度敏感性 + 论文初稿 + Gate 设计（2026-10-25 完成，汇报点暂停）
+
+### 8.1 max_len=400 敏感性分析（探索性，`docs/stage8_maxlen_sensitivity.md`）
+
+**结论：解码预算不是结构失败主因。** 24 个配置中 23 个仍 EM=0（唯一非零 R2_s1@e3 pp_recursion 0.1%）；EOS 终止率多数 >60%——模型能写完但内容错误，结合类型学（变量索引主导），三类结构失败统一指向变量索引跟踪。产物：`results/cogs_maxlen400_sensitivity.csv`、`runs/cogs/maxlen400/`（独立目录，未动主结果）。
+
+### 8.2 论文初稿（`docs/paper_draft.md` v0.1）
+
+工作标题：*Where Recursive Refinement Helps—and Where It Fails: Error Transitions in Compositional Generalization*。结构：问题 → 方法（E0/E0W/R1/R2 参数匹配对照）→ SCAN 负面结果（确认性）→ COGS gen 正收益与类别边界（确认性，+10.7/+9.2pp）→ 机制诊断（修复-破坏转移、错误类型学、长度敏感性，探索性）→ 限制 → 相关工作（Think-at-Hard / Loop-Think-Generalize / Lindemann et al. 定位，新颖性声明推迟至系统检索）。
+
+### 8.3 Gate 与新保留集设计（`docs/gate_and_holdout_design.md` v0.1，仅设计）
+
+- 双目标分开（序列级 EM 变化方向 vs token 级修复）；候选特征不预设有效；COGS gen 不再用于 gate 任何环节；Gate-Holdout 从 COGS train 按指令组 10% 派生、基础模型重训前冻结划分；对照固定深度 ×4 + 阈值 gate + 学习 gate；主指标 Pareto；破坏事件 <100/种子则判证据不足。训练待审核批准。
+
+### 冻结状态
+
+test.tsv / SCAN test / GA / CMA-ES / gate 训练 / CFQ 全部维持冻结。
