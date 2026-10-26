@@ -482,3 +482,20 @@ test.tsv / SCAN test / GA / CMA-ES / gate 训练 / CFQ 全部维持冻结。
 
 ### 状态
 无训练、无评估、无数据解封。待审核：S1/S2/S3 裁决 + 动作映射裁决。
+
+## 第十一阶段：六模型 base-train 重训（2026-10-25 完成，产物核验 PASS）
+
+按批准执行 `scripts/train_gate_base.py`：
+- 数据：仅 base_train 16,904（冻结划分 ba7b2e46... 校验通过）；词表仅 base_train 构建（src 725 / tgt 681 含特殊 token，SHA b7fcff5f... 归档）。
+- 模型：R1/R2 × seed 0/1/2，配置预注册（emb=64/hid=128/batch=32/Adam 1e-3/15 epochs/clip 1.0）；无保留区数据参与。
+- 训练完成 loss：R1 0.0033–0.0055；R2 0.0042–0.0059。
+- 持久化：六 checkpoint 逐个 git commit（9497a05 R1_s0 → R1_s1 cc8caf2 → R1_s2 3bdedf0 → R2_s0 4cf984f → R2_s1 ca4872d → R2_s2）+ manifest（每项含 ckpt_sha256/vocab_sha256/data_sha256/split_sha256/loss 曲线/时间戳）。
+
+产物核验（批准的检查项）：
+1. 六 checkpoint 磁盘哈希与 manifest 全部一致；vocab_sha 六项一致；
+2. 配置逐项核对通过（全部同预注册；split_sha/data_sha 绑定一致）；
+3. 递归轨迹抽查（R1_s0 @ gate_train 样本）：e0/e3 解码正常、depth_records 形状 (B, T, 4) 正确；R1 在 gate_train 上呈 e0 错/e3 对的修复模式（3/4 例）——样本外轨迹可按协议生成。
+
+OOV 记录矛盾修正（审核指出）：准确表述为"目标侧存在一个 bake OOV 样本（gate_train 的 1 例 exposure 句）；未发现结构 token 或变量 token OOV"；该样本保留、按 UNK 机制处理并在结果中披露。v0.4 文档已含此表述。
+
+状态：训练产物核验 PASS。下一步（待单独批准）：Gate 拟合（固定深度基线 → 阈值 gate → 逻辑回归 gate，组均衡 + Gate2 交叉拟合 + gate-confirm 一次性评估）。gen/test.tsv/SCAN test/CFQ/GA/CMA-ES 冻结不变。
