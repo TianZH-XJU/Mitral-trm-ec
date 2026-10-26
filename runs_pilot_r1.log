@@ -1,0 +1,8 @@
+[addprim_jump] train=13350 dev=1320 test=7706
+  dev extra=0 seq=0.1515 tok=0.3418 calls/seq=0.0 0.3s
+  dev extra=1 seq=0.9477 tok=0.9870 calls/seq=14.3 0.4s
+  dev extra=3 seq=0.9394 tok=0.9866 calls/seq=43.0 0.7s
+  trans 0->1: repair=0.1856, harm=0.0011, unresolved=0.0027, maintain=0.8106 (n=20068)
+  trans 1->2: repair=0.0009, harm=0.0012, unresolved=0.0029, maintain=0.9950 (n=20068)
+  trans 2->3: repair=0.0000, harm=0.0002, unresolved=0.0041, maintain=0.9956 (n=20068)
+saved runs/stage3/result_addprim_jump_R1_s0.json

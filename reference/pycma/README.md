@@ -1,0 +1,269 @@
+# pycma &nbsp; &nbsp; &nbsp; &nbsp; 
+![Deploy to GitHub Pages](https://github.com/CMA-ES/pycma/actions/workflows/python-package.yml/badge.svg)
+[![CircleCI](https://circleci.com/gh/CMA-ES/pycma/tree/main.svg?style=shield)](https://circleci.com/gh/CMA-ES/pycma/tree/main)
+![GitHub Repo stars](https://img.shields.io/github/stars/CMA-ES/pycma?style=flat)
+[![Downloads](https://static.pepy.tech/badge/cma/month)](https://pepy.tech/project/cma)
+[DOI](https://doi.org/10.5281/zenodo.2559634)
+[BibTeX](https://github.com/CMA-ES/CMA-ES.github.io/blob/master/pycmabibtex.bib) cite as:
+> Nikolaus Hansen, Youhei Akimoto, and Petr Baudis. CMA-ES/pycma on Github. Zenodo, [DOI:10.5281/zenodo.2559635](https://doi.org/10.5281/zenodo.2559635), February 2019.
+---
+
+<!--- 
+
+[![Build status](https://ci.appveyor.com/api/projects/status/1rge11pwyt55b26k?svg=true)](https://ci.appveyor.com/project/nikohansen/pycma)
+[![Build status](https://ci.appveyor.com/api/projects/status/1rge11pwyt55b26k/branch/master?svg=true)](https://ci.appveyor.com/project/nikohansen/pycma/branch/master)
+
+Zenodo: 34 points to the latest release (v4.4.2: https://zenodo.org/records/18356871)
+2019 and polished is 35: https://zenodo.org/records/2559635 https://zenodo.org/badge/latestdoi/68926339
+
+(https://zenodo.org/badge/68926339.svg)
+
+--->
+  
+``pycma`` is a Python implementation of [CMA-ES](http://cma-es.github.io/) and some related numerical optimization tools.
+
+The [CMA-ES](http://cma-es.github.io) ([Covariance Matrix Adaptation Evolution
+Strategy](https://en.wikipedia.org/wiki/CMA-ES)) is a randomized derivative-free
+numerical optimization algorithm for difficult (non-convex, ill-conditioned,
+multi-modal, rugged, noisy) optimization problems in continuous and
+mixed-integer search spaces. This package provides an implementation of the
+CMA-ES algorithm that includes the handling of
+
+* bound constraints via the ``'bounds' = [lower, upper]`` option or the `cma.BoundDomainTransform` wrapper
+* linear and nonlinear constraints via the ``constraints`` argument to `fmin2` or `fmin_con2`
+* noise via ``noise_handler=True`` as argument to `fmin2`
+* integer variables for mixed-integer problems via the ``'integer_variables'=index_list`` option
+
+## Documentation and Getting Started (Links)
+
+* [A quick start guide with a few usage examples](https://pypi.python.org/pypi/cma)
+
+* [The `notebooks` folder](https://github.com/CMA-ES/pycma/tree/development/notebooks) provides example code in Jupyter notebooks, namely
+  * [Basic use cases notebook](https://github.com/CMA-ES/pycma/tree/development/notebooks/notebook-usecases-basics.ipynb)
+  * [Constraints handling notebook](https://github.com/CMA-ES/pycma/tree/development/notebooks/notebook-usecases-constraints.ipynb)
+  * [The `ask`-and-`tell` interface](https://github.com/CMA-ES/pycma/tree/development/notebooks/notebook-usecases-ask-and-tell.ipynb)
+  * [Noise handling notebook](https://github.com/CMA-ES/pycma/tree/development/notebooks/notebook-usecases-noise.ipynb)
+
+* [API Documentation](http://cma-es.github.io/apidocs-pycma)
+
+* [Hints for how to use this (kind of) optimization module in practice](http://cma-es.github.io/cmaes_sourcecode_page.html#practical)
+
+* [FAQs and HowTos (under development)](https://github.com/CMA-ES/pycma/issues?q=is:issue+label:FAQ).
+
+## Installation of the [latest release](https://pypi.python.org/pypi/cma)
+
+In a system shell, type
+
+```sh
+    python -m pip install cma
+```
+
+to install the [latest release from the Python Package Index (PyPI)](https://pypi.python.org/pypi/cma).
+Type ``install -U`` instead of ``install`` to _upgrade_ a current installation to the latest release.
+The [release link](https://pypi.python.org/pypi/cma) also provides more
+installation hints and a quick start guide.
+
+## Installation from Github
+
+The quick way to install the code from, for example, the `development` branch (this requires [`git`](https://git-scm.com) to be installed):
+
+```sh
+    pip install git+https://github.com/CMA-ES/pycma.git@development
+```
+
+The long way:
+
+- get the package
+
+  - either download and unzip the code by clicking the green button above
+  - or, with [`git`](https://git-scm.com) installed, type ``git clone https://github.com/CMA-ES/pycma.git``
+
+- "install" the package
+
+  - either copy (or move) the ``cma`` source code folder into a folder which is in the
+    [Python path](https://docs.python.org/3/library/sys.html#sys.path) (e.g. the current folder)
+
+  - or modify the [Python path](https://docs.python.org/3/library/sys.html#sys.path) to point
+    to the folder where the ``cma`` package folder can be found.
+    In both cases, ``import cma`` works without any further installation.
+
+  - or install the ``cma`` package by typing
+
+    ```sh
+        pip install -e .
+    ```
+    in the (`pycma`) folder where the ``cma`` package folder can be found.
+    Moving the ``cma`` folder away from its location invalidates this
+    installation.
+
+It may be necessary to replace ``pip`` with ``python -m pip`` and/or prefixing
+either of these with ``sudo``.
+
+## Version History
+
+* [Release ``4.5.0``](https://github.com/CMA-ES/pycma/releases/tag/r4.5.0)
+  - console output now starts to overwrite the last line after 4 regular lines,
+    see option `verb_disp_overwrite` which now expresses "number of lines"
+  - introduce number of `runs` attribute in `CMAEvolutionStrategyResult2`
+  - introduce `all_stoppings` and `all_best` module attributes with information
+    collected from restarts
+  - major revision of step-size implementations in `sigma_adaptation.py`
+  - polishing of `AugmentedLagrangian` constraints handler and initialization bug fix
+  - `cma.evolution_strategy.TPA_dimension = 300` sets TPA as default step-size adaptation
+    for dimension >= 300.
+  - improve implementation of ridge fitness functions
+  - implement low effective dimension functions and transformations
+  - implement `optimization_tools.EvaluationsIterator` to compute
+    non-discretized ERT values from non-f-targeted data
+  - implement `s.figpolish` and `s.grid` for convenience
+  - implement `CountWarnings` instance ``deliver_warnings`` to control the
+    number of warnings shown
+
+* [Release ``4.4.4``](https://github.com/CMA-ES/pycma/releases/tag/r4.4.4)
+  - fix the fix of [issue 343](https://github.com/CMA-ES/pycma/issues/343)
+
+* [Release ``4.4.3``](https://github.com/CMA-ES/pycma/releases/tag/r4.4.3)
+  - Addressing [issue 231](https://github.com/CMA-ES/pycma/issues/231), failures
+    in corner cases with large population size, by increasing the step-size
+    damping of CSA and TPA. This seems also to improve the performance on
+    `bbob-f24` in 10 and 20-D while worsening the performance on `bbob-f23` in 10 and
+    40-D.
+  - Provide option `'TPA_dampfac'` analogous to `'CSA_dampfac'`.
+  - Plots now show the current best solution _and_ the distribution mean in two subplots.
+  - New:
+    - Provide the two (by far) most useful statistical tests with a tidy
+      interface in ``cma.utilities.math.test...``
+    - Provide a `more_algorithms` sub-package containing `purecma` and `CompactGA`.
+    - Provide a provisional `experimentation` module (requires `import cma.experimentation`).
+  - A few smaller fixes and improvements.
+
+* [Release ``4.4.2``](https://github.com/CMA-ES/pycma/releases/tag/r4.4.2)
+  - Fix compatibility issues (with [`comocma`](https://github.com/CMA-ES/pycomocma)):
+    - add back the (deprecated) `cma.constraints_handling.BoundTransform` class
+      which was missing since ``4.1.0``. Note that `cma.BoundTransform` is the
+      recommended way to access this class
+    - remove dependency of `OOOptimizer.optimize` on `self.result`
+  - fix [issue 337](https://github.com/CMA-ES/pycma/issues/337) where plotting bails
+    with some recent version of `matplotlib>3.8.0`.
+  - Various improvements of the logger and plotting.
+  - Remove default f-offset from binary test functions
+    (``cma.fitness_functions.binary_foffset = 0`` by default now)
+  - A few new module settings to (better) control corner case behavior.
+
+* [Release ``4.4.1``](https://github.com/CMA-ES/pycma/releases/tag/r4.4.1)
+  - `fmin2` accepts a constraints function as `constraints` keyword argument
+  - an improved `CMAEvolutionStrategyResult2` class which also contains the best feasible solution
+  - a `reset_options` method which also clears the current termination status
+  - polish the output of ``.optimize()`` and of ``.result_pretty()``
+  - catch final ``.stop()`` value displayed with `cma.plot`
+
+* [Release ``4.4.0``](https://github.com/CMA-ES/pycma/releases/tag/r4.4.0)
+  - constraints handling is available also in the <tt>ask</tt>-and-<tt>tell</tt> interface (addressing issues [#258](https://github.com/CMA-ES/pycma/issues/258), [#287](https://github.com/CMA-ES/pycma/issues/287), and [#167](https://github.com/CMA-ES/pycma/issues/167))
+  - `ask` has an `ignore_integer_variables` argument to not mutate integer variables
+  - an on/off switch for integer centering, `cma.integer_centering.centering_on` (by default `True`)
+  - polishing and minor bug fixes
+  - code internals:
+    - move integer rounding code (applied to delivered solutions) to the `cma.transformations.RoundIntegerVariables` class
+    - `utils.SolutionDict` can behave like a queue too
+
+* [Release ``4.3.0``](https://github.com/CMA-ES/pycma/releases/tag/r4.3.0)
+  - integer variables of candidate solutions are rounded (addressing also
+    [issue #286](https://github.com/CMA-ES/pycma/issues/286))
+  - moved main docstring from `fmin` to `fmin2`
+  - experimental plots for error estimates and sensitivities
+  - fix `numpy` scalar type representations at various places
+  - replace ineffective `use_archives` flag with `archive_sent_solutions`
+    and `archive_after_sent`
+
+* [Release ``4.2.0``](https://github.com/CMA-ES/pycma/releases/tag/r4.2.0)
+  - a stand-alone boundary handling function wrapper ``BoundDomainTransform``
+  - streamline plot docs, fix symlog plot with newest `matplotlib`, plots display the value of `.stop()` and the version number
+  - a few more minor fixes and improvements
+  - replace `setup.py` with `pyproject.toml`
+  - [Version ``4.1.0``](https://github.com/CMA-ES/pycma/releases/tag/v4.1.0) (already since `5a30571f`)
+    - move boundary handling into a separate module
+    - various small-ish fixes and improvements, in particular an edge case in the initialization of the Lagrange multipliers in the constraints handling
+
+* [Release ``4.0.0``](https://github.com/CMA-ES/pycma/releases/tag/r4.0.0)
+  - majorly improved mixed-integer handling based on a more concise lower bound
+    of variances and on so-called integer centering
+  - moved options and parameters code into a new file
+  - many small-ish fixes and improvements
+
+* [Release ``3.4.0``](https://github.com/CMA-ES/pycma/releases/tag/r3.4.0)
+  - fix compatibility to `numpy` 2.0 (thanks to [Sait Cakmak](https://github.com/saitcakmak))
+  - improved interface to `noise_handler` argument which accepts `True` as value
+  - improved interface to `ScaleCoordinates` now also with lower and upper value mapping to [0, 1], see [issue #210](https://github.com/CMA-ES/pycma/issues/210)
+  - changed: `'ftarget'` triggers with <= instead of <
+  - assign `surrogate` attribute (for the record) when calling `fmin_lq_surr`
+  - various (minor) bug fixes
+  - various (small) improvements of the plots and their usability
+    - display iterations, evaluations and population size and termination
+      criteria in the plots
+    - subtract any recorded x from the plotted x-values by ``x_opt=index``
+  - plots are now versus iteration number instead of evaluations by default
+  - provide legacy `bbobbenchmarks` without downloading
+  - new: `CMADataLogger.zip` allows sharing plotting data more easily by a zip file
+  - new: `tolxstagnation` termination condition for when the incumbent seems stuck
+  - new: collect restart terminations in `cma.evalution_strategy.all_stoppings`
+  - new: `stall_sigma_change_on_divergence_iterations` option to stall
+    `sigma` change when the median fitness is worsening
+  - new: limit active C update for integer variables
+  - new: provide a COCO single function
+
+* [Release ``3.3.0``](https://github.com/CMA-ES/pycma/releases/tag/r3.3.0)
+  implements
+  - diagonal acceleration via diagonal decoding (option
+    `CMA_diagonal_decoding`, by default still off).
+  - `fmin_lq_surr2` for running the surrogate assisted
+    [lq-CMA-ES](https://cma-es.github.io/lq-cma).
+  - `optimization_tools.ShowInFolder` to facilitate rapid experimentation.
+  - `verb_disp_overwrite` option starts to overwrite the last line of the
+    display output instead of continuing adding lines to avoid screen
+    flooding with longish runs (off by default).
+  - various smallish improvements, bug fixes and additional features and
+    functions.
+
+* [Release ``3.2.2``](https://github.com/CMA-ES/pycma/releases/tag/r3.2.2)
+  fixes some smallish interface and logging bugs in `ConstrainedFitnessAL`
+  and a bug when printing a warning. Polishing mainly in the plotting
+  functions. Added a notebook for how to use constraints.
+
+* [Release ``3.2.1``](https://github.com/CMA-ES/pycma/releases/tag/r3.2.1)
+  fixes plot of principal axes which were shown squared by mistake in version 3.2.0.
+
+* [Release ``3.2.0``](https://github.com/CMA-ES/pycma/releases/tag/r3.2.0)
+  provides a new interface for constrained optimization `ConstrainedFitnessAL`
+  and `fmin_con2` and many other minor fixes and improvements.
+
+* [Release ``3.1.0``](https://github.com/CMA-ES/pycma/releases/tag/r3.1.0)
+  fixes the return value of `fmin_con`, improves its usability and provides
+  a `best_feasible` attribute in `CMAEvolutionStrategy`, in addition to
+  various other more minor code fixes and improvements.
+
+* [Release ``3.0.3``](https://github.com/CMA-ES/pycma/releases/tag/r3.0.3) provides parallelization with ``OOOptimizer.optimize(..., n_jobs=...)`` (fix for ``3.0.1/2``) and improved `pickle` support.
+
+* [Release ``3.0.0``](https://github.com/CMA-ES/pycma/releases/tag/r3.0.0) provides non-linear constraints handling, improved plotting and termination options and better resilience to injecting bad solutions, and further various fixes.
+
+* Version ``2.7.1`` allows for a list of termination callbacks and a light copy of `CMAEvolutionStrategy` instances.
+
+* [Release ``2.7.0``](https://github.com/CMA-ES/pycma/releases/tag/r2.7.0) logger now writes into a folder, new fitness model module, various fixes.
+
+* [Release ``2.6.1``](https://github.com/CMA-ES/pycma/releases/tag/r2.6.1) allow possibly much larger condition numbers, fix corner case with growing more-to-write list.
+
+* [Release ``2.6.0``](https://github.com/CMA-ES/pycma/releases/tag/r2.6.0) allows initial solution `x0` to be a callable.
+
+* Version ``2.4.2`` added the function `cma.fmin2` which, similar to `cma.purecma.fmin`, 
+  returns ``(x_best:numpy.ndarray, es:cma.CMAEvolutionStrategy)``  instead of a 10-tuple
+  like `cma.fmin`. The result 10-tuple is accessible in [``es.result``](https://github.com/CMA-ES/pycma/blob/025ef1fed91c86690a21e9ed81713062d29398ff/cma/evolution_strategy.py#L942)``:``[``namedtuple``](https://docs.python.org/3/library/collections.html#collections.namedtuple).
+  
+* Version ``2.4.1`` included ``bbob`` testbed.
+
+* Version ``2.2.0`` added VkD CMA-ES to the master branch.
+
+* Version ``2.*`` is a multi-file split-up of the original module.
+
+* Version ``1.x.*`` is a one file implementation and not available in the history of
+  this repository. The latest ``1.*`` version ``1.1.7`` can be found
+  [here](https://pypi.python.org/pypi/cma/1.1.7).
+  

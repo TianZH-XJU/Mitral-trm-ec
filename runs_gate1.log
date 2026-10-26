@@ -1,0 +1,36 @@
+simple split: train_all=16728 train=15056 dev=1672 test=4182
+vocab: src=17 tgt=10
+Seq2Seq+Attention params: 234,314
+  [overfit-128] ep5 loss=1.346 seq_acc=0.0000 tok_acc=0.1115
+  [overfit-128] ep10 loss=0.914 seq_acc=0.0000 tok_acc=0.1284
+  [overfit-128] ep15 loss=0.732 seq_acc=0.0000 tok_acc=0.1483
+  [overfit-128] ep20 loss=0.622 seq_acc=0.0000 tok_acc=0.1505
+  [overfit-128] ep25 loss=0.508 seq_acc=0.0078 tok_acc=0.2593
+  [overfit-128] ep30 loss=0.389 seq_acc=0.0469 tok_acc=0.4713
+[GATE 1a] 128-sample overfit: seq_acc=0.0469 -> FAIL (4s)
+--- full training on simple split ---
+ep 1 loss=0.418 dev=0.5173 test=0.5141 | 18s
+ep 2 loss=0.079 dev=0.6071 test=0.6203 | 37s
+ep 3 loss=0.051 dev=0.7727 test=0.7776 | 56s
+ep 4 loss=0.034 dev=0.9067 test=0.9063 | 76s
+ep 5 loss=0.022 dev=0.9557 test=0.9546 | 96s
+ep 6 loss=0.019 dev=0.9665 test=0.9701 | 115s
+ep 7 loss=0.012 dev=0.9689 test=0.9723 | 135s
+ep 8 loss=0.016 dev=0.9450 test=0.9467 | 155s
+ep 9 loss=0.014 dev=0.9629 test=0.9687 | 175s
+ep10 loss=0.010 dev=0.9958 test=0.9940 | 195s
+ep11 loss=0.008 dev=0.9797 test=0.9787 | 215s
+ep12 loss=0.011 dev=0.9946 test=0.9919 | 235s
+ep13 loss=0.008 dev=0.9946 test=0.9959 | 255s
+ep14 loss=0.008 dev=0.9970 test=0.9988 | 274s
+ep15 loss=0.010 dev=0.9916 test=0.9931 | 293s
+{
+  "seed": 0,
+  "params": 234314,
+  "overfit128_seq_acc": 0.046875,
+  "gate1a_pass": false,
+  "final_dev_seq": 0.9916267942583732,
+  "final_test_seq": 0.993065518890483,
+  "best_test_seq": 0.998804399808704,
+  "best_epoch": 14
+}

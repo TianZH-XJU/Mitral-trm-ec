@@ -1,0 +1,82 @@
+{
+  "condition": "template_jump_around_right",
+  "model": "R1",
+  "seed": 0,
+  "checkpoint": "runs/stage3/template_jump_around_right_R1_s0.pt",
+  "train_loss_last": 0.010034746676415804,
+  "dev": {
+    "0": {
+      "seq_acc": 0.023218142548596114,
+      "tok_acc": 0.07399518794619966,
+      "extra_calls_per_seq": 0.0,
+      "decode_seconds": 0.47903013229370117
+    },
+    "1": {
+      "seq_acc": 0.9227861771058316,
+      "tok_acc": 0.977834746598304,
+      "extra_calls_per_seq": 13.460583153347732,
+      "decode_seconds": 0.5914793014526367
+    },
+    "3": {
+      "seq_acc": 0.9487041036717062,
+      "tok_acc": 0.9856827325076911,
+      "extra_calls_per_seq": 40.605291576673864,
+      "decode_seconds": 0.976233959197998
+    }
+  },
+  "test": null,
+  "test_first_eval": null,
+  "transitions": {
+    "0": {
+      "repair": 0.41958016249402597,
+      "harm": 0.000661740377192015,
+      "unresolved": 0.006323296937612587,
+      "maintain": 0.5734348001911694,
+      "n": 27201
+    },
+    "1": {
+      "repair": 0.0020587478401529356,
+      "harm": 0.00011029006286533584,
+      "unresolved": 0.004926289474651667,
+      "maintain": 0.9929046726223301,
+      "n": 27201
+    },
+    "2": {
+      "repair": 0.0005514503143266791,
+      "harm": 0.00022058012573067168,
+      "unresolved": 0.004485129223190324,
+      "maintain": 0.9947428403367523,
+      "n": 27201
+    }
+  },
+  "signals": {
+    "entropy": {
+      "benefit_mean": 1.0207242662419855,
+      "harm_mean": 1.1437886953353882,
+      "auc": 0.44948742661876806,
+      "n_benefit": 11413,
+      "n_harm": 18
+    },
+    "top1_prob": {
+      "benefit_mean": 0.6683354607576724,
+      "harm_mean": 0.5542618085940679,
+      "auc": 0.6513332749204124,
+      "n_benefit": 11413,
+      "n_harm": 18
+    },
+    "top2_margin": {
+      "benefit_mean": 0.5189957380709991,
+      "harm_mean": 0.2642629336979654,
+      "auc": 0.7293729372937293,
+      "n_benefit": 11413,
+      "n_harm": 18
+    },
+    "hidden_delta": {
+      "benefit_mean": 0.0,
+      "harm_mean": 0.0,
+      "auc": 0.5,
+      "n_benefit": 11413,
+      "n_harm": 18
+    }
+  }
+}

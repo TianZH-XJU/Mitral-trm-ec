@@ -1,0 +1,26 @@
+{
+  "train__dev": {
+    "input_overlap": 0,
+    "pair_overlap": 0
+  },
+  "train__test": {
+    "input_overlap": 0,
+    "pair_overlap": 0
+  },
+  "train__gen": {
+    "input_overlap": 0,
+    "pair_overlap": 0
+  },
+  "dev__test": {
+    "input_overlap": 0,
+    "pair_overlap": 0
+  },
+  "dev__gen": {
+    "input_overlap": 0,
+    "pair_overlap": 0
+  },
+  "test__gen": {
+    "input_overlap": 0,
+    "pair_overlap": 0
+  }
+}

@@ -1,0 +1,33 @@
+base_train samples: 16904
+vocab: src=725 tgt=681 sha=b7fcff5f852445a4
+=== training R1 seed 0 (base_train only) ===
+  ep5 loss=0.0258 | 1242s
+  ep10 loss=0.0070 | 2468s
+  ep15 loss=0.0035 | 3701s
+  saved+persisted runs/gate_exp/R1_s0.pt
+=== training R1 seed 1 (base_train only) ===
+  ep5 loss=0.0228 | 1216s
+  ep10 loss=0.0051 | 2444s
+  ep15 loss=0.0033 | 3684s
+  saved+persisted runs/gate_exp/R1_s1.pt
+=== training R1 seed 2 (base_train only) ===
+  ep5 loss=0.0563 | 1275s
+  ep10 loss=0.0076 | 2558s
+  ep15 loss=0.0055 | 3821s
+  saved+persisted runs/gate_exp/R1_s2.pt
+=== training R2 seed 0 (base_train only) ===
+  ep5 loss=0.0429 | 1366s
+  ep10 loss=0.0130 | 2716s
+  ep15 loss=0.0059 | 4020s
+  saved+persisted runs/gate_exp/R2_s0.pt
+=== training R2 seed 1 (base_train only) ===
+  ep5 loss=0.0565 | 1336s
+  ep10 loss=0.0119 | 2697s
+  ep15 loss=0.0042 | 4039s
+  saved+persisted runs/gate_exp/R2_s1.pt
+=== training R2 seed 2 (base_train only) ===
+  ep5 loss=0.1323 | 1304s
+  ep10 loss=0.0131 | 2688s
+  ep15 loss=0.0052 | 4023s
+  saved+persisted runs/gate_exp/R2_s2.pt
+ALL SIX DONE

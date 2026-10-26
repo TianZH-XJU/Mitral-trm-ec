@@ -1,0 +1,53 @@
+{
+  "condition": "length",
+  "model": "R1",
+  "seed": 0,
+  "checkpoint": "runs/stage3/length_R1_s0.pt",
+  "train_loss_last": 0.005804296491378903,
+  "dev": {
+    "0": {
+      "seq_acc": 0.0011771630370806356,
+      "tok_acc": 0.007503670273503344,
+      "extra_calls_per_seq": 0.0,
+      "decode_seconds": 0.22385144233703613
+    },
+    "1": {
+      "seq_acc": 0.9652736904061212,
+      "tok_acc": 0.9908650970583438,
+      "extra_calls_per_seq": 10.7416127133608,
+      "decode_seconds": 0.29978132247924805
+    },
+    "3": {
+      "seq_acc": 0.9864626250735727,
+      "tok_acc": 0.9954861866434631,
+      "extra_calls_per_seq": 32.325485579752794,
+      "decode_seconds": 0.4754221439361572
+    }
+  },
+  "test": null,
+  "test_first_eval": null,
+  "transitions": {
+    "0": {
+      "repair": 0.5521035598705502,
+      "harm": 0.0,
+      "unresolved": 0.0033358227532984813,
+      "maintain": 0.4445606173761514,
+      "n": 20085
+    },
+    "1": {
+      "repair": 0.0016430171769977594,
+      "harm": 0.0,
+      "unresolved": 0.001692805576300722,
+      "maintain": 0.9966641772467015,
+      "n": 20085
+    },
+    "2": {
+      "repair": 0.0002987303958177745,
+      "harm": 0.0,
+      "unresolved": 0.0013940751804829474,
+      "maintain": 0.9983071944236993,
+      "n": 20085
+    }
+  },
+  "signals": {}
+}

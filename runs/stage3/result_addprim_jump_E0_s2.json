@@ -1,0 +1,17 @@
+{
+  "condition": "addprim_jump",
+  "model": "E0",
+  "seed": 2,
+  "checkpoint": "runs/stage3/addprim_jump_E0_s2.pt",
+  "train_loss_last": 0.007146580098496258,
+  "dev": {
+    "0": {
+      "seq_acc": 0.8856060606060606,
+      "tok_acc": 0.9660937008699297,
+      "extra_calls_per_seq": 0.0,
+      "decode_seconds": 0.31772685050964355
+    }
+  },
+  "test": null,
+  "test_first_eval": null
+}

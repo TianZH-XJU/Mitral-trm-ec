@@ -1,0 +1,10 @@
+{
+  "kind": "E0W",
+  "seed": 0,
+  "params": 557079,
+  "checkpoint": "runs/cogs/E0W_s0.pt",
+  "train_seconds": 1797.8848328590393,
+  "dev_seq_em": {
+    "0": 0.9843333333333333
+  }
+}

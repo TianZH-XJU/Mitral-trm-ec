@@ -1,0 +1,17 @@
+{
+  "condition": "addprim_turn_left",
+  "model": "E0",
+  "seed": 0,
+  "checkpoint": "runs/stage3/addprim_turn_left_E0_s0.pt",
+  "train_loss_last": 0.006179966208412698,
+  "dev": {
+    "0": {
+      "seq_acc": 0.9928934010152284,
+      "tok_acc": 0.9986986747029212,
+      "extra_calls_per_seq": 0.0,
+      "decode_seconds": 0.4223754405975342
+    }
+  },
+  "test": null,
+  "test_first_eval": null
+}

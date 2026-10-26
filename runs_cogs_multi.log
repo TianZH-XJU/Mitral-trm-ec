@@ -1,0 +1,177 @@
+=== training E0 seed 1 ===
+  ep1 loss=0.8951 | 92s
+  ep2 loss=0.3345 | 179s
+  ep3 loss=0.1446 | 270s
+  ep4 loss=0.0450 | 360s
+  ep5 loss=0.0197 | 447s
+  ep6 loss=0.0134 | 536s
+  ep7 loss=0.0092 | 625s
+  ep8 loss=0.0083 | 712s
+  ep9 loss=0.0051 | 800s
+  ep10 loss=0.0056 | 889s
+  ep11 loss=0.0052 | 976s
+  ep12 loss=0.0044 | 1063s
+  ep13 loss=0.0038 | 1148s
+  ep14 loss=0.0031 | 1234s
+  ep15 loss=0.0028 | 1318s
+  dev e0: seq EM=0.9603 (3s)
+saved runs/cogs/result_E0_s1.json
+=== training E0 seed 2 ===
+  ep1 loss=0.9254 | 86s
+  ep2 loss=0.3458 | 172s
+  ep3 loss=0.1604 | 259s
+  ep4 loss=0.0567 | 349s
+  ep5 loss=0.0229 | 443s
+  ep6 loss=0.0146 | 536s
+  ep7 loss=0.0091 | 629s
+  ep8 loss=0.0086 | 723s
+  ep9 loss=0.0063 | 817s
+  ep10 loss=0.0042 | 913s
+  ep11 loss=0.0070 | 1007s
+  ep12 loss=0.0041 | 1101s
+  ep13 loss=0.0033 | 1189s
+  ep14 loss=0.0040 | 1274s
+  ep15 loss=0.0031 | 1363s
+  dev e0: seq EM=0.9567 (3s)
+saved runs/cogs/result_E0_s2.json
+=== training R1 seed 1 ===
+  ep1 loss=0.8100 | 320s
+  ep2 loss=0.2744 | 639s
+  ep3 loss=0.1145 | 957s
+  ep4 loss=0.0312 | 1268s
+  ep5 loss=0.0147 | 1577s
+  ep6 loss=0.0095 | 1893s
+  ep7 loss=0.0084 | 2217s
+  ep8 loss=0.0060 | 2544s
+  ep9 loss=0.0057 | 2876s
+  ep10 loss=0.0044 | 3207s
+  ep11 loss=0.0031 | 3537s
+  ep12 loss=0.0043 | 3878s
+  ep13 loss=0.0040 | 4220s
+  ep14 loss=0.0036 | 4547s
+  ep15 loss=0.0028 | 4869s
+  dev e0: seq EM=0.0000 (6s)
+  dev e1: seq EM=0.1577 (8s)
+  dev e2: seq EM=0.8870 (10s)
+  dev e3: seq EM=0.9813 (9s)
+saved runs/cogs/result_R1_s1.json
+=== training R1 seed 2 ===
+  ep1 loss=0.7758 | 341s
+  ep2 loss=0.1535 | 680s
+  ep3 loss=0.0339 | 1023s
+  ep4 loss=0.0173 | 1335s
+  ep5 loss=0.0101 | 1664s
+  ep6 loss=0.0069 | 1991s
+  ep7 loss=0.0075 | 2312s
+  ep8 loss=0.0057 | 2636s
+  ep9 loss=0.0042 | 2959s
+  ep10 loss=0.0047 | 3291s
+  ep11 loss=0.0037 | 3615s
+  ep12 loss=0.0030 | 3924s
+  ep13 loss=0.0029 | 4261s
+  ep14 loss=0.0027 | 4582s
+  ep15 loss=0.0028 | 4909s
+  dev e0: seq EM=0.0000 (4s)
+  dev e1: seq EM=0.8123 (9s)
+  dev e2: seq EM=0.9850 (8s)
+  dev e3: seq EM=0.9913 (9s)
+saved runs/cogs/result_R1_s2.json
+=== training R2 seed 1 ===
+  ep1 loss=0.8488 | 364s
+  ep2 loss=0.2860 | 722s
+  ep3 loss=0.1032 | 1093s
+  ep4 loss=0.0372 | 1459s
+  ep5 loss=0.0224 | 1825s
+  ep6 loss=0.0144 | 2191s
+  ep7 loss=0.0112 | 2559s
+  ep8 loss=0.0084 | 2917s
+  ep9 loss=0.0077 | 3279s
+  ep10 loss=0.0064 | 3644s
+  ep11 loss=0.0056 | 4021s
+  ep12 loss=0.0050 | 4390s
+  ep13 loss=0.0037 | 4776s
+  ep14 loss=0.0044 | 5154s
+  ep15 loss=0.0034 | 5521s
+  dev e0: seq EM=0.9660 (3s)
+  dev e1: seq EM=0.9793 (5s)
+  dev e2: seq EM=0.9773 (7s)
+  dev e3: seq EM=0.9773 (9s)
+saved runs/cogs/result_R2_s1.json
+=== training R2 seed 2 ===
+  ep1 loss=0.8319 | 368s
+  ep2 loss=0.1854 | 733s
+  ep3 loss=0.0517 | 1091s
+  ep4 loss=0.0257 | 1458s
+  ep5 loss=0.0164 | 1820s
+  ep6 loss=0.0136 | 2184s
+  ep7 loss=0.0096 | 2539s
+  ep8 loss=0.0077 | 2906s
+  ep9 loss=0.0058 | 3264s
+  ep10 loss=0.0061 | 3617s
+  ep11 loss=0.0058 | 3974s
+  ep12 loss=0.0033 | 4329s
+  ep13 loss=0.0058 | 4697s
+  ep14 loss=0.0040 | 5055s
+  ep15 loss=0.0033 | 5404s
+  dev e0: seq EM=0.9767 (4s)
+  dev e1: seq EM=0.9917 (5s)
+  dev e2: seq EM=0.9927 (7s)
+  dev e3: seq EM=0.9920 (9s)
+saved runs/cogs/result_R2_s2.json
+=== training E0W seed 0 ===
+  ep1 loss=0.8433 | 122s
+  ep2 loss=0.1902 | 244s
+  ep3 loss=0.0405 | 368s
+  ep4 loss=0.0167 | 490s
+  ep5 loss=0.0101 | 606s
+  ep6 loss=0.0096 | 728s
+  ep7 loss=0.0055 | 844s
+  ep8 loss=0.0063 | 960s
+  ep9 loss=0.0043 | 1078s
+  ep10 loss=0.0037 | 1197s
+  ep11 loss=0.0041 | 1316s
+  ep12 loss=0.0034 | 1436s
+  ep13 loss=0.0026 | 1554s
+  ep14 loss=0.0028 | 1677s
+  ep15 loss=0.0040 | 1798s
+  dev e0: seq EM=0.9843 (4s)
+saved runs/cogs/result_E0W_s0.json
+=== training E0W seed 1 ===
+  ep1 loss=0.8093 | 121s
+  ep2 loss=0.1539 | 245s
+  ep3 loss=0.0328 | 366s
+  ep4 loss=0.0151 | 489s
+  ep5 loss=0.0115 | 615s
+  ep6 loss=0.0074 | 748s
+  ep7 loss=0.0068 | 880s
+  ep8 loss=0.0054 | 1011s
+  ep9 loss=0.0040 | 1139s
+  ep10 loss=0.0051 | 1272s
+  ep11 loss=0.0029 | 1402s
+  ep12 loss=0.0035 | 1533s
+  ep13 loss=0.0035 | 1661s
+  ep14 loss=0.0019 | 1793s
+  ep15 loss=0.0028 | 1923s
+  dev e0: seq EM=0.9790 (4s)
+saved runs/cogs/result_E0W_s1.json
+=== training E0W seed 2 ===
+  ep1 loss=0.8015 | 131s
+  ep2 loss=0.1609 | 263s
+  ep3 loss=0.0363 | 395s
+  ep4 loss=0.0165 | 521s
+  ep5 loss=0.0110 | 648s
+  ep6 loss=0.0084 | 778s
+  ep7 loss=0.0058 | 904s
+  ep8 loss=0.0061 | 1032s
+  ep9 loss=0.0034 | 1159s
+  ep10 loss=0.0058 | 1286s
+  ep11 loss=0.0030 | 1413s
+  ep12 loss=0.0041 | 1545s
+  ep13 loss=0.0026 | 1670s
+  ep14 loss=0.0034 | 1798s
+  ep15 loss=0.0023 | 1928s
+  dev e0: seq EM=0.9730 (4s)
+saved runs/cogs/result_E0W_s2.json
+=== backfill extra=2 for R1/R2 s0 ===
+  R1 s0 e2: 0.9400
+  R2 s0 e2: 0.9557

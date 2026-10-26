@@ -1,0 +1,67 @@
+### model ###
+model:
+  name: Qwen/Qwen3-1.7B-Base                # For TaH+ version
+  # name: ./model/qwen3_1.7_base_pruned     # For TaH version (drops one layer)
+  eos_token: "<|im_end|>"
+  pad_token: "<|endoftext|>"
+  torch_dtype: "bfloat16"
+  device_map: "auto"
+  trust_remote_code: true
+  attn_implementation: "sdpa"
+  embedding_key: "model.embed_tokens"
+  max_iter: 2
+
+  # Step 1: oracle-supervised iteration; the LoRA adapter learns to refine
+  # tokens that the labeller marked as "hard" (mismatch=1).
+  iter_decider: "IterLabelDecider"
+  iter_decider_kwargs:
+    max_iter: 2
+
+  # Top-k softmax over previous logits feeds the next iteration's input
+  # embedding (only `topk` is read by the wrapper; rest is ignored).
+  input_updater_kwargs:
+    topk: 100
+
+  adapter: "lora"
+  adapter_kwargs:
+    r: 32
+    lora_alpha: 64
+    lora_dropout: 0.1
+    target_modules: "all-linear"
+    bias: "none"
+
+  train_loss: "NextTokenPredLoss"
+  eval_loss: "NextTokenPredLoss"
+
+### data ###
+data:
+  train_data_path: data/processed_data/openr1_math/1_7/train
+  eval_data_path: data/processed_data/openr1_math/1_7/eval
+  output_dir: "output/openr1_math/"
+  max_length: 10000
+
+### training ###
+training:
+  num_train_epochs: 5
+  per_device_train_batch_size: 1
+  gradient_accumulation_steps: 16
+  gradient_checkpointing: false
+  learning_rate: 4.0e-5
+  weight_decay: 0.01
+  warmup_ratio: 0.03
+  max_grad_norm: 0.2
+  lr_scheduler_type: "cosine_with_min_lr"
+  lr_scheduler_kwargs:
+    min_lr_rate: 0.1
+  logging_steps: 1
+  save_strategy: "epoch"
+  save_only_model: true
+  save_total_limit: 50
+  bf16: true
+  eval_strategy: "epoch"
+  eval_steps: 40
+  eval_on_start: true
+  per_device_eval_batch_size: 1
+  report_to: "none"          # "none" or "wandb"
+  wandb_project: "TaH"
+  wandb_name: "openr1_1.7base_step1"

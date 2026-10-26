@@ -1,0 +1,52 @@
+samples (2 cats): 2000
+R1_s0_e0 cp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=835 hit400=165 gold>199=667
+R1_s0_e0 pp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=873 hit400=127 gold>199=543
+R1_s0_e3 cp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=559 hit400=441 gold>199=667
+R1_s0_e3 pp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=306 hit400=694 gold>199=543
+R1_s1_e0 cp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=957 hit400=43 gold>199=667
+R1_s1_e0 pp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=817 hit400=183 gold>199=543
+R1_s1_e3 cp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=657 hit400=343 gold>199=667
+R1_s1_e3 pp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=564 hit400=436 gold>199=543
+R1_s2_e0 cp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=851 hit400=149 gold>199=667
+R1_s2_e0 pp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=858 hit400=142 gold>199=543
+R1_s2_e3 cp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=683 hit400=317 gold>199=667
+R1_s2_e3 pp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=459 hit400=541 gold>199=543
+R2_s0_e0 cp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=811 hit400=189 gold>199=667
+R2_s0_e0 pp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=527 hit400=473 gold>199=543
+R2_s0_e3 cp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=992 hit400=8 gold>199=667
+R2_s0_e3 pp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=744 hit400=256 gold>199=543
+R2_s1_e0 cp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=906 hit400=94 gold>199=667
+R2_s1_e0 pp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=676 hit400=324 gold>199=543
+R2_s1_e3 cp_recursion: EM400=0.0000 (EM200ref=0.0005 为两类合并值) eos=710 hit400=290 gold>199=667
+R2_s1_e3 pp_recursion: EM400=0.0010 (EM200ref=0.0005 为两类合并值) eos=866 hit400=134 gold>199=543
+R2_s2_e0 cp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=355 hit400=645 gold>199=667
+R2_s2_e0 pp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=191 hit400=809 gold>199=543
+R2_s2_e3 cp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=429 hit400=571 gold>199=667
+R2_s2_e3 pp_recursion: EM400=0.0000 (EM200ref=0.0000 为两类合并值) eos=422 hit400=578 gold>199=543
+
+category-level reference (max_len=200, from dump):
+  R1_s0_e0 cp_recursion: EM200=0.0000
+  R1_s0_e0 pp_recursion: EM200=0.0000
+  R1_s0_e3 cp_recursion: EM200=0.0000
+  R1_s0_e3 pp_recursion: EM200=0.0000
+  R1_s1_e0 cp_recursion: EM200=0.0000
+  R1_s1_e0 pp_recursion: EM200=0.0000
+  R1_s1_e3 cp_recursion: EM200=0.0000
+  R1_s1_e3 pp_recursion: EM200=0.0000
+  R1_s2_e0 cp_recursion: EM200=0.0000
+  R1_s2_e0 pp_recursion: EM200=0.0000
+  R1_s2_e3 cp_recursion: EM200=0.0000
+  R1_s2_e3 pp_recursion: EM200=0.0000
+  R2_s0_e0 cp_recursion: EM200=0.0000
+  R2_s0_e0 pp_recursion: EM200=0.0000
+  R2_s0_e3 cp_recursion: EM200=0.0000
+  R2_s0_e3 pp_recursion: EM200=0.0000
+  R2_s1_e0 cp_recursion: EM200=0.0000
+  R2_s1_e0 pp_recursion: EM200=0.0000
+  R2_s1_e3 cp_recursion: EM200=0.0000
+  R2_s1_e3 pp_recursion: EM200=0.0010
+  R2_s2_e0 cp_recursion: EM200=0.0000
+  R2_s2_e0 pp_recursion: EM200=0.0000
+  R2_s2_e3 cp_recursion: EM200=0.0000
+  R2_s2_e3 pp_recursion: EM200=0.0000
+saved results/cogs_maxlen400_sensitivity.csv

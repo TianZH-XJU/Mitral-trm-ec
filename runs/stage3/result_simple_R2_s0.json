@@ -1,0 +1,82 @@
+{
+  "condition": "simple",
+  "model": "R2",
+  "seed": 0,
+  "checkpoint": "runs/stage3/simple_R2_s0.pt",
+  "train_loss_last": 0.010329988586428158,
+  "dev": {
+    "0": {
+      "seq_acc": 0.9886363636363636,
+      "tok_acc": 0.9968240525089985,
+      "extra_calls_per_seq": 0.0,
+      "decode_seconds": 0.3644840717315674
+    },
+    "1": {
+      "seq_acc": 0.9886363636363636,
+      "tok_acc": 0.99690900622433,
+      "extra_calls_per_seq": 14.108253588516746,
+      "decode_seconds": 0.5330548286437988
+    },
+    "3": {
+      "seq_acc": 0.986244019138756,
+      "tok_acc": 0.9964021164021164,
+      "extra_calls_per_seq": 42.33193779904306,
+      "decode_seconds": 0.8645510673522949
+    }
+  },
+  "test": null,
+  "test_first_eval": null,
+  "transitions": {
+    "0": {
+      "repair": 3.961337347488512e-05,
+      "harm": 3.961337347488512e-05,
+      "unresolved": 0.0007130407225479321,
+      "maintain": 0.9992077325305023,
+      "n": 25244
+    },
+    "1": {
+      "repair": 0.0,
+      "harm": 0.00015845349389954048,
+      "unresolved": 0.0007526540960228173,
+      "maintain": 0.9990888924100776,
+      "n": 25244
+    },
+    "2": {
+      "repair": 0.0,
+      "harm": 0.0,
+      "unresolved": 0.0009111075899223578,
+      "maintain": 0.9990888924100776,
+      "n": 25244
+    }
+  },
+  "signals": {
+    "entropy": {
+      "benefit_mean": 0.7343516945838928,
+      "harm_mean": 0.6994420289993286,
+      "auc": 1.0,
+      "n_benefit": 1,
+      "n_harm": 1
+    },
+    "top1_prob": {
+      "benefit_mean": 0.5413743853569031,
+      "harm_mean": 0.5326188802719116,
+      "auc": 1.0,
+      "n_benefit": 1,
+      "n_harm": 1
+    },
+    "top2_margin": {
+      "benefit_mean": 0.08966484665870667,
+      "harm_mean": 0.06623175740242004,
+      "auc": 1.0,
+      "n_benefit": 1,
+      "n_harm": 1
+    },
+    "hidden_delta": {
+      "benefit_mean": 0.0,
+      "harm_mean": 0.0,
+      "auc": 0.5,
+      "n_benefit": 1,
+      "n_harm": 1
+    }
+  }
+}

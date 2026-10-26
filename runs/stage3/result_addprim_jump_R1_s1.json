@@ -1,0 +1,82 @@
+{
+  "condition": "addprim_jump",
+  "model": "R1",
+  "seed": 1,
+  "checkpoint": "runs/stage3/addprim_jump_R1_s1.pt",
+  "train_loss_last": 0.015846094788741723,
+  "dev": {
+    "0": {
+      "seq_acc": 0.12348484848484849,
+      "tok_acc": 0.38537123930444384,
+      "extra_calls_per_seq": 0.0,
+      "decode_seconds": 0.2813262939453125
+    },
+    "1": {
+      "seq_acc": 0.8553030303030303,
+      "tok_acc": 0.9678435272666999,
+      "extra_calls_per_seq": 13.446969696969697,
+      "decode_seconds": 0.4066438674926758
+    },
+    "3": {
+      "seq_acc": 0.9022727272727272,
+      "tok_acc": 0.9797812396420285,
+      "extra_calls_per_seq": 40.61590909090909,
+      "decode_seconds": 0.6636290550231934
+    }
+  },
+  "test": null,
+  "test_first_eval": null,
+  "transitions": {
+    "0": {
+      "repair": 0.21763795771015987,
+      "harm": 0.0005157297576070139,
+      "unresolved": 0.010263022176379578,
+      "maintain": 0.7715832903558535,
+      "n": 19390
+    },
+    "1": {
+      "repair": 0.002784940691077875,
+      "harm": 0.00025786487880350697,
+      "unresolved": 0.007993811242908716,
+      "maintain": 0.9889633831872099,
+      "n": 19390
+    },
+    "2": {
+      "repair": 0.0011346054667354306,
+      "harm": 0.00025786487880350697,
+      "unresolved": 0.007117070654976792,
+      "maintain": 0.9914904589994843,
+      "n": 19390
+    }
+  },
+  "signals": {
+    "entropy": {
+      "benefit_mean": 1.6688772688544757,
+      "harm_mean": 1.6258387625217439,
+      "auc": 0.5293601895734598,
+      "n_benefit": 4220,
+      "n_harm": 10
+    },
+    "top1_prob": {
+      "benefit_mean": 0.39236284965093104,
+      "harm_mean": 0.38225341588258743,
+      "auc": 0.4709004739336493,
+      "n_benefit": 4220,
+      "n_harm": 10
+    },
+    "top2_margin": {
+      "benefit_mean": 0.17534122753411674,
+      "harm_mean": 0.10455061495304108,
+      "auc": 0.6112796208530805,
+      "n_benefit": 4220,
+      "n_harm": 10
+    },
+    "hidden_delta": {
+      "benefit_mean": 0.0,
+      "harm_mean": 0.0,
+      "auc": 0.5,
+      "n_benefit": 4220,
+      "n_harm": 10
+    }
+  }
+}

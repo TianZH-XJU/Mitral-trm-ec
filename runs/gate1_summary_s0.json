@@ -1,0 +1,10 @@
+{
+  "seed": 0,
+  "params": 234314,
+  "overfit128_seq_acc": 0.046875,
+  "gate1a_pass": false,
+  "final_dev_seq": 0.9916267942583732,
+  "final_test_seq": 0.993065518890483,
+  "best_test_seq": 0.998804399808704,
+  "best_epoch": 14
+}

@@ -1,0 +1,82 @@
+{
+  "condition": "addprim_jump",
+  "model": "R2",
+  "seed": 2,
+  "checkpoint": "runs/stage3/addprim_jump_R2_s2.pt",
+  "train_loss_last": 0.00802068384495145,
+  "dev": {
+    "0": {
+      "seq_acc": 0.9931818181818182,
+      "tok_acc": 0.9980556305698083,
+      "extra_calls_per_seq": 0.0,
+      "decode_seconds": 0.3060126304626465
+    },
+    "1": {
+      "seq_acc": 0.9931818181818182,
+      "tok_acc": 0.9980556305698083,
+      "extra_calls_per_seq": 14.00530303030303,
+      "decode_seconds": 0.43203020095825195
+    },
+    "3": {
+      "seq_acc": 0.9939393939393939,
+      "tok_acc": 0.9982716716176073,
+      "extra_calls_per_seq": 42.025,
+      "decode_seconds": 0.7002832889556885
+    }
+  },
+  "test": null,
+  "test_first_eval": null,
+  "transitions": {
+    "0": {
+      "repair": 5.043627376809401e-05,
+      "harm": 5.043627376809401e-05,
+      "unresolved": 0.0004034901901447521,
+      "maintain": 0.999495637262319,
+      "n": 19827
+    },
+    "1": {
+      "repair": 5.043627376809401e-05,
+      "harm": 0.0,
+      "unresolved": 0.0004034901901447521,
+      "maintain": 0.9995460735360872,
+      "n": 19827
+    },
+    "2": {
+      "repair": 0.0,
+      "harm": 0.0,
+      "unresolved": 0.0004034901901447521,
+      "maintain": 0.9995965098098553,
+      "n": 19827
+    }
+  },
+  "signals": {
+    "entropy": {
+      "benefit_mean": 0.7320687770843506,
+      "harm_mean": 0.7034235000610352,
+      "auc": 1.0,
+      "n_benefit": 1,
+      "n_harm": 1
+    },
+    "top1_prob": {
+      "benefit_mean": 0.5110630989074707,
+      "harm_mean": 0.5125066637992859,
+      "auc": 0.0,
+      "n_benefit": 1,
+      "n_harm": 1
+    },
+    "top2_margin": {
+      "benefit_mean": 0.028642326593399048,
+      "harm_mean": 0.02633202075958252,
+      "auc": 1.0,
+      "n_benefit": 1,
+      "n_harm": 1
+    },
+    "hidden_delta": {
+      "benefit_mean": 0.0,
+      "harm_mean": 0.0,
+      "auc": 0.5,
+      "n_benefit": 1,
+      "n_harm": 1
+    }
+  }
+}

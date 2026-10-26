@@ -1,0 +1,88 @@
+[addprim_jump] train=13350 dev=1320 test=7706
+  dev extra=0 seq=0.9091 tok=0.9786 calls/seq=0.0 0.3s
+saved runs/stage3/result_addprim_jump_E0_s1.json
+[addprim_jump E0 s1 done] 05:46
+[addprim_jump] train=13350 dev=1320 test=7706
+  dev extra=0 seq=0.1235 tok=0.3854 calls/seq=0.0 0.3s
+  dev extra=1 seq=0.8553 tok=0.9678 calls/seq=13.4 0.4s
+  dev extra=3 seq=0.9023 tok=0.9798 calls/seq=40.6 0.7s
+  trans 0->1: repair=0.2176, harm=0.0005, unresolved=0.0103, maintain=0.7716 (n=19390)
+  trans 1->2: repair=0.0028, harm=0.0003, unresolved=0.0080, maintain=0.9890 (n=19390)
+  trans 2->3: repair=0.0011, harm=0.0003, unresolved=0.0071, maintain=0.9915 (n=19390)
+saved runs/stage3/result_addprim_jump_R1_s1.json
+[addprim_jump R1 s1 done] 05:57
+[addprim_jump] train=13350 dev=1320 test=7706
+  dev extra=0 seq=0.9318 tok=0.9852 calls/seq=0.0 0.3s
+  dev extra=1 seq=0.9288 tok=0.9852 calls/seq=13.8 0.4s
+  dev extra=3 seq=0.9280 tok=0.9853 calls/seq=41.5 0.7s
+  trans 0->1: repair=0.0006, harm=0.0006, unresolved=0.0048, maintain=0.9939 (n=19390)
+  trans 1->2: repair=0.0001, harm=0.0003, unresolved=0.0054, maintain=0.9942 (n=19390)
+  trans 2->3: repair=0.0002, harm=0.0001, unresolved=0.0056, maintain=0.9942 (n=19390)
+saved runs/stage3/result_addprim_jump_R2_s1.json
+[addprim_jump R2 s1 done] 06:08
+[addprim_jump] train=13350 dev=1320 test=7706
+  dev extra=0 seq=0.8856 tok=0.9661 calls/seq=0.0 0.3s
+saved runs/stage3/result_addprim_jump_E0_s2.json
+[addprim_jump E0 s2 done] 06:12
+[addprim_jump] train=13350 dev=1320 test=7706
+  dev extra=0 seq=0.1235 tok=0.5622 calls/seq=0.0 0.3s
+  dev extra=1 seq=0.9242 tok=0.9834 calls/seq=14.1 0.4s
+  dev extra=3 seq=0.9152 tok=0.9852 calls/seq=42.6 0.7s
+  trans 0->1: repair=0.1472, harm=0.0018, unresolved=0.0036, maintain=0.8474 (n=19827)
+  trans 1->2: repair=0.0016, harm=0.0011, unresolved=0.0038, maintain=0.9935 (n=19827)
+  trans 2->3: repair=0.0001, harm=0.0011, unresolved=0.0048, maintain=0.9939 (n=19827)
+saved runs/stage3/result_addprim_jump_R1_s2.json
+[addprim_jump R1 s2 done] 06:22
+[addprim_jump] train=13350 dev=1320 test=7706
+  dev extra=0 seq=0.9932 tok=0.9981 calls/seq=0.0 0.3s
+  dev extra=1 seq=0.9932 tok=0.9981 calls/seq=14.0 0.4s
+  dev extra=3 seq=0.9939 tok=0.9983 calls/seq=42.0 0.7s
+  trans 0->1: repair=0.0001, harm=0.0001, unresolved=0.0004, maintain=0.9995 (n=19827)
+  trans 1->2: repair=0.0001, harm=0.0000, unresolved=0.0004, maintain=0.9995 (n=19827)
+  trans 2->3: repair=0.0000, harm=0.0000, unresolved=0.0004, maintain=0.9996 (n=19827)
+saved runs/stage3/result_addprim_jump_R2_s2.json
+[addprim_jump R2 s2 done] 06:33
+[template_opposite_right] train=13703 dev=1522 test=4476
+  dev extra=0 seq=0.9947 tok=0.9990 calls/seq=0.0 0.4s
+saved runs/stage3/result_template_opposite_right_E0_s1.json
+[template_opposite_right E0 s1 done] 06:38
+[template_opposite_right] train=13703 dev=1522 test=4476
+  dev extra=0 seq=0.0145 tok=0.0847 calls/seq=0.0 0.4s
+  dev extra=1 seq=0.7924 tok=0.9516 calls/seq=15.2 0.6s
+  dev extra=3 seq=0.8187 tok=0.9644 calls/seq=45.7 0.9s
+  trans 0->1: repair=0.3910, harm=0.0039, unresolved=0.0117, maintain=0.5934 (n=24516)
+  trans 1->2: repair=0.0031, harm=0.0013, unresolved=0.0126, maintain=0.9830 (n=24516)
+  trans 2->3: repair=0.0009, harm=0.0007, unresolved=0.0130, maintain=0.9854 (n=24516)
+saved runs/stage3/result_template_opposite_right_R1_s1.json
+[template_opposite_right R1 s1 done] 06:50
+[template_opposite_right] train=13703 dev=1522 test=4476
+  dev extra=0 seq=0.9323 tok=0.9792 calls/seq=0.0 0.4s
+  dev extra=1 seq=0.9382 tok=0.9793 calls/seq=15.3 0.5s
+  dev extra=3 seq=0.9396 tok=0.9800 calls/seq=45.9 0.9s
+  trans 0->1: repair=0.0009, harm=0.0004, unresolved=0.0066, maintain=0.9921 (n=24516)
+  trans 1->2: repair=0.0002, harm=0.0001, unresolved=0.0069, maintain=0.9929 (n=24516)
+  trans 2->3: repair=0.0002, harm=0.0000, unresolved=0.0068, maintain=0.9930 (n=24516)
+saved runs/stage3/result_template_opposite_right_R2_s1.json
+[template_opposite_right R2 s1 done] 07:02
+[template_opposite_right] train=13703 dev=1522 test=4476
+  dev extra=0 seq=0.9908 tok=0.9978 calls/seq=0.0 0.4s
+saved runs/stage3/result_template_opposite_right_E0_s2.json
+[template_opposite_right E0 s2 done] 07:06
+[template_opposite_right] train=13703 dev=1522 test=4476
+  dev extra=0 seq=0.0355 tok=0.1460 calls/seq=0.0 0.3s
+  dev extra=1 seq=0.7819 tok=0.9618 calls/seq=14.1 0.5s
+  dev extra=3 seq=0.8482 tok=0.9729 calls/seq=42.8 0.8s
+  trans 0->1: repair=0.3145, harm=0.0010, unresolved=0.0193, maintain=0.6652 (n=23689)
+  trans 1->2: repair=0.0078, harm=0.0008, unresolved=0.0125, maintain=0.9789 (n=23689)
+  trans 2->3: repair=0.0015, harm=0.0002, unresolved=0.0119, maintain=0.9865 (n=23689)
+saved runs/stage3/result_template_opposite_right_R1_s2.json
+[template_opposite_right R1 s2 done] 07:18
+[template_opposite_right] train=13703 dev=1522 test=4476
+  dev extra=0 seq=0.9198 tok=0.9860 calls/seq=0.0 0.4s
+  dev extra=1 seq=0.9185 tok=0.9855 calls/seq=14.4 0.5s
+  dev extra=3 seq=0.9152 tok=0.9852 calls/seq=43.3 0.8s
+  trans 0->1: repair=0.0004, harm=0.0005, unresolved=0.0052, maintain=0.9939 (n=23689)
+  trans 1->2: repair=0.0002, harm=0.0002, unresolved=0.0056, maintain=0.9941 (n=23689)
+  trans 2->3: repair=0.0000, harm=0.0003, unresolved=0.0057, maintain=0.9940 (n=23689)
+saved runs/stage3/result_template_opposite_right_R2_s2.json
+[template_opposite_right R2 s2 done] 07:30
