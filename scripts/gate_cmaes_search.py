@@ -21,7 +21,7 @@ TRAJ = "runs/gate_exp/traj_v2"
 OUT = "runs/gate_exp/cmaes"
 os.makedirs(OUT, exist_ok=True)
 LAMBDA = 0.5
-N_DIM = 18  # w1:6 + b1:1 + tau1:1 + w2:8 + b2:1 + tau2:1
+N_DIM = 16  # w1:5 + b1:1 + tau1:1 + w2:8 + b2:1 + tau2:1
 
 
 def load_traj(kind, seed, part):
@@ -41,16 +41,26 @@ def oracle_depth(em):
 
 def feats1(r):
     s = r["sig"]["0"]
-    return np.array([s["top1"], s["margin"], s["entropy"], s["dz"],
-                     r["n_gen"]["0"], 1.0 if r["eos"]["0"] else 0.0])
+    x = np.array([s["top1"], s["margin"], s["entropy"],
+                  r["n_gen"]["0"], 1.0 if r["eos"]["0"] else 0.0])
+    if _SCALER is not None:
+        x = (x - _SCALER[0]) / _SCALER[1]
+    return x
+
+
+def feats1_raw_dim():
+    return 5
 
 
 def feats2(r):
     s0 = r["sig"]["0"]
     s1 = r["sig"]["1"]
-    return np.array([s1["top1"], s1["margin"], s1["entropy"], s1["dz"],
-                     r["n_gen"]["1"], 1.0 if r["eos"]["1"] else 0.0,
-                     s1["top1"] - s0["top1"], s1["entropy"] - s0["entropy"]])
+    x = np.array([s1["top1"], s1["margin"], s1["entropy"], s1["dz"],
+                  r["n_gen"]["1"], 1.0 if r["eos"]["1"] else 0.0,
+                  s1["top1"] - s0["top1"], s1["entropy"] - s0["entropy"]])
+    if _SCALER is not None:
+        x = (x - _SCALER[2]) / _SCALER[3]
+    return x
 
 
 def group_keys(rows):
@@ -113,14 +123,23 @@ def group_keys(rows):
 _KEYCACHE = None
 
 
+_SCALER = None
+
+
+def set_scaler(X1_all, X2_all):
+    global _SCALER
+    _SCALER = (X1_all.mean(0), X1_all.std(0) + 1e-9,
+               X2_all.mean(0), X2_all.std(0) + 1e-9)
+
+
 def decode_theta(theta):
     """参数向量 -> (w1, b1, tau1, w2, b2, tau2)。tau 有界 via sigmoid。"""
-    w1 = theta[0:6]
-    b1 = theta[6]
-    tau1 = 0.02 + 0.68 / (1 + np.exp(-theta[7]))
-    w2 = theta[8:16]
-    b2 = theta[16]
-    tau2 = 0.02 + 0.68 / (1 + np.exp(-theta[17]))
+    w1 = theta[0:5]
+    b1 = theta[5]
+    tau1 = 0.02 + 0.68 / (1 + np.exp(-theta[6]))
+    w2 = theta[7:15]
+    b2 = theta[15]
+    tau2 = 0.02 + 0.68 / (1 + np.exp(-theta[15]))
     return w1, b1, tau1, w2, b2, tau2
 
 
@@ -170,6 +189,14 @@ def fitness_factory(all_seed_data):
 
 def main():
     import cma
+    # 特征标准化统计量（跨三种子 gate_train 收集，固定）
+    X1_all, X2_all = [], []
+    for seed in (0, 1, 2):
+        for r in load_traj("R2", seed, "gate_train"):
+            X1_all.append(feats1(r))
+            X2_all.append(feats2(r))
+    set_scaler(np.array(X1_all), np.array(X2_all))
+    print("scaler set", flush=True)
     all_seed_data = {}
     for seed in (0, 1, 2):
         tr = load_traj("R2", seed, "gate_train")

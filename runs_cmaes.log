@@ -1,0 +1,12 @@
+scaler set
+seed0: best_fixed=3 train N_cell_ref=177
+seed1: best_fixed=3 train N_cell_ref=177
+seed2: best_fixed=1 train N_cell_ref=89
+gen0: best F=0.6015
+gen10: best F=0.7395
+gen20: best F=0.7406
+gen30: best F=0.7408
+val seed0: CMA-ES EM=0.9060 N_cell=45 vs fixed e3 EM=0.9466 N_cell=175 diff=-0.0406 CI=[-0.0537,-0.0311] Ncell减=74.2%
+val seed1: CMA-ES EM=0.9313 N_cell=46 vs fixed e3 EM=0.9582 N_cell=175 diff=-0.0269 CI=[-0.0365,-0.0184] Ncell减=73.9%
+val seed2: CMA-ES EM=0.9205 N_cell=46 vs fixed e1 EM=0.9644 N_cell=88 diff=-0.0439 CI=[-0.0576,-0.0327] Ncell减=47.8%
+saved runs/gate_exp/cmaes/cmaes_pilot_results.json
