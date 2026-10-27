@@ -557,3 +557,16 @@ OOV 记录矛盾修正（审核指出）：准确表述为"目标侧存在一个
 依据修正轨迹诊断（`140ba99`），批准先执行选项 (a)：R2 的 class-weight / threshold Logistic Regression 与 entropy、n_gen 单信号阈值基线；**暂不直接启动 CMA-ES**。修正后 R2 组合信号 group-level CV AUC 在三个 seed 上为 0.894/0.919/0.894，但默认 0.5 阈值下 OOF 继续率仅 0.4%/0.9%/1.4%，因此先解决分数到动作的阈值/稀有正类问题。R1 的 e0 EM=0，不作为 Gate1 优化对象。
 
 完整协议见 [`docs/stage03c_decision.md`](docs/stage03c_decision.md)，提交 `9547169`。只使用 `traj_v2` 的 gate_train/gate_validation；Gate2 继续严格使用 Gate1 组级 K=5 OOF 动作。旧 `gate_confirm` 不得用于策略选择，COGS 官方 test 仍封存。基线完成、冻结并提交后，再审核是否批准一次预算受限的 CMA-ES pilot；届时必须与强阈值/类权重基线公平比较。
+
+## 第十五阶段：03C-1 R2 阈值/类权重强基线（2026-10-27 完成，仅 train/val）
+
+按裁决与 docs/stage03c_decision.md 执行。关键结果：
+- **正类权重复现了机制修复**：pw=1→16，OOF 正类召回 0.5–3.8% → 62.7–94.1%，g2_train_n 415–657（三种子 Gate2 均可训练）。
+- **validation 端到端（每种子最优固定深度冻结后比较）**：
+  - seed0: lr_pw8_tau0.3，EM 差 −0.41pp，N_cell −56.4%（满足效率路径）
+  - seed1: lr_pw8_tau0.3，EM 差 −0.42pp，N_cell −60.9%（满足效率路径）
+  - seed2: 最优固定深度为 e1（88），gate 无 ≥30% 节省空间（不满足；其收益在 e1 一档完成）
+- entropy 单信号阈值也有效（−0.17 至 −0.46pp、−48.8% 至 −5.2%），略逊于 LR 组合。
+- 结论：**瓶颈确在分数→动作决策规则（阈值/损失失配），修正后 R2 出现效率路径候选**；validation 为开发结果（用于策略选择），非独立确认。跨种子不完全一致，报告为"部分配置满足"。
+- 03C-2 前提（脚本/候选/基线已提交、同数据同组约束）已满足；CMA-ES pilot 待裁决。
+- 全程未触碰 gate_confirm 评估与 COGS test。
