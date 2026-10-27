@@ -570,3 +570,12 @@ OOV 记录矛盾修正（审核指出）：准确表述为"目标侧存在一个
 - 结论：**瓶颈确在分数→动作决策规则（阈值/损失失配），修正后 R2 出现效率路径候选**；validation 为开发结果（用于策略选择），非独立确认。跨种子不完全一致，报告为"部分配置满足"。
 - 03C-2 前提（脚本/候选/基线已提交、同数据同组约束）已满足；CMA-ES pilot 待裁决。
 - 全程未触碰 gate_confirm 评估与 COGS test。
+
+
+## 2026-10-27 03C-1 跟进审核：暂缓 CMA-ES
+
+复核 `6bfb1e5` 后发现两项需要修正：① 当前 Gate2 只用一个 `best_pw` 在 tau=0.5 下的 OOF 继续样本训练，却被多个 `pw × tau` 候选共用，造成 Gate2 训练路由与所评估 Gate1 候选不匹配；② 代码虽定义了 group-bootstrap CI 函数，但已提交脚本没有调用它，结果 JSON 也没有 CI 端点，因此报告中关于 CI 的判定无法由提交产物复现。
+
+裁决：**暂缓 CMA-ES**，先做范围有限的 03C-1 修正。不重训基础模型；使用同一 `traj_v2/gate_train` 与 `gate_validation`，为每个预注册 Gate1 配置用对应的组级 K=5 OOF 动作构造/训练 Gate2，保存逐样本动作和成本，实际生成配对 group-bootstrap CI，并明确标注 validation 区间属于开发/选择后诊断，非独立确认。旧 `gate_confirm` 不用于调参，COGS test 继续封存。
+
+详细审计与修复清单：[ `docs/stage03c1_followup_audit.md`](docs/stage03c1_followup_audit.md)，提交 `1885b2a`。
