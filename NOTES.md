@@ -499,3 +499,41 @@ test.tsv / SCAN test / GA / CMA-ES / gate 训练 / CFQ 全部维持冻结。
 OOV 记录矛盾修正（审核指出）：准确表述为"目标侧存在一个 bake OOV 样本（gate_train 的 1 例 exposure 句）；未发现结构 token 或变量 token OOV"；该样本保留、按 UNK 机制处理并在结果中披露。v0.4 文档已含此表述。
 
 状态：训练产物核验 PASS。下一步（待单独批准）：Gate 拟合（固定深度基线 → 阈值 gate → 逻辑回归 gate，组均衡 + Gate2 交叉拟合 + gate-confirm 一次性评估）。gen/test.tsv/SCAN test/CFQ/GA/CMA-ES 冻结不变。
+
+## 第十二阶段：Gate 拟合与一次性确认评估（2026-10-25 完成）
+
+- 轨迹：6 checkpoint × 3 分区 × e0/e1/e3 全部生成（含 top1/margin/熵/Δz 信号与生成步数）。
+- 流程合规：Gate1 组均衡逻辑回归；Gate2 用 gate_train 上 Gate1 组级 K=5 交叉拟合的样本外动作构造；最优固定深度在 validation 选定（R1 全 3、R2_s2=1）；confirm 一次性评估。
+- **结果（负面，预注册判据下未通过）**：6 配置中 gate EM 全部低于最优固定深度，EM 差 95% CI 全部严格为负（−1.6 至 −13.1pp 下界量级）；R1 的 gate 反而多花计算（N_cell 718–934 vs 384–391），R2 省算（103–121）但 EM 损失 2.6–4.7pp。
+- 结论：轻量内部信号不足以支撑计算分配决策；与 SCAN 信号分析的不稳定 AUC 一致。该负面结果如实入档（`docs/gate_results_report.md`），不因结果不理想返工。
+- 上传完成：COGS 数据、CFQ splits（375 文件，dataset.json 4.5GB 超限不入库+下载脚本）、全部 .pt（12 个）、runs/results 全量、系统提示词总档（docs/SYSTEM_PROMPT.md）。
+
+## 第十三阶段：Gate 失败审计 + 信号诊断（任务 01+02，2026-10-26 完成，无新训练）
+
+### 任务 01（`docs/gate_failure_audit.md`）：无实现错误，是真实策略失败
+- g2_train_n=0 之谜：R2 的 oracle"继续"仅 5.5–9.8%（e0 已 88–91% 对），组均衡逻辑回归退化为"总停"多数类基线 → Gate2 训练集为空 → **R2 的 gate 实验 = 固定 e0 基线**（此前"省算但损准"解读修正）。
+- R1 的"总继续"非误判：oracle 继续 92.5–96.6%（e0 EM=0），与多数类一致。
+- OOF 组级 K=5、oracle 标签、组均衡权重、成本定义（重生成全计）全部复算一致；confirm 一次性无返工。
+- 失败根源：类别极度失衡 + 信号跨种子不稳定（AUC 0.49–0.84），非优化器问题。
+
+### 任务 02（`docs/gate_signal_diagnostics.md`）：信号信息量不足，CMA-ES 前提未满足
+- R1：e0 永远全错（有害继续 = 0.000%）→ "何时停"在 e0 无决策空间；e1→e3 的最优收益仅 ~3% 计算 shaving。
+- R2：问题成立但天花板与特征双重受限——oracle 完美下省 ~90% N_cell + EM +4pp，但单信号 AUC 仅 0.47–0.58（跨种子不稳，dz 在 e0 恒零为死特征）。
+- 按审核分支规则给出三条路径供裁决：α 不启动当前特征空间的 CMA-ES（前提未满足）；β 仅对 R2 跑最小预算作为方法学负面证据；γ 先重新设计状态信号再上优化器。
+
+
+## 2026-10-27 审核更新：Gate 信号/成本管线需要修正
+
+最新审计补充见 [`docs/gate_failure_audit.md`](docs/gate_failure_audit.md)，提交 `b97e16f`。复核 `scripts/gate_gen_trajectories.py::decode_with_signals` 发现 batch-level 统计缺陷：同一 batch 的所有样本共用 `n_gen`，且置信度、熵、`dz` 在各样本 EOS 后仍被累计。由于这些量参与 Gate 特征和 `N_tokens/N_cell`，因此旧 Gate 的动作比例、`g2_train_n`、AUC 与成本结论均需在修复后重新诊断；此前“实现全部通过、根因已确认”的表述不再作为最终结论。
+
+### 裁决与下一步
+
+- **裁决路径 γ，但先修复现有轨迹提取器**，再设计新特征；当前不启动 CMA-ES/GA。
+- 保留六个 base checkpoint，不重训。
+- 修复后只重新生成 `gate_train` 和 `gate_validation` 轨迹，建议写入独立的 `traj_v2/` 路径以保留旧产物；不使用已用过的 `gate_confirm` 进行调参或确认。
+- 必须验证同一样本单独解码与混合 batch 解码的 EOS 前预测、逐样本长度和信号一致；重新核算逐样本 `N_tokens/N_cell`。
+- 更新可复现诊断脚本，使报告中的 AUC 表可由代码重新计算；在 group-level CV 中检查稀有“继续”类别的 AUROC、PR-AUC/召回及策略收益，再用 validation 作一次外部一致性检查。
+- 只有修正后的信号表现出稳定判别力，才重新考虑 CMA-ES；若仍无信息，停止当前特征空间搜索并继续信号设计。
+- 旧 `gate_confirm` Gate 结果仅保留为历史运行记录，不视为修复后控制器的确认性证据。未来正式确认需要另行预先冻结的独立 holdout。
+
+本次仅完成审计补充与路径裁决；尚未修复生成器、重新生成轨迹或运行新诊断。

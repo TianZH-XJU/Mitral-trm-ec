@@ -5,8 +5,9 @@ __pycache__/
 results.csv
 # *.pt  # 2026-10-25 事故后恢复跟踪：checkpoint 必须入 git
 *.json.tmp
-# 大型参考仓库与原始数据：本地保留，不入库（下载方式见 NOTES.md）
+# 大型参考仓库：本地保留（克隆方式见 scripts/download_all_data.sh）
 reference/coconut/
 reference/COGS/data/
-data/raw/CFQ/
+# CFQ dataset.json 4.5GB 超 GitHub 上限不入库（splits 已入库，下载见 configs/cfq_manifest.json）
+data/raw/CFQ/cfq/dataset.json
 *.tar.gz
