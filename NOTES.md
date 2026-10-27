@@ -579,3 +579,13 @@ OOV 记录矛盾修正（审核指出）：准确表述为"目标侧存在一个
 裁决：**暂缓 CMA-ES**，先做范围有限的 03C-1 修正。不重训基础模型；使用同一 `traj_v2/gate_train` 与 `gate_validation`，为每个预注册 Gate1 配置用对应的组级 K=5 OOF 动作构造/训练 Gate2，保存逐样本动作和成本，实际生成配对 group-bootstrap CI，并明确标注 validation 区间属于开发/选择后诊断，非独立确认。旧 `gate_confirm` 不用于调参，COGS test 继续封存。
 
 详细审计与修复清单：[ `docs/stage03c1_followup_audit.md`](docs/stage03c1_followup_audit.md)，提交 `1885b2a`。
+
+## 第十六阶段：03C-1 修订（审计两阻塞项修复，2026-10-27 完成）
+
+按 stage03c1_followup_audit.md 修复并重跑（独立目录 gate_03c1v2，旧结果保留）：
+1. **Gate2 逐候选配对**：每 (pw,tau) 用自身 OOF 继续样本训练自身 Gate2（<50 样本记 insufficient，单类记 single_class）；单信号基线按审计第 5 条标注为一阶段 e0→e3 直达语义。
+2. **CI 实际计算**：每候选逐样本 EM 差按组配对 bootstrap 95% CI（1000 次种子 0）写入 JSON + 逐样本日志。
+
+**修正后判定（关键诚实降级）**：效率路径（CI 下界 ≥ −0.5pp 且 N_cell 减 ≥30%）通过候选 = **0/0/0**（三种子）。旧"seed0/1 满足"结论不成立——偏差来源为不匹配 Gate2 的乐观偏差（~0.3pp）+ 点估计未含 CI。最接近者：seed1 的 lr_pw1_tau0.05（−0.12pp [−0.53,+0.27]、−52.5%），CI 下界略超容限，按预注册判据不通过。一阶段 entropy 基线 EM 安全（−0.04pp [−0.14,0]）但不省算（−3.2%）。
+
+全部为开发证据。CMA-ES 待裁决：目标问题仍开放（在 CI 判据下找到效率路径），修正版基线可复现（审计复现条件满足）。
