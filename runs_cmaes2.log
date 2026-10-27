@@ -1,0 +1,11 @@
+seed0: frozen best_fixed=e3 N_cell_ref=177
+seed1: frozen best_fixed=e3 N_cell_ref=177
+seed2: frozen best_fixed=e1 N_cell_ref=89
+gen0: F=0.7148
+gen10: F=0.7351
+gen20: F=0.7360
+gen30: F=0.7362
+val seed0: EM=0.9060 diff=-0.0406 CI=[-0.0537,-0.0311] Ncell减=74.1%
+val seed1: EM=0.9313 diff=-0.0269 CI=[-0.0365,-0.0184] Ncell减=73.8%
+val seed2: EM=0.9201 diff=-0.0443 CI=[-0.0579,-0.0332] Ncell减=47.7%
+saved runs/gate_exp/cmaes_v2/cmaes_v2_results.json

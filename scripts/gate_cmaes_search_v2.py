@@ -91,20 +91,26 @@ def group_keys(rows):
     return {r["idx"]: _KEYCACHE[r["idx"]] for r in rows}
 
 
-def feats1(r):
+def feats1_raw(r):
     s = r["sig"]["0"]
-    x = np.array([s["top1"], s["margin"], s["entropy"],
-                  r["n_gen"]["0"], 1.0 if r["eos"]["0"] else 0.0])
-    return (x - _SCALER[0]) / _SCALER[1]
+    return np.array([s["top1"], s["margin"], s["entropy"],
+                     r["n_gen"]["0"], 1.0 if r["eos"]["0"] else 0.0])
+
+
+def feats2_raw(r):
+    s0 = r["sig"]["0"]
+    s1 = r["sig"]["1"]
+    return np.array([s1["top1"], s1["margin"], s1["entropy"], s1["dz"],
+                     r["n_gen"]["1"], 1.0 if r["eos"]["1"] else 0.0,
+                     s1["top1"] - s0["top1"], s1["entropy"] - s0["entropy"]])
+
+
+def feats1(r):
+    return (feats1_raw(r) - _SCALER[0]) / _SCALER[1]
 
 
 def feats2(r):
-    s0 = r["sig"]["0"]
-    s1 = r["sig"]["1"]
-    x = np.array([s1["top1"], s1["margin"], s1["entropy"], s1["dz"],
-                  r["n_gen"]["1"], 1.0 if r["eos"]["1"] else 0.0,
-                  s1["top1"] - s0["top1"], s1["entropy"] - s0["entropy"]])
-    return (x - _SCALER[2]) / _SCALER[3]
+    return (feats2_raw(r) - _SCALER[2]) / _SCALER[3]
 
 
 def decode_theta(theta):
@@ -145,8 +151,8 @@ def main():
     for seed in (0, 1, 2):
         tr = load_traj("R2", seed, "gate_train")
         for r in tr:
-            X1_all.append(feats1(r))
-            X2_all.append(feats2(r))
+            X1_all.append(feats1_raw(r))
+            X2_all.append(feats2_raw(r))
         seed_data[seed] = tr
     _SCALER = (np.mean(X1_all, 0), np.std(X1_all, 0) + 1e-9,
                np.mean(X2_all, 0), np.std(X2_all, 0) + 1e-9)
