@@ -550,3 +550,10 @@ OOV 记录矛盾修正（审核指出）：准确表述为"目标侧存在一个
 - R1 结论维持：e0 全错、无决策空间、AUC 弱但无关紧要。
 - CMA-ES 前提（可重复判别增益）在 R2 上**现已满足**；路径 γ 的信号重设计对 R2 不再必要。待审核裁决：(a) 修正阈值/类权重逻辑回归；(b) 受控 CMA-ES（EM+成本适应度）。
 - 旧 failure_audit/signal_diagnostics 报告的信号部分标记被本报告取代；类别失衡部分仍成立。gate_confirm 评估权已用尽。
+
+
+## 2026-10-27 任务 03C 裁决：先强基线，后评估 CMA-ES
+
+依据修正轨迹诊断（`140ba99`），批准先执行选项 (a)：R2 的 class-weight / threshold Logistic Regression 与 entropy、n_gen 单信号阈值基线；**暂不直接启动 CMA-ES**。修正后 R2 组合信号 group-level CV AUC 在三个 seed 上为 0.894/0.919/0.894，但默认 0.5 阈值下 OOF 继续率仅 0.4%/0.9%/1.4%，因此先解决分数到动作的阈值/稀有正类问题。R1 的 e0 EM=0，不作为 Gate1 优化对象。
+
+完整协议见 [`docs/stage03c_decision.md`](docs/stage03c_decision.md)，提交 `9547169`。只使用 `traj_v2` 的 gate_train/gate_validation；Gate2 继续严格使用 Gate1 组级 K=5 OOF 动作。旧 `gate_confirm` 不得用于策略选择，COGS 官方 test 仍封存。基线完成、冻结并提交后，再审核是否批准一次预算受限的 CMA-ES pilot；届时必须与强阈值/类权重基线公平比较。
