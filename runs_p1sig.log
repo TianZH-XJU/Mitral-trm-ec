@@ -1,0 +1,22 @@
+seed0: n=2417 pos_rate=0.117
+  F0_hist: AUC=0.953 PR=0.718 Brier=0.055 R@5%=0.346
+  F1_token: AUC=0.978 PR=0.875 Brier=0.034 R@5%=0.406
+  F2_xdep: AUC=0.945 PR=0.715 Brier=0.061 R@5%=0.329
+  F3_struct: AUC=0.645 PR=0.416 Brier=0.089 R@5%=0.265
+  F4_hidden: AUC=0.558 PR=0.250 Brier=0.108 R@5%=0.180
+  F5_combo: AUC=0.979 PR=0.858 Brier=0.036 R@5%=0.392
+seed1: n=2417 pos_rate=0.085
+  F0_hist: AUC=0.964 PR=0.740 Brier=0.038 R@5%=0.478
+  F1_token: AUC=0.986 PR=0.868 Brier=0.026 R@5%=0.527
+  F2_xdep: AUC=0.949 PR=0.687 Brier=0.047 R@5%=0.434
+  F3_struct: AUC=0.689 PR=0.435 Brier=0.063 R@5%=0.332
+  F4_hidden: AUC=0.701 PR=0.229 Brier=0.079 R@5%=0.234
+  F5_combo: AUC=0.981 PR=0.872 Brier=0.026 R@5%=0.532
+seed2: n=2417 pos_rate=0.130
+  F0_hist: AUC=0.940 PR=0.657 Brier=0.072 R@5%=0.280
+  F1_token: AUC=0.979 PR=0.808 Brier=0.040 R@5%=0.318
+  F2_xdep: AUC=0.953 PR=0.754 Brier=0.058 R@5%=0.312
+  F3_struct: AUC=0.513 PR=0.323 Brier=0.107 R@5%=0.197
+  F4_hidden: AUC=0.709 PR=0.293 Brier=0.105 R@5%=0.178
+  F5_combo: AUC=0.972 PR=0.807 Brier=0.044 R@5%=0.318
+saved runs/gate_exp/p1/p1_signal_eval.json
