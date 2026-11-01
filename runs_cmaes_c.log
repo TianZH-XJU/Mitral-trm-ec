@@ -1,0 +1,14 @@
+/home/appuser/.local/lib/python3.12/site-packages/cma/s.py:17: UserWarning: Could not import matplotlib.pyplot, therefore ``cma.plot()`` etc. is not available
+  _warnings.warn('Could not import matplotlib.pyplot, therefore'
+seed0: best_fixed=e3 ref=177
+seed1: best_fixed=e3 ref=177
+seed2: best_fixed=e1 ref=89
+gen0: fit=1.0541 feasible=True best_feas_ncell=1.0541014918082185
+gen10: fit=0.6133 feasible=True best_feas_ncell=0.594272658347676
+gen20: fit=0.5937 feasible=True best_feas_ncell=0.588800349894091
+gen30: fit=0.5876 feasible=True best_feas_ncell=0.5843096450881909
+feasible ever found: True
+val seed0: EM=0.9408 diff=-0.0058 CI=[-0.0096,-0.0025] Ncell减=61.0%
+val seed1: EM=0.9553 diff=-0.0029 CI=[-0.0072,+0.0013] Ncell减=60.1%
+val seed2: EM=0.9598 diff=-0.0046 CI=[-0.0098,-0.0011] Ncell减=15.1%
+saved runs/gate_exp/cmaes_constrained/cmaes_constrained_results.json
