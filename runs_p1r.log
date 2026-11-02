@@ -1,0 +1,13 @@
+seed0 e0->e1: {'preserve': 2128, 'repair': 173, 'unresolved': 110, 'harm': 6} | e1->e3: {'preserve': 2295, 'repair': 13, 'unresolved': 103, 'harm': 6}
+  repair01 CI: [0.0489,0.1022] harm01 CI: [0.0008,0.0049]
+  Gate0 (repair vs harm): n=179 pos=0.966 AUC=0.5183044315992292 PR=0.9537649394267705 Brier=0.041
+  Gate1 (repair13 vs harm13): n=19 pos=0.684 AUC=0.5641025641025641 PR=0.7679097334223554 Brier=0.312
+seed1 e0->e1: {'preserve': 2207, 'unresolved': 80, 'repair': 125, 'harm': 5} | e1->e3: {'preserve': 2326, 'unresolved': 75, 'repair': 10, 'harm': 6}
+  repair01 CI: [0.0363,0.0735] harm01 CI: [0.0004,0.0041]
+  Gate0 (repair vs harm): n=130 pos=0.962 AUC=0.7024 PR=0.9776434979178904 Brier=0.037
+  Gate1 (repair13 vs harm13): n=16 pos=0.625 AUC=0.7166666666666667 PR=0.7824281274281274 Brier=0.287
+seed2 e0->e1: {'preserve': 2100, 'repair': 214, 'unresolved': 100, 'harm': 3} | e1->e3: {'preserve': 2304, 'unresolved': 81, 'harm': 10, 'repair': 22}
+  repair01 CI: [0.0637,0.1215] harm01 CI: [0.0000,0.0029]
+  Gate0 (repair vs harm): n=217 pos=0.986 AUC=0.49065420560747663 PR=0.98944195587778 Brier=0.020
+  Gate1 (repair13 vs harm13): n=32 pos=0.688 AUC=0.15454545454545454 PR=0.5305123362475629 Brier=0.659
+saved runs/gate_exp/p1r/p1r_benefit_labels.json
