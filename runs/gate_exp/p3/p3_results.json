@@ -1,0 +1,51 @@
+{
+ "budget": 336,
+ "lambda_c": 0.02,
+ "results": {
+  "0": {
+   "RuleGA": {
+    "outer_EM": 0.9566115702479339,
+    "outer_EM_diff": 0.0,
+    "outer_ncell_ratio": 0.2529080945971928,
+    "n_rules": 8,
+    "default": 1
+   },
+   "MLP-GA": {
+    "outer_EM": 0.9607438016528925,
+    "outer_EM_diff": 0.004132231404958664,
+    "outer_ncell_ratio": 0.5000961353585849,
+    "n_active_conn": 51
+   }
+  },
+  "1": {
+   "RuleGA": {
+    "outer_EM": 0.9705882352941176,
+    "outer_EM_diff": -0.00588235294117645,
+    "outer_ncell_ratio": 0.2537954773411143,
+    "n_rules": 8,
+    "default": 0
+   },
+   "MLP-GA": {
+    "outer_EM": 0.9764705882352941,
+    "outer_EM_diff": 0.0,
+    "outer_ncell_ratio": 0.5002507522567703,
+    "n_active_conn": 61
+   }
+  },
+  "2": {
+   "RuleGA": {
+    "outer_EM": 0.9625292740046838,
+    "outer_EM_diff": -0.004683840749414525,
+    "outer_ncell_ratio": 0.5029255448827344,
+    "n_rules": 8,
+    "default": 3
+   },
+   "MLP-GA": {
+    "outer_EM": 0.9648711943793911,
+    "outer_EM_diff": -0.0023419203747072626,
+    "outer_ncell_ratio": 0.49985372275586326,
+    "n_active_conn": 89
+   }
+  }
+ }
+}
