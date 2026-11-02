@@ -1,0 +1,11 @@
+seed0: 3 类别, worst=in_distribution (+0.0000, n=482), neg_cats=0
+    in_distribution: diff=+0.0000 n=482
+    primitive: diff=+0.0000 n=1
+    exposure_example_obj_omitted_transitive: diff=+0.0000 n=1
+seed1: 1 类别, worst=in_distribution (+0.0000, n=510), neg_cats=0
+    in_distribution: diff=+0.0000 n=510
+seed2: 3 类别, worst=in_distribution (-0.0024, n=425), neg_cats=1
+    in_distribution: diff=-0.0024 n=425
+    primitive: diff=+0.0000 n=1
+    exposure_example_obj_omitted_transitive: diff=+0.0000 n=1
+saved runs/gate_exp/p5/p5_loco_results.json
