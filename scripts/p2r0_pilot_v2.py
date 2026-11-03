@@ -125,7 +125,10 @@ def main():
             if len(hist) % 32 == 0:   # incremental atomic save
                 atomic_save({"algo": algo, "status": "running",
                              "evals": len(hist),
-                             "best": best[0]},
+                             "best": best[0],
+                             "genotype": (best[1].tolist()
+                                          if best[1] is not None
+                                          else None)},
                             f"{OUT}/{run_id}_{algo}_partial.json")
 
         # Amendment after GA crash: warm-start slots are exact
@@ -248,7 +251,7 @@ def main():
                                >= -EM_MARGIN),
             "wall_s": time.time() - t0,
             "eval_history": hist[-20:],
-            "genotype": best[1].tolist() if best[1] else None}
+            "genotype": best[1].tolist() if best[1] is not None else None}
         atomic_save(res, cpath)
         print(f"{algo}: train best ratio={best[0]:.4f} "
               f"outer diff={res['outer_em_diff']:+.4f} "
