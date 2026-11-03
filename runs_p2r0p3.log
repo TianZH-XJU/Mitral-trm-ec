@@ -1,0 +1,4 @@
+outer fold n=645
+baseline forced_e3: EM=0.8789 N_cell=264.3
+/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r_causal_decoder.py:95: RuntimeWarning: overflow encountered in exp
+  p0 = float(1 / (1 + np.exp(-(w0 @ x0 + b0))))

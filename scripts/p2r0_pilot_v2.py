@@ -130,11 +130,13 @@ def main():
         # genotype encodings of preregistered 0C threshold
         # policies (stop iff top0 >= tau0 / top1 >= tau1).
         def thr_geno(a_, b_):
+            # exact 0C rule: stop iff top > tau (b0 centers
+            # sigmoid boundary at tau given tau_g=0.36)
             g = np.zeros(24)
             g[0] = -100.0
-            g[8] = 100.0 * a_
+            g[8] = 100.0 * a_ - 0.5754
             g[10] = -100.0
-            g[22] = 100.0 * b_
+            g[22] = 100.0 * b_ - 0.5754
             return g
 
         warm = [thr_geno(a_, b_) for a_, b_ in
