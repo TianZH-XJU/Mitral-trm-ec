@@ -122,8 +122,9 @@ def main():
                          "best_so_far": best[0]})
             if len(hist) % 32 == 0:   # incremental atomic save
                 atomic_save({"algo": algo, "status": "running",
-                         "feasible": v is not None,
-                         "best_so_far": best[0]})
+                             "evals": len(hist),
+                             "best": best[0]},
+                            f"{OUT}/{run_id}_{algo}_partial.json")
 
         # Amendment after GA crash: warm-start slots are exact
         # genotype encodings of preregistered 0C threshold

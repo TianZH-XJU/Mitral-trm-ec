@@ -1,0 +1,9 @@
+{
+ "run_id": "p2r0pilot_1793738522",
+ "commit": "34e54dcdd44404df78cb4f5db5666c05fd6d1e81",
+ "model_seed": 0,
+ "opt_seed": 0,
+ "budget": 336,
+ "em_margin": 0.005,
+ "subset": "group-balanced 256, same rule as p2r0c"
+}
