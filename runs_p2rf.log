@@ -1,0 +1,17 @@
+s0 fixed e0: EM=0.8933 N_cell=45.2
+s0 fixed e1: EM=0.9567 N_cell=90.8
+s0 fixed e3: EM=0.9633 N_cell=181.0
+/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r_causal_decoder.py:114: RuntimeWarning: overflow encountered in exp
+  p1 = float(1 / (1 + np.exp(-(w1 @ x1 + b1))))
+/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r_causal_decoder.py:88: RuntimeWarning: overflow encountered in exp
+  p0 = float(1 / (1 + np.exp(-(w0 @ x0 + b0))))
+s0: best random causal policy: diff=+0.0000 ratio=0.985 (267s)
+s1 fixed e0: EM=0.9100 N_cell=45.9
+s1 fixed e1: EM=0.9667 N_cell=91.1
+s1 fixed e3: EM=0.9667 N_cell=182.3
+s1: best random causal policy: diff=+0.0033 ratio=0.772 (302s)
+s2 fixed e0: EM=0.8800 N_cell=45.9
+s2 fixed e1: EM=0.9633 N_cell=91.0
+s2 fixed e3: EM=0.9633 N_cell=182.2
+s2: best random causal policy: diff=+0.0000 ratio=0.458 (265s)
+DONE

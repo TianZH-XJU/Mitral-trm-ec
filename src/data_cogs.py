@@ -14,7 +14,18 @@ import torch
 
 from data_scan import PAD, BOS, EOS, UNK, pad_batch, build_vocab, to_ids
 
-COGS_ROOT = "reference/COGS/data"
+# P2-R-0A: prefer in-repo data/cogs (SHA-verified via manifest),
+# fall back to legacy path; raise explicit error if neither exists.
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if os.path.isdir(os.path.join(_REPO_ROOT, "data", "cogs")):
+    COGS_ROOT = os.path.join(_REPO_ROOT, "data", "cogs")
+elif os.path.isdir("reference/COGS/data"):
+    COGS_ROOT = "reference/COGS/data"
+else:
+    raise FileNotFoundError(
+        "COGS data not found: expected 'data/cogs' (in-repo, "
+        "SHA-verified) or 'reference/COGS/data' (legacy). "
+        "Run scripts/download_all_data.sh first.")
 
 
 def _post_tokenize(lf):
