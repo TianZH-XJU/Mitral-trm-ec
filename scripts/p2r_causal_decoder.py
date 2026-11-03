@@ -55,6 +55,8 @@ class CausalTokenDecoder:
         force: (g0, g1) 手工覆盖 gate 输出用于单元测试（'stop'/'go'/None）。
         enc_cache: 可选 dict，按 src 缓存 encoder 输出（P2-R-0B）。
         返回 (tokens, n_cell, trace)，trace 记录每 token 的 refinement 数。"""
+        if force is None:
+            force = (None, None)
         w0 = np.asarray(theta[:8], dtype=np.float32)
         b0 = float(theta[8])
         tau0 = 0.02 + 0.68 / (1 + np.exp(-theta[9]))

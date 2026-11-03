@@ -89,8 +89,10 @@ def main():
         return float(np.mean(ems)), float(np.mean(ncs))
 
     # 基准：forced e3（因果）
-    e3em, e3nc = evaluate(np.zeros(24))
-    e3em = max(e3em, 0.8789)   # 与 0C 观测一致
+    e3em, e3nc = evaluate(np.zeros(24), )
+    # BUGFIX: 不得硬编码其他子集的 EM；基准必须是本子集实测值
+    # （此前 max(e3em, 0.8789) 把 0.8633 抬到 0.8789，
+    #  造成全部候选被误判不可行、GA 4.8h 白跑）。
     print(f"baseline forced_e3: EM={e3em:.4f} N_cell={e3nc:.1f}",
           flush=True)
 
