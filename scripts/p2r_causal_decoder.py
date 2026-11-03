@@ -50,9 +50,10 @@ class CausalTokenDecoder:
         return top, ent, margin
 
     @torch.no_grad()
-    def decode(self, src, theta, force=(None, None)):
+    def decode(self, src, theta, force=(None, None), enc_cache=None):
         """causal 解码。theta: 24 维 = [w0(8), b0, tau0, w1(12), b1, tau1]。
         force: (g0, g1) 手工覆盖 gate 输出用于单元测试（'stop'/'go'/None）。
+        enc_cache: 可选 dict，按 src 缓存 encoder 输出（P2-R-0B）。
         返回 (tokens, n_cell, trace)，trace 记录每 token 的 refinement 数。"""
         w0 = np.asarray(theta[:8], dtype=np.float32)
         b0 = float(theta[8])
@@ -61,7 +62,13 @@ class CausalTokenDecoder:
         b1 = float(theta[22])
         tau1 = 0.02 + 0.68 / (1 + np.exp(-theta[23]))
         srcb, slenb = pad_batch([to_ids(src, self.src_stoi)])
-        enc_out, h = self.model.encoder(srcb, slenb)
+        _ck = tuple(src) if isinstance(src, (list, tuple)) else src
+        if enc_cache is not None and _ck in enc_cache:
+            enc_out, h, srcb, slenb = enc_cache[_ck]
+        else:
+            enc_out, h = self.model.encoder(srcb, slenb)
+            if enc_cache is not None:
+                enc_cache[_ck] = (enc_out, h, srcb, slenb)
         mask = torch.arange(srcb.size(1))[None, :] < slenb[:, None]
         hh = h.clone()
         prev = torch.tensor([BOS])

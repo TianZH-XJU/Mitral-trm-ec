@@ -1,0 +1,58 @@
+{
+ "machine": {
+  "cpu": "unknown",
+  "cores": 5,
+  "torch_threads": 2
+ },
+ "cache_consistency": true,
+ "bench": {
+  "n32_rep0": {
+   "n": 32,
+   "wall_s": 0.8549437522888184,
+   "samples_per_s": 37.42936294268598,
+   "tokens_per_s": 2360.3892005731345,
+   "mean_ncell": 68.4375,
+   "total_tokens": 2018
+  },
+  "n32_rep1": {
+   "n": 32,
+   "wall_s": 1.3929259777069092,
+   "samples_per_s": 22.973223640124573,
+   "tokens_per_s": 1447.313089327848,
+   "mean_ncell": 128.6875,
+   "total_tokens": 2016
+  },
+  "n64_rep0": {
+   "n": 64,
+   "wall_s": 1.5272035598754883,
+   "samples_per_s": 41.90665978097764,
+   "tokens_per_s": 2438.4437660056365,
+   "mean_ncell": 63.421875,
+   "total_tokens": 3724
+  },
+  "n64_rep1": {
+   "n": 64,
+   "wall_s": 2.586745500564575,
+   "samples_per_s": 24.741513993561234,
+   "tokens_per_s": 1450.857844028677,
+   "mean_ncell": 120.0,
+   "total_tokens": 3753
+  },
+  "n128_rep0": {
+   "n": 128,
+   "wall_s": 3.0317113399505615,
+   "samples_per_s": 42.220378409142114,
+   "tokens_per_s": 2614.0351475972757,
+   "mean_ncell": 67.15625,
+   "total_tokens": 7925
+  },
+  "n128_rep1": {
+   "n": 128,
+   "wall_s": 5.259761810302734,
+   "samples_per_s": 24.335702759253415,
+   "tokens_per_s": 1510.9049205295853,
+   "mean_ncell": 126.796875,
+   "total_tokens": 7947
+  }
+ }
+}
