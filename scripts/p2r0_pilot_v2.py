@@ -120,10 +120,30 @@ def main():
                          "ncell_ratio": nc / e3nc,
                          "feasible": v is not None,
                          "best_so_far": best[0]})
+            if len(hist) % 32 == 0:   # incremental atomic save
+                atomic_save({"algo": algo, "status": "running",
+                         "feasible": v is not None,
+                         "best_so_far": best[0]})
+
+        # Amendment after GA crash: warm-start slots are exact
+        # genotype encodings of preregistered 0C threshold
+        # policies (stop iff top0 >= tau0 / top1 >= tau1).
+        def thr_geno(a_, b_):
+            g = np.zeros(24)
+            g[0] = -100.0
+            g[8] = 100.0 * a_
+            g[10] = -100.0
+            g[22] = 100.0 * b_
+            return g
+
+        warm = [thr_geno(a_, b_) for a_, b_ in
+                ((0.85, 0.90), (0.90, 0.95),
+                 (0.95, 0.95), (0.99, 0.99))]
 
         if algo == "GA":
             POP, D = 16, 24
             pop = r3.randn(POP, D) * 0.5
+            pop[:4] = warm
             fits = []
             for x in pop:
                 em, nc = evaluate(x)
@@ -142,6 +162,7 @@ def main():
         elif algo == "DE":
             POP, D = 16, 24
             pop = r3.randn(POP, D) * 0.5
+            pop[:4] = warm
             fits = []
             for x in pop:
                 em, nc = evaluate(x)
@@ -163,7 +184,7 @@ def main():
                         pop[i], fits[i] = trial, f
         else:  # sepCMA
             import cma
-            es = cma.CMAEvolutionStrategy(np.zeros(24), 0.5, {
+            es = cma.CMAEvolutionStrategy(warm[0], 0.5, {
                 'popsize': 16,
                 'maxiter': (BUDGET - 16) // 16,
                 'seed': OPT_SEED, 'verbose': -9,
@@ -179,9 +200,21 @@ def main():
                     used.append(x)
                     fs.append(fit(x))
                 es.tell(used, fs)
-        # 外层一次性评估 best
-        em_o, nc_o = (evaluate(best[1]) if best[1]
-                      else (0.0, float("inf")))
+        # 外层一次性评估 best（P2-R-0 fix: 无可行解不崩溃）
+        if best[1] is None:
+            res = {"algo": algo, "budget_used": len(hist),
+                   "train_best_ncell_ratio": None,
+                   "outer_EM": None, "outer_em_diff": None,
+                   "outer_ncell_ratio": None,
+                   "outer_feasible": False,
+                   "no_feasible_found": True,
+                   "wall_s": time.time() - t0,
+                   "eval_history": hist[-20:],
+                   "genotype": None}
+            atomic_save(res, cpath)
+            print(f"{algo}: NO FEASIBLE in {len(hist)} evals "
+                  f"({time.time()-t0:.0f}s)", flush=True)
+            continue
         ems_o, ncs_o = [], []
         for r in outer:
             toks, nc, _ = dec.decode(r["src"], best[1],
