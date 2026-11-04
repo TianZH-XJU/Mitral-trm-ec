@@ -1,0 +1,27 @@
+s0 S0_alpha1: EM=0.8646 N=267.4
+s0 S1_fix0.75: EM=0.8646 N=266.9
+s0 S2_fix0.50: EM=0.8594 N=267.3
+s0 S3_fix0.25: EM=0.8438 N=268.1
+s0 S4_sched: EM=0.8646 N=267.4
+Traceback (most recent call last):
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r1_evolutionary_search.py", line 194, in <module>
+    main()
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r1_evolutionary_search.py", line 116, in main
+    em, _nc = ev(w, mask)
+              ^^^^^^^^^^^
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r1_evolutionary_search.py", line 54, in ev
+    em, nc = eval_alpha_policy(
+             ^^^^^^^^^^^^^^^^^^
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r_core.py", line 219, in eval_alpha_policy
+    toks, nc = dec.decode_alpha(
+               ^^^^^^^^^^^^^^^^^
+  File "/home/appuser/.local/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 158, in no_grad
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r_core.py", line 91, in decode_alpha
+    a = alpha_from_policy(
+        ^^^^^^^^^^^^^^^^^^
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r_core.py", line 30, in alpha_from_policy
+    f = (f - stats["mean"]) / (stats["std"] + 1e-9)
+                               ~~~~~~~~~~~~~^~~~~~
+TypeError: can only concatenate list (not "float") to list

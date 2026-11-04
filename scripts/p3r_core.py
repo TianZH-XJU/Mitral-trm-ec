@@ -27,7 +27,8 @@ D_LAT = 128  # latent 维度（HID）
 def alpha_from_policy(w, feats_raw, stats, mask=None):
     """feats_raw = (H, D, A, tT)；mask: 4 元素 0/1 消融掩码。"""
     f = np.array(feats_raw, dtype=np.float64)
-    f = (f - stats["mean"]) / (stats["std"] + 1e-9)
+    f = (f - np.asarray(stats["mean"], dtype=np.float64)) / \
+        (np.asarray(stats["std"], dtype=np.float64) + 1e-9)
     if mask is not None:
         f = f * np.asarray(mask, dtype=np.float64)
     w = np.asarray(w, dtype=np.float64)
