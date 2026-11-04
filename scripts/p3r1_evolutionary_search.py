@@ -44,7 +44,9 @@ def main():
                      ["git", "rev-parse", "HEAD"]).decode().strip(),
                  "opt_seed": OPT_SEED, "dim": DIM},
                 f"{OUT}/{run_id}_manifest.json")
-    for seed in (0, 1, 2):
+    seeds_sel = [int(x) for x in
+                 os.environ.get("P3R1_SEEDS", "0,1,2").split(",")]
+    for seed in seeds_sel:
         dec = AlphaDecoder("R2", seed)
         sub, outer, gk = build_split(seed)
         stats = json.load(open(f"{OUT}/feat_stats_s{seed}.json"))
