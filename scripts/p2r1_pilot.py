@@ -379,8 +379,8 @@ def main():
         # s0 GA/DE 补 CI（用 242bf96 保存的 genotype）
         if seed == 0:
             for algo in ("GA", "DE"):
-                old = json.load(open(f"{OLD}/p2r0pilot_"
-                                     "1793749853_{algo}.json"))
+                old = json.load(open(
+                    f"{OLD}/p2r0pilot_1793749853_{algo}.json"))
                 if old.get("genotype") is None:
                     continue
                 cpath = f"{OUT}/{run_id}_s0_{algo}_ci.json"

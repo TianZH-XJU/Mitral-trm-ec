@@ -6,3 +6,11 @@ seed0: frozen best depth=e3, inner=256, outer=645
   p1 = float(1 / (1 + np.exp(-(w1 @ x1 + b1))))
 /workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r_causal_decoder.py:97: RuntimeWarning: overflow encountered in exp
   p0 = float(1 / (1 + np.exp(-(w0 @ x0 + b0))))
+  sepCMA: train_em=0.8594 train_ratio=0.2629 outer diff=-0.0031 ratio=0.2568 CI_em=[np.float64(-0.00990099009900991), np.float64(0.0)] CI_ratio=[np.float64(0.2546773120425815), np.float64(0.26025400276734534)] (2138s)
+Traceback (most recent call last):
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r1_pilot.py", line 424, in <module>
+    main()
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r1_pilot.py", line 382, in main
+    old = json.load(open(f"{OLD}/p2r0pilot_"
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'runs/gate_exp/p2r/pilot_v2/p2r0pilot_1793749853_{algo}.json'
