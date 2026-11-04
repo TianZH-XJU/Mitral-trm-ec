@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r1_pilot.py", line 421, in <module>
+    main()
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r1_pilot.py", line 110, in main
+    force_star = FORCE[d_star]
+                 ~~~~~^^^^^^^^
+KeyError: '3'

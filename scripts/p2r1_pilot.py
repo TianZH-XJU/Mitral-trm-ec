@@ -93,7 +93,8 @@ def boot_ci(per_sample, groups, n=BOOT_N, seed=0):
 def main():
     baseline_cfg = json.load(open(
         "runs/gate_exp/gate_03c1v2/r2_baseline_matched.json"))
-    depths = {int(s): baseline_cfg[str(s)]["best_fixed_depth"]
+    depths = {int(s): int(baseline_cfg[str(s)]
+                          ["best_fixed_depth"])
               for s in ("0", "1", "2")}
     run_id = f"p2r1_{int(time.time())}"
     atomic_save({"run_id": run_id,
@@ -138,6 +139,8 @@ def main():
         def decode_batch(theta, the_rows, force=None):
             """单次解码；返回逐样本 (em, ncell, depth_hist)。"""
             out = []
+            if theta is None:
+                theta = np.zeros(24)
             for r in the_rows:
                 toks, nc, tr = dec.decode(
                     r["src"], theta, force=force, enc_cache=cache)
