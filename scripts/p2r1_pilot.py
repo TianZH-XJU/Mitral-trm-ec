@@ -96,7 +96,8 @@ def main():
     depths = {int(s): int(baseline_cfg[str(s)]
                           ["best_fixed_depth"])
               for s in ("0", "1", "2")}
-    run_id = f"p2r1_{int(time.time())}"
+    run_id = (os.environ.get("P2R1_RUN_ID")
+              or f"p2r1_{int(time.time())}")
     atomic_save({"run_id": run_id,
                  "commit": subprocess.check_output(
                      ["git", "rev-parse", "HEAD"]).decode().strip(),
@@ -162,16 +163,20 @@ def main():
         o_groups = [gk[r["idx"]] for r in outer]
         thr_ci = boot_ci(thr_ps, o_groups, seed=seed)
         nc_base_out = float(np.mean([x[1] for x in base_out]))
-        thr_res = {
-            "policy": "thr(0.85,0.90)",
-            "outer_EM": float(np.mean([x[0] for x in thr_out])),
-            "outer_em_diff": float(np.mean(
-                [t[0] for t in thr_out])
-                - np.mean([b[0] for b in base_out])),
-            "outer_ncell_ratio": float(np.mean(
-                [x[1] for x in thr_out]) / nc_base_out),
-            "ci": thr_ci}
-        atomic_save(thr_res, f"{OUT}/{run_id}_s{seed}_thr.json")
+        thr_path = f"{OUT}/{run_id}_s{seed}_thr.json"
+        if os.path.exists(thr_path):
+            thr_res = json.load(open(thr_path))
+        else:
+            thr_res = {
+                "policy": "thr(0.85,0.90)",
+                "outer_EM": float(np.mean([x[0] for x in thr_out])),
+                "outer_em_diff": float(np.mean(
+                    [t[0] for t in thr_out])
+                    - np.mean([b[0] for b in base_out])),
+                "outer_ncell_ratio": float(np.mean(
+                    [x[1] for x in thr_out]) / nc_base_out),
+                "ci": thr_ci}
+            atomic_save(thr_res, f"{OUT}/{run_id}_s{seed}_thr.json")
         with open(f"{OUT}/{run_id}_s{seed}_outer_per_sample.jsonl",
                   "w") as f:
             for r, t, b in zip(outer, thr_out, base_out):
@@ -325,6 +330,10 @@ def main():
         # s0 GA/DE：保留搜索结果，仅补外层 CI + 逐样本日志
         for algo, mode in combos:
             cpath = f"{OUT}/{run_id}_s{seed}_{algo}.json"
+            if os.path.exists(cpath):
+                print(f"  {algo}: done, skip",
+                      flush=True)
+                continue
             t0 = time.time()
             if mode == "run":
                 state, hist = run_search(algo)
