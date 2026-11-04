@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r0_collect_trajectories.py", line 124, in <module>
+    main()
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r0_collect_trajectories.py", line 40, in main
+    t2, _, _ = dec.decode_alpha(r["src"],
+    ^^^^^^^^
+ValueError: not enough values to unpack (expected 3, got 2)
