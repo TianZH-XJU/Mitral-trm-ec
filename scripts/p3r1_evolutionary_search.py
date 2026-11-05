@@ -89,10 +89,13 @@ def main():
             searches += [("GA_ablA", "A"), ("GA_ablB", "B"),
                          ("GA_ablC", "C")]
         for name, abl in searches:
-            spath = f"{OUT}/{run_id}_s{seed}_{name}.json"
-            if os.path.exists(spath):
+            import glob as _g
+            existing = _g.glob(
+                f"{OUT}/p3r1_*_s{seed}_{name}.json")
+            if existing:
                 print(f"s{seed} {name}: done, skip", flush=True)
                 continue
+            spath = f"{OUT}/{run_id}_s{seed}_{name}.json"
             mask = MASKS[abl] if abl else None
             t0 = time.time()
             r3 = np.random.RandomState(OPT_SEED)
