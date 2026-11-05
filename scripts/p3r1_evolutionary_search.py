@@ -161,8 +161,10 @@ def main():
                             pop[li], fits[li] = c, f
             else:  # sepCMA
                 import cma
+                # warm start within preregistered bounds [-5,5]
+                # (w0=+8 crashed cma bounds transform; 4.99 -> alpha~0.993)
                 es = cma.CMAEvolutionStrategy(
-                    np.array([8.0, 0, 0, 0, 0]), 2.0, {
+                    np.array([4.99, 0, 0, 0, 0]), 2.0, {
                         'popsize': 16, 'maxiter': 21,
                         'seed': OPT_SEED, 'verbose': -9,
                         'bounds': [-5, 5],
