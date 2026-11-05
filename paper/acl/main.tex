@@ -8,6 +8,7 @@
 \usepackage{microtype}
 \usepackage{inconsolata}
 \usepackage{graphicx}
+\usepackage{float}
 \usepackage{booktabs}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -41,13 +42,6 @@ In contrast to learned halting \citep{graves2016adaptive,banino2021ponder} and c
 On three frozen model seeds of COGS, the two-stage threshold retains the exact-match accuracy of each seed's best fixed depth while using 25.7\% of the deepest baseline's calls on two seeds and 52.1\% of the shallower $e_1$ baseline on the third. A preregistered confidence-bound criterion, applied once to frozen policies on a held-out fold, confirms non-inferiority on all three seeds. The same accounting extends to the latent update itself: at fixed depth, evolutionary step-size policies outperform the original update by up to $+2.1$pp. Halting and step-size control are thus measured on a single scale of actually executed calls.
 
 Our stance follows from where the gains come from. On frozen models, the controller-complexity budget is better spent on accounting and confirmation than on richer controllers, because the halting decision is already determined by a signal the base step emits. We therefore study two control dimensions, whether to continue and how to update, and keep them separate so that fixed-depth experiments isolate latent dynamics at constant compute before joint policies are tested on the accuracy--compute frontier of Figure~\ref{fig:pareto}. The mechanism, the equal-budget comparisons, and the confirmation protocol follow in the next two sections.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\linewidth]{figures/fig1_p2r1_pareto.png}
-\caption{Causal confidence halting reaches the accuracy--compute frontier with a two-stage threshold. Per-seed held-out exact match against the ratio of executed recurrent-cell calls to each seed's frozen best fixed depth. Evolutionary halting policies cluster near the threshold: the confidence-bound rule accepts the threshold on all three seeds and only two of the nine searched policies. Curves connect policies evaluated at the same search budget, so horizontal differences measure actual skipped refinement calls rather than predicted exit depths.}
-\label{fig:pareto}
-\end{figure}
 
 \section{Related Work}
 \label{sec:related}
@@ -142,7 +136,7 @@ A preregistered engineering audit confirmed: (i) forced-depth decoding matches f
 \subsection{Adaptive Halting Results (RQ1)}
 \label{sec:exp-halting}
 
-\begin{table}[t]
+\begin{table}[H]
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
@@ -174,10 +168,17 @@ Seed / baseline & Policy & $\Delta$EM (pp) & 95\% CI (pp) & $N_{\mathrm{cell}}$ 
 
 Causal confidence halting retains exact-match accuracy at a fraction of the executed compute (Table~\ref{tab:halting}, Figure~\ref{fig:pareto}). The two-stage threshold is non-inferior on all three seeds while reducing the measured $N_{\mathrm{cell}}$ count of counted recurrent-cell invocations (\S\ref{sec:ncell}) by 74--75\% relative to the deepest baseline (seeds 0--1) and by 48\% relative to the already shallow $e_1$ baseline while gaining 1.86pp EM (seed 2). The mechanism is consistent with \S\ref{sec:model}: high-confidence tokens are stable across depths, so stopping on confidence is safe. Equal-budget evolutionary optimizers add at most 1--2\% compute, and only two of the nine evolutionary policies satisfy the preregistered confidence-bound non-inferiority criterion, because most optimizer gains come with EM confidence intervals whose lower bounds fall below $-0.5$pp. GA and sep-CMA-ES converge to identical behavior on $s_2$ and are the two passing policies. On this model the halting problem is essentially solved by the threshold, and we did not expand the optimizer comparison further.
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{figures/fig1_p2r1_pareto.png}
+\caption{Causal confidence halting reaches the accuracy--compute frontier with a two-stage threshold. Per-seed held-out exact match against the ratio of executed recurrent-cell calls to each seed's frozen best fixed depth. Evolutionary halting policies cluster near the threshold: the confidence-bound rule accepts the threshold on all three seeds and only two of the nine searched policies. Curves connect policies evaluated at the same search budget, so horizontal differences measure actual skipped refinement calls rather than predicted exit depths.}
+\label{fig:pareto}
+\end{figure}
+
 \subsection{Fixed-Depth Evolutionary Latent Control (RQ2)}
 \label{sec:exp-latent}
 
-\begin{table}[t]
+\begin{table}[H]
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
@@ -199,14 +200,14 @@ $s_2$ & $+0.52$ & $+0.52$ & $+1.04$ & $+0.00$ & n/a & n/a & n/a \\
 
 At fixed depth the compute is constant, so any EM change is a pure latent-dynamics effect. Evolutionary step-size policies outperform the original update on all seeds, by up to $+2.08$pp (Table~\ref{tab:latent}, Figure~\ref{fig:latent}). On every seed at least one optimizer beats same-budget random search, but no single optimizer does so consistently: on $s_2$, GA merely matches RS and sep-CMA falls below it. A hand-designed linearly decaying schedule over the three steps and all fixed step sizes fail to exceed the baseline. The corrected feature-group ablations on $s_0$ are decisive: a time-index-only policy (A) and a latent-dynamics-only policy (C, using $D$ and $A$) each reproduce the full-feature GA gain exactly ($+0.52$pp), whereas an entropy-only policy (B) does not ($+0.00$pp). The full five-feature state is never necessary, and since dynamics features alone also suffice, the gain cannot be attributed to a pure time schedule either. Figure~\ref{fig:traj} shows the displacement and direction-consistency statistics that motivate these features.
 
-\begin{figure}[t]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.8\linewidth]{figures/fig2_p3r1_fixed_depth.png}
 \caption{Step-size policies improve fixed-depth exact match at constant compute. Inner-subset EM gain (pp) over the original $\alpha{\approx}1$ update for random search and three evolutionary optimizers at equal budgets of 336 evaluations. Feature-group ablations on $s_0$ show that the time index alone and the dynamics pair alone each reproduce the full-feature gain, while entropy alone does not.}
 \label{fig:latent}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.9\linewidth]{figures/fig4_p3r0_trajectory.png}
 \caption{Refinement steps change the latent state less as depth grows. Per-step displacement and direction consistency of the latent trajectory under fixed damping on the frozen GRU decoder. The concentration of small displacements at later steps motivates a step-size policy that reads entropy, displacement, and direction consistency at decision time.}
@@ -216,7 +217,7 @@ At fixed depth the compute is constant, so any EM change is a pure latent-dynami
 \subsection{Joint Control and One-Shot Evaluation (RQ3)}
 \label{sec:exp-joint}
 
-\begin{table}[t]
+\begin{table}[H]
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
@@ -238,7 +239,7 @@ $s_2$ & $+1.86$ & 0.5212 & $-0.16$ & $[-0.6, 0.0]$ & $\times$ \\
 
 Joint search (27 active dimensions, \S\ref{sec:method}) improves the inner compute ratio over the threshold by only 0.8--5.7\%, so the decisive question is transfer to held-out data (Figure~\ref{fig:confirm}). The preregistered one-shot evaluation in Table~\ref{tab:confirm} shows that the threshold policy passes non-inferiority on all three seeds, on $s_2$ only marginally with an LCB of $-0.4975$pp, 0.0025pp above the bound. The jointly optimized policies, despite favorable inner results such as $+0.52$pp at equal cost on $s_1$, fail on $s_1$ and $s_2$, and on $s_2$ lose the entire $+1.86$pp held-out gain of the plain threshold. Inner-subset gains of low-dimensional EC controllers do not transfer to the accuracy--compute frontier.
 
-\begin{figure}[t]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.9\linewidth]{figures/fig3_p3r3_confirm.png}
 \caption{One-shot confirmation separates retained gains from inner-subset gains. Held-out $\Delta$EM with 95\% group-cluster bootstrap intervals for the threshold halting policy (J1) and the joint EC policy (J4) on each seed. The dotted line marks the preregistered $-0.5$pp non-inferiority bound; J1 stays above it on all three seeds, with the $s_2$ interval approaching the bound.}

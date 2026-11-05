@@ -18,13 +18,13 @@
 | 引言 | 5 段 + 2 个列表（RQ、contributions），含预注册自辩与负面结果 | 6 段散文、24 句、544 词，无列表、无免责声明 |
 | 全文 `---` 破折号 | 13 行共 24 处 | 0 |
 | `check_draft.py`（摘要 + 引言） | `rc=1`，3 ERROR / 4 WARN | `rc=0`，**0 ERROR / 0 WARN / 0 NOTE** |
-| `check_figures.py` | 2 ERROR / 2 WARN / 2 NOTE | **0 ERROR / 0 WARN / 0 NOTE** |
+| `check_figures.py` | 2 ERROR / 2 WARN / 2 NOTE | **0 ERROR / 0 WARN / 1 NOTE**（唯一 NOTE 为技能风格偏好，按用户语义要求保留，见 §8.1） |
 | 一致性审计 | 132 / 79 项，0 FAIL | 132 / 79 项，0 FAIL |
-| 编译 | 8 页、0 undefined、**6 处 Overfull**（最大 145.5pt） | 8 页、497,231 bytes、0 undefined、**0 Overfull**、0 LaTeX error |
+| 编译 | 8 页、0 undefined、**6 处 Overfull**（最大 145.5pt） | 8 页、497,439 bytes、0 undefined、**0 Overfull**、0 LaTeX error |
 | 图件引用 | 2 / 4（`fig:latent`、`fig:confirm` 从未被引用） | 4 / 4 |
-| 图件位置 | 4 张全部堆在附录（PDF 第 7–8 页），正文只有 `\ref` | 移入正文：第 2 页（Figure 1，引言后 teaser）、第 5 页（Figure 2/3，RQ2）、第 6 页（Figure 4，RQ3）；附录不再有 figure 环境 |
+| 图件位置 | 4 张全部堆在附录（PDF 第 7–8 页），正文只有 `\ref` | 4 张全部移入 Experiments 对应小节并以 `[H]` 就地浮动：第 5 页（Figure 1 → RQ1、Figure 2/3 → RQ2）、第 6 页（Figure 4 → RQ3）；**Method 之前无任何图**，附录无 figure 环境 |
 
-> **第二轮修订（图件归位）**：初版把 4 张图全部留在附录，正文仅以 `\ref` 引用，与 ACL `formatting.md`「图表靠近首次讨论处」不符。本轮已按首次讨论位置把 4 张图移入正文，并消除 `check_figures.py` 的最后 1 个 NOTE。详见 §7、§8、§9、§11。
+> **第三轮修订（最终版，按用户反馈的语义归位）**：初版把 4 张图全部留在附录；第二轮虽移入正文，却把 `fig:pareto` 放在引言末当 teaser，使实验结果图出现在 Method 之前，被用户指出「必须 no figure before the method section」。本轮按用户要求对编译后的 PDF 逐页做视觉复核，把 4 张实验图全部收拢进 Experiments 各自对应的 RQ 小节，并改用 `[H]` 就地浮动，防止 LaTeX 浮动跨节漂移。最终 PDF 第 1–4 页（含全部 Method）无任何图；Figure 1 在第 5 页 RQ1 末尾，Figure 2/3 在第 5 页 RQ2，Figure 4 在第 6 页 RQ3。`check_figures.py` 因此重新出现 1 个 `no figure before the method section` NOTE：**这是技能对获奖论文版式的偏好，与用户「实验图不得出现在 Method 之前」的语义要求冲突，按用户要求保留，不再消除**。详见 §7、§8（含 §8.4 逐页视觉复核）、§9、§11。
 
 ---
 
@@ -81,10 +81,10 @@ Cards: mip-nerf.md（rule-out / cost 段）
 |---|---|---|---|---|
 | C1 | 大多数 token 在首个 refinement 后预测稳定 | gate split 四向转移统计（Table 1 前文 / §3.1） | "Most tokens already carry the correct prediction after the base step." | 摘要句 2 / 引言第 1 段 |
 | C2 | 已有 halting 方法假设可训练、并按预测深度计成本 | `graves2016adaptive` 等 | "train a gate inside the network, so their savings are predicted exit depths rather than executed calls" | 摘要句 3 / 引言第 2 段 |
-| C3 | 因果置信度阈值可在冻结模型上保留精度并大幅省算力 | Table 1、Table 3、Figure 1 | "retains exact-match accuracy at 25.7% / 52.1% of executed calls" | 摘要句 6 / 引言第 5 段 / §5.3 |
-| C4 | 精确调用计数使节省量成为可审计量 | §4.3 单元测 + 运行时拦截 | "Exact call counting therefore turns a compute ratio into an audited quantity." | 引言第 4 段 / §4.3 |
-| C5 | EC 步长策略在固定深度改进 latent 更新 | Table 2、Figure 2 | "outperform the original update by up to +2.1pp" | 摘要句 8 / 引言第 5 段 / §5.4 |
-| C6 | 联合策略的内层增益不迁移到 held-out | Table 3、Figure 3 | 「未进入摘要/引言」，仅在 §5.5、§5.6、Limitations 报告 | §5.5 / §5.6 |
+| C3 | 因果置信度阈值可在冻结模型上保留精度并大幅省算力 | Table 1、Figure 1 | "retains exact-match accuracy at 25.7% / 52.1% of executed calls" | 摘要句 6 / 引言第 5 段 / §4.3 |
+| C4 | 精确调用计数使节省量成为可审计量 | §3.3 计数器定义 + §4.2 单元测与运行时拦截 | "Exact call counting therefore turns a compute ratio into an audited quantity." | 引言第 4 段 / §3.3、§4.2 |
+| C5 | EC 步长策略在固定深度改进 latent 更新 | Table 2、Figure 2 | "outperform the original update by up to +2.1pp" | 摘要句 8 / 引言第 5 段 / §4.4 |
+| C6 | 联合策略的内层增益不迁移到 held-out | Table 3、Figure 4 | 「未进入摘要/引言」，仅在 §4.5、§4.6、Limitations 报告 | §4.5 / §4.6 |
 | C7 | 冻结模型上控制器复杂度预算应投向核算与确认 | C3 + C4 + C6 | stance，用 "Our stance is that …" | 引言第 6 段 / 结论 |
 
 > 技能要求「每个 claim 只出现在一个段落」：C6（负面结果）被整体排除在摘要与引言之外，是本次改写最大的立场调整，逐条去向见 §4。
@@ -130,8 +130,8 @@ Cards: mip-nerf.md（rule-out / cost 段）
 | 3 | "Our investigation was governed by preregistered protocols … an earlier internal result … invalidated … several initially promising conclusions do not survive …" | 换成观察句 + 方法句 + 「executor 从不计算它决定跳过的步骤」的机制句 | 原段是预注册自辩与负面结果，属硬规则禁止内容；改为 insight → method（C:V4） |
 | 4 | 无（原稿只有 RQ itemize） | "In contrast to learned halting … our procedure changes what is measured as much as what is decided." + 可核验差异（forced-depth、gate 0 零调用） | 方法论文必须写与最相近工作的机制级对比（`introduction.md` §2b.5、§2 tier "common"） |
 | 5 | 无独立结果段（散在 contributions itemize） | 25.7% / 52.1% + 3/3 非劣效 + EC 固定深度 +2.1pp | Results 作为 claim 出现（`introduction.md` §2 tier "always"），且不与 contributions 重复 |
-| 6 | "We deliberately avoid claims that EC ``learned input-dependent dynamics'' or that our held-out split is untouched data …" | stance + 「两个控制维度分开研究」的范围句 + 指向 Figure 1 | 移除免责声明；用 stance 收尾（`introduction.md` §2b.7、§4） |
-| — | RQ1/RQ2/RQ3 itemize + contributions itemize（共 6 条） | 全部删除；三条问题改为 §5 开头的 E0 roadmap | "Say each thing once"（§2b.10）；列表与结果段重复是审稿最常见问题 |
+| 6 | "We deliberately avoid claims that EC ``learned input-dependent dynamics'' or that our held-out split is untouched data …" | stance + 「两个控制维度分开研究」的范围句 + 前引用 Figure 1（图实体在 §4.3 RQ1，不在引言） | 移除免责声明；用 stance 收尾（`introduction.md` §2b.7、§4） |
+| — | RQ1/RQ2/RQ3 itemize + contributions itemize（共 6 条） | 全部删除；三条问题改为 §4 开头的 E0 roadmap | "Say each thing once"（§2b.10）；列表与结果段重复是审稿最常见问题 |
 
 ### 3.4 其余章节改动要点
 
@@ -152,15 +152,15 @@ Cards: mip-nerf.md（rule-out / cost 段）
 
 | 被移出的内容 | 新位置 |
 |---|---|
-| "only two of nine such policies satisfy the confidence-bound non-inferiority criterion" | §5.3 RQ1 正文（保留审计所需字面串 `two of the nine evolutionary policies`）、Table 1 caption、Figure 1 caption |
-| "Equal-budget evolutionary optimizers add at most 1--2\% further savings" | §5.3 RQ1 正文、结论 |
-| "on every seed at least one optimizer beats same-budget random search, though no single optimizer does so consistently" | §5.4 RQ2 正文（保留审计所需 `at least one optimizer` / `no single optimizer`） |
-| "reduced-feature ablations show the full input state is unnecessary … an entropy-only policy does not" | §5.4 RQ2 正文、Table 2、Limitations |
-| "one-shot confirmation of joint policies fails … on two of three seeds" | §5.5 RQ3 正文、§5.6 (ii)、Limitations |
-| "one threshold pass only 0.0025pp above the bound" / LCB $-0.4975$pp / CI $[-0.50, +7.43]$ | Table 3 caption（保留 `-0.4975`、`7.43`、`0.0025`、`marginally`）与 §5.5 正文 |
-| "earlier internal result … invalidated by an audit that revealed look-ahead execution" | §5.6 (i) Negative Results and Deviations |
-| "We deliberately avoid claims that EC learned input-dependent dynamics … held-out split is untouched" | §5.6 (iv) 数据使用审计、Limitations |
-| 25.7–25.8% / 52.1% / +2.1pp | 摘要与引言只保留 headline 数字；完整逐 seed 数值在 Table 1–3、§5、结论 |
+| "only two of nine such policies satisfy the confidence-bound non-inferiority criterion" | §4.3 RQ1 正文（保留审计所需字面串 `two of the nine evolutionary policies`）、Table 1 caption、Figure 1 caption |
+| "Equal-budget evolutionary optimizers add at most 1--2\% further savings" | §4.3 RQ1 正文、结论 |
+| "on every seed at least one optimizer beats same-budget random search, though no single optimizer does so consistently" | §4.4 RQ2 正文（保留审计所需 `at least one optimizer` / `no single optimizer`） |
+| "reduced-feature ablations show the full input state is unnecessary … an entropy-only policy does not" | §4.4 RQ2 正文、Table 2、Limitations |
+| "one-shot confirmation of joint policies fails … on two of three seeds" | §4.5 RQ3 正文、§4.6 (ii)、Limitations |
+| "one threshold pass only 0.0025pp above the bound" / LCB $-0.4975$pp / CI $[-0.50, +7.43]$ | Table 3 caption（保留 `-0.4975`、`7.43`、`0.0025`、`marginally`）与 §4.5 正文 |
+| "earlier internal result … invalidated by an audit that revealed look-ahead execution" | §4.6 (i) Negative Results and Deviations |
+| "We deliberately avoid claims that EC learned input-dependent dynamics … held-out split is untouched" | §4.6 (iv) 数据使用审计、Limitations |
+| 25.7–25.8% / 52.1% / +2.1pp | 摘要与引言只保留 headline 数字；完整逐 seed 数值在 Table 1–3、§4、结论 |
 
 ---
 
@@ -191,7 +191,7 @@ Cards: mip-nerf.md（rule-out / cost 段）
 - Table 2（`tab:latent`）的 `+0.52` / `+0.00` 消融值；Table 3（`tab:confirm`）的 CI 端点 `[0.0, 0.0]`、`[-1.0, 0.0]`、`[-0.6, 0.0]`。
 - 审计要求必须存在的字面串：`two of the nine evolutionary policies`、`at least one optimizer`、`no single optimizer`、`25.7`、`52.1`、`e_1`、`-0.4975`、`7.43`、`0.0025`。
 - 审计禁止出现的字面串：`25.7\% of the compute of the deepest fixed depth on three`、`roughly a quarter of the deepest compute on all three seeds`、`while remaining non-inferior (except`、`consistently beat same-budget random search`（均未出现）。
-- 所有 `\label`（26）、`\ref`（27）、`\cite`（25）、4 个 `equation` 的 `\label`、4 个 `figure` 的 `\includegraphics` 路径、14 条参考文献键。
+- 所有 `\label`（26）、`\ref` / `\eqref` / `\S\ref`（25）、`\cite`（25）、4 个 `equation` 的 `\label`、4 个 `figure` 的 `\includegraphics` 路径、14 条参考文献键。
 - 未编辑 `scripts/`、`runs/`、`configs/`、`results/`、`acl.sty`、`acl_natbib.bst`。
 
 Table 2 中作为「无数据」标记的 3 个 `---` 改为 `n/a`（不影响任何审计项，且使全文零 em dash）。
@@ -209,11 +209,12 @@ Table 2 中作为「无数据」标记的 3 个 `---` 改为 `n/a`（不影响�
 | run-in heading 断行 badness 10000 | `\paragraph{Evaluation and confirmation protocols.}` 缩短为 `\paragraph{Confirmation protocols.}` |
 | 通用断行 | preamble 增加 `\emergencystretch=1.5em` |
 | 图 caption 过短 / 无 takeaway | 4 个 caption 改为 takeaway-first，字数落在获奖论文 p10–p90（Figure 1 需 32–100 词），首句均 ≤ 20 词，且无 dash |
-| 图未被引用 | 在 §5.3、§5.4、§5.5、附录显式引用 `fig:pareto` / `fig:latent` / `fig:traj` / `fig:confirm` |
+| 图未被引用 | 在 §4.3、§4.4、§4.5 各自的讨论段落内显式引用 `fig:pareto` / `fig:latent` / `fig:traj` / `fig:confirm`；附录的图件枚举句已删除 |
 | 摘要超 ACL 上限 | 241 → 188 可见词（≤ 200） |
 | 匿名性 | `\usepackage[review]{acl}`、`\author{Anonymous Authors}`、无 acknowledgements，保持不变 |
 | 页数 | 保持 8 页（review 版正文上限），references 与 appendix 不受限 |
-| 4 张图全部堆在附录 | 按首次讨论位置移入正文：`fig:pareto` 置于引言末（Figure 1 teaser，PDF 第 2 页）、`fig:latent` 与 `fig:traj` 置于 RQ2（第 5 页）、`fig:confirm` 置于 RQ3（第 6 页）；附录不再出现 figure 环境；图编号由 LaTeX 自动重排为 1–4 |
+| 4 张图全部堆在附录 | 全部移入 Experiments：`fig:pareto` → §4.3 RQ1（第 5 页）、`fig:latent` / `fig:traj` → §4.4 RQ2（第 5 页）、`fig:confirm` → §4.5 RQ3（第 6 页）；附录不再有 figure 环境 |
+| 第二轮把实验图漂到 Method 之前 | 引入 `\usepackage{float}`，4 个 figure 与 3 个 table 全部改为 `[H]` 就地浮动，禁止 LaTeX 跨节浮动；逐页视觉复核确认第 1–4 页无图 |
 
 ---
 
@@ -227,11 +228,12 @@ check_draft.py introduction.tex  OK: no issues found
                                  0 error(s), 0 warning(s), 0 note(s)
 check_draft.py body_check.tex    0 error(s), 0 warning(s), 2 note(s)   # 补充检查，正文首 section 为 Method
 check_figures.py main.tex        4 figures, 3 tables
-                                 0 error(s), 0 warning(s), 0 note(s)
+                                 0 error(s), 0 warning(s), 1 note(s)
+                                 NOTE no figure before the method section (retained by request)
 ```
 
 补充检查的 2 个 NOTE 均为 `NOTE_PHRASES` 的 `\bthe first\b`「请确认范围」提示（"the first refinement"、"the first 64 examples"），非风格问题。
-`check_figures.py` 在图件归位后已降到 0 / 0 / 0（初版 2 ERROR / 2 WARN / 2 NOTE；第一轮改写后残留 1 个 `no figure before the method section` NOTE，现已消除）。
+`check_figures.py` 最终为 `0 / 0 / 1`（初版 2 ERROR / 2 WARN / 2 NOTE）。唯一 NOTE 是 `no figure before the method section; award papers put Figure 1 on page 1 (two-column) or 2 (one-column)`，出自技能对获奖论文版式的偏好。用户明确指出这 4 张都是 Experiments 的结果图、Method 之前不得出现图，因此**按用户语义要求保留该 NOTE，不再为了凑 0 / 0 / 0 把 Figure 1 移回引言**。技能偏好与作者意图冲突时以作者意图为准。
 
 ### 8.2 风格指标（55 篇获奖论文语料分位）
 
@@ -253,31 +255,49 @@ scripts/manuscript_consistency_audit.py   ==== 132 checks, 0 FAIL ====   (基线
 scripts/wrapup_consistency_audit.py       ====  79 checks, 0 FAIL ====   (基线  79 / 0)
 
 pdflatex → bibtex → pdflatex ×2
-Output written on main.pdf (8 pages, 497231 bytes)
+Output written on main.pdf (8 pages, 497439 bytes)
 undefined citations/references : 0
 LaTeX errors (! ...)           : 0
 Overfull \hbox                : 0        (基线 6，最大 145.4911pt)
-Underfull                      : 7        (基线 7；其中 3 处来自 main.bbl / acl_natbib.bst，
-                                          2 处为页面填充 vbox，1 处引言轻微断行 badness 1127，
-                                          1 处 Figure 1 caption 断行 badness 1442)
+Underfull                      : 7        (基线同为 7；其中 2 处为页面填充 Underfull \vbox，
+                                          1 处引言轻微断行 badness 1127，
+                                          1 处 Figure 1 caption 断行 badness 1442，
+                                          其余 3 处来自 main.bbl / 参考文献断行)
 ```
 
-正文（Introduction 至 Limitations）结束于第 6 页，References 在第 7 页，附录材料在第 7–8 页。4 张图分别落在第 2、5、5、6 页，与各自讨论段落同页或相邻一页；附录不再有图件。
+正文（Introduction 至 Limitations）结束于第 7 页上半，References 在第 7 页，附录材料在第 7–8 页。**第 1–4 页（含 Introduction、Related Work 与全部 Method）没有任何 figure 环境**；4 张图分别落在第 5、5、5、6 页，全部位于 Experiments 内各自讨论段落中；附录不再有图件。逐页视觉复核见 §8.4。
 
-基线 `check_figures.py` 实测为 `2 ERROR（fig:latent / fig:confirm 从未被引用）/ 2 WARN（caption 过短）/ 2 NOTE`；现已降到 `0 / 0 / 0`。
+基线 `check_figures.py` 实测为 `2 ERROR（fig:latent / fig:confirm 从未被引用）/ 2 WARN（caption 过短）/ 2 NOTE`；最终版为 `0 / 0 / 1`，唯一 NOTE 按用户要求保留，见 §8.1。
+
+### 8.4 逐页视觉复核（用户明确要求）
+
+用 `pdftoppm -png -r 90 main.pdf` 把最终 PDF 渲染成 8 张页面图，逐页目视检查图件实体位置（不只看源码顺序或脚本输出）。结果：
+
+| 页 | 内容 | figure 环境 |
+|---|---|---|
+| 1 | 标题、摘要、Introduction 开头 | 0 |
+| 2 | Introduction 末、Related Work、§3 Method 开头 | 0 |
+| 3 | Method §3.1–§3.5（公式与正文） | 0 |
+| 4 | Method 尾、§4 Experiments、§4.1、§4.2、§4.3 RQ1 + Table 1 | 0 |
+| 5 | RQ1 正文末 + **Figure 1**、§4.4 RQ2 + Table 2 + **Figure 2 + Figure 3** | 3 |
+| 6 | §4.5 RQ3 + Table 3 + **Figure 4**、§4.6、§5 Conclusion | 1 |
+| 7 | Conclusion 尾、Limitations、References、Appendix A | 0 |
+| 8 | Appendix A 尾、Appendix B | 0 |
+
+结论：Method（§3，位于第 2–4 页）之前没有任何 figure；4 张实验图全部落在 Experiments 对应小节的讨论段落内；附录无图。第二轮错误版曾把 Figure 1 渲染在第 2 页 Introduction 与 Related Work 之间，本轮已消除。
 
 ---
 
 ## 9. Figure plan（Step 5c / Step 8）
 
-用户已有 4 张真实 PNG，技能规定「不虚构图内容」，因此全部为 **existing / 无需补绘**。初版把 4 张图全部放在附录；本轮已按首次讨论位置移入正文，caption 与 `\ref` 保持，图编号由 LaTeX 自动重排。
+用户已有 4 张真实 PNG，技能规定「不虚构图内容」，因此全部为 **existing / 无需补绘**。初版把 4 张图全部放在附录；第二轮错误地把 `fig:pareto` 放到引言末；**最终版按用户反馈把 4 张实验图全部收拢进 Experiments 各自对应的 RQ 小节**，caption、`\ref` 与 PNG 路径不变，图编号由 LaTeX 自动重排为 1–4，并用 `[H]` 就地浮动锁定位置。
 
 | Figure | 承载 claim | 类型 | 面板 / 材料 | 状态 | caption takeaway |
 |---|---|---|---|---|---|
-| 1 `fig:pareto`（引言末 / 第 2 页；正文 §5.3 与引言引用） | C3：置信度阈值到达精度–算力前沿 | contrast-results / EM–compute 散点 | 3 个 seed × (threshold, GA, DE, sep-CMA)；数据来自 `p2r1_*` JSON | existing | "Causal confidence halting reaches the accuracy--compute frontier with a two-stage threshold." |
-| 2 `fig:latent`（§5.4 RQ2 末 / 第 5 页） | C5：固定深度下步长策略改进 EM | 分组柱状 / 内层 EM 增益 | 3 seed × 4 optimizer + A/B/C 消融 | existing | "Step-size policies improve fixed-depth exact match at constant compute." |
-| 3 `fig:traj`（§5.4 RQ2 末 / 第 5 页） | 机制动机：随深度增大位移变小 | 轨迹统计图 | 固定 damping 下的位移与方向一致性 | existing | "Refinement steps change the latent state less as depth grows." |
-| 4 `fig:confirm`（§5.5 RQ3 末 / 第 6 页） | C6：一次性确认区分保留增益与内层增益 | 置信区间图 | J1 / J4 × 3 seed，$-0.5$pp 虚线 | existing | "One-shot confirmation separates retained gains from inner-subset gains." |
+| 1 `fig:pareto`（§4.3 RQ1 末 / 第 5 页；正文 §4.3 引用，引言仅前引用） | C3：置信度阈值到达精度–算力前沿 | contrast-results / EM–compute 散点 | 3 个 seed × (threshold, GA, DE, sep-CMA)；数据来自 `p2r1_*` JSON | existing | "Causal confidence halting reaches the accuracy--compute frontier with a two-stage threshold." |
+| 2 `fig:latent`（§4.4 RQ2 内 / 第 5 页） | C5：固定深度下步长策略改进 EM | 分组柱状 / 内层 EM 增益 | 3 seed × 4 optimizer + A/B/C 消融 | existing | "Step-size policies improve fixed-depth exact match at constant compute." |
+| 3 `fig:traj`（§4.4 RQ2 内 / 第 5 页） | 机制动机：随深度增大位移变小 | 轨迹统计图 | 固定 damping 下的位移与方向一致性 | existing | "Refinement steps change the latent state less as depth grows." |
+| 4 `fig:confirm`（§4.5 RQ3 内 / 第 6 页） | C6：一次性确认区分保留增益与内层增益 | 置信区间图 | J1 / J4 × 3 seed，$-0.5$pp 虚线 | existing | "One-shot confirmation separates retained gains from inner-subset gains." |
 
 > 每张图承载一个 claim、每个主 claim 有图或表（C1→§3.1、C3→Table 1 + Fig 1、C5→Table 2 + Fig 2、C6→Table 3 + Fig 4；Fig 3 为步长策略提供机制动机）。
 > 未新增占位图：技能要求结果图在作者提供材料前保持占位，但本项目已有真实结果图，故直接沿用。
@@ -286,7 +306,7 @@ Underfull                      : 7        (基线 7；其中 3 处来自 main.bb
 
 ## 10. Limitations 备注（按技能要求，为作者保留的弱点清单）
 
-以下内容按硬规则**刻意留在** Limitations / §5.6，未进入摘要与引言：
+以下内容按硬规则**刻意留在** Limitations / §4.6，未进入摘要与引言：
 
 1. held-out fold 曾用于另一条实验线的内部开发报告，与早期阈值开发子集每 seed 重叠 51 个样本 ID；本次是「历史上暴露过的 split 上对冻结策略的一次性评估」，不是纯净数据上的确认。
 2. 结果来自单一数据集、单一小型 GRU、深度 ≤ 3、单一 optimizer seed；optimizer 对比为探索性。
@@ -300,10 +320,10 @@ Underfull                      : 7        (基线 7；其中 3 处来自 main.bb
 
 ## 11. 剩余项、风险与 TODO
 
-1. **已解决（第二轮修订）**：`check_figures.py` 的 `no figure before the method section` NOTE 已消除。4 张图已从附录移入正文：`fig:pareto` 作为 Figure 1 放在引言末（PDF 第 2 页，符合技能「one-column 时 Figure 1 在第 2 页」的建议），其余 3 张放在 RQ2 / RQ3 各自讨论段落旁，仍保持 8 页与 0 Overfull。若作者最终版希望把 Figure 1 做成首页跨双栏 `figure*`，需同步复核页数与浮动顺序。
-2. **7 处 Underfull 警告**：其中 3 处来自 `main.bbl`（`acl_natbib.bst` 生成，README 禁止修改），2 处为双栏页面填充 `Underfull \vbox`，1 处为引言轻微断行（badness 1127），1 处为 Figure 1 caption 首行（badness 1442）。均为警告级，不影响排版正确性；`badness 10000` 的 run-in heading 断行已消除。
+1. **第三轮修订（最终版，按用户反馈）**：用户指出「必须 no figure before the method section」，并要求用视觉模块检查 PDF。复核发现第二轮把 `fig:pareto` 放在引言末，确实让实验结果图出现在 Method 之前，是错误做法。现已把 4 张图全部移入 Experiments（RQ1 / RQ2 / RQ3），并用 `[H]` 就地浮动锁定位置；`check_figures.py` 因此回到 `0 / 0 / 1`，唯一 NOTE 是技能对获奖论文版式的偏好，与作者语义要求冲突，**按作者要求保留，不再消除**。仍为 8 页、0 Overfull。
+2. **7 处 Underfull 警告**：2 处为双栏页面填充 `Underfull \vbox`（`[H]` 就地浮动会在栏底留下少量空白，这是保证图不跨节漂移的代价），1 处为引言轻微断行（badness 1127），1 处为 Figure 1 caption 首行（badness 1442），其余 3 处来自 `main.bbl` / 参考文献断行（`acl_natbib.bst` 生成，README 禁止修改）。均为警告级，不影响排版正确性。
 3. **标题立场变化**：原标题强调 "Mechanism Ablations, and Negative Results"，新标题按技能规则命名机制并去掉负面结果。若作者希望保留「负面结果也是贡献」的定位，请在投稿前决定是否恢复副标题（恢复后需重跑 `check_draft.py`，因为标题本身不在检查范围内，但摘要/引言仍需保持无负面结果）。
-4. **技能与论文原立场的冲突**：用户已选择「严格按技能硬规则」，因此摘要/引言不写局限与负面结果；所有事实仍完整保留在 §5.6 与 Limitations。若会议/审稿方要求摘要披露负面结论，请告知，我可按温和路线回调。
+4. **技能与论文原立场的冲突**：用户已选择「严格按技能硬规则」，因此摘要/引言不写局限与负面结果；所有事实仍完整保留在 §4.6 与 Limitations。若会议/审稿方要求摘要披露负面结论，请告知，我可按温和路线回调。
 5. **补充检查的 2 个 NOTE**：仅为 `the first` 的范围提示，无风格问题。
 6. **未做的事**：未改动任何实验数据、脚本、模板样式文件；未生成新图；未新增引用；未创建 `[TODO]` 占位（原稿机制与数据完整）。
 7. **`\S\textit{Limitations}`** 指向非编号 section，正式投稿前可考虑加 `\label` 改成正式交叉引用。
@@ -317,8 +337,12 @@ Underfull                      : 7        (基线 7；其中 3 处来自 main.bb
 | 原始 `paper/acl/` 全文备份（13 文件，改写前） | `Mitral-trm-ec-main\_backup\paper_acl_original\` |
 | 天然完整回滚源（未修改） | `Mitral-trm-ec-main.zip`（290,099,365 bytes / 1651 files） |
 | 改写后的主文件 | `Mitral-trm-ec-main\paper\acl\main.tex` |
-| 编译产物 | `Mitral-trm-ec-main\paper\acl\main.pdf`（8 页，497,231 bytes），另有 `main.log` / `main.bbl` / `main.aux` |
+| 编译产物 | `Mitral-trm-ec-main\paper\acl\main.pdf`（8 页，497,439 bytes），另有 `main.log` / `main.bbl` / `main.aux` |
 | 本对照报告 | `Mitral-trm-ec-main\report.md` |
-| GitHub 分支 / PR | 分支 `paper/acl-polish`（基于 `main`）→ [PR #5](https://github.com/TianZH-XJU/Mitral-trm-ec/pull/5) → `main`；图件 PNG 为仓库既有资源，路径未变 |
+| GitHub 分支 / PR | 分支 `paper/acl-polish`（基于 `main`）→ [PR #5](https://github.com/TianZH-XJU/Mitral-trm-ec/pull/5) → `main`；**已同步第三轮修正**（`main.tex` / `main.pdf` / `report.md` 与 PR 描述）；图件 PNG 为仓库既有资源，路径未变 |
 
 **回滚方式**：把 `_backup\paper_acl_original\` 中的 13 个文件复制回 `paper\acl\` 覆盖，再重跑 `pdflatex → bibtex → pdflatex ×2` 即可回到基线（zip 可作为完整项目级回滚源）。项目内无 `.git`，请勿依赖 `git checkout --`。
+
+### 第三轮同步说明
+
+用户反馈原文：「必须no figure before the method section 你自己看看你排版排的什么，你用你的视觉模块进行检查，这些图片不都是experiment才有的，你自己排版放到对应位置里面去」。据此把 4 张图全部归位到 Experiments 并做逐页视觉复核；本地 `main.tex` / `main.pdf` 与本报告随后一并推送到 `paper/acl-polish`，PR #5 的标题与描述同步改写，删除「Figure 1 是引言末 teaser / 第 2 页」等错误表述。
