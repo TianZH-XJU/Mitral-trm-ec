@@ -106,11 +106,21 @@ def main():
             abs(d["em_vs_alpha1"] - dv) < 5e-5
             and d["budget_used"] == 336,
             f'{d["em_vs_alpha1"]} {d["budget_used"]}')
+    # corrected-mask ablations (see deviations P4): A=+0.52,
+    # B(only H)=+0.00 (does NOT reproduce), C(only D,A)=+0.52
+    abl_exp = {"A": 0.0052, "B": 0.0, "C": 0.0052}
+    abl_mask = {"A": [0, 0, 0, 1], "B": [1, 0, 0, 0],
+                "C": [0, 1, 1, 0]}
     for abl in ("A", "B", "C"):
-        f = glob.glob(f"{p3r1}/p3r1_*_s0_GA_abl{abl}.json")[0]
+        f = [x for x in glob.glob(
+            f"{p3r1}/p3r1_*_s0_GA_abl{abl}.json")
+            if "archive" not in x][0]
         d = load(f)
         chk(f"p3r1_abl{abl}",
-            abs(d["em_vs_alpha1"] - 0.0052) < 5e-5)
+            abs(d["em_vs_alpha1"] - abl_exp[abl]) < 5e-5)
+        chk(f"p3r1_abl{abl}_mask",
+            d.get("mask") == abl_mask[abl],
+            str(d.get("mask")))
     # ---- P3-R-2
     p3r2 = "runs/gate_exp/p3r/p3r2"
     ex2 = {("0", "GA"): 0.2640, ("0", "DE"): 0.2662,

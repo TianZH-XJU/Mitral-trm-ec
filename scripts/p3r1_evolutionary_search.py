@@ -24,8 +24,11 @@ os.makedirs(OUT, exist_ok=True)
 BUDGET = 336
 OPT_SEED = 0
 DIM = 5
-MASKS = {"A": [0, 0, 0, 1], "B": [0, 1, 0, 0],
-         "C": [0, 0, 1, 1], "D": [1, 1, 1, 1]}
+# feature order in alpha_from_policy: (H, D, A, t/T)
+# audit fix 2026-11-05: masks must match preregistered labels
+# A=only t/T; B=only H; C=only (D,A); D=full
+MASKS = {"A": [0, 0, 0, 1], "B": [1, 0, 0, 0],
+         "C": [0, 1, 1, 0], "D": [1, 1, 1, 1]}
 
 
 def atomic_save(obj, path):

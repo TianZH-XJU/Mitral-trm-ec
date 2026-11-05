@@ -7,7 +7,7 @@ cd paper/acl
 tectonic main.tex          # 或 pdflatex + bibtex + pdflatex x2
 ```
 
-- 已用 tectonic 0.17.0 编译通过：6 页，无错误，无未定义引用
+- 已用 tectonic 0.17.0 编译通过：7 页，无错误，无未定义引用
   （仅少量 underfull hbox 排版警告，属初稿正常状态）；
 - 图：`figures/`（4 张 PNG，来自仓库 docs/research_report/figures/，
   其数值均通过 scripts/wrapup_consistency_audit.py 76 项核对）；
