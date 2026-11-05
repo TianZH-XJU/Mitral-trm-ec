@@ -169,7 +169,9 @@ def main():
                         'seed': OPT_SEED, 'verbose': -9,
                         'bounds': [-5, 5],
                         'tolstagnation': 999})
-                while not es.stop() and len(hist) < BUDGET:
+                # prereg: exact 336 evals; ignore library stop
+                # criteria (tolstagnation etc.) until budget reached
+                while len(hist) < BUDGET:
                     sols = es.ask()
                     fs = []
                     for x in sols:
