@@ -1,0 +1,10 @@
+s0 RS: done, skip
+s0 GA: done, skip
+s0 DE: done, skip
+/home/appuser/.local/lib/python3.12/site-packages/cma/s.py:17: UserWarning: Could not import matplotlib.pyplot, therefore ``cma.plot()`` etc. is not available
+  _warnings.warn('Could not import matplotlib.pyplot, therefore'
+s0 sepCMA: best EM=0.8646 (vs alpha1 +0.0000) (704s)
+s0 GA_ablA: best EM=0.8698 (vs alpha1 +0.0052) (2527s)
+s0 GA_ablB: best EM=0.8698 (vs alpha1 +0.0052) (2488s)
+s0 GA_ablC: best EM=0.8698 (vs alpha1 +0.0052) (2475s)
+P3-R-1 DONE

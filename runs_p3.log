@@ -1,0 +1,7 @@
+seed0 RuleGA: diff=+0.0000 nc=0.253 (2081s)
+seed0 MLP-GA: diff=+0.0041 nc=0.500
+seed1 RuleGA: diff=-0.0059 nc=0.254 (7193s)
+seed1 MLP-GA: diff=+0.0000 nc=0.500
+seed2 RuleGA: diff=-0.0047 nc=0.503 (12471s)
+seed2 MLP-GA: diff=-0.0023 nc=0.500
+P3 DONE 15501.200008392334 s

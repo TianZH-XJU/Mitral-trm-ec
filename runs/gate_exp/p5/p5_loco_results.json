@@ -1,0 +1,107 @@
+{
+ "0": {
+  "categories": {
+   "in_distribution": {
+    "n": 482,
+    "EM": 0.9605809128630706,
+    "fixed_EM": 0.9605809128630706,
+    "em_diff": 0.0,
+    "N_cell": 52.49377593360996,
+    "policy_correct": 463,
+    "fixed_correct": 463
+   },
+   "primitive": {
+    "n": 1,
+    "EM": 0.0,
+    "fixed_EM": 0.0,
+    "em_diff": 0.0,
+    "N_cell": 59.0,
+    "policy_correct": 0,
+    "fixed_correct": 0
+   },
+   "exposure_example_obj_omitted_transitive": {
+    "n": 1,
+    "EM": 0.0,
+    "fixed_EM": 0.0,
+    "em_diff": 0.0,
+    "N_cell": 44.0,
+    "policy_correct": 0,
+    "fixed_correct": 0
+   }
+  },
+  "worst_group": {
+   "cat": "in_distribution",
+   "em_diff": 0.0,
+   "n": 482
+  },
+  "best_group": {
+   "cat": "in_distribution",
+   "em_diff": 0.0
+  },
+  "n_cats_neg": 0
+ },
+ "1": {
+  "categories": {
+   "in_distribution": {
+    "n": 510,
+    "EM": 0.9764705882352941,
+    "fixed_EM": 0.9764705882352941,
+    "em_diff": 0.0,
+    "N_cell": 58.8,
+    "policy_correct": 498,
+    "fixed_correct": 498
+   }
+  },
+  "worst_group": {
+   "cat": "in_distribution",
+   "em_diff": 0.0,
+   "n": 510
+  },
+  "best_group": {
+   "cat": "in_distribution",
+   "em_diff": 0.0
+  },
+  "n_cats_neg": 0
+ },
+ "2": {
+  "categories": {
+   "in_distribution": {
+    "n": 425,
+    "EM": 0.9694117647058823,
+    "fixed_EM": 0.971764705882353,
+    "em_diff": -0.0023529411764706687,
+    "N_cell": 87.90823529411765,
+    "policy_correct": 412,
+    "fixed_correct": 413
+   },
+   "primitive": {
+    "n": 1,
+    "EM": 0.0,
+    "fixed_EM": 0.0,
+    "em_diff": 0.0,
+    "N_cell": 27.0,
+    "policy_correct": 0,
+    "fixed_correct": 0
+   },
+   "exposure_example_obj_omitted_transitive": {
+    "n": 1,
+    "EM": 0.0,
+    "fixed_EM": 0.0,
+    "em_diff": 0.0,
+    "N_cell": 36.0,
+    "policy_correct": 0,
+    "fixed_correct": 0
+   }
+  },
+  "worst_group": {
+   "cat": "in_distribution",
+   "em_diff": -0.0023529411764706687,
+   "n": 425
+  },
+  "best_group": {
+   "cat": "primitive",
+   "em_diff": 0.0
+  },
+  "n_cats_neg": 1
+ }
+}

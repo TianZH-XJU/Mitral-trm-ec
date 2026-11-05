@@ -1,0 +1,7 @@
+seed0 NSGA2: front=9 feas_in=9 minnc=0.24779924568589348 hv=-0.014 outer_best=True (4156s)
+seed0 MODE: front=13 feas_in=13 minnc=0.24796794092321295 hv=0.060 outer_best=True (8031s)
+seed1 NSGA2: front=16 feas_in=16 minnc=0.25096827982919456 hv=0.112 outer_best=True (11879s)
+seed1 MODE: front=16 feas_in=16 minnc=0.25096827982919456 hv=0.123 outer_best=False (15580s)
+seed2 NSGA2: front=4 feas_in=4 minnc=0.25891721252236954 hv=0.014 outer_best=True (19377s)
+seed2 MODE: front=3 feas_in=3 minnc=0.2603011861606938 hv=0.139 outer_best=True (23148s)
+P4 DONE 23148.42996263504 s

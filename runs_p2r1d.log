@@ -1,0 +1,26 @@
+seed0: frozen best depth=e3, inner=256, outer=645
+  thr control: diff=+0.0000 ratio=0.2575 CI=[np.float64(0.0), np.float64(0.0)]
+  sepCMA: done, skip
+  GA (kept): outer diff=-0.0031 ratio=0.2563 CI=[np.float64(-0.00990099009900991), np.float64(0.0)]
+/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r_causal_decoder.py:123: RuntimeWarning: overflow encountered in exp
+  p1 = float(1 / (1 + np.exp(-(w1 @ x1 + b1))))
+  DE (kept): outer diff=-0.0016 ratio=0.2563 CI=[np.float64(-0.008310249307479256), np.float64(0.004739336492891044)]
+seed1: frozen best depth=e3, inner=256, outer=645
+  thr control: diff=+0.0000 ratio=0.2570 CI=[np.float64(0.0), np.float64(0.0)]
+/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r_causal_decoder.py:97: RuntimeWarning: overflow encountered in exp
+  p0 = float(1 / (1 + np.exp(-(w0 @ x0 + b0))))
+  GA: train_em=0.8438 train_ratio=0.2547 outer diff=-0.0047 ratio=0.2537 CI_em=[np.float64(-0.013574660633484115), np.float64(0.0)] CI_ratio=[np.float64(0.2522804677638317), np.float64(0.25593076382380503)] (1921s)
+  DE: train_em=0.8477 train_ratio=0.2544 outer diff=-0.0047 ratio=0.2530 CI_em=[np.float64(-0.013574660633484115), np.float64(0.0)] CI_ratio=[np.float64(0.25175579023470784), np.float64(0.2550429481850928)] (2421s)
+/home/appuser/.local/lib/python3.12/site-packages/cma/s.py:17: UserWarning: Could not import matplotlib.pyplot, therefore ``cma.plot()`` etc. is not available
+  _warnings.warn('Could not import matplotlib.pyplot, therefore'
+/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r_causal_decoder.py:97: RuntimeWarning: overflow encountered in exp
+  p0 = float(1 / (1 + np.exp(-(w0 @ x0 + b0))))
+/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r_causal_decoder.py:123: RuntimeWarning: overflow encountered in exp
+  p1 = float(1 / (1 + np.exp(-(w1 @ x1 + b1))))
+  sepCMA: train_em=0.8398 train_ratio=0.2547 outer diff=-0.0093 ratio=0.2553 CI_em=[np.float64(-0.023323615160349864), np.float64(-0.0014124293785311437)] CI_ratio=[np.float64(0.25262232507814375), np.float64(0.26000537201181845)] (2055s)
+seed2: frozen best depth=e1, inner=256, outer=645
+  thr control: diff=+0.0186 ratio=0.5212 CI=[np.float64(-0.004784688995215336), np.float64(0.06818181818181823)]
+  GA: train_em=0.8945 train_ratio=0.5147 outer diff=+0.0202 ratio=0.5103 CI_em=[np.float64(0.0), np.float64(0.06951871657754016)] CI_ratio=[np.float64(0.5069761613011028), np.float64(0.5157022686719347)] (2168s)
+  DE: train_em=0.8906 train_ratio=0.5085 outer diff=-0.0031 ratio=0.5047 CI_em=[np.float64(-0.010000000000000009), np.float64(0.0)] CI_ratio=[np.float64(0.5030726729435644), np.float64(0.5073240267400707)] (2589s)
+  sepCMA: train_em=0.8945 train_ratio=0.5142 outer diff=+0.0202 ratio=0.5100 CI_em=[np.float64(0.0), np.float64(0.06951871657754016)] CI_ratio=[np.float64(0.5067762245224628), np.float64(0.5150478430534025)] (2208s)
+P2-R-1 DONE

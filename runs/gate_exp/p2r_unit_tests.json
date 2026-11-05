@@ -1,0 +1,9 @@
+{
+ "force_g0_stop_0ref": true,
+ "g0go_g1stop_1ref": true,
+ "both_go_3ref": true,
+ "nc_equals_calls": true,
+ "singleton_consistency": true,
+ "no_future_signals": true,
+ "genotype_matters": true
+}

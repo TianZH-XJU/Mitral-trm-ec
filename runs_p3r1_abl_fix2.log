@@ -1,0 +1,13 @@
+s0 S0_alpha1: EM=0.8646 N=267.4
+s0 S1_fix0.75: EM=0.8646 N=266.9
+s0 S2_fix0.50: EM=0.8594 N=267.3
+s0 S3_fix0.25: EM=0.8438 N=268.1
+s0 S4_sched: EM=0.8646 N=267.4
+s0 RS: done, skip
+s0 GA: done, skip
+s0 DE: done, skip
+s0 sepCMA: done, skip
+s0 GA_ablA: done, skip
+s0 GA_ablB: best EM=0.8646 (vs alpha1 +0.0000) (2194s)
+s0 GA_ablC: best EM=0.8698 (vs alpha1 +0.0052) (2300s)
+P3-R-1 DONE

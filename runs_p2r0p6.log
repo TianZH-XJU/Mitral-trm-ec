@@ -1,0 +1,16 @@
+outer fold n=645
+baseline forced_e3: EM=0.8633 N_cell=264.3
+/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r_causal_decoder.py:97: RuntimeWarning: overflow encountered in exp
+  p0 = float(1 / (1 + np.exp(-(w0 @ x0 + b0))))
+GA: train best ratio=0.2627 outer diff=-0.0031 outer ratio=0.2563 feasible=True (3942s)
+/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r_causal_decoder.py:123: RuntimeWarning: overflow encountered in exp
+  p1 = float(1 / (1 + np.exp(-(w1 @ x1 + b1))))
+DE: train best ratio=0.2626 outer diff=-0.0016 outer ratio=0.2563 feasible=True (5134s)
+/home/appuser/.local/lib/python3.12/site-packages/cma/s.py:17: UserWarning: Could not import matplotlib.pyplot, therefore ``cma.plot()`` etc. is not available
+  _warnings.warn('Could not import matplotlib.pyplot, therefore'
+/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r_causal_decoder.py:123: RuntimeWarning: overflow encountered in exp
+  p1 = float(1 / (1 + np.exp(-(w1 @ x1 + b1))))
+/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r_causal_decoder.py:97: RuntimeWarning: overflow encountered in exp
+  p0 = float(1 / (1 + np.exp(-(w0 @ x0 + b0))))
+sepCMA: train best ratio=0.2627 outer diff=-0.0031 outer ratio=0.2563 feasible=True (3954s)
+PILOT DONE

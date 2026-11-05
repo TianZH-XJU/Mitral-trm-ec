@@ -1,0 +1,23 @@
+s0 J0=0.8646/267 J1=0.8646/71 J2=0.8594/72 J3=0.8698
+/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r_core.py:154: RuntimeWarning: overflow encountered in exp
+  p0 = float(1 / (1 + np.exp(-(w0 @ x0 + b0))))
+s0 J4 GA: best ratio=0.2640 em=0.8646 (1661s)
+/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r_core.py:181: RuntimeWarning: overflow encountered in exp
+  p1 = float(1 / (1 + np.exp(-(w1 @ x1 + b1))))
+s0 J4 DE: best ratio=0.2662 em=0.8646 (2993s)
+/home/appuser/.local/lib/python3.12/site-packages/cma/s.py:17: UserWarning: Could not import matplotlib.pyplot, therefore ``cma.plot()`` etc. is not available
+  _warnings.warn('Could not import matplotlib.pyplot, therefore'
+/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r_core.py:181: RuntimeWarning: overflow encountered in exp
+  p1 = float(1 / (1 + np.exp(-(w1 @ x1 + b1))))
+/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r_core.py:154: RuntimeWarning: overflow encountered in exp
+  p0 = float(1 / (1 + np.exp(-(w0 @ x0 + b0))))
+s0 J4 sepCMA: best ratio=0.2673 em=0.8646 (2060s)
+s1 J0=0.8281/270 J1=0.8281/73 J2=0.8281/73 J3=0.8281
+s1 J4 GA: best ratio=0.2553 em=0.8281 (1703s)
+s1 J4 DE: best ratio=0.2557 em=0.8281 (2568s)
+s1 J4 sepCMA: best ratio=0.2553 em=0.8333 (1830s)
+s2 J0=0.8750/134 J1=0.8854/73 J2=0.8906/73 J3=0.8854
+s2 J4 GA: best ratio=0.5184 em=0.8802 (1826s)
+s2 J4 DE: best ratio=0.5138 em=0.8750 (2764s)
+s2 J4 sepCMA: best ratio=0.5151 em=0.8750 (1958s)
+P3-R-2 DONE

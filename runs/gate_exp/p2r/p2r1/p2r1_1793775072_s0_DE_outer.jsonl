@@ -1,0 +1,645 @@
+{"idx": 11, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 46, "group": "<ARG> <ARG> pass the <ARG> the <ARG> .", "em": 1, "ncell": 65, "base_em": 1}
+{"idx": 77, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 94, "group": "<ARG> <ARG> dream to talk .", "em": 1, "ncell": 48, "base_em": 1}
+{"idx": 160, "group": "<ARG> adore the <ARG> .", "em": 1, "ncell": 33, "base_em": 1}
+{"idx": 186, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 227, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 253, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 342, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 33, "base_em": 1}
+{"idx": 361, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 33, "base_em": 1}
+{"idx": 381, "group": "<ARG> <ARG> collapse .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 425, "group": "<ARG> <ARG> like that <ARG> freeze the <ARG> beside the <ARG> .", "em": 0, "ncell": 111, "base_em": 1}
+{"idx": 460, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 507, "group": "<ARG> eat a <ARG> on the <ARG> in the <ARG> .", "em": 1, "ncell": 81, "base_em": 1}
+{"idx": 511, "group": "<ARG> <ARG> collapse .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 517, "group": "<ARG> <ARG> lend the <ARG> beside the <ARG> to <ARG> .", "em": 1, "ncell": 77, "base_em": 1}
+{"idx": 541, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 559, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 604, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 677, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 713, "group": "<ARG> roll a <ARG> on a <ARG> .", "em": 1, "ncell": 53, "base_em": 1}
+{"idx": 764, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 791, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 926, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 935, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 936, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 972, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 1022, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 1053, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 1092, "group": "<ARG> was award a <ARG> on the <ARG> in a <ARG> .", "em": 1, "ncell": 80, "base_em": 1}
+{"idx": 1108, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 33, "base_em": 1}
+{"idx": 1144, "group": "<ARG> <ARG> like that the <ARG> eat .", "em": 1, "ncell": 57, "base_em": 1}
+{"idx": 1205, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 1320, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 1346, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 1380, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 1527, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 1613, "group": "<ARG> <ARG> was hand to the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 1645, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 1672, "group": "<ARG> <ARG> was shorten by the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 1696, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 1730, "group": "<ARG> <ARG> was promise the <ARG> in the <ARG> by <ARG> .", "em": 0, "ncell": 67, "base_em": 0}
+{"idx": 1733, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 1767, "group": "<ARG> award a <ARG> a <ARG> on a <ARG> on a <ARG> .", "em": 1, "ncell": 109, "base_em": 1}
+{"idx": 1789, "group": "<ARG> like that the <ARG> mean that <ARG> burn .", "em": 0, "ncell": 77, "base_em": 0}
+{"idx": 1792, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 1832, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 1844, "group": "<ARG> <ARG> was shorten by the <ARG> .", "em": 1, "ncell": 41, "base_em": 1}
+{"idx": 1874, "group": "<ARG> <ARG> was award to <ARG> by a <ARG> .", "em": 1, "ncell": 52, "base_em": 1}
+{"idx": 1884, "group": "<ARG> roll a <ARG> on a <ARG> .", "em": 1, "ncell": 53, "base_em": 1}
+{"idx": 1965, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 1987, "group": "<ARG> <ARG> give the <ARG> in the <ARG> to a <ARG> .", "em": 1, "ncell": 86, "base_em": 1}
+{"idx": 2049, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 33, "base_em": 1}
+{"idx": 2288, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 2310, "group": "<ARG> say that a <ARG> like the <ARG> in the <ARG> .", "em": 1, "ncell": 95, "base_em": 1}
+{"idx": 2320, "group": "<ARG> <ARG> was notice .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 2422, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 2484, "group": "<ARG> <ARG> collapse .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 2497, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 2507, "group": "<ARG> <ARG> tolerate that <ARG> was feed the <ARG> by the <ARG> .", "em": 0, "ncell": 116, "base_em": 0}
+{"idx": 2513, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 33, "base_em": 1}
+{"idx": 2556, "group": "<ARG> <ARG> was shorten by the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 2609, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 2633, "group": "<ARG> <ARG> was hand to the <ARG> .", "em": 1, "ncell": 43, "base_em": 1}
+{"idx": 2653, "group": "<ARG> <ARG> was hand to the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 2672, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 2695, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 2754, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 2847, "group": "<ARG> <ARG> give the <ARG> in the <ARG> to a <ARG> .", "em": 1, "ncell": 88, "base_em": 1}
+{"idx": 2866, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 2889, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 2915, "group": "<ARG> <ARG> lend a <ARG> a <ARG> beside a <ARG> .", "em": 1, "ncell": 88, "base_em": 1}
+{"idx": 2957, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 2960, "group": "<ARG> think that the <ARG> smile .", "em": 1, "ncell": 47, "base_em": 1}
+{"idx": 3013, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 3098, "group": "<ARG> <ARG> bring <ARG> a <ARG> .", "em": 1, "ncell": 53, "base_em": 1}
+{"idx": 3156, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 3167, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 3182, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 3210, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 3219, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 3336, "group": "<ARG> <ARG> was lend a <ARG> beside the <ARG> .", "em": 1, "ncell": 65, "base_em": 1}
+{"idx": 3351, "group": "<ARG> <ARG> was hand to the <ARG> .", "em": 1, "ncell": 41, "base_em": 1}
+{"idx": 3367, "group": "<ARG> <ARG> feed <ARG> the <ARG> .", "em": 1, "ncell": 53, "base_em": 1}
+{"idx": 3381, "group": "<ARG> <ARG> attempt to jog .", "em": 1, "ncell": 48, "base_em": 1}
+{"idx": 3444, "group": "<ARG> like that <ARG> expect to walk .", "em": 1, "ncell": 59, "base_em": 1}
+{"idx": 3462, "group": "<ARG> discover a <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 3486, "group": "<ARG> serve the <ARG> the <ARG> on the <ARG> .", "em": 1, "ncell": 81, "base_em": 1}
+{"idx": 3516, "group": "<ARG> <ARG> jog .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 3557, "group": "<ARG> <ARG> toss a <ARG> on a <ARG> .", "em": 1, "ncell": 64, "base_em": 1}
+{"idx": 3578, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 3593, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 3626, "group": "<ARG> hope that a <ARG> grow .", "em": 1, "ncell": 46, "base_em": 1}
+{"idx": 3669, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 3728, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 3763, "group": "<ARG> <ARG> believe that a <ARG> was eat .", "em": 1, "ncell": 55, "base_em": 1}
+{"idx": 3780, "group": "<ARG> was serve the <ARG> on the <ARG> .", "em": 1, "ncell": 56, "base_em": 1}
+{"idx": 3833, "group": "<ARG> <ARG> collapse .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 3848, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 43, "base_em": 1}
+{"idx": 3903, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 3943, "group": "<ARG> <ARG> shorten the <ARG> in the <ARG> .", "em": 1, "ncell": 65, "base_em": 1}
+{"idx": 4070, "group": "<ARG> <ARG> was award a <ARG> .", "em": 1, "ncell": 41, "base_em": 1}
+{"idx": 4097, "group": "<ARG> was give a <ARG> on the <ARG> .", "em": 1, "ncell": 54, "base_em": 1}
+{"idx": 4153, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 4194, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 4341, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 24, "base_em": 1}
+{"idx": 4359, "group": "<ARG> <ARG> was notice .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 4374, "group": "<ARG> roll a <ARG> on a <ARG> .", "em": 1, "ncell": 53, "base_em": 1}
+{"idx": 4377, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 4397, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 4412, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 4414, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 4454, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 4465, "group": "<ARG> send <ARG> the <ARG> .", "em": 0, "ncell": 45, "base_em": 0}
+{"idx": 4509, "group": "<ARG> <ARG> freeze the <ARG> on a <ARG> on the <ARG> .", "em": 1, "ncell": 89, "base_em": 1}
+{"idx": 4555, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 4566, "group": "<ARG> was mail a <ARG> in a <ARG> by the <ARG> .", "em": 0, "ncell": 58, "base_em": 0}
+{"idx": 4572, "group": "<ARG> <ARG> hunt the <ARG> beside a <ARG> .", "em": 1, "ncell": 63, "base_em": 1}
+{"idx": 4574, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 4581, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 4671, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 4752, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 4786, "group": "<ARG> <ARG> collapse .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 4796, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 4884, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 23, "base_em": 1}
+{"idx": 4935, "group": "<ARG> lend <ARG> a <ARG> beside the <ARG> .", "em": 1, "ncell": 67, "base_em": 1}
+{"idx": 4953, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 4954, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 4968, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 33, "base_em": 1}
+{"idx": 5003, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 5055, "group": "<ARG> <ARG> was give the <ARG> on a <ARG> on the <ARG> .", "em": 1, "ncell": 88, "base_em": 1}
+{"idx": 5099, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 5139, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 5151, "group": "call", "em": 0, "ncell": 39, "base_em": 0}
+{"idx": 5179, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 5210, "group": "<ARG> <ARG> was award to <ARG> by a <ARG> .", "em": 1, "ncell": 51, "base_em": 1}
+{"idx": 5213, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 5227, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 5274, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 43, "base_em": 1}
+{"idx": 5300, "group": "<ARG> <ARG> was cook by the <ARG> .", "em": 1, "ncell": 41, "base_em": 1}
+{"idx": 5333, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 33, "base_em": 1}
+{"idx": 5386, "group": "<ARG> <ARG> give a <ARG> the <ARG> beside the <ARG> .", "em": 1, "ncell": 90, "base_em": 1}
+{"idx": 5388, "group": "<ARG> <ARG> give the <ARG> in the <ARG> to a <ARG> .", "em": 1, "ncell": 86, "base_em": 1}
+{"idx": 5451, "group": "<ARG> <ARG> give a <ARG> the <ARG> beside the <ARG> .", "em": 1, "ncell": 94, "base_em": 1}
+{"idx": 5455, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 5581, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 5661, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 5669, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 43, "base_em": 1}
+{"idx": 5702, "group": "<ARG> <ARG> was serve a <ARG> in the <ARG> beside a <ARG> .", "em": 1, "ncell": 92, "base_em": 1}
+{"idx": 5707, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 5940, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 5972, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 6000, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 6040, "group": "<ARG> <ARG> was shorten by the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 6101, "group": "<ARG> <ARG> was award a <ARG> .", "em": 0, "ncell": 41, "base_em": 0}
+{"idx": 6122, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 6143, "group": "<ARG> roll a <ARG> on a <ARG> .", "em": 1, "ncell": 53, "base_em": 1}
+{"idx": 6161, "group": "<ARG> <ARG> collapse .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 6173, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 6194, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 6291, "group": "<ARG> <ARG> promise a <ARG> on the <ARG> to <ARG> .", "em": 1, "ncell": 75, "base_em": 1}
+{"idx": 6297, "group": "<ARG> <ARG> was lend a <ARG> beside the <ARG> .", "em": 1, "ncell": 64, "base_em": 1}
+{"idx": 6571, "group": "<ARG> respect that the <ARG> was paint .", "em": 1, "ncell": 47, "base_em": 1}
+{"idx": 6588, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 6595, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 6713, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 6734, "group": "<ARG> <ARG> was notice .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 6792, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 6800, "group": "<ARG> dream that the <ARG> was find .", "em": 1, "ncell": 45, "base_em": 1}
+{"idx": 6819, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 6834, "group": "<ARG> feed a <ARG> a <ARG> on the <ARG> .", "em": 1, "ncell": 78, "base_em": 1}
+{"idx": 6876, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 6878, "group": "<ARG> <ARG> was hand to the <ARG> .", "em": 1, "ncell": 41, "base_em": 1}
+{"idx": 6904, "group": "<ARG> <ARG> was cook by the <ARG> .", "em": 1, "ncell": 41, "base_em": 1}
+{"idx": 6916, "group": "<ARG> <ARG> was cook by the <ARG> .", "em": 1, "ncell": 41, "base_em": 1}
+{"idx": 6960, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 7044, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 7073, "group": "<ARG> <ARG> was notice .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 7142, "group": "<ARG> <ARG> like that a <ARG> talk .", "em": 1, "ncell": 55, "base_em": 1}
+{"idx": 7176, "group": "<ARG> sell the <ARG> beside the <ARG> to <ARG> .", "em": 1, "ncell": 66, "base_em": 1}
+{"idx": 7215, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 33, "base_em": 1}
+{"idx": 7278, "group": "<ARG> <ARG> was cook by the <ARG> .", "em": 1, "ncell": 43, "base_em": 1}
+{"idx": 7286, "group": "<ARG> <ARG> was shorten by the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 7293, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 7323, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 7412, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 7455, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 7470, "group": "<ARG> <ARG> was shorten by the <ARG> .", "em": 1, "ncell": 41, "base_em": 1}
+{"idx": 7519, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 7520, "group": "<ARG> <ARG> was shorten by the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 7528, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 7536, "group": "<ARG> <ARG> forward a <ARG> in a <ARG> to <ARG> .", "em": 1, "ncell": 76, "base_em": 1}
+{"idx": 7567, "group": "<ARG> <ARG> was notice .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 7587, "group": "<ARG> <ARG> was shorten by the <ARG> .", "em": 1, "ncell": 41, "base_em": 1}
+{"idx": 7602, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 7666, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 7675, "group": "<ARG> <ARG> was cook by the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 7717, "group": "<ARG> hope that a <ARG> was lend the <ARG> on a <ARG> .", "em": 1, "ncell": 94, "base_em": 1}
+{"idx": 7753, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 7826, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 7853, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 7854, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 7902, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 8103, "group": "<ARG> like that the <ARG> was serve to <ARG> .", "em": 1, "ncell": 57, "base_em": 1}
+{"idx": 8115, "group": "<ARG> was pass a <ARG> on a <ARG> .", "em": 1, "ncell": 54, "base_em": 1}
+{"idx": 8136, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 8145, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 8181, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 8197, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 8203, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 8242, "group": "<ARG> <ARG> respect that the <ARG> was lend to <ARG> .", "em": 1, "ncell": 65, "base_em": 1}
+{"idx": 8243, "group": "<ARG> <ARG> give the <ARG> in the <ARG> to a <ARG> .", "em": 1, "ncell": 86, "base_em": 1}
+{"idx": 8283, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 8285, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 8318, "group": "<ARG> lend <ARG> a <ARG> beside the <ARG> .", "em": 1, "ncell": 65, "base_em": 1}
+{"idx": 8326, "group": "<ARG> <ARG> jog .", "em": 1, "ncell": 24, "base_em": 1}
+{"idx": 8363, "group": "<ARG> <ARG> feed <ARG> the <ARG> .", "em": 1, "ncell": 53, "base_em": 1}
+{"idx": 8404, "group": "<ARG> adore the <ARG> .", "em": 1, "ncell": 33, "base_em": 1}
+{"idx": 8429, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 8450, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 8474, "group": "<ARG> <ARG> was notice .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 8487, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 8586, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 8613, "group": "<ARG> <ARG> nurse <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 8618, "group": "<ARG> <ARG> enlarge the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 8662, "group": "<ARG> <ARG> was feed to the <ARG> by the <ARG> .", "em": 1, "ncell": 66, "base_em": 1}
+{"idx": 8685, "group": "<ARG> <ARG> return a <ARG> to the <ARG> .", "em": 1, "ncell": 63, "base_em": 1}
+{"idx": 8690, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 8741, "group": "<ARG> <ARG> jog .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 8743, "group": "<ARG> <ARG> collapse .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 8764, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 8798, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 8806, "group": "<ARG> offer the <ARG> on the <ARG> to <ARG> .", "em": 1, "ncell": 66, "base_em": 1}
+{"idx": 8831, "group": "<ARG> <ARG> shorten the <ARG> in the <ARG> .", "em": 1, "ncell": 65, "base_em": 1}
+{"idx": 8832, "group": "<ARG> <ARG> call a <ARG> beside the <ARG> .", "em": 1, "ncell": 64, "base_em": 1}
+{"idx": 8833, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 8905, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 8910, "group": "<ARG> was give a <ARG> on the <ARG> .", "em": 1, "ncell": 54, "base_em": 1}
+{"idx": 8932, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 8994, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 9006, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 9042, "group": "<ARG> <ARG> lend the <ARG> beside the <ARG> to <ARG> .", "em": 1, "ncell": 76, "base_em": 1}
+{"idx": 9121, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 33, "base_em": 1}
+{"idx": 9137, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 9179, "group": "<ARG> <ARG> was give the <ARG> on a <ARG> on the <ARG> .", "em": 0, "ncell": 92, "base_em": 0}
+{"idx": 9219, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 9220, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 9239, "group": "<ARG> <ARG> was cook by the <ARG> .", "em": 1, "ncell": 41, "base_em": 1}
+{"idx": 9271, "group": "<ARG> <ARG> was cook by the <ARG> .", "em": 1, "ncell": 41, "base_em": 1}
+{"idx": 9314, "group": "<ARG> <ARG> jog .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 9324, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 9326, "group": "<ARG> was give a <ARG> on the <ARG> .", "em": 1, "ncell": 55, "base_em": 1}
+{"idx": 9382, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 43, "base_em": 1}
+{"idx": 9420, "group": "<ARG> <ARG> was shorten by the <ARG> .", "em": 1, "ncell": 41, "base_em": 1}
+{"idx": 9463, "group": "<ARG> <ARG> collapse .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 9495, "group": "<ARG> <ARG> collapse .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 9502, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 9504, "group": "<ARG> promise <ARG> the <ARG> beside a <ARG> .", "em": 1, "ncell": 67, "base_em": 1}
+{"idx": 9513, "group": "<ARG> <ARG> adore the <ARG> in the <ARG> .", "em": 1, "ncell": 65, "base_em": 1}
+{"idx": 9514, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 9526, "group": "<ARG> <ARG> intend to cook .", "em": 1, "ncell": 47, "base_em": 1}
+{"idx": 9533, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 9549, "group": "<ARG> <ARG> lend a <ARG> a <ARG> beside a <ARG> .", "em": 1, "ncell": 89, "base_em": 1}
+{"idx": 9578, "group": "<ARG> <ARG> jog .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 9730, "group": "<ARG> <ARG> jog .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 9754, "group": "<ARG> <ARG> collapse .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 9820, "group": "<ARG> notice that <ARG> eat a <ARG> in a <ARG> .", "em": 1, "ncell": 83, "base_em": 1}
+{"idx": 9838, "group": "<ARG> <ARG> collapse .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 9878, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 9999, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 10077, "group": "<ARG> <ARG> was sell the <ARG> in the <ARG> by <ARG> .", "em": 1, "ncell": 79, "base_em": 1}
+{"idx": 10167, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 10302, "group": "<ARG> <ARG> cook a <ARG> in a <ARG> .", "em": 1, "ncell": 63, "base_em": 1}
+{"idx": 10391, "group": "<ARG> loan the <ARG> beside the <ARG> to a <ARG> .", "em": 1, "ncell": 75, "base_em": 1}
+{"idx": 10402, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 10431, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 33, "base_em": 1}
+{"idx": 10440, "group": "<ARG> was promise the <ARG> beside the <ARG> .", "em": 1, "ncell": 55, "base_em": 1}
+{"idx": 10465, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 10471, "group": "<ARG> <ARG> sell the <ARG> beside a <ARG> to a <ARG> .", "em": 1, "ncell": 86, "base_em": 1}
+{"idx": 10508, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 10537, "group": "<ARG> <ARG> was pass a <ARG> beside the <ARG> .", "em": 1, "ncell": 65, "base_em": 1}
+{"idx": 10626, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 10675, "group": "<ARG> give a <ARG> in the <ARG> to <ARG> .", "em": 1, "ncell": 65, "base_em": 1}
+{"idx": 10693, "group": "<ARG> prove that a <ARG> call .", "em": 1, "ncell": 46, "base_em": 1}
+{"idx": 10718, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 10741, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 10773, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 10808, "group": "<ARG> roll a <ARG> on a <ARG> .", "em": 1, "ncell": 53, "base_em": 1}
+{"idx": 10814, "group": "<ARG> <ARG> was feed to the <ARG> by the <ARG> .", "em": 1, "ncell": 62, "base_em": 1}
+{"idx": 10855, "group": "<ARG> discover a <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 10869, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 10900, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 10917, "group": "<ARG> <ARG> intend to cook .", "em": 1, "ncell": 48, "base_em": 1}
+{"idx": 10932, "group": "<ARG> award the <ARG> to the <ARG> .", "em": 1, "ncell": 53, "base_em": 1}
+{"idx": 10933, "group": "<ARG> confess that a <ARG> was crumple by the <ARG> .", "em": 1, "ncell": 68, "base_em": 1}
+{"idx": 10945, "group": "<ARG> adore the <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 10973, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 11016, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 11095, "group": "<ARG> <ARG> was notice .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 11113, "group": "<ARG> <ARG> was feed to the <ARG> by the <ARG> .", "em": 1, "ncell": 63, "base_em": 1}
+{"idx": 11142, "group": "<ARG> <ARG> offer <ARG> the <ARG> on the <ARG> .", "em": 1, "ncell": 79, "base_em": 0}
+{"idx": 11146, "group": "<ARG> notice that the <ARG> was give to a <ARG> .", "em": 1, "ncell": 66, "base_em": 1}
+{"idx": 11153, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 11179, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 11189, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 11205, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 23, "base_em": 1}
+{"idx": 11215, "group": "<ARG> hope that the <ARG> sleep .", "em": 1, "ncell": 47, "base_em": 1}
+{"idx": 11262, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 11279, "group": "<ARG> <ARG> was mail the <ARG> on a <ARG> by the <ARG> .", "em": 0, "ncell": 74, "base_em": 0}
+{"idx": 11317, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 11331, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 11363, "group": "<ARG> was give a <ARG> on the <ARG> .", "em": 1, "ncell": 54, "base_em": 1}
+{"idx": 11403, "group": "<ARG> <ARG> adore the <ARG> in the <ARG> .", "em": 1, "ncell": 64, "base_em": 1}
+{"idx": 11451, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 11483, "group": "<ARG> like that a <ARG> lend the <ARG> a <ARG> .", "em": 0, "ncell": 91, "base_em": 0}
+{"idx": 11498, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 24, "base_em": 1}
+{"idx": 11532, "group": "<ARG> <ARG> like that the <ARG> was help by <ARG> .", "em": 1, "ncell": 67, "base_em": 1}
+{"idx": 11545, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 11573, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 43, "base_em": 1}
+{"idx": 11577, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 11587, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 11633, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 11726, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 11736, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 11764, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 11817, "group": "<ARG> <ARG> like that the <ARG> eat .", "em": 1, "ncell": 57, "base_em": 1}
+{"idx": 11824, "group": "<ARG> <ARG> lend a <ARG> a <ARG> beside a <ARG> .", "em": 1, "ncell": 88, "base_em": 1}
+{"idx": 11827, "group": "<ARG> <ARG> was notice .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 11867, "group": "<ARG> mean that <ARG> think that the <ARG> was roll by a <ARG> .", "em": 0, "ncell": 105, "base_em": 1}
+{"idx": 11976, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 12033, "group": "<ARG> give a <ARG> in the <ARG> to <ARG> .", "em": 1, "ncell": 67, "base_em": 1}
+{"idx": 12099, "group": "<ARG> <ARG> lend a <ARG> a <ARG> beside a <ARG> .", "em": 1, "ncell": 88, "base_em": 1}
+{"idx": 12144, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 12154, "group": "<ARG> <ARG> offer the <ARG> a <ARG> .", "em": 1, "ncell": 63, "base_em": 1}
+{"idx": 12185, "group": "<ARG> <ARG> like that <ARG> burn <ARG> .", "em": 1, "ncell": 56, "base_em": 1}
+{"idx": 12195, "group": "<ARG> <ARG> was give a <ARG> in a <ARG> on a <ARG> by the <ARG> .", "em": 0, "ncell": 115, "base_em": 0}
+{"idx": 12273, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 12393, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 12423, "group": "<ARG> forward a <ARG> the <ARG> beside the <ARG> .", "em": 1, "ncell": 78, "base_em": 1}
+{"idx": 12430, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 12436, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 12482, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 33, "base_em": 1}
+{"idx": 12485, "group": "<ARG> tolerate that the <ARG> slide .", "em": 1, "ncell": 46, "base_em": 1}
+{"idx": 12535, "group": "<ARG> <ARG> was notice .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 12563, "group": "<ARG> <ARG> mail a <ARG> the <ARG> beside a <ARG> beside a <ARG> .", "em": 0, "ncell": 123, "base_em": 0}
+{"idx": 12565, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 12572, "group": "<ARG> <ARG> collapse .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 12577, "group": "<ARG> intend to hunt .", "em": 1, "ncell": 35, "base_em": 1}
+{"idx": 12581, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 12641, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 12643, "group": "<ARG> <ARG> say that a <ARG> wish that the <ARG> was roll .", "em": 1, "ncell": 98, "base_em": 1}
+{"idx": 12651, "group": "<ARG> <ARG> pass the <ARG> the <ARG> .", "em": 1, "ncell": 65, "base_em": 1}
+{"idx": 12825, "group": "<ARG> <ARG> jog .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 12839, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 12882, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 12890, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 12938, "group": "<ARG> <ARG> was cook by the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 12946, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 12994, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 13026, "group": "<ARG> <ARG> long to run .", "em": 1, "ncell": 48, "base_em": 1}
+{"idx": 13036, "group": "<ARG> adore the <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 13057, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 13104, "group": "<ARG> <ARG> enlarge the <ARG> .", "em": 1, "ncell": 41, "base_em": 1}
+{"idx": 13171, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 13174, "group": "<ARG> <ARG> collapse .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 13218, "group": "<ARG> <ARG> was return to a <ARG> by <ARG> .", "em": 1, "ncell": 53, "base_em": 1}
+{"idx": 13250, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 13251, "group": "<ARG> <ARG> give the <ARG> in the <ARG> to a <ARG> .", "em": 1, "ncell": 87, "base_em": 1}
+{"idx": 13267, "group": "<ARG> <ARG> jog .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 13285, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 13303, "group": "<ARG> <ARG> was notice .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 13308, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 13328, "group": "<ARG> give the <ARG> in the <ARG> to the <ARG> .", "em": 1, "ncell": 78, "base_em": 1}
+{"idx": 13338, "group": "<ARG> <ARG> lend the <ARG> beside the <ARG> to <ARG> .", "em": 1, "ncell": 77, "base_em": 1}
+{"idx": 13362, "group": "<ARG> <ARG> was cook by the <ARG> .", "em": 1, "ncell": 41, "base_em": 1}
+{"idx": 13376, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 13404, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 13424, "group": "<ARG> <ARG> was shorten by the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 13443, "group": "<ARG> was give a <ARG> on the <ARG> .", "em": 1, "ncell": 54, "base_em": 1}
+{"idx": 13453, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 13464, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 33, "base_em": 1}
+{"idx": 13465, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 13483, "group": "<ARG> <ARG> was sell the <ARG> in the <ARG> by <ARG> .", "em": 1, "ncell": 78, "base_em": 1}
+{"idx": 13505, "group": "<ARG> adore the <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 13524, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 13541, "group": "<ARG> <ARG> collapse .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 13549, "group": "<ARG> want to clean .", "em": 1, "ncell": 37, "base_em": 1}
+{"idx": 13578, "group": "<ARG> say that the <ARG> was miss by <ARG> .", "em": 0, "ncell": 62, "base_em": 0}
+{"idx": 13632, "group": "<ARG> <ARG> collapse .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 13651, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 13655, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 13702, "group": "<ARG> <ARG> hope that <ARG> notice .", "em": 1, "ncell": 45, "base_em": 1}
+{"idx": 13728, "group": "<ARG> like that <ARG> want to sketch .", "em": 1, "ncell": 62, "base_em": 1}
+{"idx": 13742, "group": "<ARG> <ARG> was hand to the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 13755, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 13848, "group": "<ARG> imagine that the <ARG> freeze .", "em": 1, "ncell": 46, "base_em": 1}
+{"idx": 13900, "group": "<ARG> <ARG> nurse <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 13916, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 13972, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 13975, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 14031, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 14108, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 44, "base_em": 1}
+{"idx": 14152, "group": "<ARG> slide the <ARG> on a <ARG> .", "em": 1, "ncell": 56, "base_em": 1}
+{"idx": 14180, "group": "<ARG> <ARG> shorten the <ARG> in the <ARG> .", "em": 1, "ncell": 64, "base_em": 1}
+{"idx": 14206, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 14298, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 14427, "group": "<ARG> <ARG> collapse .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 14491, "group": "<ARG> <ARG> was cook by the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 14507, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 34, "base_em": 1}
+{"idx": 14569, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 14634, "group": "<ARG> <ARG> nurse <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 14640, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 14652, "group": "<ARG> <ARG> collapse .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 14681, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 23, "base_em": 1}
+{"idx": 14749, "group": "<ARG> <ARG> jog .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 14751, "group": "<ARG> believe that the <ARG> was snap .", "em": 1, "ncell": 46, "base_em": 1}
+{"idx": 14752, "group": "<ARG> <ARG> like that <ARG> rent the <ARG> to the <ARG> .", "em": 1, "ncell": 93, "base_em": 1}
+{"idx": 14759, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 14761, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 14833, "group": "<ARG> <ARG> was notice .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 14852, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 14885, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 14987, "group": "<ARG> <ARG> was cook by the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 15104, "group": "<ARG> <ARG> collapse .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 15117, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 15133, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 15156, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 15158, "group": "<ARG> <ARG> support that a <ARG> was respect by <ARG> .", "em": 1, "ncell": 66, "base_em": 1}
+{"idx": 15312, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 15339, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 15550, "group": "<ARG> <ARG> was feed to the <ARG> by the <ARG> .", "em": 1, "ncell": 63, "base_em": 1}
+{"idx": 15559, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 43, "base_em": 1}
+{"idx": 15629, "group": "<ARG> slide the <ARG> on a <ARG> .", "em": 1, "ncell": 55, "base_em": 1}
+{"idx": 15661, "group": "<ARG> <ARG> jog .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 15812, "group": "<ARG> was sell the <ARG> in the <ARG> by the <ARG> .", "em": 0, "ncell": 66, "base_em": 0}
+{"idx": 15820, "group": "<ARG> was hand a <ARG> in the <ARG> .", "em": 1, "ncell": 54, "base_em": 1}
+{"idx": 15835, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 15916, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 15928, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 15932, "group": "<ARG> lend a <ARG> the <ARG> beside a <ARG> .", "em": 1, "ncell": 82, "base_em": 1}
+{"idx": 15954, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 33, "base_em": 1}
+{"idx": 15957, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 15981, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 16045, "group": "<ARG> <ARG> feed <ARG> the <ARG> .", "em": 1, "ncell": 54, "base_em": 1}
+{"idx": 16082, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 16092, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 16103, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 43, "base_em": 1}
+{"idx": 16261, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 16320, "group": "<ARG> <ARG> was cook by the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 16417, "group": "<ARG> <ARG> dream that a <ARG> break .", "em": 1, "ncell": 56, "base_em": 1}
+{"idx": 16518, "group": "<ARG> <ARG> prove that a <ARG> was like .", "em": 1, "ncell": 54, "base_em": 1}
+{"idx": 16522, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 16619, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 16633, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 16712, "group": "<ARG> <ARG> like that a <ARG> was like by a <ARG> .", "em": 1, "ncell": 76, "base_em": 1}
+{"idx": 16724, "group": "<ARG> <ARG> lend a <ARG> a <ARG> beside a <ARG> .", "em": 1, "ncell": 87, "base_em": 1}
+{"idx": 16729, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 16756, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 16820, "group": "<ARG> <ARG> was notice .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 16867, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 16920, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 16964, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 43, "base_em": 1}
+{"idx": 17042, "group": "<ARG> discover a <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 17157, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 17190, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 17195, "group": "<ARG> <ARG> jog .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 17276, "group": "<ARG> <ARG> was shorten by the <ARG> .", "em": 1, "ncell": 41, "base_em": 1}
+{"idx": 17301, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 17315, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 17389, "group": "<ARG> <ARG> was cook by the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 17393, "group": "<ARG> <ARG> declare that the <ARG> was burn .", "em": 1, "ncell": 55, "base_em": 1}
+{"idx": 17408, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 17461, "group": "<ARG> <ARG> was cook by the <ARG> .", "em": 1, "ncell": 41, "base_em": 1}
+{"idx": 17462, "group": "<ARG> <ARG> was shorten by the <ARG> .", "em": 1, "ncell": 41, "base_em": 1}
+{"idx": 17641, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 17646, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 17663, "group": "<ARG> <ARG> yearn to clean .", "em": 1, "ncell": 47, "base_em": 1}
+{"idx": 17688, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 17697, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 17751, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 17894, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 17937, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 33, "base_em": 1}
+{"idx": 17957, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 44, "base_em": 1}
+{"idx": 17988, "group": "<ARG> <ARG> feed <ARG> the <ARG> .", "em": 1, "ncell": 53, "base_em": 1}
+{"idx": 17998, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 18200, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 18222, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 18257, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 18300, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 18307, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 18319, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 18320, "group": "<ARG> <ARG> was hand to the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 18328, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 18350, "group": "<ARG> <ARG> was sell the <ARG> in the <ARG> by <ARG> .", "em": 1, "ncell": 77, "base_em": 1}
+{"idx": 18357, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 18369, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 18384, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 18490, "group": "<ARG> <ARG> nurse <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 18533, "group": "<ARG> want to clean .", "em": 1, "ncell": 38, "base_em": 1}
+{"idx": 18549, "group": "<ARG> slide the <ARG> on a <ARG> .", "em": 1, "ncell": 56, "base_em": 1}
+{"idx": 18559, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 18568, "group": "<ARG> was give a <ARG> on the <ARG> .", "em": 1, "ncell": 56, "base_em": 1}
+{"idx": 18617, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 18622, "group": "<ARG> give a <ARG> in the <ARG> to <ARG> .", "em": 1, "ncell": 65, "base_em": 1}
+{"idx": 18667, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 18686, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 18694, "group": "<ARG> declare that <ARG> promise <ARG> the <ARG> on the <ARG> in the <ARG> .", "em": 0, "ncell": 110, "base_em": 0}
+{"idx": 18700, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 18731, "group": "<ARG> serve the <ARG> the <ARG> on the <ARG> .", "em": 1, "ncell": 81, "base_em": 1}
+{"idx": 18794, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 18812, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 18881, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 18903, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 44, "base_em": 1}
+{"idx": 18934, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 34, "base_em": 1}
+{"idx": 18967, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 18980, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 18989, "group": "<ARG> <ARG> was notice .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 19024, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 19064, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 19067, "group": "<ARG> was wire a <ARG> beside a <ARG> by a <ARG> .", "em": 0, "ncell": 57, "base_em": 0}
+{"idx": 19273, "group": "<ARG> <ARG> wire the <ARG> beside the <ARG> to <ARG> .", "em": 1, "ncell": 78, "base_em": 1}
+{"idx": 19319, "group": "<ARG> notice that a <ARG> was give to a <ARG> by the <ARG> .", "em": 0, "ncell": 93, "base_em": 0}
+{"idx": 19338, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 19383, "group": "<ARG> pass a <ARG> beside a <ARG> to the <ARG> .", "em": 1, "ncell": 76, "base_em": 1}
+{"idx": 19396, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 19470, "group": "<ARG> <ARG> hope that a <ARG> was give to <ARG> .", "em": 1, "ncell": 64, "base_em": 1}
+{"idx": 19551, "group": "<ARG> <ARG> was feed to the <ARG> by the <ARG> .", "em": 1, "ncell": 63, "base_em": 1}
+{"idx": 19571, "group": "<ARG> give a <ARG> in the <ARG> to <ARG> .", "em": 1, "ncell": 66, "base_em": 1}
+{"idx": 19744, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 19745, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 19747, "group": "<ARG> hope that <ARG> sell <ARG> a <ARG> on the <ARG> beside a <ARG> .", "em": 0, "ncell": 110, "base_em": 0}
+{"idx": 19858, "group": "<ARG> was give a <ARG> on the <ARG> .", "em": 1, "ncell": 54, "base_em": 1}
+{"idx": 19882, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 19888, "group": "<ARG> <ARG> like that a <ARG> dream that <ARG> was slip a <ARG> .", "em": 0, "ncell": 120, "base_em": 0}
+{"idx": 19943, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 19963, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 20040, "group": "<ARG> rent <ARG> the <ARG> on a <ARG> .", "em": 1, "ncell": 66, "base_em": 1}
+{"idx": 20087, "group": "<ARG> <ARG> hunt the <ARG> beside a <ARG> .", "em": 1, "ncell": 64, "base_em": 1}
+{"idx": 20106, "group": "<ARG> <ARG> jog .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 20208, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 20213, "group": "<ARG> <ARG> was cook by the <ARG> .", "em": 1, "ncell": 43, "base_em": 1}
+{"idx": 20292, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 20371, "group": "<ARG> <ARG> rent a <ARG> in the <ARG> to the <ARG> .", "em": 1, "ncell": 88, "base_em": 1}
+{"idx": 20414, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 20544, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 20572, "group": "<ARG> <ARG> like that <ARG> slip a <ARG> to <ARG> .", "em": 1, "ncell": 76, "base_em": 1}
+{"idx": 20608, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 20611, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 20667, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 20682, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 20760, "group": "<ARG> <ARG> enlarge the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 20770, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 20775, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 20778, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 33, "base_em": 1}
+{"idx": 20787, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 20811, "group": "<ARG> <ARG> notice that <ARG> serve <ARG> the <ARG> beside the <ARG> .", "em": 1, "ncell": 108, "base_em": 1}
+{"idx": 20852, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 20893, "group": "<ARG> <ARG> was cook by the <ARG> .", "em": 1, "ncell": 41, "base_em": 1}
+{"idx": 20898, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 21006, "group": "<ARG> <ARG> collapse .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 21027, "group": "<ARG> <ARG> hope that the <ARG> help the <ARG> .", "em": 1, "ncell": 81, "base_em": 1}
+{"idx": 21033, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 21070, "group": "<ARG> discover a <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 21085, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 23, "base_em": 1}
+{"idx": 21088, "group": "<ARG> was give a <ARG> on the <ARG> .", "em": 1, "ncell": 54, "base_em": 1}
+{"idx": 21126, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 21159, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 44, "base_em": 1}
+{"idx": 21161, "group": "<ARG> <ARG> was shorten by the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 21173, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 21267, "group": "<ARG> <ARG> was shorten by the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 21273, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 21293, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 21420, "group": "<ARG> <ARG> was hand to the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 21496, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 21584, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 21638, "group": "<ARG> <ARG> was shorten by the <ARG> .", "em": 1, "ncell": 41, "base_em": 1}
+{"idx": 21644, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 21757, "group": "<ARG> loan the <ARG> beside the <ARG> to a <ARG> .", "em": 1, "ncell": 75, "base_em": 1}
+{"idx": 21892, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 21931, "group": "<ARG> give a <ARG> in the <ARG> to <ARG> .", "em": 1, "ncell": 66, "base_em": 1}
+{"idx": 21956, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 21999, "group": "<ARG> <ARG> was shorten by the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 22049, "group": "<ARG> <ARG> sneeze .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 22132, "group": "<ARG> hand a <ARG> a <ARG> .", "em": 1, "ncell": 55, "base_em": 1}
+{"idx": 22144, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 22231, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 22275, "group": "<ARG> roll a <ARG> on a <ARG> .", "em": 1, "ncell": 54, "base_em": 1}
+{"idx": 22385, "group": "<ARG> <ARG> nurse <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 22386, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 22411, "group": "<ARG> <ARG> send a <ARG> beside the <ARG> to a <ARG> .", "em": 1, "ncell": 85, "base_em": 1}
+{"idx": 22477, "group": "<ARG> <ARG> was award to <ARG> by a <ARG> .", "em": 1, "ncell": 51, "base_em": 1}
+{"idx": 22485, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 22528, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 22631, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 22634, "group": "<ARG> give a <ARG> in the <ARG> to <ARG> .", "em": 1, "ncell": 66, "base_em": 1}
+{"idx": 22664, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 22676, "group": "<ARG> <ARG> shorten the <ARG> in the <ARG> .", "em": 0, "ncell": 75, "base_em": 0}
+{"idx": 22679, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 22680, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 22723, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 22726, "group": "<ARG> clean a <ARG> in the <ARG> beside a <ARG> .", "em": 1, "ncell": 82, "base_em": 1}
+{"idx": 22727, "group": "<ARG> <ARG> give the <ARG> in the <ARG> to a <ARG> .", "em": 1, "ncell": 87, "base_em": 1}
+{"idx": 22735, "group": "<ARG> love to sneeze .", "em": 1, "ncell": 38, "base_em": 1}
+{"idx": 22808, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 22811, "group": "<ARG> was give a <ARG> on the <ARG> .", "em": 1, "ncell": 55, "base_em": 1}
+{"idx": 22812, "group": "<ARG> <ARG> was return to a <ARG> by <ARG> .", "em": 1, "ncell": 51, "base_em": 1}
+{"idx": 22813, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 22907, "group": "<ARG> <ARG> collapse .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 22917, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 22930, "group": "<ARG> <ARG> jog .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 22951, "group": "<ARG> give a <ARG> in the <ARG> to <ARG> .", "em": 1, "ncell": 66, "base_em": 1}
+{"idx": 23091, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 23098, "group": "<ARG> give the <ARG> in the <ARG> to the <ARG> .", "em": 1, "ncell": 79, "base_em": 1}
+{"idx": 23121, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 23129, "group": "<ARG> <ARG> hate to hunt .", "em": 1, "ncell": 48, "base_em": 1}
+{"idx": 23187, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 22, "base_em": 1}
+{"idx": 23188, "group": "<ARG> <ARG> was feed to the <ARG> by the <ARG> .", "em": 1, "ncell": 62, "base_em": 1}
+{"idx": 23305, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 23312, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 23390, "group": "<ARG> <ARG> cry .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 23406, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 23483, "group": "<ARG> <ARG> feed <ARG> the <ARG> .", "em": 1, "ncell": 52, "base_em": 1}
+{"idx": 23522, "group": "<ARG> <ARG> was sell the <ARG> in the <ARG> by <ARG> .", "em": 1, "ncell": 77, "base_em": 1}
+{"idx": 23562, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 23566, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 23596, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 23629, "group": "<ARG> <ARG> was cook by the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 23644, "group": "<ARG> <ARG> was shorten by the <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 23651, "group": "<ARG> <ARG> was notice .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 23666, "group": "<ARG> <ARG> jog .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 23716, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 23732, "group": "<ARG> was bring the <ARG> in a <ARG> .", "em": 1, "ncell": 54, "base_em": 1}
+{"idx": 23745, "group": "<ARG> crave to dust .", "em": 1, "ncell": 36, "base_em": 1}
+{"idx": 23748, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 23763, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 23777, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 23885, "group": "<ARG> <ARG> was burn by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 23913, "group": "<ARG> roll a <ARG> on a <ARG> .", "em": 1, "ncell": 54, "base_em": 1}
+{"idx": 23955, "group": "<ARG> <ARG> was throw .", "em": 1, "ncell": 20, "base_em": 1}
+{"idx": 23964, "group": "<ARG> give <ARG> a <ARG> .", "em": 1, "ncell": 42, "base_em": 1}
+{"idx": 23981, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 31, "base_em": 1}
+{"idx": 24011, "group": "<ARG> <ARG> was notice .", "em": 1, "ncell": 21, "base_em": 1}
+{"idx": 24029, "group": "<ARG> <ARG> was like by <ARG> .", "em": 1, "ncell": 32, "base_em": 1}
+{"idx": 24043, "group": "<ARG> <ARG> sell a <ARG> on the <ARG> to <ARG> .", "em": 1, "ncell": 77, "base_em": 1}
+{"idx": 24142, "group": "<ARG> <ARG> was shorten by the <ARG> .", "em": 1, "ncell": 43, "base_em": 1}

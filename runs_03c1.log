@@ -1,0 +1,19 @@
+  seed0 pw=1: OOF继续率=0.004 召回=0.005 trainEM=0.883 N_cell=46
+  seed0 pw=2: OOF继续率=0.013 召回=0.032 trainEM=0.885 N_cell=51
+  seed0 pw=4: OOF继续率=0.049 召回=0.222 trainEM=0.899 N_cell=67
+  seed0 pw=8: OOF继续率=0.141 召回=0.659 trainEM=0.931 N_cell=97
+  seed0 pw=16: OOF继续率=0.248 召回=0.924 trainEM=0.950 N_cell=131
+seed0: best_pw=16 g2_n=599 g2_trained=True
+  seed1 pw=1: OOF继续率=0.009 召回=0.030 trainEM=0.916 N_cell=49
+  seed1 pw=2: OOF继续率=0.024 召回=0.172 trainEM=0.924 N_cell=56
+  seed1 pw=4: OOF继续率=0.047 召回=0.336 trainEM=0.933 N_cell=64
+  seed1 pw=8: OOF继续率=0.096 召回=0.627 trainEM=0.948 N_cell=82
+  seed1 pw=16: OOF继续率=0.172 召回=0.858 trainEM=0.960 N_cell=107
+seed1: best_pw=16 g2_n=415 g2_trained=True
+  seed2 pw=1: OOF继续率=0.014 召回=0.038 trainEM=0.873 N_cell=50
+  seed2 pw=2: OOF继续率=0.044 召回=0.195 trainEM=0.887 N_cell=59
+  seed2 pw=4: OOF继续率=0.092 召回=0.403 trainEM=0.906 N_cell=72
+  seed2 pw=8: OOF继续率=0.177 召回=0.733 trainEM=0.936 N_cell=101
+  seed2 pw=16: OOF继续率=0.272 召回=0.941 trainEM=0.957 N_cell=135
+seed2: best_pw=16 g2_n=657 g2_trained=True
+saved runs/gate_exp/gate_03c1/r2_threshold_baseline.json

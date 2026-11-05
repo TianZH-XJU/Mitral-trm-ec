@@ -1,0 +1,21 @@
+seed0 GA: fit=0.411 outerEM=0.9566 diff=+0.0000 nc_ratio=0.420 (4708s)
+seed0 MGA: fit=0.417 outerEM=0.9566 diff=+0.0000 nc_ratio=0.426 (4772s)
+seed0 DE: fit=0.264 outerEM=0.9525 diff=-0.0041 nc_ratio=0.265 (4442s)
+seed0 11ES: fit=0.258 outerEM=0.9442 diff=-0.0124 nc_ratio=0.258 (4128s)
+/home/appuser/.local/lib/python3.12/site-packages/cma/s.py:17: UserWarning: Could not import matplotlib.pyplot, therefore ``cma.plot()`` etc. is not available
+  _warnings.warn('Could not import matplotlib.pyplot, therefore'
+seed0 sepCMA: fit=0.383 outerEM=0.9587 diff=+0.0021 nc_ratio=0.385 (4430s)
+seed0 fullCMA: fit=0.377 outerEM=0.9545 diff=-0.0021 nc_ratio=0.379 (4431s)
+seed1 GA: fit=0.283 outerEM=0.9686 diff=-0.0078 nc_ratio=0.283 (4798s)
+seed1 MGA: fit=0.271 outerEM=0.9765 diff=+0.0000 nc_ratio=0.270 (4790s)
+seed1 DE: fit=0.252 outerEM=0.9725 diff=-0.0039 nc_ratio=0.253 (4647s)
+seed1 11ES: fit=0.268 outerEM=0.9667 diff=-0.0098 nc_ratio=0.273 (3976s)
+seed1 sepCMA: fit=0.255 outerEM=0.9647 diff=-0.0118 nc_ratio=0.258 (4323s)
+seed1 fullCMA: fit=0.297 outerEM=0.9706 diff=-0.0059 nc_ratio=0.293 (4199s)
+seed2 GA: fit=10.001 outerEM=0.9696 diff=+0.0023 nc_ratio=1.000 (4753s)
+seed2 MGA: fit=0.514 outerEM=0.9649 diff=-0.0023 nc_ratio=0.502 (4927s)
+seed2 DE: fit=10.001 outerEM=0.9649 diff=-0.0023 nc_ratio=0.501 (4744s)
+seed2 11ES: fit=0.514 outerEM=0.9625 diff=-0.0047 nc_ratio=0.502 (5029s)
+seed2 sepCMA: fit=10.001 outerEM=0.9649 diff=-0.0023 nc_ratio=0.502 (4814s)
+seed2 fullCMA: fit=1.023 outerEM=0.9672 diff=+0.0000 nc_ratio=0.999 (4828s)
+P2 DONE 82743.28331899643 s

@@ -1,0 +1,19 @@
+outer fold n=645
+baseline forced_e3: EM=0.8789 N_cell=264.3
+/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r_causal_decoder.py:121: RuntimeWarning: overflow encountered in exp
+  p1 = float(1 / (1 + np.exp(-(w1 @ x1 + b1))))
+/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r_causal_decoder.py:95: RuntimeWarning: overflow encountered in exp
+  p0 = float(1 / (1 + np.exp(-(w0 @ x0 + b0))))
+Traceback (most recent call last):
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r0_pilot_v2.py", line 224, in <module>
+    main()
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r0_pilot_v2.py", line 187, in main
+    toks, nc, _ = dec.decode(r["src"], best[1],
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/appuser/.local/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 158, in no_grad
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r_causal_decoder.py", line 58, in decode
+    w0 = np.asarray(theta[:8], dtype=np.float32)
+                    ~~~~~^^^^
+TypeError: 'NoneType' object is not subscriptable

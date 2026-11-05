@@ -1,0 +1,17 @@
+seed0: frozen best depth=e3, inner=256, outer=645
+Traceback (most recent call last):
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r1_pilot.py", line 422, in <module>
+    main()
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r1_pilot.py", line 151, in main
+    base_in = decode_batch(None, sub, force=force_star)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r1_pilot.py", line 143, in decode_batch
+    toks, nc, tr = dec.decode(
+                   ^^^^^^^^^^^
+  File "/home/appuser/.local/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 158, in no_grad
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r_causal_decoder.py", line 60, in decode
+    w0 = np.asarray(theta[:8], dtype=np.float32)
+                    ~~~~~^^^^
+TypeError: 'NoneType' object is not subscriptable

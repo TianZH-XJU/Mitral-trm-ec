@@ -1,0 +1,11 @@
+outer fold n=645
+baseline forced_e3: EM=0.8633 N_cell=264.3
+/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r_causal_decoder.py:97: RuntimeWarning: overflow encountered in exp
+  p0 = float(1 / (1 + np.exp(-(w0 @ x0 + b0))))
+Traceback (most recent call last):
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r0_pilot_v2.py", line 262, in <module>
+    main()
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p2r0_pilot_v2.py", line 251, in main
+    "genotype": best[1].tolist() if best[1] else None}
+                                    ~~~~^^^
+ValueError: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()

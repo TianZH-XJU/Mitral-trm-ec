@@ -1,0 +1,90 @@
+{
+ "assets": {
+  "runs/gate_exp/R1_s0.pt": {
+   "sha256": "48212d3e1b4a7a7520e3e4c333ac288dd207e8bbbdf5954939b7f0b2703a0efb",
+   "bytes": 2235246
+  },
+  "runs/gate_exp/R1_s1.pt": {
+   "sha256": "6872ea52d5cf283ab352f2fff0e4543bb6505132971178d756c0fc5d67a04a70",
+   "bytes": 2235246
+  },
+  "runs/gate_exp/R1_s2.pt": {
+   "sha256": "594309534a444b5834eb01e93d5407d0b56818d8bb47ee46a64736641346cb43",
+   "bytes": 2235246
+  },
+  "runs/gate_exp/R2_s0.pt": {
+   "sha256": "7a55bc28016c7a454c093ef2e8414b08b9e4a00dbec1e102fb6748bb36c5d59a",
+   "bytes": 2235246
+  },
+  "runs/gate_exp/R2_s1.pt": {
+   "sha256": "e311e6580d226d927c56f7369fb843a622b6c1aa60ddf4370abcc7786d45f846",
+   "bytes": 2235246
+  },
+  "runs/gate_exp/R2_s2.pt": {
+   "sha256": "957dc910370c4ffdc5364159b216ef55bd89e06aeb00d44dc52f0e21d5582be6",
+   "bytes": 2235246
+  },
+  "runs/gate_exp/vocab.json": {
+   "sha256": "b7fcff5f852445a4a05da0e13eb4fed4da102df8923f5ac161db3bf90f15c14c",
+   "bytes": 13524
+  },
+  "runs/gate_exp/traj_v2/R2_s0_gate_train.jsonl": {
+   "lines": 2417
+  },
+  "runs/gate_exp/traj_v2/R2_s0_gate_validation.jsonl": {
+   "lines": 2415
+  },
+  "runs/gate_exp/traj_v2/R2_s1_gate_train.jsonl": {
+   "lines": 2417
+  },
+  "runs/gate_exp/traj_v2/R2_s1_gate_validation.jsonl": {
+   "lines": 2415
+  },
+  "runs/gate_exp/traj_v2/R2_s2_gate_train.jsonl": {
+   "lines": 2417
+  },
+  "runs/gate_exp/traj_v2/R2_s2_gate_validation.jsonl": {
+   "lines": 2415
+  }
+ },
+ "consistency_n": 60,
+ "spy_g0_stop_refine_calls": 0,
+ "spy_g0_stop_base_calls": 958,
+ "spy_pass": true,
+ "forced_depth_consistency": {
+  "e0": {
+   "em_causal": 0.8833333333333333,
+   "em_traj": 0.8833333333333333,
+   "em_match_rate": 1.0,
+   "base_calls": 2777,
+   "refine_calls": 0,
+   "n_cell_reported": 2777,
+   "n_cell_calls": 2777,
+   "n_cell_exact": true,
+   "refine_per_token_ok": true
+  },
+  "e1": {
+   "em_causal": 0.9333333333333333,
+   "em_traj": 0.9333333333333333,
+   "em_match_rate": 1.0,
+   "base_calls": 2777,
+   "refine_calls": 2777,
+   "n_cell_reported": 5554,
+   "n_cell_calls": 5554,
+   "n_cell_exact": true,
+   "refine_per_token_ok": true
+  },
+  "e3": {
+   "em_causal": 0.9666666666666667,
+   "em_traj": 0.9666666666666667,
+   "em_match_rate": 1.0,
+   "base_calls": 2760,
+   "refine_calls": 8280,
+   "n_cell_reported": 11040,
+   "n_cell_calls": 11040,
+   "n_cell_exact": true,
+   "refine_per_token_ok": true
+  }
+ },
+ "overall_pass": true
+}

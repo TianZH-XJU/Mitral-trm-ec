@@ -1,0 +1,31 @@
+s1 S0_alpha1: EM=0.8281 N=270.1
+s1 S1_fix0.75: EM=0.8229 N=269.8
+s1 S2_fix0.50: EM=0.8281 N=267.6
+s1 S3_fix0.25: EM=0.8125 N=272.3
+s1 S4_sched: EM=0.8281 N=270.1
+s1 RS: best EM=0.8385 (vs alpha1 +0.0104) (2527s)
+s1 GA: best EM=0.8438 (vs alpha1 +0.0156) (2428s)
+s1 DE: best EM=0.8385 (vs alpha1 +0.0104) (2400s)
+/home/appuser/.local/lib/python3.12/site-packages/cma/s.py:17: UserWarning: Could not import matplotlib.pyplot, therefore ``cma.plot()`` etc. is not available
+  _warnings.warn('Could not import matplotlib.pyplot, therefore'
+Traceback (most recent call last):
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r1_evolutionary_search.py", line 196, in <module>
+    main()
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r1_evolutionary_search.py", line 164, in main
+    es = cma.CMAEvolutionStrategy(
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/appuser/.local/lib/python3.12/site-packages/cma/evolution_strategy.py", line 1198, in __init__
+    self.mean = self.gp.geno(np.array(self.x0, copy=True),
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/appuser/.local/lib/python3.12/site-packages/cma/transformations.py", line 1142, in geno
+    x = from_bounds(x, copy)
+        ^^^^^^^^^^^^^^^^^^^^
+  File "/home/appuser/.local/lib/python3.12/site-packages/cma/boundary_handler.py", line 530, in inverse
+    return np.asarray(self.bounds_tf.inverse(x, copy_if_changed))  # this doesn't exist
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/appuser/.local/lib/python3.12/site-packages/cma/transformations.py", line 141, in inverse
+    return [self._inverse_i(y, i) for i, y in enumerate(solution_in_phenotype)]
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/appuser/.local/lib/python3.12/site-packages/cma/transformations.py", line 482, in _inverse_i
+    raise ValueError('argument of inverse must be within the given bounds')
+ValueError: argument of inverse must be within the given bounds
