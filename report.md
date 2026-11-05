@@ -319,6 +319,6 @@ Underfull                      : 7        (基线 7；其中 3 处来自 main.bb
 | 改写后的主文件 | `Mitral-trm-ec-main\paper\acl\main.tex` |
 | 编译产物 | `Mitral-trm-ec-main\paper\acl\main.pdf`（8 页，497,231 bytes），另有 `main.log` / `main.bbl` / `main.aux` |
 | 本对照报告 | `Mitral-trm-ec-main\report.md` |
-| GitHub 分支 / PR | `paper/acl-polish`（基于 `main`）→ PR 目标 `main`；图件 PNG 为仓库既有资源，路径未变 |
+| GitHub 分支 / PR | 分支 `paper/acl-polish`（基于 `main`）→ [PR #5](https://github.com/TianZH-XJU/Mitral-trm-ec/pull/5) → `main`；图件 PNG 为仓库既有资源，路径未变 |
 
 **回滚方式**：把 `_backup\paper_acl_original\` 中的 13 个文件复制回 `paper\acl\` 覆盖，再重跑 `pdflatex → bibtex → pdflatex ×2` 即可回到基线（zip 可作为完整项目级回滚源）。项目内无 `.git`，请勿依赖 `git checkout --`。
