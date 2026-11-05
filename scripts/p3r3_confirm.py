@@ -167,11 +167,11 @@ def main():
                 "latency_s": arms[name][2],
                 "ci": ci,
                 "noninferior":
-                    ci["dEM_ci95"][0] >= -EM_MARGIN,
+                    bool(ci["dEM_ci95"][0] >= -EM_MARGIN),
                 "point_feasible":
-                    float(np.mean(arms[name][0])
-                          - np.mean(arms["J0"][0]))
-                    >= -EM_MARGIN}
+                    bool(float(np.mean(arms[name][0])
+                               - np.mean(arms["J0"][0]))
+                         >= -EM_MARGIN)}
             print(f"s{seed} {name}: "
                   f"EM={seed_res[name]['EM']:.4f} "
                   f"diff={seed_res[name]['EM_vs_J0']:+.4f} "

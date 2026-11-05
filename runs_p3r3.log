@@ -1,0 +1,24 @@
+s0 J1: EM=0.9674 diff=+0.0000 ratio=0.2575 CI=[np.float64(0.0), np.float64(0.0)]
+s0 J4: EM=0.9674 diff=+0.0000 ratio=0.2564 CI=[np.float64(0.0), np.float64(0.0)]
+Traceback (most recent call last):
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r3_confirm.py", line 213, in <module>
+    main()
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r3_confirm.py", line 205, in main
+    atomic_save(seed_res,
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r3_confirm.py", line 34, in atomic_save
+    json.dump(obj, f, indent=1)
+  File "/usr/local/lib/python3.12/json/__init__.py", line 179, in dump
+    for chunk in iterable:
+                 ^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 432, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/usr/local/lib/python3.12/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/usr/local/lib/python3.12/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/usr/local/lib/python3.12/json/encoder.py", line 439, in _iterencode
+    o = _default(o)
+        ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type bool is not JSON serializable
