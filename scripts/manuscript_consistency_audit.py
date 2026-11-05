@@ -49,11 +49,40 @@ def close(a, b, tol=0.0051):
 def main():
     tex = open(TEX).read()
 
-    # ---------- 1+2. Table 1: halting, LCB-based non-inferiority ----------
+    # ---------- 1+2. Table 1: row-level parsing vs JSON ----------
+    # Parse the actual tab:halting table rows and compare EVERY cell
+    # (policy, dEM, CI endpoints, ratio, checkmark/times) against the
+    # JSON, recomputing the LCB-based non-inferiority per row.
     p2r1 = "runs/gate_exp/p2r/p2r1"
-    thr_exp = {"0": 0.0, "1": 0.0, "2": 1.86}
-    ratio_exp = {
-        ("0", "thr"): 0.2575, ("1", "thr"): 0.2570, ("2", "thr"): 0.5212}
+    # rows appear BEFORE the \label (caption at end); capture the
+    # whole table environment up to the label
+    m = re.search(
+        r"\\begin\{table\}(.*?)\\label\{tab:halting\}", tex, re.S)
+    chk("t1_table_found", m is not None)
+    tab = m.group(1) if m else ""
+    # split into per-seed blocks by the multirow headers
+    seed_blocks = re.split(r"\\multirow\{4\}\{\*\}\{\$s_(\d)", tab)
+    rows = {}  # (seed, policy) -> parsed dict
+    for bi in range(1, len(seed_blocks), 2):
+        seed = seed_blocks[bi]
+        block = seed_blocks[bi + 1]
+        for line in block.split("\\\\"):
+            rm = re.search(
+                r"(threshold|GA|DE|sep-CMA-ES)\s*&\s*\$?([+\-]?[\d.]+)"
+                r"\$?\s*&\s*\$?\[\s*([+\-]?[\d.]+)\s*,\s*"
+                r"([+\-]?[\d.]+)\s*\]\$?\s*&\s*([\d.]+)\s*&"
+                r"\s*(\$?\\checkmark\$?|\$?\\times\$?)", line)
+            if rm:
+                _polmap = {"sep-CMA-ES": "sepCMA",
+                           "threshold": "thr"}
+                rows[(seed, _polmap.get(
+                    rm.group(1), rm.group(1)))] = {
+                    "em": float(rm.group(2)),
+                    "ci": (float(rm.group(3)), float(rm.group(4))),
+                    "ratio": float(rm.group(5)),
+                    "mark": rm.group(6)}
+    chk("t1_row_count", len(rows) == 12, str(len(rows)))
+    ni = {}
     for s in ("0", "1", "2"):
         for pol in ("thr", "GA", "DE", "sepCMA"):
             f = [x for x in glob.glob(
@@ -62,27 +91,33 @@ def main():
             chk(f"t1_s{s}_{pol}_file", len(f) == 1, str(f))
             d = load(f[0])
             em = d["outer_em_diff"] * 100
+            ci = tuple(x * 100 for x in d["ci"]["em_diff_ci95"])
             nc = d["outer_ncell_ratio"]
-            lcb = d["ci"]["em_diff_ci95"][0] * 100
-            noninf = lcb >= -0.5
-            # numbers must appear in tex (2-decimal pp, 4-decimal ratio)
-            ems = f"{em:+.2f}"
-            ncs = f"{nc:.4f}"
-            chk(f"t1_s{s}_{pol}_em_in_tex", ems in tex, ems)
-            chk(f"t1_s{s}_{pol}_ratio_in_tex", ncs in tex, ncs)
-            if pol == "thr":
-                chk(f"t1_s{s}_thr_values",
-                    close(em, thr_exp[s], 0.0051)
-                    and close(nc, ratio_exp[(s, "thr")], 0.0001))
-            # LCB classification must be reflected: count of checkmarks
-            # per row is verified via the narrative counts below
-            chk(f"t1_s{s}_{pol}_lcb_class",
-                (noninf and ("\\checkmark" in tex)) or True)  # per-cell check below
-            globals()[f"ni_s{s}_{pol}"] = noninf
+            noninf = ci[0] >= -0.5
+            ni[(s, pol)] = noninf
+            r = rows.get((s, pol))
+            chk(f"t1_s{s}_{pol}_row_parsed", r is not None)
+            if r:
+                chk(f"t1_s{s}_{pol}_em",
+                    close(r["em"], em, 0.0051), f"{r['em']} vs {em}")
+                chk(f"t1_s{s}_{pol}_ci_lo",
+                    close(r["ci"][0], ci[0], 0.0051),
+                    f"{r['ci']} vs {ci}")
+                chk(f"t1_s{s}_{pol}_ci_hi",
+                    close(r["ci"][1], ci[1], 0.0051),
+                    f"{r['ci']} vs {ci}")
+                chk(f"t1_s{s}_{pol}_ratio",
+                    close(r["ratio"], nc, 0.0001),
+                    f"{r['ratio']} vs {nc}")
+                mark_clean = r["mark"].replace("$", "")
+                chk(f"t1_s{s}_{pol}_mark",
+                    mark_clean == ("\\checkmark" if noninf
+                                   else "\\times"),
+                    f"{r['mark']} vs LCB {ci[0]:.2f}")
     # narrative counts: threshold 3/3 pass, optimizers 2/9 pass
-    thr_pass = sum(1 for s in "012" if globals()[f"ni_s{s}_thr"])
+    thr_pass = sum(1 for s in "012" if ni.get((s, "thr")))
     opt_pass = sum(1 for s in "012" for p in ("GA", "DE", "sepCMA")
-                   if globals()[f"ni_s{s}_{p}"])
+                   if ni.get((s, p)))
     chk("t1_threshold_3of3", thr_pass == 3, str(thr_pass))
     chk("t1_optimizers_2of9", opt_pass == 2, str(opt_pass))
     chk("t1_narrative_2of9",
@@ -146,6 +181,8 @@ def main():
             d = load(f[0])
             chk(f"abl{abl}_mask_logged",
                 d.get("mask") == expected[abl], str(d.get("mask")))
+            chk(f"abl{abl}_budget", d.get("budget_used") == 336,
+                str(d.get("budget_used")))
             ems = f"{d['em_vs_alpha1']*100:+.2f}"
             chk(f"abl{abl}_em_in_tex", ems in tex, ems)
 

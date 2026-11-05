@@ -1,0 +1,15 @@
+{
+ "run_id": "p3r1_1793894303",
+ "purpose": "corrected-mask ablation reruns B (only H) and C (only D,A) on s0 GA",
+ "base_commit": "87842c9d396fbae287a8f89e393323ea9d8ed520",
+ "working_tree_state": "dirty: MASKS corrected in working tree before this run; the run manifest records HEAD (87842c9), which still contained the mismatched masks",
+ "script": "scripts/p3r1_evolutionary_search.py",
+ "script_sha256_at_run": "d2b0236b644203eda32f549e7b9fd969be897c5b01f9bb38374a9665d681b9ee",
+ "corrected_source_committed_in": "56c7277 (and successors)",
+ "applied_masks_recorded_in": [
+  "runs/gate_exp/p3r/p3r1/p3r1_1793894303_s0_GA_ablB.json",
+  "runs/gate_exp/p3r/p3r1/p3r1_1793894303_s0_GA_ablC.json"
+ ],
+ "budget": 336,
+ "note": "The script SHA-256 above is the hash of the exact source executed for this run; it matches the corrected source committed in 56c7277."
+}
