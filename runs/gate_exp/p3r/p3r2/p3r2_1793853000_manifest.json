@@ -1,0 +1,10 @@
+{
+ "run_id": "p3r2_1793853000",
+ "budget": 336,
+ "commit": "dcc976f8888b52ca6114ee10bf7a642d8b4e551d",
+ "frozen_depths": {
+  "0": 3,
+  "1": 3,
+  "2": 1
+ }
+}

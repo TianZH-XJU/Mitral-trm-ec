@@ -167,6 +167,7 @@ class AlphaDecoder(CausalTokenDecoder):
                 top2 = torch.topk(p, 2, dim=-1)
                 m1 = float(top2.values[0, 0] - top2.values[0, 1])
                 x1 = np.array([top1, m1, ent1,
+                               top1 - top0, ent1 - ent0, m1 - m0,
                                float(np.mean(hist_t)),
                                float(np.percentile(
                                    hist_e + [ent1], 75)),

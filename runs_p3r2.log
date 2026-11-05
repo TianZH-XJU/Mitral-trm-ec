@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r2_joint_controller.py", line 232, in <module>
+    main()
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r2_joint_controller.py", line 85, in main
+    em1, nc1 = eval_joint(dec, sub, np.concatenate(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r2_joint_controller.py", line 51, in eval_joint
+    toks, nc = dec.decode_joint(r["src"], geno, stats,
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/appuser/.local/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 158, in no_grad
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/github__TianZH-XJU__Mitral-trm-ec/scripts/p3r_core.py", line 180, in decode_joint
+    p1 = float(1 / (1 + np.exp(-(w1 @ x1 + b1))))
+                                 ~~~^~~~
+ValueError: matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 9 is different from 12)
