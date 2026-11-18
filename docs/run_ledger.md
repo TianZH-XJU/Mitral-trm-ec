@@ -27,3 +27,17 @@ Screening 实际运行为 **21 个训练**，非 24。原因：`scripts/run_scre
 - **主指标**：free-running sequence exact match。次级（预声明）：token accuracy、teacher-forced 转移计数/比例、free-running 逐深度预测、AUC+类样本数、refinement 调用数、实测耗时。
 - 输出：每 (条件, 模型, 种子, 深度) 的原始 seq EM + 配对差值 Δ_s = EM_{model,s} − EM_{E0,s}；不做任何后续调整。
 - test 首次评估时间戳记录于结果 JSON；此后该 test 标记为已使用。
+
+
+## 运行台账：第二十五阶段补充实验（E1–E7，2026-11-18）
+
+- 新增运行：E1 64 点阈值网格（3 seed × 64 策略解码）、E2 替代读出探针+前沿
+  （~160 策略/seed）、E3 单序列+paymax 批处理计时（低负载独占重跑一次，
+  首次计时的并发污染版本已覆盖）、E4 dev 一次性确认（预注册，20k bootstrap）、
+  E5 错误类型学+联合分解（J4 重解码与 p3r3 冻结日志逐样本一致）、E6 Transformer
+  pilot 训练 15 epochs + fold-4 评估（含一次 EOS 监督修复重训，坏 checkpoint
+  归档为 T1_s0_noEOS_failed.pt）、E7 beam-4 对比。
+- COGS test/gen 维持封存；dev 仅一次性使用（预注册于 e4 脚本）。
+- 论文正式稿 paper-new/acl/main.tex 重构：附录并入正文、删除前期失败/偏差叙事、
+  补充实验全部入正文（Fresh-Split Confirmation、阈值敏感性、读出对比、
+  wall-clock/批处理、Transformer 迁移小节）；编译 10 页 0 错误。

@@ -621,3 +621,49 @@ OOV 记录矛盾修正（审核指出）：准确表述为"目标侧存在一个
 - P3 可变结构（RuleGA/MLP-GA）：RuleGA 0.253–0.254 N_cell（s0 零损失、8 条可解释规则）；MLP-GA 三种子 EM 全部 ≥−0.23pp/0.50。表达能力部分是瓶颈——可变结构拓宽 Pareto 前沿。
 - P4 多目标（NSGA-II/MO-DE）：前沿可行率 100%，可行下限 0.248–0.260，全谱系 EM-成本权衡；外层验证 NSGA-II 零损失 0.305/0.342（s0/s1）；内层超体积不预测外层（泛化差距真实）。
 - P5 LOCO：数据边界发现——COGS train 99.7% 为 in_distribution，跨类别检验只能在 P6 gen 确认中进行；已执行部分无类别负迁移证据。
+
+## 第二十五阶段：审稿意见补充实验（E1–E7，2026-11-18）
+
+针对 AI 审稿（paperreview.ai，评分 5/10）的 7 个问题，在冻结 R2 checkpoint 上补充 7 组实验。
+先决条件：本机解压子集缺 `src/` 与 `data/`，按下述方式重建并位级验证后才执行实验。
+
+### 基础设施重建（全部验证通过）
+
+- `src/model_recursive.py` 等按 checkpoint state-dict 逆向重建；`data/raw/COGS/` 从官方
+  najoungkim/COGS 下载，SHA-256 与 `configs/cogs_manifest.json` 一致（train 220b3804…，dev ab66388a…）。
+- 位级验证 1：`scripts/verify_reconstruction.py` —— traj_v2 冻结轨迹逐样本 em/n_gen/eos
+  3 seed × 2 分区 × 3 深度全一致，信号均值差 < 1e-5。
+- 位级验证 2：`scripts/verify_batched.py` —— 新批量因果解码器（halting_lib.py，
+  split=诚实逐样本计数 / paymax=批内按最深层付费）与 p2r1 冻结外层日志
+  645×3 逐样本一致，fold-4 构造逐 idx 一致。
+
+### 核心结果
+
+- **E4（Q5，一次性确认，未触碰 dev n=3,000）**：预注册策略 thr(0.85,0.90) 3 seed 全部通过
+  LCB >= −0.5pp（−0.23/−0.17/−0.10pp），计算比 0.2572/0.2573/0.5182 与 fold-4 第三位一致。
+  历史暴露折的弱点被直接回应。
+- **E1（Q1，64 点阈值网格）**：tau0>=0.8 的全部 40 组合 3 seed 均非劣效（平坦高原）；
+  无组合 EM 超过预注册点（s0/s1），s2 全部为正且预注册点在 EM 最大档。阈值不敏感。
+- **E2（Q7，替代读出）**：top1/margin/entropy 判别力 0.99+（方向感知），前沿上 margin 与
+  top1 统计等价（差 <=0.002），entropy 多花 3–10% 调用，KL 稍逊，cos/dznorm 弱且跨 seed
+  方向反转。**top-1 接近 Pareto 最优，无支配者。**
+- **E5（Q6，错误类型学 + 失败归因）**：固定深度 alpha 策略内层 +0.52pp=1 个样本，外层
+  1 repair/1 harm 不迁移；联合策略分解：alpha=精确 no-op（全部 ≈1.0000），损失 100% 来自
+  搜索到的 24 维门控（s2 外层 −2.02pp = 1 repair/14 harm）。J4 重解码与 p3r3 冻结日志一致。
+- **E7（Q4，beam）**：beam-4 与 greedy 逐位一致（EM/调用数全同），停算比率保持
+  （胜出 0.258，搜索 0.267–0.273）。协议=greedy。
+- **E3（Q2，wall-clock/批处理，低负载独占重跑）**：单序列实测加速 ×3.20/×2.75/×1.75
+  （16.2/16.3/17.9ms vs 51.7/44.7/31.3ms）；门控信号开销 = 0.46–0.58 个 refinement
+  调用；paymax 批内按最深层付费使 B=4/8/32 实调比名义高 4–38%（确定性会计）。
+  B=32 时相对 e3 的 wall-clock 加速降至 ×1.85–1.88。
+- E6（Q3，Transformer pilot）：1 层 Transformer 编码器 + base/refine 共享深度解码块
+  （d=128，798K 参数，R2 式多深度监督）。**机制迁移成立**：预注册阈值原样复用
+  thr(0.85,0.90) → 95.04% EM @ 0.256 调用比（强制 e3=95.97%）；(0.99,0.99) 完全
+  追平 e3 EM @ 0.266。深度结构复现（preserve 68.0% + repair 18.4% ≫ harm 0.8%）。
+  （首次训练目标缺 EOS 监督全部 EM=0，已归档 T1_s0_noEOS_failed.pt 后修复重训。）
+
+### 产物
+
+- `docs/supplementary_experiments.md`（逐实验报告）、`runs/gate_exp/supp/`（全部 JSON/日志）、
+  `scripts/e{1..7}_*.py`、`scripts/halting_lib.py`、`scripts/supp_figures.py`。
+- COGS test/gen 维持封存；dev 仅一次性评估（预注册于 e4 脚本 docstring）。

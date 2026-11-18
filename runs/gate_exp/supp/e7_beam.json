@@ -1,0 +1,75 @@
+{
+ "n_samples": 128,
+ "beam_width": 4,
+ "seeds": {
+  "0": {
+   "greedy_e3": {
+    "EM": 0.9609375,
+    "winner_ncell": 160.46875
+   },
+   "greedy_thr": {
+    "EM": 0.9609375,
+    "winner_ncell": 41.359375,
+    "ratio_vs_greedy_e3": 0.25774099318403115
+   },
+   "beam4_e3": {
+    "EM": 0.9609375,
+    "winner_ncell": 160.46875,
+    "search_ncell": 631.5
+   },
+   "beam4_thr": {
+    "EM": 0.9609375,
+    "winner_ncell": 41.359375,
+    "search_ncell": 168.7734375,
+    "ratio_vs_beam4_e3": 0.25774099318403115,
+    "ratio_search_vs_beam4_e3": 0.2672580166270784
+   }
+  },
+  "1": {
+   "greedy_e3": {
+    "EM": 0.9765625,
+    "winner_ncell": 160.59375
+   },
+   "greedy_thr": {
+    "EM": 0.9765625,
+    "winner_ncell": 41.1796875,
+    "ratio_vs_greedy_e3": 0.2564214827787507
+   },
+   "beam4_e3": {
+    "EM": 0.9765625,
+    "winner_ncell": 160.59375,
+    "search_ncell": 621.4375
+   },
+   "beam4_thr": {
+    "EM": 0.9765625,
+    "winner_ncell": 41.1796875,
+    "search_ncell": 167.84375,
+    "ratio_vs_beam4_e3": 0.2564214827787507,
+    "ratio_search_vs_beam4_e3": 0.27008951020818667
+   }
+  },
+  "2": {
+   "greedy_e3": {
+    "EM": 0.9765625,
+    "winner_ncell": 160.84375
+   },
+   "greedy_thr": {
+    "EM": 0.9765625,
+    "winner_ncell": 41.5234375,
+    "ratio_vs_greedy_e3": 0.25816009325820866
+   },
+   "beam4_e3": {
+    "EM": 0.9765625,
+    "winner_ncell": 160.84375,
+    "search_ncell": 622.21875
+   },
+   "beam4_thr": {
+    "EM": 0.9765625,
+    "winner_ncell": 41.5234375,
+    "search_ncell": 166.90625,
+    "ratio_vs_beam4_e3": 0.25816009325820866,
+    "ratio_search_vs_beam4_e3": 0.26824368439556023
+   }
+  }
+ }
+}

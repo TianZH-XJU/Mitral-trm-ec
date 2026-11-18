@@ -1,0 +1,256 @@
+\documentclass[11pt]{article}
+\usepackage[review]{acl}
+
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{inconsolata}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{multirow}
+\usepackage{url}
+
+\title{Adaptive Halting and Evolutionary Latent Control in Recursive Sequence Models:\\Compute Savings, Mechanism Ablations, and Negative Results}
+
+\author{Anonymous Authors}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study runtime control of a frozen recursive GRU sequence-to-sequence model in which each output token may undergo up to three latent refinement steps. We first construct a strictly causal, token-level adaptive halting procedure whose compute cost is measured by the exact number of executed base and refinement calls. A simple two-stage confidence threshold satisfies a preregistered non-inferiority criterion on all three model seeds while using 25.7--25.8\% of the compute of the deepest fixed depth ($e_3$) on two seeds and 52.1\% of the compute of the shallower frozen baseline ($e_1$) on the third. Equal-budget evolutionary optimizers add at most 1--2\% further savings, and only two of nine such policies satisfy the confidence-bound non-inferiority criterion. We then ask whether evolutionary computation can improve the latent update itself: at fixed depth, evolutionary step-size policies improve inner-subset accuracy by up to $+2.1$pp over the original update, and on every seed at least one optimizer beats same-budget random search, though no single optimizer does so consistently. On the ablated seed, reduced-feature ablations show the full input state is unnecessary---a time-index-only or a dynamics-only policy reproduces the full gain, while an entropy-only policy does not; however, one-shot confirmation of joint (step-size + halting) policies fails the non-inferiority criterion on two of three seeds, with one threshold pass only 0.0025pp above the bound. We report these results as the measured boundary of evolutionary latent control on frozen models, together with full preregistration, per-evaluation logs, and reproducibility materials.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+Recursive sequence models reapply a refinement operator to a latent state, allowing later iterations to repair earlier mistakes. The benefit, however, is highly uneven: on the COGS semantic parsing task with our frozen GRU model, 87--91\% of examples preserve their prediction across the first refinement step, while only 5--9\% are repaired by it. Running the deepest configuration for every token therefore spends most of its compute on tokens that do not need it, and the accuracy--compute trade-off is only meaningful if compute is measured as \emph{actually executed} operations.
+
+This paper studies two runtime control dimensions on such a model. The first is \emph{whether to continue} (adaptive halting): can causally available confidence signals decide, per token, whether further refinement is needed? The second is \emph{how to update} (latent step-size control): can evolutionary computation (EC) discover input-dependent update strengths $\alpha_t$ that improve the latent trajectory itself? We deliberately separate the two: fixed-depth experiments isolate latent-dynamics improvements at constant compute, and joint experiments then test whether such improvements transfer to the accuracy--compute frontier.
+
+Our investigation was governed by preregistered protocols, exact call counting verified by instrumented interception, equal-budget optimizer comparisons with random-search controls, feature ablations for mechanism attribution, and one-shot evaluation of frozen policies. This discipline matters: an earlier internal result reporting 25\% compute cost was invalidated by an audit that revealed look-ahead execution---gates decided after the refinements they were supposed to gate had already been computed. Rebuilding the executor strictly causally, we find the savings are real, but their source is simpler than expected, and several initially promising conclusions do not survive the stricter criteria.
+
+We address three research questions:
+\begin{itemize}
+\item \textbf{RQ1:} Can causal token-level halting maintain task performance while substantially reducing actually-executed refinement compute?
+\item \textbf{RQ2:} At fixed depth (constant compute), can EC find latent step-size policies that beat the original update, fixed step sizes, hand schedules, and same-budget random search---and are the gains input-dependent?
+\item \textbf{RQ3:} Does jointly optimizing step-size and halting improve the accuracy--compute frontier, and does it survive one-shot evaluation on held-out data?
+\end{itemize}
+
+\noindent Our contributions:
+\begin{itemize}
+\item A strictly causal, token-level adaptive halting procedure with audited compute accounting, evaluated against per-seed frozen depth baselines on three model seeds, with held-out evaluation under a preregistered confidence-bound non-inferiority criterion (\S\ref{sec:exp-halting}).
+\item A systematic study of evolutionary latent step-size control on a frozen recursive model, using equal-budget comparisons against random search and feature ablations showing that, on the ablated seed, the full input state is unnecessary: either the time index or the latent-dynamics pair alone reproduces the gain (\S\ref{sec:exp-latent}).
+\item One-shot evaluation of jointly optimized policies, which fails non-inferiority on two of three seeds; we report this as the current boundary of EC latent control on frozen models, with complete preregistration, per-evaluation logs, and reproducibility materials (\S\ref{sec:exp-joint}, \S\ref{sec:negative}).
+\end{itemize}
+
+We deliberately avoid claims that EC ``learned input-dependent dynamics'' or that our held-out split is untouched data; both are contradicted by our own ablations and data-use audit, and we discuss the implications for evaluation practice in \S\ref{sec:conclusion}.
+
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Adaptive computation and early exit.}
+Adaptive Computation Time allocates variable thinking steps to recurrent networks with a learned halting unit \citep{graves2016adaptive}; PonderNet learns a probabilistic halting distribution \citep{banino2021ponder}; the Universal Transformer applies depth-adaptive self-attention \citep{dehghani2019universal}, and depth-adaptive transformers exit per layer or per head \citep{elbayad2020depth}. Confidence-based early exit with calibrated scores is used to match instance complexity to model depth \citep{schwartz2020right}, to guarantee consistency between early-exit and full-model predictions \citep{schuster2021cats}, and---closest to our token-level setting---to allocate compute per generation timestep in language modeling, with sequence-level risk control \citep{schuster2022calm}. Our setting differs in two ways: the model is \emph{frozen} (no halting parameters are trained), and all reported compute is the exact count of executed refinement calls, verified by runtime interception rather than derived from exit depths. Anytime and meta-reasoning approaches similarly trade deliberation against cost \citep{zilberstein1996anytime}.
+
+\paragraph{Recursive and iterative refinement.}
+Repeated application of a transformation to a latent state underlies iterative deepening in sequence transduction, from learned halting in recurrent models \citep{graves2016adaptive} to repeated transformer passes \citep{dehghani2019universal}. The empirical structure we exploit---most examples stable under additional iterations, a small fraction repaired---echoes diminishing per-step returns in iterative inference, but we quantify it as four-way depth transitions (repair/harm/preserve/unresolved) and use it to design the stopping criterion.
+
+\paragraph{Evolutionary computation for neural control.}
+EC has been applied to neural weights (neuroevolution) \citep{stanley2019designing} and to controller optimization \citep{eiben2015introduction}. We restrict EC to a five-dimensional step-size policy on a frozen model, which cleanly separates search from representation learning. Our random-search control follows the recommendation that optimizer claims require equal-budget baselines \citep{eiben2015introduction}; our ablations follow mechanism-attribution logic common in analysis-driven research.
+
+\paragraph{Evaluation and confirmation protocols.}
+Cluster-robust bootstrap is standard for grouped data \citep{cameron2015practitioner}. We adopt a preregistered non-inferiority criterion---the lower 95\% confidence bound of the accuracy difference must be $\geq -0.5$pp---and one-shot evaluation of frozen policies, inspired by preregistration practice in empirical sciences; the necessity of the confidence-bound rule and the confirmation stage is demonstrated empirically by our own results, where point-estimate-based classifications and inner-subset optima both overstate reliability.
+
+\section{Method}
+\label{sec:method}
+
+\subsection{Recursive GRU Seq2Seq Model}
+\label{sec:model}
+The model is a GRU encoder--decoder \citep{cho2014gru,sutskever2014seq2seq} in which, at output position $i$, a base step produces a latent state $z_i^{(0)}$ (depth $e_0$). Up to $K{=}3$ refinement steps may follow, each applying a frozen GRU cell $F$ to the current latent:
+\begin{equation}
+\Delta z_i^{(k)} = F\!\left(\big[\,\mathrm{emb}(y_{i-1});\,c_i;\,e_{\mathrm{soft}}(z_i^{(k)})\,\big],\, z_i^{(k)}\right) - z_i^{(k)},
+\qquad
+z_i^{(k+1)} = z_i^{(k)} + \Delta z_i^{(k)},
+\label{eq:refine}
+\end{equation}
+where $c_i$ is the encoder context, $e_{\mathrm{soft}}(z)$ the expected embedding under the current output distribution, and $k \in \{0,\dots,K{-}1\}$ indexes refinement steps (depth $e_1$ after one step, $e_3$ after three). Six checkpoints (two model families $\times$ three seeds $s \in \{0,1,2\}$) are frozen; all experiments use family R2.
+
+\paragraph{Empirical depth structure.}
+On the gate-training split ($n{=}2{,}419$ per seed), the transition between depths $e_0 \rightarrow e_1$ decomposes into \emph{preserve} (both correct; 87--91\%), \emph{repair} (wrong$\rightarrow$correct; 5--9\%), \emph{unresolved} (both wrong; 3--5\%), and \emph{harm} (correct$\rightarrow$wrong; 0.12--0.25\%). The repair-to-harm ratio of roughly 20--70:1 means recursion is nearly harmless but benefits a minority of examples---exactly the structure under which conservative stopping is safe.
+
+\subsection{Causal Token-Level Adaptive Halting}
+\label{sec:halting}
+At each token, after the base step (and again after the first refinement), a gate decides whether to stop. Crucially, the decision at each gate may only use signals computed \emph{before} the refinements it gates; the executor never computes a step whose cost is not incurred. Gate~0 (after $e_0$) uses
+\begin{equation}
+\mathbf{x}^{(0)}_i = \big[\,\mathrm{top}_1,\ \mathrm{margin},\ H,\ \overline{\mathrm{top}}_1,\ p_{75}(H_{\mathrm{hist}}),\ i,\ \mathrm{Var}(\mathrm{top}_1),\ \mathbb{1}[\mathrm{EOS}]\,\big] \in \mathbb{R}^8,
+\label{eq:gate0}
+\end{equation}
+where $H$ is the entropy of the current predictive distribution and the remaining entries summarize the decoded prefix; refinement proceeds iff $\sigma(\mathbf{w}_0^\top \mathbf{x}^{(0)}_i + b_0) \geq \tau_0$. Gate~1 (after $e_1$) uses an analogous 12-dimensional vector that additionally contains the same-state deltas $\Delta\mathrm{top}_1$, $\Delta H$, $\Delta\mathrm{margin}$ and $\lVert z^{(1)}-z^{(0)}\rVert$, and gates the remaining two refinements. The threshold policy in our headline results is the special case ``stop iff $\mathrm{top}_1 \geq \tau$'' with $(\tau_0,\tau_1)=(0.85,0.90)$, preregistered before any evaluation.
+
+\subsection{Actual Computation Accounting}
+\label{sec:ncell}
+The compute metric is
+\begin{equation}
+N_{\mathrm{cell}} = \#\{\text{base steps}\} + \#\{\text{refinement calls}\},
+\label{eq:ncell}
+\end{equation}
+summed over a corpus and reported relative to the frozen per-seed best fixed depth (\S\ref{sec:setup}). Correctness is enforced by unit tests (forced stop/continue at each gate yields exactly 0/1/3 refinements per token) and by runtime interception that wraps the refinement module and asserts the counter equals the true call count; forced-depth decoding reproduces frozen training-time trajectories exactly (60/60 samples per depth).
+
+\subsection{Evolutionary Latent Step-Size Control}
+\label{sec:alpha}
+Separately from halting, we ask whether the update magnitude itself should be input-dependent. We replace \eqref{eq:refine} with
+\begin{equation}
+z_i^{(k+1)} = z_i^{(k)} + \alpha_i^{(k)}\,\Delta z_i^{(k)}, \qquad
+\alpha_i^{(k)} = \sigma\!\big(w_0 + w_1 \tilde H + w_2 \tilde D + w_3 \tilde A + w_4\, k/K\big),
+\label{eq:alpha}
+\end{equation}
+where $\tilde\cdot$ denotes standardization by statistics frozen from $\alpha{\approx}1$ rollouts of the first 64 examples of the inner training subset, $H$ the current predictive entropy, $D = \lVert\Delta z\rVert_2/\sqrt{d}$ the previous displacement, and $A$ the cosine between consecutive updates. Setting $\alpha \equiv 1$ recovers the original trajectories exactly (verified token-by-token, 128/128 per seed); searches are warm-started from $w_0 = 8$, giving $\alpha \approx 0.9997$ rather than exactly 1. All features are causally available at decision time; no gold labels, oracle outcomes, or future-depth signals are used.
+
+\subsection{Joint Control}
+A joint policy parameterizes both halting gates (24 dimensions, \S\ref{sec:halting}) and the step-size policy (5 dimensions, \eqref{eq:alpha}), yielding a \emph{nominal} 29-dimensional genotype decoded by a single procedure in which gate decisions precede the refinements they gate and step sizes modulate each executed refinement. Two implementation details reduce the effective dimensionality, which we disclose here rather than overstate the genotype. First, the end-of-sequence indicator features of both gates are always zero at decision time under the current decoding logic (decoding terminates when EOS is predicted), so those two weights are inactive. Second, the joint path supplies a constant raw value for the direction-consistency feature $A$; after standardization this is a constant (not necessarily zero), so the corresponding weight is confounded with the step-size intercept rather than inactive. The nominal genotype thus has 29 coordinates, of which 27 are non-inactive, but only 26 are functionally independent degrees of freedom.
+
+\subsection{Statistical Criteria}
+\label{sec:stats}
+All intervals are group-cluster paired bootstrap percentiles \citep{cameron2015practitioner} over structural groups of the task (1{,}000 resamples for development comparisons; 20{,}000 for held-out evaluation, fixed seeds). A policy is \emph{non-inferior} to a baseline iff the \textbf{lower 95\% confidence bound} of the exact-match (EM) difference is $\geq -0.5$pp; point estimates alone do not establish non-inferiority. Search budgets are exactly 336 candidate evaluations per optimizer (including the initial population), with warm starts from the preregistered threshold policy and per-evaluation best-so-far logs.
+
+\section{Experiments}
+\label{sec:experiments}
+
+\subsection{Setup}
+\label{sec:setup}
+We use the COGS semantic parsing benchmark \citep{kim2020cogs} with a frozen gate split of the training distribution (2{,}419 examples per seed): inner folds (4/5 of groups) supply search fitness on group-balanced subsets (192--256 examples); a held-out fold (fold-4, 645 examples per seed, group-disjoint from the search folds) is used only for one-shot evaluation of frozen policies. Group keys---derived from the logical forms of the full training split---are used for fold construction, group-balanced sampling, and bootstrap resampling, but never as per-sample policy inputs. Per-seed frozen best fixed depths are $e_3, e_3, e_1$ for seeds 0--2; all EM differences and compute ratios are relative to each seed's own baseline. The sealed COGS test and generalization sets were never read in any experiment reported here. Optimizers (GA, DE, sep-CMA-ES, random search) share the budget of \S\ref{sec:stats}; the optimizer seed is fixed at 0, so optimizer comparisons are exploratory.
+
+\subsection{Causal Execution and Implementation Validation}
+A preregistered engineering audit confirmed: (i) forced-depth decoding matches frozen trajectories exactly (60/60 samples per depth, per seed); (ii) the compute counter equals the true base+refinement call count under runtime interception; (iii) a forced stop at gate 0 executes exactly zero refinement calls; (iv) encoder caching used for throughput leaves all decoded tokens, gate actions, and costs bit-identical. Throughput after caching is 24--42 examples/s on CPU.
+
+\subsection{Adaptive Halting Results (RQ1)}
+\label{sec:exp-halting}
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llcccc}
+\toprule
+Seed / baseline & Policy & $\Delta$EM (pp) & 95\% CI (pp) & $N_{\mathrm{cell}}$ & Non-inf. \\
+\midrule
+\multirow{4}{*}{$s_0$ / $e_3$} & threshold & $+0.00$ & $[0.00, 0.00]$ & 0.2575 & \checkmark \\
+ & GA & $-0.31$ & $[-0.99, 0.00]$ & 0.2563 & $\times$ \\
+ & DE & $-0.16$ & $[-0.83, 0.47]$ & 0.2563 & $\times$ \\
+ & sep-CMA-ES & $-0.31$ & $[-0.99, 0.00]$ & 0.2568 & $\times$ \\
+\midrule
+\multirow{4}{*}{$s_1$ / $e_3$} & threshold & $+0.00$ & $[0.00, 0.00]$ & 0.2570 & \checkmark \\
+ & GA & $-0.47$ & $[-1.36, 0.00]$ & 0.2537 & $\times$ \\
+ & DE & $-0.47$ & $[-1.36, 0.00]$ & 0.2530 & $\times$ \\
+ & sep-CMA-ES & $-0.93$ & $[-2.33, -0.14]$ & 0.2553 & $\times$ \\
+\midrule
+\multirow{4}{*}{$s_2$ / $e_1$} & threshold & $+1.86$ & $[-0.48, 6.82]$ & 0.5212 & \checkmark \\
+ & GA & $+2.02$ & $[0.00, 6.95]$ & 0.5103 & \checkmark \\
+ & DE & $-0.31$ & $[-1.00, 0.00]$ & 0.5047 & $\times$ \\
+ & sep-CMA-ES & $+2.02$ & $[0.00, 6.95]$ & 0.5100 & \checkmark \\
+\bottomrule
+\end{tabular}
+\caption{Adaptive halting on the held-out fold ($n{=}645$ per seed), relative to each seed's frozen best fixed depth ($e_3$ for seeds 0--1, $e_1$ for seed 2). Non-inferiority is decided by the preregistered rule LCB$_{95\%}(\Delta\mathrm{EM}) \geq -0.5$pp, \emph{not} by point estimates. The threshold policy is non-inferior on all three seeds; only 2 of 9 evolutionary policies pass, although 7 of 9 satisfy the point-estimate margin.}
+\label{tab:halting}
+\end{table}
+
+Table~\ref{tab:halting} shows the RQ1 results. The two-stage confidence threshold is non-inferior on all three seeds while reducing the measured $N_{\mathrm{cell}}$ count (counted recurrent-cell invocations, \S\ref{sec:ncell}) by 74--75\% relative to the deepest baseline (seeds 0--1) and by 48\% relative to the (already shallow) $e_1$ baseline while \emph{gaining} 1.86pp EM (seed 2). The mechanism is consistent with \S\ref{sec:model}: high-confidence tokens are stable across depths, so stopping on confidence is safe. Although many optimizer policies satisfy the point-estimate margin, only two of the nine evolutionary policies satisfy the preregistered confidence-bound non-inferiority criterion: most optimizer gains over the threshold (at most 1--2\% compute) come with EM confidence intervals whose lower bounds fall below $-0.5$pp. GA and sep-CMA-ES converge to identical behavior on $s_2$ and are the two passing policies. On this model the halting problem is essentially solved by the threshold, and we did not expand the optimizer comparison further.
+
+\subsection{Fixed-Depth Evolutionary Latent Control (RQ2)}
+\label{sec:exp-latent}
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lcccc|ccc}
+\toprule
+& \multicolumn{4}{c|}{Search (inner EM gain, pp)} & \multicolumn{3}{c}{Ablation (GA, $s_0$; \S\ref{sec:negative})} \\
+Seed & RS & GA & DE & sep-CMA & A: only $k/K$ & B: only $H$ & C: only $D,A$ \\
+\midrule
+$s_0$ & $+0.00$ & $+0.52$ & $+0.52$ & $+0.00$ & $+0.52$ & $+0.00$ & $+0.52$ \\
+$s_1$ & $+1.04$ & $+1.56$ & $+1.04$ & $+2.08$ & --- & --- & --- \\
+$s_2$ & $+0.52$ & $+0.52$ & $+1.04$ & $+0.00$ & --- & --- & --- \\
+\bottomrule
+\end{tabular}
+\caption{Fixed-depth (constant $N_{\mathrm{cell}}$) improvements over the original $\alpha{\approx}1$ update on the inner subset ($n{=}192$). All searches use exactly 336 evaluations. A hand-designed linearly decaying schedule ($\alpha_k = 1.0 - 0.5k/K$, i.e., $[1.0, 0.833, 0.667]$ at depth 3) and fixed $\alpha \in \{0.75, 0.5, 0.25\}$ never exceed the $\alpha{\approx}1$ baseline. Ablations on $s_0$ restrict the policy input to a single feature group under the corrected masks of \S\ref{sec:negative}; the full-feature GA result corresponds to the GA column.}
+\label{tab:latent}
+\end{table}
+
+At fixed depth the compute is constant, so any EM change is a pure latent-dynamics effect. Table~\ref{tab:latent} shows that EC policies beat the original update on all seeds (up to $+2.08$pp). The comparison with random search requires care: on every seed \emph{at least one} optimizer beats same-budget random search, but no single optimizer does so consistently (e.g., on $s_2$, GA merely matches RS and sep-CMA falls below it). A hand-designed linearly decaying schedule (from 1.0 to 0.667 over the three steps) and all fixed step sizes fail to exceed the baseline. On mechanism, the corrected feature-group ablations on $s_0$ are decisive: a time-index-only policy (A) and a latent-dynamics-only policy (C, using $D$ and $A$) each reproduce the full-feature GA gain exactly ($+0.52$pp), whereas an entropy-only policy (B) does not ($+0.00$pp). The full five-feature state is never necessary, and the evidence does not establish that the full policy exploits input-dependent structure beyond what these reduced policies achieve; however, since dynamics features alone also suffice, the gain cannot be attributed to a pure time schedule either. RQ2 is therefore answered with a qualified yes on effectiveness and a no on input-dependence as a \emph{necessary} mechanism.
+
+\subsection{Joint Control and One-Shot Evaluation (RQ3)}
+\label{sec:exp-joint}
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lcc|ccc}
+\toprule
+& \multicolumn{2}{c|}{Threshold halting (J1)} & \multicolumn{3}{c}{Joint EC policy (J4)} \\
+Seed & $\Delta$EM (pp) & ratio & $\Delta$EM (pp) & 95\% CI (pp) & Non-inf. \\
+\midrule
+$s_0$ & $+0.00$ & 0.2575 & $+0.00$ & $[0.0, 0.0]$ & \checkmark \\
+$s_1$ & $+0.00$ & 0.2570 & $-0.31$ & $[-1.0, 0.0]$ & $\times$ \\
+$s_2$ & $+1.86$ & 0.5212 & $-0.16$ & $[-0.6, 0.0]$ & $\times$ \\
+\bottomrule
+\end{tabular}
+\caption{One-shot evaluation on the held-out fold ($n{=}645$ per seed) of policies frozen after inner search; CIs are 95\% group-cluster bootstrap intervals of $\Delta$EM (pp) vs.\ the frozen-depth baseline (20{,}000 resamples). J1 passes non-inferiority on all seeds---on $s_2$ only marginally, with 95\% CI $[-0.50, +7.43]$pp, i.e., an LCB of $-0.4975$pp, only 0.0025pp above the bound. The best joint EC policy (selected by inner fitness) fails on $s_1$ and $s_2$, losing on $s_2$ the entire EM gain of the threshold policy (paired $\Delta$EM $-2.02$pp vs.\ J1).}
+\label{tab:confirm}
+\end{table}
+
+Joint search (27 active dimensions, \S\ref{sec:method}) improves the inner compute ratio over the threshold by only 0.8--5.7\%, and the crucial question is transfer. Table~\ref{tab:confirm} reports the preregistered one-shot evaluation: the threshold policy passes non-inferiority on all three seeds---though on $s_2$ the pass is marginal (LCB $-0.4975$pp, only 0.0025pp above the bound) and should not be read as a comfortable margin---whereas the jointly optimized policies---despite favorable inner results (e.g., $+0.52$pp at equal cost on $s_1$)---fail on $s_1$ and $s_2$, and on $s_2$ lose the entire $+1.86$pp held-out gain of the plain threshold. The inner-subset gains of low-dimensional EC controllers do not transfer; RQ3 is answered negatively.
+
+\subsection{Negative Results and Deviations}
+\label{sec:negative}
+We report the following as first-class findings. (i) The original 25\%-compute claim in our internal history used a look-ahead executor and was invalidated; after rebuilding causally, the number happens to be similar but the evidence is entirely different. (ii) EC latent control does not survive held-out evaluation on frozen models; on the ablated seed its inner gain is reproducible by either a time-index-only or a dynamics-only policy and cannot be attributed uniquely to either a temporal schedule or an input-dependent mechanism (\S\ref{sec:exp-latent}). (iii) \emph{Ablation implementation error:} the preregistered feature-group ablations B (only $H$) and C (only $D,A$) were initially executed with mismatched feature masks (B ran with only $D$; C ran with $A$ and $k/K$), which an audit of the search code and logged masks revealed; the mislabeled runs are archived, and B and C were re-run with corrected masks at the preregistered budget. The corrected results change the mechanism picture: entropy alone does not reproduce the gain, while dynamics features alone do (Table~\ref{tab:latent}). (iv) Data-use audit: the held-out fold was previously used in an earlier internal development report of a different experiment line, and 51 sample IDs per seed overlapped with an earlier threshold-development subset; it was not used for P3-R genotype optimization, but ``fully untouched'' claims would be inaccurate (\S\textit{Limitations}). Additional deviations (a warm start outside preregistered bounds, an early-terminated CMA run later completed at full budget with unchanged results) are enumerated in the appendix with their resolutions.
+
+\section{Conclusion}
+\label{sec:conclusion}
+On a frozen recursive GRU model, the reliable way to exploit uneven refinement benefit is a simple, causal, audited confidence threshold: it retains full accuracy at 25.7--25.8\% of the deepest ($e_3$) compute on two seeds and 52.1\% of the shallower $e_1$ baseline compute on the third, passing one-shot non-inferiority evaluation on all three seeds (marginally on one). Evolutionary search adds at most 1--2\% compute savings to halting, and only two of nine such policies pass the confidence-bound criterion; although EC genuinely improves fixed-depth latent updates, on the ablated seed either a time-index-only or a dynamics-only ablation reproduces the gain (an entropy-only policy does not), and jointly optimized policies fail held-out evaluation. Our results suggest that on frozen models the controller-complexity budget is better spent on accounting and confirmation than on richer controllers; making latent refinement control transferable likely requires changing the refinement operator or its training, not post-hoc search. Methodologically, preregistration, exact call counting, equal-budget controls, mechanism ablations, and one-shot confirmation each caught an error that would otherwise have inflated our conclusions---including in this very revision, where a point-estimate-based non-inferiority table and a mislabeled ablation were both caught by audit; we recommend these checks as minimum practice for adaptive-computation research.
+
+\section*{Limitations}
+The held-out fold was used in a prior internal development report of a different experiment line and shares 51 sample IDs per seed with an earlier threshold-development subset; it was not used for P3-R genotype optimization, but this evaluation is a one-shot evaluation of frozen policies on a historically exposed split rather than confirmation on pristine untouched data. The sealed COGS test/generalization sets remain the only untouched data and were not used. Results are from one dataset, one small GRU architecture, depth $\leq 3$, and single optimizer seeds; optimizer comparisons are exploratory. Ablations were run on one model seed as preregistered; they show the full input state is unnecessary in that seed, not that individual input features are never useful. Wall-clock latency does not shrink proportionally with call counts because gating overhead remains; we report call counts as the primary metric. $N_{\mathrm{cell}}$ counts decoder base and refinement cell invocations only; encoder computation, output projection, softmax, and the gates themselves are not equivalently counted, so it is not a total-FLOPs measure and latency cannot be inferred from it. Group keys used for fold construction, sampling, and bootstrap resampling were derived from the logical forms of the full training split; they never enter any policy as input, but fold structure is not fully independent of the label vocabulary.
+
+\bibliography{references}
+
+\appendix
+
+\section{Reproducibility Materials}
+All experiments are preregistered in the repository before execution; each search logs all 336 evaluations with best-so-far curves, genotypes, and applied feature masks; a 79-check automated audit validates selected protocol-level and result-summary invariants against raw experiment artifacts, and a separate manuscript-specific audit of 132 checks additionally cross-verifies, row by row, the numbers printed in this paper (including the confidence-bound non-inferiority classifications and the ablation masks) against the authoritative JSON results. Corrected ablation reruns were launched from a modified working tree based on commit 87842c9; the run manifest records the HEAD commit rather than a committed snapshot of the modified script, so we additionally release a provenance file with the SHA-256 of the exact script executed, and the applied masks are recorded in each result JSON. Asset SHA-256 hashes, exact commands, environment versions, and the full deviation register (including the archived mislabeled ablation runs) are included in the released materials. Figures~\ref{fig:pareto}--\ref{fig:traj} visualize the main trade-offs.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig1_p2r1_pareto.png}
+\caption{EM--compute frontier on the held-out fold (per seed): threshold vs.\ evolutionary policies.}
+\label{fig:pareto}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\linewidth]{figures/fig2_p3r1_fixed_depth.png}
+\caption{Fixed-depth inner EM gains of EC step-size policies vs.\ $\alpha{\approx}1$ (constant compute).}
+\label{fig:latent}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{figures/fig3_p3r3_confirm.png}
+\caption{One-shot evaluation with 95\% group-cluster bootstrap CIs; the dotted line marks the $-0.5$pp non-inferiority bound.}
+\label{fig:confirm}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{figures/fig4_p3r0_trajectory.png}
+\caption{Latent trajectory statistics under fixed damping.}
+\label{fig:traj}
+\end{figure}
+
+\section{Full Confidence Intervals for Development Comparisons}
+Table~\ref{tab:halting} reports the complete 95\% CIs for the held-out fold. For the inner-search comparisons of Table~\ref{tab:latent} (fitness on the group-balanced inner subset), per-evaluation histories and best-so-far curves are released as JSON; the confirmation per-sample logs (JSONL) and the frozen summary file from which Table~\ref{tab:confirm} is generated are included verbatim in the results archive.
+
+\end{document}
