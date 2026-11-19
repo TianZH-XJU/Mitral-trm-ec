@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.3.31)  18 NOV 2026 23:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.3.31)  19 NOV 2026 19:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1251,7 +1251,7 @@ Here is how much of TeX's memory you used:
  55043 multiletter control sequences out of 15000+600000
  754883 words of font info for 492 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,16n,94p,1503b,1622s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,16n,94p,1500b,1622s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <D:/Program Files (x86)/tex/fonts/type1/public/inconsolata/Inconsolata-zi4r.p
 fb><D:/Program Files (x86)/tex/fonts/type1/public/amsfonts/cm/cmbx10.pfb><D:/Pr
 ogram Files (x86)/tex/fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/Program Fil
@@ -1279,7 +1279,7 @@ etic/uhvb8a.pfb><D:/Program Files (x86)/tex/fonts/type1/urw/helvetic/uhvr8a.pfb
 iles (x86)/tex/fonts/type1/urw/times/utmb8a.pfb><D:/Program Files (x86)/tex/fon
 ts/type1/urw/times/utmr8a.pfb><D:/Program Files (x86)/tex/fonts/type1/urw/times
 /utmri8a.pfb>
-Output written on main.pdf (10 pages, 630135 bytes).
+Output written on main.pdf (10 pages, 630111 bytes).
 PDF statistics:
  437 PDF objects out of 1000 (max. 8388607)
  65 named destinations out of 1000 (max. 500000)
