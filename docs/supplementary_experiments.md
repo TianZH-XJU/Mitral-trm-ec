@@ -291,3 +291,13 @@ B=32 时相对强制 e3 的 wall-clock 加速降至 ×1.85–1.88（s0/s1）。�
 **结论**：论文版面符合 ACL 官方格式要求；review 版上的 724 条报告均为行号/页码类
 review 产物。camera-ready 阶段换 `\usepackage{acl}` + 真实作者/版权块后重跑即可。
 
+### 9.1 第二次检查（2026-11-19，图表换表后）
+
+- 官方检查器：camera-ready 变体（去行号）**All Clear**（0 错误 0 警告）；review 版的 724 条
+  仍全为行号/页码类产物。
+- 新增元素级版面检查脚本 scripts/visual_layout_check.py：越界/底部水印区/字号/碰撞/
+  浮动位置/孤行/题注分离七类，review 与 camera-ready 双版本均通过（唯一越界项为数学斜体
+  2.07pt 悬挂，官方墨迹检查判合规）。
+- 两项发现：①正文（结论+Limitations）落在第 9 页，超 ACL long 8 页上限 1 页（成因是
+  附录内容并入正文）；②Figure 1 图内标签经 resizebox 下缩后渲染仅 4.7-6.0pt。
+- 详见 docs/pubcheck_visual_report.md；证据：runs/gate_exp/supp/{pubcheck,pubcheck-cam,pdf-pages}/。
