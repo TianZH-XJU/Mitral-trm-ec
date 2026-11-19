@@ -25,6 +25,8 @@ import re
 import sys
 
 TEX = "paper/acl/main.tex"
+if len(sys.argv) > 1:
+    TEX = sys.argv[1]
 FAILS = []
 N = [0]
 
@@ -39,7 +41,7 @@ def chk(name, cond, detail=""):
 
 
 def load(p):
-    return json.load(open(p))
+    return json.load(open(p, encoding="utf-8"))
 
 
 def close(a, b, tol=0.0051):
@@ -47,7 +49,7 @@ def close(a, b, tol=0.0051):
 
 
 def main():
-    tex = open(TEX).read()
+    tex = open(TEX, encoding="utf-8").read()
 
     # ---------- 1+2. Table 1: row-level parsing vs JSON ----------
     # Parse the actual tab:halting table rows and compare EVERY cell
@@ -68,12 +70,13 @@ def main():
         block = seed_blocks[bi + 1]
         for line in block.split("\\\\"):
             rm = re.search(
-                r"(threshold|GA|DE|sep-CMA-ES)\s*&\s*\$?([+\-]?[\d.]+)"
+                r"(threshold|GA|DE|sep-CMA-ES|CMA-ES)\s*&\s*\$?([+\-]?[\d.]+)"
                 r"\$?\s*&\s*\$?\[\s*([+\-]?[\d.]+)\s*,\s*"
                 r"([+\-]?[\d.]+)\s*\]\$?\s*&\s*([\d.]+)\s*&"
                 r"\s*(\$?\\checkmark\$?|\$?\\times\$?)", line)
             if rm:
                 _polmap = {"sep-CMA-ES": "sepCMA",
+                           "CMA-ES": "sepCMA",
                            "threshold": "thr"}
                 rows[(seed, _polmap.get(
                     rm.group(1), rm.group(1)))] = {
@@ -161,7 +164,8 @@ def main():
             == (s == "0"))
 
     # ---------- 4. Ablation masks match preregistered labels ----------
-    src = open("scripts/p3r1_evolutionary_search.py").read()
+    src = open("scripts/p3r1_evolutionary_search.py",
+               encoding="utf-8").read()
     m = re.search(r"MASKS = \{[^}]*\}", src, re.S)
     chk("abl_mask_block_found", m is not None)
     masks = json.loads(
@@ -203,6 +207,73 @@ def main():
         or "no single optimizer" in tex)
     chk("rs_no_overclaim",
         "consistently beat same-budget random search" not in tex)
+
+    # ---------- 7. New tab:frontier (threshold vs cheapest searched) ------
+    mf = re.search(r"\\begin\{table\}(.*?)\\label\{tab:frontier\}", tex, re.S)
+    chk("frontier_table_found", mf is not None)
+    ftab = mf.group(1) if mf else ""
+    # cheapest searched policy per seed, from the frozen p2r1 JSONs
+    cheapest = {"0": ("GA", 0.2563), "1": ("DE", 0.2530),
+                "2": ("sepCMA", 0.5100)}
+    for s in ("0", "1", "2"):
+        thr = load(f"{p2r1}/p2r1_1793775072_s{s}_thr.json")
+        chk(f"frontier_s{s}_thr_ratio",
+            f"{thr['outer_ncell_ratio']:.4f}" in ftab,
+            f"{thr['outer_ncell_ratio']:.4f}")
+        chk(f"frontier_s{s}_thr_dem",
+            f"{thr['outer_em_diff']*100:+.2f}" in ftab,
+            f"{thr['outer_em_diff']*100:+.2f}")
+        pol, ratio = cheapest[s]
+        chk(f"frontier_s{s}_searched_ratio", f"{ratio:.4f}" in ftab,
+            f"{ratio:.4f}")
+        extra = (thr["outer_ncell_ratio"] - ratio) / \
+            thr["outer_ncell_ratio"] * 100
+        chk(f"frontier_s{s}_extra_saving",
+            f"{extra:.1f}\\%" in ftab, f"{extra:.1f}%")
+        # the searched policy's own dEM must appear in the table
+        f = [x for x in glob.glob(
+            f"{p2r1}/p2r1_*_s{s}_{pol}*.json") if "manifest" not in x]
+        chk(f"frontier_s{s}_searched_file", len(f) == 1, str(f))
+        if f:
+            d = load(f[0])
+            chk(f"frontier_s{s}_searched_dem",
+                f"{d['outer_em_diff']*100:+.2f}" in ftab,
+                f"{d['outer_em_diff']*100:+.2f}")
+            ni = d["ci"]["em_diff_ci95"][0] >= -0.5
+            mark = "\\checkmark" if ni else "\\times"
+            chk(f"frontier_s{s}_searched_mark",
+                mark in ftab, mark)
+
+    # ---------- 8. New tab:decomp (joint-policy decomposition) -----------
+    md = re.search(r"\\begin\{table\}(.*?)\\label\{tab:decomp\}", tex, re.S)
+    chk("decomp_table_found", md is not None)
+    dtab = md.group(1) if md else ""
+    e5 = load("runs/gate_exp/supp/e5_stepsize_diagnostics.json")
+    e5b = load("runs/gate_exp/supp/e5b_seed0_decomposition.json")
+    for s in ("0", "1", "2"):
+        if s == "0":
+            o = e5b["0"]["outer"]
+            gpp, app = o["gates_pp"], o["alpha_pp"]
+            rep, hrm = o["flips_repair"], o["flips_harm"]
+        else:
+            o = e5["B_joint"][f"s{s}"]["outer"]
+            gpp = o["dEM_gates_vs_threshold"] * 100
+            app = o["dEM_alpha_vs_gates"] * 100
+            rep = o["flips_vs_J1"]["repair"]
+            hrm = o["flips_vs_J1"]["harm"]
+        chk(f"decomp_s{s}_gates", f"{gpp:+.2f}" in dtab, f"{gpp:+.2f}")
+        chk(f"decomp_s{s}_alpha", f"{app:+.2f}" in dtab, f"{app:+.2f}")
+        flips = f"{rep} / {hrm}"
+        chk(f"decomp_s{s}_flips", flips in dtab, flips)
+    # J1/J4 dEM columns must match the frozen confirmation summary
+    p3 = load("runs/gate_exp/p3r/p3r3/p3r3_1793872722_summary.json")
+    for s in ("0", "1", "2"):
+        chk(f"decomp_s{s}_J1_dem",
+            f"{p3[s]['J1']['EM_vs_J0']*100:+.2f}" in dtab,
+            f"{p3[s]['J1']['EM_vs_J0']*100:+.2f}")
+        chk(f"decomp_s{s}_J4_dem",
+            f"{p3[s]['J4']['EM_vs_J0']*100:+.2f}" in dtab,
+            f"{p3[s]['J4']['EM_vs_J0']*100:+.2f}")
 
     print(f"\n==== {N[0]} checks, {len(FAILS)} FAIL ====")
     if FAILS:

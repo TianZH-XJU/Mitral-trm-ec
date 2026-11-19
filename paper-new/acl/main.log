@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.3.31)  19 NOV 2026 19:01
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.3.31)  19 NOV 2026 20:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1176,37 +1176,31 @@ L/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 99\OMS/cmsy/m/n/10.95 g$ \T1/ptm/m/n/10.95
  []
 
 [5]
-<figures/fig1_p2r1_pareto.png, id=247, 717.4002pt x 225.4824pt>
-File: figures/fig1_p2r1_pareto.png Graphic file (type png)
-<use figures/fig1_p2r1_pareto.png>
-Package pdftex.def Info: figures/fig1_p2r1_pareto.png  used on input line 478.
-(pdftex.def)             Requested size: 219.08614pt x 68.85976pt.
 <figures/fig2_p3r1_fixed_depth.png, id=253, 433.62pt x 231.264pt>
 File: figures/fig2_p3r1_fixed_depth.png Graphic file (type png)
 <use figures/fig2_p3r1_fixed_depth.png>
 Package pdftex.def Info: figures/fig2_p3r1_fixed_depth.png  used on input line 
-510.
+527.
 (pdftex.def)             Requested size: 175.26958pt x 93.4779pt.
-<figures/fig4_p3r0_trajectory.png, id=254, 578.16pt x 216.81pt>
+<figures/fig4_p3r0_trajectory.png, id=255, 578.16pt x 216.81pt>
 File: figures/fig4_p3r0_trajectory.png Graphic file (type png)
 <use figures/fig4_p3r0_trajectory.png>
 Package pdftex.def Info: figures/fig4_p3r0_trajectory.png  used on input line 5
-17.
+34.
 (pdftex.def)             Requested size: 197.17618pt x 73.93938pt.
- [6 <./figures/fig1_p2r1_pareto.png> <./figures/fig2_p3r1_fixed_depth.png>]
-<figures/fig3_p3r3_confirm.png, id=268, 571.4148pt x 242.8272pt>
-File: figures/fig3_p3r3_confirm.png Graphic file (type png)
-<use figures/fig3_p3r3_confirm.png>
-Package pdftex.def Info: figures/fig3_p3r3_confirm.png  used on input line 549.
-
-(pdftex.def)             Requested size: 197.17618pt x 83.79028pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [7 <./figures/fig4_p3r0_trajectory.png> <./figures/fig3_p3r3_confirm.png>]
+ [6 <./figures/fig2_p3r1_fixed_depth.png>]
+Underfull \vbox (badness 7722) has occurred while \output is active []
+
+
+Underfull \vbox (badness 7722) has occurred while \output is active []
+
+ [7 <./figures/fig4_p3r0_trajectory.png>]
 Underfull \vbox (badness 4316) has occurred while \output is active []
 
 
@@ -1245,11 +1239,11 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 014046590CF0AF63C6075D6AA0F54CD4;3867.
  ) 
 Here is how much of TeX's memory you used:
- 27152 strings out of 467871
- 498153 string characters out of 5427000
- 1016213 words of memory out of 5000000
- 55043 multiletter control sequences out of 15000+600000
- 754883 words of font info for 492 fonts, out of 8000000 for 9000
+ 27135 strings out of 467871
+ 497627 string characters out of 5427000
+ 1016363 words of memory out of 5000000
+ 55029 multiletter control sequences out of 15000+600000
+ 754756 words of font info for 490 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,16n,94p,1500b,1622s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <D:/Program Files (x86)/tex/fonts/type1/public/inconsolata/Inconsolata-zi4r.p
@@ -1279,9 +1273,9 @@ etic/uhvb8a.pfb><D:/Program Files (x86)/tex/fonts/type1/urw/helvetic/uhvr8a.pfb
 iles (x86)/tex/fonts/type1/urw/times/utmb8a.pfb><D:/Program Files (x86)/tex/fon
 ts/type1/urw/times/utmr8a.pfb><D:/Program Files (x86)/tex/fonts/type1/urw/times
 /utmri8a.pfb>
-Output written on main.pdf (10 pages, 630111 bytes).
+Output written on main.pdf (10 pages, 524765 bytes).
 PDF statistics:
- 437 PDF objects out of 1000 (max. 8388607)
+ 438 PDF objects out of 1000 (max. 8388607)
  65 named destinations out of 1000 (max. 500000)
- 116929 words of extra memory for PDF output out of 128383 (max. 10000000)
+ 116919 words of extra memory for PDF output out of 128383 (max. 10000000)
 

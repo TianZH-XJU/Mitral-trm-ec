@@ -344,7 +344,7 @@ In contrast to learned halting \citep{graves2016adaptive,banino2021ponder} and c
 
 On three frozen model seeds of COGS, the two-stage threshold retains the exact-match accuracy of each seed's best fixed depth, using 25.7\% of the deepest baseline's calls on two seeds and 52.1\% of the shallower $e_1$ baseline while gaining 1.86pp EM on the third. A preregistered confidence-bound criterion, applied once to frozen policies on a held-out fold, confirms non-inferiority on all three seeds, and the same frozen policy passes the same criterion unchanged on an untouched development split at compute ratios identical to the third decimal. The same accounting extends to the latent update itself: at fixed depth, evolutionary step-size policies outperform the original update by up to $+2.1$pp. Halting and step-size control are thus measured on a single scale of actually executed calls.
 
-Our stance follows from where the gains come from. On frozen models, the controller-complexity budget is better spent on accounting and confirmation than on richer controllers, because the halting decision is already determined by a signal the base step emits. We therefore study two control dimensions, whether to continue and how to update, and keep them separate so that fixed-depth experiments isolate latent dynamics at constant compute before joint policies are tested on the accuracy--compute frontier of Figure~\ref{fig:pareto}. The mechanism, the equal-budget comparisons, and the confirmation protocol follow in the next two sections.
+Our stance follows from where the gains come from. On frozen models, the controller-complexity budget is better spent on accounting and confirmation than on richer controllers, because the halting decision is already determined by a signal the base step emits. We therefore study two control dimensions, whether to continue and how to update, and keep them separate so that fixed-depth experiments isolate latent dynamics at constant compute before joint policies are tested on the accuracy--compute frontier of Table~\ref{tab:frontier}. The mechanism, the equal-budget comparisons, and the confirmation protocol follow in the next two sections.
 
 \section{Related Work}
 \label{sec:related}
@@ -467,18 +467,35 @@ Seed & Policy & $\Delta$EM (pp) & 95\% CI (pp) & $N_{\mathrm{cell}}$ & NI \\
 \label{tab:halting}
 \end{table}
 
-Causal confidence halting retains exact-match accuracy at a fraction of the executed compute on all three seeds (Table~\ref{tab:halting}, Figure~\ref{fig:pareto}). The two-stage threshold is non-inferior on all three seeds while reducing executed recurrent-cell calls (\S\ref{sec:ncell}) by 74--75\% relative to the deepest baseline (seeds 0--1) and by 48\% relative to the already shallow $e_1$ baseline, which it beats by 1.86pp EM (seed 2). The mechanism is consistent with \S\ref{sec:model}: high-confidence tokens are stable across depths, so stopping on confidence is safe. Equal-budget evolutionary optimizers add at most 1--2\% compute, and only two of the nine evolutionary policies satisfy the preregistered confidence-bound non-inferiority criterion, because most optimizer gains come with EM confidence intervals whose lower bounds fall below $-0.5$pp. GA and sep-CMA-ES converge to identical behavior on $s_2$ and are the two passing policies. On this model the halting problem is essentially solved by the threshold.
+Causal confidence halting retains exact-match accuracy at a fraction of the executed compute on all three seeds (Table~\ref{tab:halting}, Table~\ref{tab:frontier}). The two-stage threshold is non-inferior on all three seeds while reducing executed recurrent-cell calls (\S\ref{sec:ncell}) by 74--75\% relative to the deepest baseline (seeds 0--1) and by 48\% relative to the already shallow $e_1$ baseline, which it beats by 1.86pp EM (seed 2). The mechanism is consistent with \S\ref{sec:model}: high-confidence tokens are stable across depths, so stopping on confidence is safe. Equal-budget evolutionary optimizers add at most 2.1\% compute, and only two of the nine evolutionary policies satisfy the preregistered confidence-bound non-inferiority criterion, because most optimizer gains come with EM confidence intervals whose lower bounds fall below $-0.5$pp. GA and sep-CMA-ES converge to identical behavior on $s_2$ and are the two passing policies. On this model the halting problem is essentially solved by the threshold.
 
 How much of this hinges on the particular constants $(0.85, 0.90)$? We swept the full grid $\tau_0, \tau_1 \in \{0.50, 0.60, 0.70, 0.80, 0.85, 0.90, 0.95, 0.99\}$ on the held-out fold and found a plateau, not a tuned optimum: every one of the 40 grid points with $\tau_0 \geq 0.8$ is point-estimate non-inferior on every seed, no grid point reaches EM strictly above the preregistered point on seeds 0--1, and on seed 2 all 64 points gain EM with the preregistered point in the maximum band. Across the non-inferior region the compute ratio varies only between 0.253 and 0.292, so the operating point sits within 1.7\% of the cheapest admissible threshold. Under the preregistered pair, 97.4--97.9\% of tokens stop at the base step, which is where the 74--75\% call reduction comes from; the saving is a property of the model's confidence landscape, not of a delicately chosen cutoff.
 
 Is top-1 confidence even the right signal to gate on? A forced-depth probe labels each token by whether stopping at its current depth reproduces the deepest prediction, and measures how well each causally available signal ranks those labels. Top-1 and margin are near-perfect predictors (direction-aware AUC 0.996--1.000), entropy is close behind (0.992--0.998), and the KL divergence between the two depths' predictive distributions follows at 0.979--0.997. The latent-dynamics readouts are weaker and unstable: the cosine between the base-step displacement and the first refinement displacement barely separates the classes, and the displacement norm even reverses its informative direction across seeds. Sweeping two-stage thresholds over each signal family on the held-out fold confirms the probe. Margin is statistically equivalent to top-1 (minimum non-inferior compute within 0.002, identical EM); entropy reaches the same EM at 3--10\% more calls; KL, cosine, and displacement norms are never cheaper at non-inferior EM. Predictive-distribution readouts subsume latent-dynamics readouts on this model, so the simplest member of the best family is also the right one. A width-4 beam study completes the robustness picture: per-beam causal halting reproduces greedy decoding exactly, with identical EM, identical winner-path call counts, and an executed-call ratio of 0.267--0.273 counting every beam expansion. The saving does not depend on the decoding regime.
 
-\begin{figure}[tb]
+\begin{table}[t]
 \centering
-\includegraphics[width=\linewidth]{figures/fig1_p2r1_pareto.png}
-\caption{\textbf{Causal confidence halting reaches the accuracy--compute frontier with a two-stage threshold.} Per-seed held-out exact match against the ratio of executed recurrent-cell calls to each seed's frozen best fixed depth. Evolutionary halting policies cluster near the threshold: the confidence-bound rule accepts the threshold on all three seeds and only two of the nine searched policies. Curves connect policies evaluated at the same search budget, so horizontal differences measure actual skipped refinement calls rather than predicted exit depths.}
-\label{fig:pareto}
-\end{figure}
+\footnotesize
+\setlength{\tabcolsep}{2.5pt}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llcccc}
+\toprule
+Seed & Policy & $\Delta$EM (pp) & $N_{\mathrm{cell}}$ ratio & extra saving & NI \\
+\midrule
+$s_0$ & threshold & $+0.00$ & 0.2575 & --- & \checkmark \\
+ & GA (tied with DE) & $-0.31$ & 0.2563 & 0.5\% & $\times$ \\
+\midrule
+$s_1$ & threshold & $+0.00$ & 0.2570 & --- & \checkmark \\
+ & DE & $-0.47$ & 0.2530 & 1.6\% & $\times$ \\
+\midrule
+$s_2$ & threshold & $+1.86$ & 0.5212 & --- & \checkmark \\
+ & sep-CMA-ES & $+2.02$ & 0.5100 & 2.1\% & \checkmark \\
+\bottomrule
+\end{tabular}%
+}
+\caption{\textbf{The threshold already sits on the accuracy--compute frontier.} For each seed we contrast the preregistered threshold with the cheapest policy the equal-budget optimizers found. The searched policies buy at most 2.1\% more saving than the threshold and, on seeds 0--1, do not pass the non-inferiority bound that the threshold passes. NI denotes the preregistered rule LCB$_{95\%}(\Delta\mathrm{EM}) \geq -0.5$pp; extra saving is the compute the searched policy removes beyond the threshold, relative to the threshold's own saving. Full policy list in Table~\ref{tab:halting}.}
+\label{tab:frontier}
+\end{table}
 
 \subsection{Fixed-Depth Evolutionary Latent Control (RQ2)}
 \label{sec:exp-latent}
@@ -540,16 +557,28 @@ $s_2$ & $+1.86$ & 0.5212 & $-0.16$ & $[-0.6, 0.0]$ & $\times$ \\
 \label{tab:confirm}
 \end{table}
 
-Joint search (27 active dimensions, \S\ref{sec:method}) improves the inner compute ratio over the threshold by only 0.8--5.7\%, so the decisive question is transfer to held-out data (Figure~\ref{fig:confirm}). The preregistered one-shot evaluation in Table~\ref{tab:confirm} shows that the threshold policy passes non-inferiority on all three seeds, on $s_2$ only marginally with an LCB of $-0.4975$pp, 0.0025pp above the bound. The jointly optimized policies, despite favorable inner results such as $+0.52$pp at equal cost on $s_1$, do not pass on $s_1$ and $s_2$, and on $s_2$ they give up the entire $+1.86$pp held-out gain of the plain threshold. Inner-subset gains of low-dimensional EC controllers do not transfer to the accuracy--compute frontier.
+Joint search (27 active dimensions, \S\ref{sec:method}) improves the inner compute ratio over the threshold by only 0.8--5.7\%, so the decisive question is transfer to held-out data (Table~\ref{tab:decomp}). The preregistered one-shot evaluation in Table~\ref{tab:confirm} shows that the threshold policy passes non-inferiority on all three seeds, on $s_2$ only marginally with an LCB of $-0.4975$pp, 0.0025pp above the bound. The jointly optimized policies, despite favorable inner results such as $+0.52$pp at equal cost on $s_1$, do not pass on $s_1$ and $s_2$, and on $s_2$ they give up the entire $+1.86$pp held-out gain of the plain threshold. Inner-subset gains of low-dimensional EC controllers do not transfer to the accuracy--compute frontier.
 
-Why does the combination transfer so poorly when its two components were each tuned under the same budget? Decoding the joint policies with their step-size component pinned to $\alpha{=}1$ isolates the answer. The pinned variant reproduces the held-out $\Delta$EM of the full joint policy exactly on both seeds where the combination underperforms ($-0.31$pp on $s_1$, $-2.02$pp on $s_2$), while the step-size component itself contributes $+0.00$pp on inner and outer data alike: its $\alpha$ never leaves the $\alpha{\approx}1$ warm start, dipping below 0.5 in none of 1{,}429 gated calls. The held-out loss therefore flows entirely through the searched halting gates, which stop a nearly identical fraction of tokens (gate-0 continue rates 0.01--0.03) but choose slightly different low-confidence tokens to refine; on $s_2$ that boundary choice repairs one held-out sequence and harms fourteen. Read together with the per-token analysis of \S\ref{sec:exp-latent}, the pattern is coherent. On a frozen model, a low-dimensional searched controller moves a handful of nearly balanced sequences in whichever direction the inner fold favored, and gains of such controllers do not survive data they were not tuned on; the threshold, in contrast, needed no tuning beyond two preregistered constants.
+Why does the combination transfer so poorly when its two components were each tuned under the same budget? Decoding the joint policies with their step-size component pinned to $\alpha{=}1$ isolates the answer (Table~\ref{tab:decomp}). The step-size component contributes nothing: its $\alpha$ never leaves the $\alpha{\approx}1$ warm start, dipping below 0.5 in none of 1{,}429 gated calls, and on the inner folds the searched gates were already no better than the threshold on $s_2$. The held-out loss therefore flows entirely through the searched halting gates, which stop a nearly identical fraction of tokens (gate-0 continue rates 0.01--0.03) but choose slightly different low-confidence tokens to refine. Read together with the per-token analysis of \S\ref{sec:exp-latent}, the pattern is coherent: on a frozen model, a low-dimensional searched controller moves a handful of nearly balanced sequences in whichever direction the inner fold favored, and gains of such controllers do not survive data they were not tuned on. The threshold, in contrast, needed no tuning beyond two preregistered constants.
 
-\begin{figure}[tb]
+\begin{table}[t]
 \centering
-\includegraphics[width=0.9\linewidth]{figures/fig3_p3r3_confirm.png}
-\caption{\textbf{Joint EC gains vanish under one-shot confirmation.} Held-out $\Delta$EM with 95\% group-cluster bootstrap intervals for the threshold halting policy (J1) and the joint EC policy (J4) on each seed. The dotted line marks the preregistered $-0.5$pp non-inferiority bound; J1 stays above it on all three seeds, with the $s_2$ interval approaching the bound.}
-\label{fig:confirm}
-\end{figure}
+\footnotesize
+\setlength{\tabcolsep}{2.5pt}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lccccc}
+\toprule
+Seed & J1 $\Delta$EM & J4 $\Delta$EM & flips & gates & step size \\
+\midrule
+$s_0$ & $+0.00$ & $+0.00$ & 0 / 0 & $+0.00$ & $+0.00$ \\
+$s_1$ & $+0.00$ & $-0.31$ & 0 / 2 & $-0.31$ & $+0.00$ \\
+$s_2$ & $+1.86$ & $-0.16$ & 1 / 14 & $-2.02$ & $+0.00$ \\
+\bottomrule
+\end{tabular}%
+}
+\caption{\textbf{Where the joint policy loses.} Held-out fold ($n{=}645$ per seed); J1 is the threshold policy and J4 the jointly tuned policy, with $\Delta$EM in percentage points against each seed's frozen best fixed depth (Table~\ref{tab:confirm}). The last two columns split the J4--J1 gap into the share carried by the searched halting gates and the share carried by the searched step sizes, measured by re-decoding J4 with $\alpha{=}1$; flips count the sequences whose EM changes between J1 and J4, as repair/harm.}
+\label{tab:decomp}
+\end{table}
 
 \subsection{Fresh-Split Confirmation and Robustness Checks}
 \label{sec:exp-fresh}
@@ -589,11 +618,11 @@ The pilot reproduces the structure that motivates halting, and then the halting 
 
 \subsection{Release and Verification}
 \label{sec:exp-release}
-Every experiment above is preregistered before execution, and the released materials make each number checkable. Each search logs all 336 evaluations with best-so-far curves, genotypes, and applied feature masks; per-sample logs (JSONL) and frozen summary files back every table in this paper. A 79-check automated audit validates protocol-level invariants against the raw artifacts, and a separate 132-check manuscript audit cross-verifies, row by row, the numbers printed here (including every confidence-bound classification) against the authoritative JSON results. Asset SHA-256 hashes, exact commands, environment versions, and the instrumented executor with its unit tests are included in the release.
+Every experiment above is preregistered before execution, and the released materials make each number checkable. Each search logs all 336 evaluations with best-so-far curves, genotypes, and applied feature masks; per-sample logs (JSONL) and frozen summary files back every table in this paper. A 79-check automated audit validates protocol-level invariants against the raw artifacts, and a separate 170-check manuscript audit cross-verifies, row by row, the numbers printed here (including every confidence-bound classification and the two frontier tables) against the authoritative JSON results. Asset SHA-256 hashes, exact commands, environment versions, and the instrumented executor with its unit tests are included in the release.
 
 \section{Conclusion}
 \label{sec:conclusion}
-On a frozen recursive GRU model, the reliable way to exploit uneven refinement benefit is a simple, causal, audited confidence threshold. It retains full accuracy at 25.7--25.8\% of the deepest ($e_3$) compute on two seeds and 52.1\% of the shallower $e_1$ baseline compute on the third, and it passes one-shot non-inferiority evaluation on all three seeds, both on the held-out fold and on the untouched development split at compute ratios identical to the third decimal. Because the executor counts every base and refinement call, these ratios are measured savings rather than inferred depths. The same accounting shows where controller complexity pays: equal-budget evolutionary search adds at most 1--2\% compute savings to halting, while fixed-depth step-size policies improve the latent update by up to $+2.1$pp. Our stance is that on frozen models the controller budget is better spent on accounting and confirmation than on richer controllers. Making latent refinement control transferable calls for changing the refinement operator or its training, rather than post-hoc search over a frozen one. We release the causal executor, exact call-count tests, equal-budget controls, mechanism ablations, and the one-shot confirmation protocol as minimum practice for adaptive-computation research.
+On a frozen recursive GRU model, the reliable way to exploit uneven refinement benefit is a simple, causal, audited confidence threshold. It retains full accuracy at 25.7--25.8\% of the deepest ($e_3$) compute on two seeds and 52.1\% of the shallower $e_1$ baseline compute on the third, and it passes one-shot non-inferiority evaluation on all three seeds, both on the held-out fold and on the untouched development split at compute ratios identical to the third decimal. Because the executor counts every base and refinement call, these ratios are measured savings rather than inferred depths. The same accounting shows where controller complexity pays: equal-budget evolutionary search adds at most 2.1\% compute savings to halting, while fixed-depth step-size policies improve the latent update by up to $+2.1$pp. Our stance is that on frozen models the controller budget is better spent on accounting and confirmation than on richer controllers. Making latent refinement control transferable calls for changing the refinement operator or its training, rather than post-hoc search over a frozen one. We release the causal executor, exact call-count tests, equal-budget controls, mechanism ablations, and the one-shot confirmation protocol as minimum practice for adaptive-computation research.
 
 \section*{Limitations}
 Results come from one dataset, one small GRU architecture, and recursion depth $\leq 3$; optimizer seeds are single, so optimizer comparisons are exploratory, and the Transformer pilot of \S\ref{sec:exp-trans} is a single-seed transfer probe rather than a scaled study. Ablations were run on one model seed as preregistered; they show the full input state is unnecessary in that seed, not that individual input features are never useful. Wall-clock latency does not shrink exactly in proportion to call counts because the gate signal costs a fraction of a refinement call itself, and batched execution pays the maximum depth within a batch; both effects are measured in \S\ref{sec:exp-wall}, and call counts remain the primary metric. $N_{\mathrm{cell}}$ counts decoder base and refinement cell invocations only; encoder computation, output projection, softmax, and the gates themselves are not equivalently counted, so it is not a total-FLOPs measure. Group keys used for fold construction, sampling, and bootstrap resampling were derived from the logical forms of the full training split; they never enter any policy as input, but fold structure is not fully independent of the label vocabulary. The sealed COGS test and generalization sets remain unread; the official development set has been used exactly once, as preregistered, for the confirmation of \S\ref{sec:exp-fresh}.

@@ -478,10 +478,10 @@
 \@LN{400}{4}
 \@LN{401}{4}
 \def\@LN@column{1}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textbf  {Causal confidence halting reaches the accuracy--compute frontier with a two-stage threshold.} Per-seed held-out exact match against the ratio of executed recurrent-cell calls to each seed's frozen best fixed depth. Evolutionary halting policies cluster near the threshold: the confidence-bound rule accepts the threshold on all three seeds and only two of the nine searched policies. Curves connect policies evaluated at the same search budget, so horizontal differences measure actual skipped refinement calls rather than predicted exit depths.}}{6}{figure.caption.8}\protected@file@percent }
-\newlabel{fig:pareto}{{2}{6}{\textbf {Causal confidence halting reaches the accuracy--compute frontier with a two-stage threshold.} Per-seed held-out exact match against the ratio of executed recurrent-cell calls to each seed's frozen best fixed depth. Evolutionary halting policies cluster near the threshold: the confidence-bound rule accepts the threshold on all three seeds and only two of the nine searched policies. Curves connect policies evaluated at the same search budget, so horizontal differences measure actual skipped refinement calls rather than predicted exit depths}{figure.caption.8}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces \textbf  {Step-size policies improve fixed-depth exact match at constant compute.} Fixed-depth (constant $N_{\mathrm  {cell}}$) improvements over the original $\alpha {\approx }1$ update on the inner subset ($n{=}192$); all searches use exactly 336 evaluations, and CMA denotes sep-CMA-ES. A hand-designed linearly decaying schedule ($\alpha _k = 1.0-0.5k/K$, i.e., $[1.0, 0.833, 0.667]$ at depth 3) and fixed $\alpha \in \{0.75, 0.5, 0.25\}$ never exceed the $\alpha {\approx }1$ baseline. Ablations on $s_0$ restrict the policy input to a single feature group; the full-feature GA result corresponds to the GA column.}}{6}{table.caption.9}\protected@file@percent }
-\newlabel{tab:latent}{{2}{6}{\textbf {Step-size policies improve fixed-depth exact match at constant compute.} Fixed-depth (constant $N_{\mathrm {cell}}$) improvements over the original $\alpha {\approx }1$ update on the inner subset ($n{=}192$); all searches use exactly 336 evaluations, and CMA denotes sep-CMA-ES. A hand-designed linearly decaying schedule ($\alpha _k = 1.0-0.5k/K$, i.e., $[1.0, 0.833, 0.667]$ at depth 3) and fixed $\alpha \in \{0.75, 0.5, 0.25\}$ never exceed the $\alpha {\approx }1$ baseline. Ablations on $s_0$ restrict the policy input to a single feature group; the full-feature GA result corresponds to the GA column}{table.caption.9}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces \textbf  {The threshold already sits on the accuracy--compute frontier.} For each seed we contrast the preregistered threshold with the cheapest policy the equal-budget optimizers found. The searched policies buy at most 2.1\% more saving than the threshold and, on seeds 0--1, do not pass the non-inferiority bound that the threshold passes. NI denotes the preregistered rule LCB$_{95\%}(\Delta \mathrm  {EM}) \geq -0.5$pp; extra saving is the compute the searched policy removes beyond the threshold, relative to the threshold's own saving. Full policy list in Table~\ref {tab:halting}.}}{6}{table.caption.8}\protected@file@percent }
+\newlabel{tab:frontier}{{2}{6}{\textbf {The threshold already sits on the accuracy--compute frontier.} For each seed we contrast the preregistered threshold with the cheapest policy the equal-budget optimizers found. The searched policies buy at most 2.1\% more saving than the threshold and, on seeds 0--1, do not pass the non-inferiority bound that the threshold passes. NI denotes the preregistered rule LCB$_{95\%}(\Delta \mathrm {EM}) \geq -0.5$pp; extra saving is the compute the searched policy removes beyond the threshold, relative to the threshold's own saving. Full policy list in Table~\ref {tab:halting}}{table.caption.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces \textbf  {Step-size policies improve fixed-depth exact match at constant compute.} Fixed-depth (constant $N_{\mathrm  {cell}}$) improvements over the original $\alpha {\approx }1$ update on the inner subset ($n{=}192$); all searches use exactly 336 evaluations, and CMA denotes sep-CMA-ES. A hand-designed linearly decaying schedule ($\alpha _k = 1.0-0.5k/K$, i.e., $[1.0, 0.833, 0.667]$ at depth 3) and fixed $\alpha \in \{0.75, 0.5, 0.25\}$ never exceed the $\alpha {\approx }1$ baseline. Ablations on $s_0$ restrict the policy input to a single feature group; the full-feature GA result corresponds to the GA column.}}{6}{table.caption.9}\protected@file@percent }
+\newlabel{tab:latent}{{3}{6}{\textbf {Step-size policies improve fixed-depth exact match at constant compute.} Fixed-depth (constant $N_{\mathrm {cell}}$) improvements over the original $\alpha {\approx }1$ update on the inner subset ($n{=}192$); all searches use exactly 336 evaluations, and CMA denotes sep-CMA-ES. A hand-designed linearly decaying schedule ($\alpha _k = 1.0-0.5k/K$, i.e., $[1.0, 0.833, 0.667]$ at depth 3) and fixed $\alpha \in \{0.75, 0.5, 0.25\}$ never exceed the $\alpha {\approx }1$ baseline. Ablations on $s_0$ restrict the policy input to a single feature group; the full-feature GA result corresponds to the GA column}{table.caption.9}{}}
 \@LN{402}{5}
 \@LN{403}{5}
 \@LN{404}{5}
@@ -501,10 +501,10 @@
 \@LN{416}{5}
 \@LN{417}{5}
 \@LN{418}{5}
-\@LN{419}{5}
 \def\@LN@column{2}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \textbf  {Equal-budget evolutionary search improves the latent update at fixed depth.} Inner-subset EM gain (pp) over the original $\alpha {\approx }1$ update for random search and three evolutionary optimizers at equal budgets of 336 evaluations. Feature-group ablations on $s_0$ show that the time index alone and the dynamics pair alone each reproduce the full-feature gain, while entropy alone does not.}}{6}{figure.caption.10}\protected@file@percent }
-\newlabel{fig:latent}{{3}{6}{\textbf {Equal-budget evolutionary search improves the latent update at fixed depth.} Inner-subset EM gain (pp) over the original $\alpha {\approx }1$ update for random search and three evolutionary optimizers at equal budgets of 336 evaluations. Feature-group ablations on $s_0$ show that the time index alone and the dynamics pair alone each reproduce the full-feature gain, while entropy alone does not}{figure.caption.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textbf  {Equal-budget evolutionary search improves the latent update at fixed depth.} Inner-subset EM gain (pp) over the original $\alpha {\approx }1$ update for random search and three evolutionary optimizers at equal budgets of 336 evaluations. Feature-group ablations on $s_0$ show that the time index alone and the dynamics pair alone each reproduce the full-feature gain, while entropy alone does not.}}{6}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:latent}{{2}{6}{\textbf {Equal-budget evolutionary search improves the latent update at fixed depth.} Inner-subset EM gain (pp) over the original $\alpha {\approx }1$ update for random search and three evolutionary optimizers at equal budgets of 336 evaluations. Feature-group ablations on $s_0$ show that the time index alone and the dynamics pair alone each reproduce the full-feature gain, while entropy alone does not}{figure.caption.10}{}}
+\@LN{419}{5}
 \@LN{420}{5}
 \@LN{421}{5}
 \@LN{422}{5}
@@ -535,17 +535,17 @@
 \@LN{447}{5}
 \@LN{448}{5}
 \@LN{449}{5}
-\@LN{450}{5}
-\@LN{451}{5}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Joint Control and One-Shot Evaluation (RQ3)}{6}{subsection.4.5}\protected@file@percent }
-\newlabel{sec:exp-joint}{{4.5}{6}{Joint Control and One-Shot Evaluation (RQ3)}{subsection.4.5}{}}
-\@LN{452}{5}
-\@LN{453}{5}
 \def\@LN@column{1}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces \textbf  {Refinement steps change the latent state less as depth grows.} Per-step displacement and direction consistency of the latent trajectory under fixed damping on the frozen GRU decoder. The concentration of small displacements at later steps motivates a step-size policy that reads entropy, displacement, and direction consistency at decision time.}}{7}{figure.caption.11}\protected@file@percent }
-\newlabel{fig:traj}{{4}{7}{\textbf {Refinement steps change the latent state less as depth grows.} Per-step displacement and direction consistency of the latent trajectory under fixed damping on the frozen GRU decoder. The concentration of small displacements at later steps motivates a step-size policy that reads entropy, displacement, and direction consistency at decision time}{figure.caption.11}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces \textbf  {One-shot confirmation separates retained gains from inner-subset gains.} Held-out fold ($n{=}645$ per seed); NI denotes non-inferiority; CIs are 95\% group-cluster bootstrap intervals of $\Delta $EM (pp) vs.\ the frozen-depth baseline (20{,}000 resamples). J1 passes non-inferiority on all seeds, on $s_2$ only marginally, with 95\% CI $[-0.50, +7.43]$pp, i.e., an LCB of $-0.4975$pp, only 0.0025pp above the bound. The best joint EC policy (selected by inner fitness) fails on $s_1$ and $s_2$, losing on $s_2$ the entire EM gain of the threshold policy (paired $\Delta $EM $-2.02$pp vs.\ J1).}}{7}{table.caption.12}\protected@file@percent }
-\newlabel{tab:confirm}{{3}{7}{\textbf {One-shot confirmation separates retained gains from inner-subset gains.} Held-out fold ($n{=}645$ per seed); NI denotes non-inferiority; CIs are 95\% group-cluster bootstrap intervals of $\Delta $EM (pp) vs.\ the frozen-depth baseline (20{,}000 resamples). J1 passes non-inferiority on all seeds, on $s_2$ only marginally, with 95\% CI $[-0.50, +7.43]$pp, i.e., an LCB of $-0.4975$pp, only 0.0025pp above the bound. The best joint EC policy (selected by inner fitness) fails on $s_1$ and $s_2$, losing on $s_2$ the entire EM gain of the threshold policy (paired $\Delta $EM $-2.02$pp vs.\ J1)}{table.caption.12}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \textbf  {Refinement steps change the latent state less as depth grows.} Per-step displacement and direction consistency of the latent trajectory under fixed damping on the frozen GRU decoder. The concentration of small displacements at later steps motivates a step-size policy that reads entropy, displacement, and direction consistency at decision time.}}{7}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:traj}{{3}{7}{\textbf {Refinement steps change the latent state less as depth grows.} Per-step displacement and direction consistency of the latent trajectory under fixed damping on the frozen GRU decoder. The concentration of small displacements at later steps motivates a step-size policy that reads entropy, displacement, and direction consistency at decision time}{figure.caption.11}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces \textbf  {One-shot confirmation separates retained gains from inner-subset gains.} Held-out fold ($n{=}645$ per seed); NI denotes non-inferiority; CIs are 95\% group-cluster bootstrap intervals of $\Delta $EM (pp) vs.\ the frozen-depth baseline (20{,}000 resamples). J1 passes non-inferiority on all seeds, on $s_2$ only marginally, with 95\% CI $[-0.50, +7.43]$pp, i.e., an LCB of $-0.4975$pp, only 0.0025pp above the bound. The best joint EC policy (selected by inner fitness) fails on $s_1$ and $s_2$, losing on $s_2$ the entire EM gain of the threshold policy (paired $\Delta $EM $-2.02$pp vs.\ J1).}}{7}{table.caption.12}\protected@file@percent }
+\newlabel{tab:confirm}{{4}{7}{\textbf {One-shot confirmation separates retained gains from inner-subset gains.} Held-out fold ($n{=}645$ per seed); NI denotes non-inferiority; CIs are 95\% group-cluster bootstrap intervals of $\Delta $EM (pp) vs.\ the frozen-depth baseline (20{,}000 resamples). J1 passes non-inferiority on all seeds, on $s_2$ only marginally, with 95\% CI $[-0.50, +7.43]$pp, i.e., an LCB of $-0.4975$pp, only 0.0025pp above the bound. The best joint EC policy (selected by inner fitness) fails on $s_1$ and $s_2$, losing on $s_2$ the entire EM gain of the threshold policy (paired $\Delta $EM $-2.02$pp vs.\ J1)}{table.caption.12}{}}
+\@LN{450}{6}
+\@LN{451}{6}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Joint Control and One-Shot Evaluation (RQ3)}{7}{subsection.4.5}\protected@file@percent }
+\newlabel{sec:exp-joint}{{4.5}{7}{Joint Control and One-Shot Evaluation (RQ3)}{subsection.4.5}{}}
+\@LN{452}{6}
+\@LN{453}{6}
 \@LN{454}{6}
 \@LN{455}{6}
 \@LN{456}{6}
@@ -563,14 +563,14 @@
 \@LN{468}{6}
 \@LN{469}{6}
 \@LN{470}{6}
+\def\@LN@column{2}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces \textbf  {Where the joint policy loses.} Held-out fold ($n{=}645$ per seed); J1 is the threshold policy and J4 the jointly tuned policy, with $\Delta $EM in percentage points against each seed's frozen best fixed depth (Table~\ref {tab:confirm}). The last two columns split the J4--J1 gap into the share carried by the searched halting gates and the share carried by the searched step sizes, measured by re-decoding J4 with $\alpha {=}1$; flips count the sequences whose EM changes between J1 and J4, as repair/harm.}}{7}{table.caption.13}\protected@file@percent }
+\newlabel{tab:decomp}{{5}{7}{\textbf {Where the joint policy loses.} Held-out fold ($n{=}645$ per seed); J1 is the threshold policy and J4 the jointly tuned policy, with $\Delta $EM in percentage points against each seed's frozen best fixed depth (Table~\ref {tab:confirm}). The last two columns split the J4--J1 gap into the share carried by the searched halting gates and the share carried by the searched step sizes, measured by re-decoding J4 with $\alpha {=}1$; flips count the sequences whose EM changes between J1 and J4, as repair/harm}{table.caption.13}{}}
 \@LN{471}{6}
 \@LN{472}{6}
 \@LN{473}{6}
 \@LN{474}{6}
 \@LN{475}{6}
-\def\@LN@column{2}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces \textbf  {Joint EC gains vanish under one-shot confirmation.} Held-out $\Delta $EM with 95\% group-cluster bootstrap intervals for the threshold halting policy (J1) and the joint EC policy (J4) on each seed. The dotted line marks the preregistered $-0.5$pp non-inferiority bound; J1 stays above it on all three seeds, with the $s_2$ interval approaching the bound.}}{7}{figure.caption.13}\protected@file@percent }
-\newlabel{fig:confirm}{{5}{7}{\textbf {Joint EC gains vanish under one-shot confirmation.} Held-out $\Delta $EM with 95\% group-cluster bootstrap intervals for the threshold halting policy (J1) and the joint EC policy (J4) on each seed. The dotted line marks the preregistered $-0.5$pp non-inferiority bound; J1 stays above it on all three seeds, with the $s_2$ interval approaching the bound}{figure.caption.13}{}}
 \@LN{476}{6}
 \@LN{477}{6}
 \@LN{478}{6}
@@ -585,12 +585,12 @@
 \@LN{487}{6}
 \@LN{488}{6}
 \@LN{489}{6}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Fresh-Split Confirmation and Robustness Checks}{7}{subsection.4.6}\protected@file@percent }
+\newlabel{sec:exp-fresh}{{4.6}{7}{Fresh-Split Confirmation and Robustness Checks}{subsection.4.6}{}}
 \@LN{490}{6}
 \@LN{491}{6}
 \@LN{492}{6}
 \@LN{493}{6}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Fresh-Split Confirmation and Robustness Checks}{7}{subsection.4.6}\protected@file@percent }
-\newlabel{sec:exp-fresh}{{4.6}{7}{Fresh-Split Confirmation and Robustness Checks}{subsection.4.6}{}}
 \@LN{494}{6}
 \@LN{495}{6}
 \@LN{496}{6}
@@ -602,16 +602,16 @@
 \@LN{502}{6}
 \@LN{503}{6}
 \@LN{504}{6}
-\@LN{505}{6}
-\@LN{506}{6}
-\@LN{507}{6}
-\@LN{508}{6}
 \def\@LN@column{1}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces \textbf  {One-shot confirmation on untouched data.} Official COGS development set ($n{=}3{,}000$; group-cluster paired bootstrap, 20{,}000 resamples), evaluated once with the frozen preregistered threshold and each seed's frozen best fixed depth. The compute ratios match the held-out-fold values (0.2575 / 0.2570 / 0.5212) to the third decimal, so the executed-call savings themselves transfer across splits.}}{8}{table.caption.14}\protected@file@percent }
-\newlabel{tab:devconfirm}{{4}{8}{\textbf {One-shot confirmation on untouched data.} Official COGS development set ($n{=}3{,}000$; group-cluster paired bootstrap, 20{,}000 resamples), evaluated once with the frozen preregistered threshold and each seed's frozen best fixed depth. The compute ratios match the held-out-fold values (0.2575 / 0.2570 / 0.5212) to the third decimal, so the executed-call savings themselves transfer across splits}{table.caption.14}{}}
-\@LN{509}{7}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces \textbf  {One-shot confirmation on untouched data.} Official COGS development set ($n{=}3{,}000$; group-cluster paired bootstrap, 20{,}000 resamples), evaluated once with the frozen preregistered threshold and each seed's frozen best fixed depth. The compute ratios match the held-out-fold values (0.2575 / 0.2570 / 0.5212) to the third decimal, so the executed-call savings themselves transfer across splits.}}{8}{table.caption.14}\protected@file@percent }
+\newlabel{tab:devconfirm}{{6}{8}{\textbf {One-shot confirmation on untouched data.} Official COGS development set ($n{=}3{,}000$; group-cluster paired bootstrap, 20{,}000 resamples), evaluated once with the frozen preregistered threshold and each seed's frozen best fixed depth. The compute ratios match the held-out-fold values (0.2575 / 0.2570 / 0.5212) to the third decimal, so the executed-call savings themselves transfer across splits}{table.caption.14}{}}
+\@LN{505}{7}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.7}From Counted Calls to Wall-Clock}{8}{subsection.4.7}\protected@file@percent }
 \newlabel{sec:exp-wall}{{4.7}{8}{From Counted Calls to Wall-Clock}{subsection.4.7}{}}
+\@LN{506}{7}
+\@LN{507}{7}
+\@LN{508}{7}
+\@LN{509}{7}
 \@LN{510}{7}
 \@LN{511}{7}
 \@LN{512}{7}
@@ -645,15 +645,15 @@
 \@LN{540}{7}
 \@LN{541}{7}
 \@LN{542}{7}
+\def\@LN@column{2}
 \@LN{543}{7}
 \@LN{544}{7}
-\@LN{545}{7}
-\@LN{546}{7}
-\def\@LN@column{2}
-\@LN{547}{7}
-\@LN{548}{7}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.8}Does the Mechanism Transfer Beyond the GRU?}{8}{subsection.4.8}\protected@file@percent }
 \newlabel{sec:exp-trans}{{4.8}{8}{Does the Mechanism Transfer Beyond the GRU?}{subsection.4.8}{}}
+\@LN{545}{7}
+\@LN{546}{7}
+\@LN{547}{7}
+\@LN{548}{7}
 \@LN{549}{7}
 \@LN{550}{7}
 \@LN{551}{7}
@@ -689,21 +689,17 @@
 \@LN{581}{7}
 \@LN{582}{7}
 \@LN{583}{7}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.9}Release and Verification}{8}{subsection.4.9}\protected@file@percent }
+\newlabel{sec:exp-release}{{4.9}{8}{Release and Verification}{subsection.4.9}{}}
 \@LN{584}{7}
 \@LN{585}{7}
 \@LN{586}{7}
 \@LN{587}{7}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.9}Release and Verification}{8}{subsection.4.9}\protected@file@percent }
-\newlabel{sec:exp-release}{{4.9}{8}{Release and Verification}{subsection.4.9}{}}
 \@LN{588}{7}
 \@LN{589}{7}
 \@LN{590}{7}
 \@LN{591}{7}
 \@LN{592}{7}
-\@LN{593}{7}
-\@LN{594}{7}
-\@LN{595}{7}
-\@LN{596}{7}
 \bibdata{references}
 \bibcite{banino2021ponder}{{1}{2021}{{Banino et~al.}}{{Banino, Balaguer, and Blundell}}}
 \bibcite{cameron2015practitioner}{{2}{2015}{{Cameron and Miller}}{{}}}
@@ -716,15 +712,19 @@
 \bibcite{schuster2022calm}{{9}{2022}{{Schuster et~al.}}{{Schuster, Fisch, Gupta, Dehghani, Bahri, Tran, Tay, and Metzler}}}
 \bibcite{schuster2021cats}{{10}{2021}{{Schuster et~al.}}{{Schuster, Fisch, Jaakkola, and Barzilay}}}
 \def\@LN@column{1}
+\@LN{593}{8}
+\@LN{594}{8}
+\@LN{595}{8}
+\@LN{596}{8}
 \@LN{597}{8}
 \@LN{598}{8}
 \@LN{599}{8}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion}{9}{section.5}\protected@file@percent }
+\newlabel{sec:conclusion}{{5}{9}{Conclusion}{section.5}{}}
 \@LN{600}{8}
 \@LN{601}{8}
 \@LN{602}{8}
 \@LN{603}{8}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion}{9}{section.5}\protected@file@percent }
-\newlabel{sec:conclusion}{{5}{9}{Conclusion}{section.5}{}}
 \@LN{604}{8}
 \@LN{605}{8}
 \@LN{606}{8}
@@ -763,11 +763,11 @@
 \@LN{639}{8}
 \@LN{640}{8}
 \@LN{641}{8}
+\def\@LN@column{2}
 \@LN{642}{8}
 \@LN{643}{8}
 \@LN{644}{8}
 \@LN{645}{8}
-\def\@LN@column{2}
 \@LN{646}{8}
 \@LN{647}{8}
 \@LN{648}{8}
@@ -814,16 +814,16 @@
 \@LN{689}{8}
 \@LN{690}{8}
 \@LN{691}{8}
-\@LN{692}{8}
-\@LN{693}{8}
-\@LN{694}{8}
-\@LN{695}{8}
-\@LN{696}{8}
 \bibcite{schwartz2020right}{{11}{2020}{{Schwartz et~al.}}{{Schwartz, Stanovsky, Swayamdipta, Dodge, and Smith}}}
 \bibcite{stanley2019designing}{{12}{2019}{{Stanley et~al.}}{{Stanley, Clune, Lehman, and Miikkulainen}}}
 \bibcite{sutskever2014seq2seq}{{13}{2014}{{Sutskever et~al.}}{{Sutskever, Vinyals, and Le}}}
 \bibcite{zilberstein1996anytime}{{14}{1996}{{Zilberstein}}{{}}}
 \def\@LN@column{1}
+\@LN{692}{9}
+\@LN{693}{9}
+\@LN{694}{9}
+\@LN{695}{9}
+\@LN{696}{9}
 \@LN{697}{9}
 \@LN{698}{9}
 \@LN{699}{9}
@@ -838,8 +838,5 @@
 \@LN{708}{9}
 \@LN{709}{9}
 \@LN{710}{9}
-\@LN{711}{9}
-\@LN{712}{9}
-\@LN{713}{9}
 \def\@LN@column{2}
 \gdef \@abspage@last{10}

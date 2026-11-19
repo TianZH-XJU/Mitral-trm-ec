@@ -1,0 +1,14 @@
+{
+ "0": {
+  "reproduction_vs_frozen": true,
+  "outer": {
+   "em_j1": 0.9674418604651163,
+   "em_halt_only": 0.9674418604651163,
+   "em_j4": 0.9674418604651163,
+   "gates_pp": 0.0,
+   "alpha_pp": 0.0,
+   "flips_repair": 0,
+   "flips_harm": 0
+  }
+ }
+}
