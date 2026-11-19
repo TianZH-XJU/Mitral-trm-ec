@@ -11,3 +11,6 @@ reference/COGS/data/
 # CFQ dataset.json 4.5GB 超 GitHub 上限不入库（splits 已入库，下载见 configs/cfq_manifest.json）
 data/raw/CFQ/cfq/dataset.json
 *.tar.gz
+
+# local camera-ready test build artifacts
+paper-new/acl/_camcheck.*
