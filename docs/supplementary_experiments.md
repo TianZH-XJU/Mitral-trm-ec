@@ -301,3 +301,13 @@ review 产物。camera-ready 阶段换 `\usepackage{acl}` + 真实作者/版权�
 - 两项发现：①正文（结论+Limitations）落在第 9 页，超 ACL long 8 页上限 1 页（成因是
   附录内容并入正文）；②Figure 1 图内标签经 resizebox 下缩后渲染仅 4.7-6.0pt。
 - 详见 docs/pubcheck_visual_report.md；证据：runs/gate_exp/supp/{pubcheck,pubcheck-cam,pdf-pages}/。
+
+### 9.2 中文单栏版（2026-11-19）
+
+- 由 `scripts/_build_zh.py` 从 `paper-new/acl/main.tex` 生成 `paper-new/acl/zh/zh_main.tex`：
+  全文（含标题、摘要、四节正文、6 张表、5 张图注、结论与限制）译为中文，TikZ 方法图从
+  原 LaTeX 抽取并逐条翻译图内标签（118 个中文字符），公式、表格数值、引用键全部原样保留。
+- 排版：`ctex` + `xelatex`，A4 单栏（12pt，2.5cm 边距），`natbib` 作者-年引用。
+- 编译：`xelatex zh_main → bibtex zh_main → xelatex zh_main ×2`，产物
+  `paper-new/acl/zh/zh_main.pdf`（16 页，无错误、无未定义引用）。
+- 目检：标题/摘要/图 1（标签全中文）/表格/图注/正文流均正常。
