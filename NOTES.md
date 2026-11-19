@@ -667,3 +667,50 @@ OOV 记录矛盾修正（审核指出）：准确表述为"目标侧存在一个
 - `docs/supplementary_experiments.md`（逐实验报告）、`runs/gate_exp/supp/`（全部 JSON/日志）、
   `scripts/e{1..7}_*.py`、`scripts/halting_lib.py`、`scripts/supp_figures.py`。
 - COGS test/gen 维持封存；dev 仅一次性评估（预注册于 e4 脚本 docstring）。
+
+## 第二十六阶段：第二阶段启动（优化器跨架构比较，2026-11-19）
+
+按裁决执行第二阶段：优化器跨架构比较（GRU / Transformer / Mamba-3 三个代表架构）。
+
+### 前置工作
+
+- `scripts/stage2_core.py`：GRU 批量 alpha 解码器（分组 48、done-mask）+
+  五算法（RS/GA/MGA/DE/sepCMA，超参逐条镜像 p3r1_evolutionary_search.py：
+  pop=16 init U(-5,5) + warm start [8,0,0,0,0]、GA tournament(2)+N(0,0.8)
+  clip[-5,5]、DE F=0.6/CR=0.7 贪心、sepCMA x0=[4.99,0,..] sigma0=2.0
+  bounds[-5,5]、MGA 环形感染 p=0.5 + 稀疏变异 p=0.1 N(0,0.8)）+
+  电池运行器（预算 336 含初始种群）。
+- **位级验证 PASS**：批量解码器 vs 历史 per-sample 解码器（p3r_core），
+  历史 GA 基因型逐样本一致（EM=0.869792），alpha=1 基线一致（0.864583）。
+- `scripts/e6_transformer_pilot.py` 泛化：T1_SEED / T1_TRAIN_ONLY 环境变量，
+  保存 T1_s{seed}.pt + 逐种子训练曲线。
+- `scripts/stage2_mamba.py`：Mamba-3 SISO 纯 PyTorch CPU 实现（忠实官方
+  mamba3.py 数学：heavy-tail A、softplus(dt+bias)、sigmoid 梯形 lambda、
+  B/C RMSNorm+B/C bias、成对 RoPE 旋转态 theta=ang+proj*dt、梯形更新
+  s'=exp(ADT)s+DT[(1-l)B_rot x + l exp(ADT) k_prev v_prev]、D skip、silu(z)
+  门控、out_proj）。d_state=16（官方 128，为对齐 ~560K 参数，入论文需披露）。
+  递归集成：编码器/基步（token 轴 SSM 递归）/精炼块（k 轴 SSM，逐位置
+  状态重置），R2 式多深度监督 + EOS 监督。607,137 参数（+8.4% vs GRU 560K，
+  需披露）。冒烟 PASS（4 深度 logits、反传、解码）。
+- `scripts/stage2_arch.py`：Transformer/Mamba 批量 alpha 解码器（同特征序
+  (H,D,A,k/K)、同五算法、同 336 预算、同一 192 样本内层子集；
+  逐 (arch,seed) 冻结 alpha=1 rollout 统计）。
+
+### 运行矩阵（启动中）
+
+| 架构 | 模型种子 | 算法 | 优化器种子 | 搜索数 |
+|---|---|---|---|---|
+| GRU (R2, 已冻结) | 0/1/2 | RS,GA,MGA,DE,sepCMA | 0/1/2 | 45 |
+| Transformer (T1) | 0(已有)/1(训中)/2(训中) | 同上 | 0/1/2 | 45 |
+| Mamba-3 (M1) | 0/1/2（训中） | 同上 | 0/1/2 | 45 |
+
+共 135 次搜索 × 336 评估 = 45,360 次候选解码。GRU 三进程并行启动；
+T1 s1/s2 与 M1 三种子训练后台进行，完成后自动接入电池。
+
+### 公平性控制（预注册于脚本 docstring）
+
+- 同一 5D 策略空间、同一内层 192 样本、同一 fitness（固定深度 EM）、
+  同一 336 预算、同 warm start、同边界 [-5,5]；
+- Transformer/Mamba 各自冻结 alpha=1 统计（对齐 GRU 的 feat_stats 协议）；
+- 参数量：GRU 560K / T1 798K (+42%) / M1 607K (+8.4%)，全部如实披露；
+- N_cell 语义一致（每次调用=1），跨架构不比较绝对 wall-clock。

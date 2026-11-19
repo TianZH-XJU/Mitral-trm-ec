@@ -54,7 +54,10 @@ from model_seq2seq import ids_to_tokens  # noqa: E402
 
 OUT = "runs/gate_exp/supp"
 D_MODEL, HEADS, FF, MAX_EXTRA = 128, 4, 256, 3
-EPOCHS, BATCH, LR, SEED = 15, 32, 1e-3, 0
+EPOCHS, BATCH, LR = 15, 32, 1e-3
+SEED = int(os.environ.get("T1_SEED", "0"))
+TRAIN_ONLY = os.environ.get("T1_TRAIN_ONLY", "") == "1"
+THREADS = int(os.environ.get("T1_THREADS", "3"))
 DEPTH_W = (0.1, 0.2, 0.3, 0.4)
 MAX_LEN = 200
 
@@ -223,7 +226,7 @@ def decode_incremental(model, src, src_stoi, force=None, tau0=None,
 def train():
     torch.manual_seed(SEED)
     np.random.seed(SEED)
-    torch.set_num_threads(8)
+    torch.set_num_threads(THREADS)
     rows = H.load_split_rows("base_train")
     src_stoi, tgt_itos = H.load_vocab()
     tgt_stoi = {t: i for i, t in enumerate(tgt_itos)}
@@ -277,8 +280,8 @@ def train():
                       "wall_s": time.time() - t0})
         print(f"epoch {ep}: loss {tot/nb:.4f} "
               f"({time.time()-t0:.0f}s)", flush=True)
-    torch.save(model.state_dict(), f"{OUT}/T1_s0.pt")
-    with open(f"{OUT}/e6_training_curve.json", "w") as f:
+    torch.save(model.state_dict(), f"{OUT}/T1_s{SEED}.pt")
+    with open(f"{OUT}/e6_training_curve_s{SEED}.json", "w") as f:
         json.dump(curve, f, indent=1)
     return model, curve
 
@@ -323,15 +326,20 @@ def transitions(model, rows, src_stoi, tgt_itos):
 
 def main():
     os.makedirs(OUT, exist_ok=True)
-    torch.set_num_threads(8)
-    ckpt = f"{OUT}/T1_s0.pt"
+    torch.set_num_threads(THREADS)
+    ckpt = f"{OUT}/T1_s{SEED}.pt"
     src_stoi, tgt_itos = H.load_vocab()
     if os.path.exists(ckpt):
         model = RecursiveTransformer(len(src_stoi), len(tgt_itos))
         model.load_state_dict(torch.load(ckpt, map_location="cpu"))
-        curve = json.load(open(f"{OUT}/e6_training_curve.json"))
+        curve = json.load(
+            open(f"{OUT}/e6_training_curve_s{SEED}.json"))
     else:
         model, curve = train()
+    if TRAIN_ONLY:
+        print(f"T1 seed {SEED} trained; skipping evaluation "
+              "(T1_TRAIN_ONLY)", flush=True)
+        return
     model.eval()
     summary = {
         "model": "RecursiveTransformer: 1 enc layer + base/refine dec "
