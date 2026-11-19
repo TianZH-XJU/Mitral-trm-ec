@@ -261,3 +261,31 @@ B=32 时相对强制 e3 的 wall-clock 加速降至 ×1.85–1.88（s0/s1）。�
 
 
 
+
+## 9. 官方格式检查（aclpubcheck）+ 版面视觉复核（2026-11-19）
+
+**工具**：官方 `acl-org/aclpubcheck`（已封装为 opencode skill，源码随仓库发布）。
+对编译产物 `paper-new/acl/main.pdf`（A4，review 模式，10 页）运行 `-p long` 检查，
+并用 pdfplumber 实测文本框几何、pdftotext 逐页核对版面流。
+
+**结果**：
+
+1. **review 版运行**（`runs/gate_exp/supp/pubcheck/`）：报告 724 个 Error.MARGIN。
+   逐类拆解后全部为 review 模式的固有产物，**无一真实出界**：
+   - 左侧行号（x≈12–26pt，约 40/页）与右侧行号（x≈566–580pt，约 38/页）
+     ——`\usepackage[review]{acl}` 的行号恰落在工具按 camera-ready 几何判定的边距区，
+     上游 README 明示该类报告对 review 版为假阳性；
+   - 每页 1 条 bottom 错 = review 模式打印的页码（final 版不打印，由 proceedings
+     水印统一加）。标注证据 PNG（errors-main-page-*.png）随报告保存。
+2. **几何实测**：正文双栏 x∈[88, 524]pt，完全落在 A4 标准内容框（左 2.5cm/右 2cm）内；
+   无字体错误（Times 全嵌入）、无作者块错误、无页数违规、无引用名警告（JSON 仅含
+   Margin 一个错误族）。
+3. **终验**：编译去行号 final 变体 `_camcheck.pdf`（9 页）重跑检查器——**"All Clear"**，
+   0 错误 0 警告（`runs/gate_exp/supp/pubcheck-cam/`）。
+4. **版面流复核**（pdftotext 逐页）：p1 标题+摘要、p2 TikZ 图 1 双面板、p5 Table 1、
+   p6/p7 图 2/4 就近落位、p8 devconfirm 表 + §4.8、p9 结论+Limitations+参考文献起、
+   p10 参考文献收尾；无孤立标题、无空页。
+
+**结论**：论文版面符合 ACL 官方格式要求；review 版上的 724 条报告均为行号/页码类
+review 产物。camera-ready 阶段换 `\usepackage{acl}` + 真实作者/版权块后重跑即可。
+
