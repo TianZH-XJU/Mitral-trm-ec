@@ -47,6 +47,7 @@ OUT = "runs/gate_exp/stage2"
 BUDGET = 336
 DIM = 5
 D_LAT = 128
+MAX_LEN = 200
 
 
 # --------------------------------------------------------------------------- #
@@ -92,7 +93,7 @@ def decode_alpha_batch(model, srcs, src_stoi, tgt_itos, w, stats,
     toks = [[] for _ in range(B)]
     n_cell = 0
     sqrt_d = float(np.sqrt(D_LAT))
-    while True:
+    for _ in range(MAX_LEN):  # CRITICAL: bounded loop
         active = ~done
         if not bool(active.any()):
             break

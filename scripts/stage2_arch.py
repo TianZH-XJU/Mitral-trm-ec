@@ -27,7 +27,8 @@ torch.set_num_threads(int(os.environ.get("STAGE2_THREADS", "3")))
 
 import halting_lib as H  # noqa: E402
 from model_seq2seq import ids_to_tokens  # noqa: E402
-from stage2_core import alpha_from_feats, run_search  # noqa: E402
+import stage2_core  # noqa: E402
+from stage2_core import run_search  # noqa: E402
 from p3r_core import build_split  # noqa: E402
 
 OUT = "runs/gate_exp/stage2"
@@ -56,6 +57,7 @@ def load_transformer(seed):
 def decode_alpha_t1(model, srcs, src_stoi, tgt_itos, w, stats,
                     depth=DEPTH, mode="pol"):
     """Batched fixed-depth alpha decode for the recursive Transformer."""
+    from e6_transformer_pilot import pos_enc
     B = len(srcs)
     srcb, slenb = H.pad_batch([H.to_ids(s, src_stoi) for s in srcs])
     mem, src_mask = model.encode(srcb, slenb)  # (B,S,d),(B,1,1,S)
@@ -73,7 +75,7 @@ def decode_alpha_t1(model, srcs, src_stoi, tgt_itos, w, stats,
         n_cell += int(active.sum())
         t = xs_all.shape[1]
         x_t = model.tgt_emb(prev.view(B, 1)) \
-            + model.pos_enc(t, 128)[None, None, :, :][0]
+            + pos_enc(t, 128)[None]
         xs_all = torch.cat([xs_all, x_t], dim=1)
         z = model.base.fwd(x_t, xs_all, mem, None, src_mask)
         p = torch.softmax(model.out(z), dim=-1)
@@ -98,7 +100,7 @@ def decode_alpha_t1(model, srcs, src_stoi, tgt_itos, w, stats,
             if mode == "one":
                 alpha = np.ones(B)
             else:
-                alpha = alpha_from_feats(
+                alpha = stage2_core.alpha_from_feats(
                     w, feats[:, :k + 1, :], stats)[:, k]
             at = torch.as_tensor(alpha, dtype=z.dtype).view(B, 1, 1)
             z = z + at * delta
@@ -175,7 +177,7 @@ def decode_alpha_m1(model, srcs, src_stoi, tgt_itos, w, stats,
             if mode == "one":
                 alpha = np.ones(B)
             else:
-                alpha = alpha_from_feats(
+                alpha = stage2_core.alpha_from_feats(
                     w, feats[:, :k + 1, :], stats)[:, k]
             at = torch.as_tensor(alpha, dtype=z.dtype).unsqueeze(-1)
             z = z + at * dz
@@ -268,28 +270,39 @@ def battery(arch, model_seed, algos, opt_seeds):
 def freeze_alpha1_stats(dec, model, sub, src_stoi, tgt_itos, n=64):
     """Frozen stats from alpha=1 rollouts of the first n inner examples.
 
-    Collects (H, D, A, k/K) per refine call by re-running the batched
-    decoder with an instrumentation hook: we temporarily wrap
-    alpha_from_feats to capture the raw feature rows (mode='one' keeps
-    alpha=1 while the features are still computed).
+    Uses the warm start w=[8,0,0,0,0] (sigmoid(8)~1, alpha~0.9997) in
+    'pol' mode so that alpha_from_feats is exercised and the spy can
+    capture the raw (H, D, A, k/K) feature rows.
     """
     import stage2_core as core
     rows_all = []
     orig = core.alpha_from_feats
 
     def spy(w, feats, stats, mask=None):
-        rows_all.append(np.asarray(feats, dtype=np.float64).copy())
+        arr = np.asarray(feats, dtype=np.float64)
+        if arr.ndim == 3 and arr.shape[1] == DEPTH:
+            rows_all.append(arr.copy())  # only full-depth calls
         return orig(w, feats, stats, mask)
 
     core.alpha_from_feats = spy
+    # also patch the local reference in this module
+    import __main__
+    if hasattr(__main__, 'alpha_from_feats'):
+        saved = __main__.alpha_from_feats
+        __main__.alpha_from_feats = spy
+    w_warm = np.array([8.0, 0, 0, 0, 0])
+    stats_dummy = {"mean": [0, 0, 0, 0], "std": [1, 1, 1, 1]}
     try:
         for lo in range(0, min(n, len(sub)), 48):
             part = sub[lo:lo + 48]
-            dec(model, [r["src"] for r in part], src_stoi, tgt_itos,
-                None, None, mode="one")
+            dec(model, [r["src"] for r in part], src_stoi,
+                tgt_itos, w_warm, stats_dummy, mode="pol")
     finally:
         core.alpha_from_feats = orig
-    arr = np.concatenate(rows_all, axis=0)  # (n_tokens*K, 4)
+        if hasattr(__main__, 'alpha_from_feats'):
+            __main__.alpha_from_feats = saved
+    arr = np.concatenate(rows_all, axis=0)  # (total_B, DEPTH, 4)
+    arr = arr.reshape(-1, 4)  # (total_B * DEPTH, 4) flat
     return {"mean": arr.mean(0).tolist(), "std": arr.std(0).tolist(),
             "n": int(arr.shape[0])}
 

@@ -714,3 +714,50 @@ T1 s1/s2 与 M1 三种子训练后台进行，完成后自动接入电池。
 - Transformer/Mamba 各自冻结 alpha=1 统计（对齐 GRU 的 feat_stats 协议）；
 - 参数量：GRU 560K / T1 798K (+42%) / M1 607K (+8.4%)，全部如实披露；
 - N_cell 语义一致（每次调用=1），跨架构不比较绝对 wall-clock。
+
+## 第二十七阶段：跨架构扩展计划更新（2026-11-20）
+
+按外部审稿意见调整实验范围，更新执行矩阵。
+
+### 变更内容
+
+1. **新增 Vanilla RNN 和 LSTM**：沿用 GRU 递归框架仅换单元
+   （`scripts/stage2_rnn_lstm.py`，RNN 343K / LSTM 689K 参数，
+   冒烟通过）
+2. **原版 Transformer：取消 45 次优化器搜索**，只补齐泛化评估
+   （e0–e3 固定深度、四类转移、128 维 latent 向量、原阈值停算、
+   frozen GRU alpha 策略 zero-shot 迁移）
+3. **Tiny Transformer / Mamba-1-Tiny：暂时搁置**
+4. **Mamba-3 逐步循环版：永久暂停**
+
+### 最终排队顺序（串行执行）
+
+| 序号 | 任务 | 状态 | 预计 |
+|---|---|---|---|
+| 1 | GRU s1 优化器电池 | 🔄 运行中（3/15 done） | ~4h |
+| 2 | GRU s2 优化器电池 | ⏳ 排队 | ~5h |
+| 3 | GRU alpha-only 独立确认 | ⏳ 排队 | ~0.5h |
+| 4 | Transformer s1/s2 泛化评估 | ⏳ 排队 | ~1.5-3h |
+| 5 | RNN 实现冒烟→3 种子训练→评估 | 冒烟✅，训练排队 | ~3-5h |
+| 6 | LSTM 实现冒烟→3 种子训练→评估 | 冒烟✅，训练排队 | ~4-6h |
+| 7 | Mamba-1-Tiny | 条件性，不阻塞 | — |
+
+总计算时间预估：18–23 小时（不含 Mamba）。
+
+### 新增模型
+
+- `scripts/stage2_rnn_lstm.py`：RecursiveRNN（nn.RNNCell tanh，
+  单 hidden state）+ RecursiveLSTM（nn.LSTMCell，双状态 (h,c)，
+  alpha 同时控制 h 和 c 的更新），共享 CrossAttention、编码器结构、
+  R2 多深度监督 (0.1/0.2/0.3/0.4)、K=3、梯度裁剪 1.0、冻结
+  base_train 划分。参数量：RNN 342,825 / LSTM 689,193 / GRU 559,919。
+
+### Transformer 补实验清单（不重训，不搜索）
+
+- [ ] s1/s2 e0–e3 固定深度 EM（需补 e2 通用解码器）
+- [ ] s1/s2 逐深度四类转移（e0→e1, e1→e2, e2→e3）
+- [ ] s1/s2 128 维 latent 向量保存与状态分析
+- [ ] s1/s2 原阈值 (0.85,0.90) 因果停算迁移
+- [ ] frozen GRU alpha 策略 zero-shot 迁移（保持特征定义和归一化
+      统计量不变，直接用于 Transformer）
+- [ ] 阈值 sketch 不在 fold-4 重复调参（fold-4 仅测固定 0.85/0.90）

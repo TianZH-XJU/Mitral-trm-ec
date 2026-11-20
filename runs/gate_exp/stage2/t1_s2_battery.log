@@ -1,0 +1,2 @@
+[transformer s2] stats n=31680
+[transformer s2] alpha=1 baseline EM=0.8594
