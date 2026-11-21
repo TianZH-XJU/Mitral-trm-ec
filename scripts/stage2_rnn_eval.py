@@ -186,6 +186,7 @@ def decode_batch(model, srcs, src_stoi, tgt_itos, depth=3,
                 if is_lstm:
                     cstate = cstate + at * dc_
                 prev_delta = dh_
+            n_cell += int(active.sum()) * depth
             pred = model.out(z).argmax(-1)
 
         pred = pred.view(B)
