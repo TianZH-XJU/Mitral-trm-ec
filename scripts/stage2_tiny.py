@@ -178,9 +178,14 @@ class Mamba1Tiny(nn.Module):
         self.in_proj = nn.Linear(d_model,
                                  2 * self.d_inner + 2 * d_state + 1,
                                  bias=False)
-        # A: negative for stability (per-channel)
-        self.A = nn.Parameter(
-            -torch.arange(1, self.d_inner + 1, dtype=torch.float32))
+        # A is log-parameterized: A = -exp(A_log) < 0 ALWAYS.
+        # With A_bar = exp(A*Delta) in (0,1) the S6 scan is
+        # contractive; a free A crossed zero under Adam and the
+        # 200-step scan exploded (loss 1e14 at epoch 8).
+        # Init is unchanged: A = -(1..d_inner).
+        self.A_log = nn.Parameter(
+            torch.log(torch.arange(1, self.d_inner + 1,
+                                   dtype=torch.float32)))
         self.D = nn.Parameter(torch.ones(self.d_inner))
         self.dt_bias = nn.Parameter(torch.ones(1))
         self.out_proj = nn.Linear(self.d_inner, d_model, bias=False)
@@ -195,8 +200,10 @@ class Mamba1Tiny(nn.Module):
         # x: (B,T,di); z: (B,T,di); Bp: (B,T,n); Cp: (B,T,n);
         # dt: (B,T,1)
         Delta = Fn.softplus(dt + self.dt_bias)     # (B,T,1)
-        A_bar = torch.exp(
-            self.A[None, None, :] * Delta)        # (B,T,di)
+        A = -torch.exp(self.A_log)                  # (di,), strictly < 0
+        # safety clamp: exponent <= 0 => A_bar <= 1 even under bugs
+        A_bar = torch.exp(torch.clamp(
+            A[None, None, :] * Delta, max=0.0))    # (B,T,di) in (0,1]
         B_bar = Bp * Delta                        # (B,T,n)
         # batch scan over T
         h = torch.zeros(B, self.d_inner, self.n)
@@ -329,7 +336,18 @@ def train_model(model_name, seed):
     n_par = sum(p.numel() for p in model.parameters())
     print(f"{model_name} s{seed}: {n_par} params", flush=True)
 
-    opt = torch.optim.Adam(model.parameters(), lr=LR)
+    # SSM discretization params get a smaller LR (extra stability)
+    base_params, ssm_params = [], []
+    for name, p in model.named_parameters():
+        if ("A_log" in name or "dt_bias" in name
+                or name.endswith(".D")):
+            ssm_params.append(p)
+        else:
+            base_params.append(p)
+    opt = torch.optim.Adam([
+        {"params": base_params, "lr": LR},
+        {"params": ssm_params, "lr": LR * 0.1},
+    ])
     rng = np.random.RandomState(seed)
     curve = []
     t0 = time.time()
@@ -370,6 +388,9 @@ def train_model(model_name, seed):
                     gold.reshape(-1), reduction="none")
                 lp = lp.view(gold.shape) * gmask
                 loss = loss + w * lp.sum() / gmask.sum()
+            if not torch.isfinite(loss):
+                raise FloatingPointError(
+                    f"non-finite loss @ epoch {ep} batch {lo}")
             opt.zero_grad()
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
