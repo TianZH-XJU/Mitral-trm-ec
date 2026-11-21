@@ -366,9 +366,9 @@ def eval_seed(model_name, seed):
                 dh_now.norm(dim=-1).mean() / SQ)
         if k > 1 and dh_prev is not None and dh_now is not None:
             depth_sum[str(k)]["da_cos_h"] = float(
-                (dh_now * dh_prev).sum(-1) / (
+                ((dh_now * dh_prev).sum(-1) / (
                     dh_now.norm(dim=-1) * dh_prev.norm(dim=-1)
-                    + 1e-9)).mean()
+                    + 1e-9)).mean())
         dh_prev = dh_now
         if is_lstm:
             ck = all_zs[:, k, per_d:].float()
@@ -382,9 +382,9 @@ def eval_seed(model_name, seed):
                     dc_now.norm(dim=-1).mean() / SQ)
             if k > 1 and dc_prev is not None and dc_now is not None:
                 depth_sum[str(k)]["da_cos_c"] = float(
-                    (dc_now * dc_prev).sum(-1) / (
+                    ((dc_now * dc_prev).sum(-1) / (
                         dc_now.norm(dim=-1) * dc_prev.norm(dim=-1)
-                        + 1e-9)).mean()
+                        + 1e-9)).mean())
             dc_prev = dc_now
 
     # ---- D: threshold halting (0.85, 0.90) on 256
