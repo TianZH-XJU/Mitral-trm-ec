@@ -81,11 +81,19 @@ class RecursiveRNN(nn.Module):
         self.out = nn.Linear(HID, tgt_vocab)
 
     def encode(self, srcb, slenb):
+        """Packed exact-length encoding (per-sample final state).
+
+        PackedSequence removes PAD contamination entirely: batched
+        encode is exactly equal to per-sample exact-length encode.
+        """
         e = self.enc_emb(srcb)
-        out, h = self.enc(e)
-        idx = (slenb - 1).clamp(min=0)
-        h_true = out[torch.arange(out.size(0)), idx]
-        return out, h_true
+        packed = nn.utils.rnn.pack_padded_sequence(
+            e, slenb.cpu(), batch_first=True, enforce_sorted=False)
+        out_packed, h = self.enc(packed)
+        out, _ = nn.utils.rnn.pad_packed_sequence(
+            out_packed, batch_first=True,
+            total_length=srcb.size(1))
+        return out, h[-1]
 
     def _base_step(self, prev, hh, enc_out, mask):
         ctx = self.attn(hh, enc_out, mask)
@@ -93,33 +101,31 @@ class RecursiveRNN(nn.Module):
         h2 = self.base(inp, hh)
         return h2, ctx
 
-    def train_forward(self, tgt_in, enc_out, mask, src_mask=None):
-        """Teacher-forced per-depth logits. Returns list of K+1 logits."""
+    def train_forward(self, tgt_in, enc_out, mask, h0,
+                      src_mask=None):
+        """Teacher-forced per-depth logits, EXACTLY mirroring the
+        GRU reference forward_depths():
+
+          - decoder initial state = encoder final state (h0)
+          - per position: base step produces (h_t, ctx_t)
+          - refinement reuses the BASE ctx_t (not recomputed) and
+            carries z forward within the depth loop
+        """
         B, T = tgt_in.shape
-        h = enc_out.new_zeros(B, HID) if False else \
-            torch.zeros(B, HID)
-        # need to track h across positions
-        hs = []
+        h = h0
+        all_logits = [[] for _ in range(K_REFINE + 1)]
         for t in range(T):
-            ctx = self.attn(h, enc_out, mask)
-            inp = torch.cat([self.emb(tgt_in[:, t]), ctx], dim=-1)
-            h = self.base(inp, h)
-            hs.append(h)
-        z = torch.stack(hs, dim=1)                  # (B,T,H)
-        logits = [self.out(z)]
-        for k in range(K_REFINE):
-            new_z = []
-            for t in range(T):
-                p = torch.softmax(self.out(z[:, t]), dim=-1)
+            h, ctx = self._base_step(tgt_in[:, t], h, enc_out, mask)
+            z = h
+            all_logits[0].append(self.out(z))
+            for k in range(K_REFINE):
+                p = torch.softmax(self.out(z), dim=-1)
                 e_soft = p @ self.emb.weight
-                ctx_t = self.attn(z[:, t], enc_out, mask)
-                inp = torch.cat([self.emb(tgt_in[:, t]),
-                                 e_soft, ctx_t], dim=-1)
-                dz = self.refine(inp, z[:, t])
-                new_z.append(dz)
-            z = torch.stack(new_z, dim=1)
-            logits.append(self.out(z))
-        return logits
+                inp = torch.cat(
+                    [self.emb(tgt_in[:, t]), ctx, e_soft], dim=-1)
+                z = self.refine(inp, z)
+                all_logits[k + 1].append(self.out(z))
+        return [torch.stack(x, dim=1) for x in all_logits]
 
     @torch.no_grad()
     def decode(self, src, src_stoi, tgt_itos, depth=3):
@@ -138,7 +144,7 @@ class RecursiveRNN(nn.Module):
                 p = torch.softmax(self.out(z), dim=-1)
                 e_soft = p @ self.emb.weight
                 inp = torch.cat([self.emb(torch.tensor([prev])),
-                                 e_soft, ctx], dim=-1)
+                                 ctx, e_soft], dim=-1)
                 z = self.refine(inp, z)
             pred = int(self.out(z).argmax())
             toks.append(pred)
@@ -169,12 +175,16 @@ class RecursiveLSTM(nn.Module):
         self.out = nn.Linear(HID, tgt_vocab)
 
     def encode(self, srcb, slenb):
+        """Packed exact-length encoding. Returns (out, (h, c)) with
+        the true per-sample final states (no PAD contamination)."""
         e = self.enc_emb(srcb)
-        out, (h, c) = self.enc(e)
-        idx = (slenb - 1).clamp(min=0)
-        h_true = out[torch.arange(out.size(0)), idx]
-        # c state at the true last position: run one step at idx
-        return out, (h_true, c.squeeze(0))
+        packed = nn.utils.rnn.pack_padded_sequence(
+            e, slenb.cpu(), batch_first=True, enforce_sorted=False)
+        out_packed, (h, c) = self.enc(packed)
+        out, _ = nn.utils.rnn.pad_packed_sequence(
+            out_packed, batch_first=True,
+            total_length=srcb.size(1))
+        return out, (h[-1], c[-1])
 
     def _base_step(self, prev, hc, enc_out, mask):
         h, c = hc
@@ -183,32 +193,34 @@ class RecursiveLSTM(nn.Module):
         h2, c2 = self.base(inp, (h, c))
         return (h2, c2), ctx
 
-    def train_forward(self, tgt_in, enc_out, mask, src_mask=None):
+    def train_forward(self, tgt_in, enc_out, mask, hc0,
+                      src_mask=None):
+        """Teacher-forced per-depth logits, EXACTLY mirroring the
+        GRU reference forward_depths() and the LSTM decode():
+
+          - decoder initial (h, c) = encoder final states
+          - base pass produces per-position (h_t, c_t) and ctx_t
+          - refinement reuses the BASE ctx_t, starts from
+            (z, cc) = (h_t, c_t) and carries BOTH states through
+            the depth loop (no broadcast of the final c)
+        """
         B, T = tgt_in.shape
-        h = torch.zeros(B, HID)
-        c = torch.zeros(B, HID)
-        hs = []
+        h, c = hc0
+        all_logits = [[] for _ in range(K_REFINE + 1)]
         for t in range(T):
             ctx = self.attn(h, enc_out, mask)
             inp = torch.cat([self.emb(tgt_in[:, t]), ctx], dim=-1)
-            h, c = self.base(inp, (h, c))
-            hs.append(h)
-        z = torch.stack(hs, dim=1)                  # (B,T,H) — h only
-        cs = c.unsqueeze(1).expand(B, T, HID)       # carry final c
-        logits = [self.out(z)]
-        for k in range(K_REFINE):
-            new_z = []
-            for t in range(T):
-                p = torch.softmax(self.out(z[:, t]), dim=-1)
+            h, c = self.base(inp, (h, c))          # per-position
+            z, cc = h, c
+            all_logits[0].append(self.out(z))
+            for k in range(K_REFINE):
+                p = torch.softmax(self.out(z), dim=-1)
                 e_soft = p @ self.emb.weight
-                ctx_t = self.attn(z[:, t], enc_out, mask)
-                inp = torch.cat([self.emb(tgt_in[:, t]),
-                                 e_soft, ctx_t], dim=-1)
-                dh, dc = self.refine(inp, (z[:, t], cs[:, t]))
-                new_z.append(dh)
-            z = torch.stack(new_z, dim=1)
-            logits.append(self.out(z))
-        return logits
+                inp = torch.cat(
+                    [self.emb(tgt_in[:, t]), ctx, e_soft], dim=-1)
+                z, cc = self.refine(inp, (z, cc))  # both carried
+                all_logits[k + 1].append(self.out(z))
+        return [torch.stack(x, dim=1) for x in all_logits]
 
     @torch.no_grad()
     def decode(self, src, src_stoi, tgt_itos, depth=3):
@@ -227,7 +239,7 @@ class RecursiveLSTM(nn.Module):
                 p = torch.softmax(self.out(z), dim=-1)
                 e_soft = p @ self.emb.weight
                 inp = torch.cat([self.emb(torch.tensor([prev])),
-                                 e_soft, ctx], dim=-1)
+                                 ctx, e_soft], dim=-1)
                 z, cc = self.refine(inp, (z, cc))
             pred = int(self.out(z).argmax())
             toks.append(pred)
@@ -287,7 +299,8 @@ def train_model(model_name, seed):
             enc_out, h_init = model.encode(srcb, slenb)
             smask = (torch.arange(srcb.size(1))[None, :]
                      < slenb[:, None])
-            logits = model.train_forward(tgt_in, enc_out, smask)
+            logits = model.train_forward(
+                tgt_in, enc_out, smask, h_init)
             loss = 0.0
             for d, w in enumerate(DEPTH_W):
                 lp = Fn.cross_entropy(
@@ -310,10 +323,30 @@ def train_model(model_name, seed):
     return model
 
 
+def balanced_subset(n=256):
+    """Group-balanced subset of gate_train (same as the formal eval
+    script stage2_rnn_eval.balanced_subset)."""
+    from collections import defaultdict
+    gt = H.load_split_rows("gate_train")
+    key = H.key_fn()
+    by_g = defaultdict(list)
+    for r in gt:
+        by_g[key(r["src"])].append(r)
+    groups = sorted(by_g)
+    sub, i = [], 0
+    while len(sub) < n:
+        for g in groups:
+            if i < len(by_g[g]) and len(sub) < n:
+                sub.append(by_g[g][i])
+            if len(sub) >= n:
+                break
+        i += 1
+    return sub
+
+
 def validate(model_name, model, seed):
     src_stoi, tgt_itos = H.load_vocab()
-    gt = H.load_split_rows("gate_train")
-    sub = gt[:64]
+    sub = balanced_subset(256)
     for depth in (0, 1, 2, 3):
         ems = []
         for r in sub:
@@ -337,7 +370,7 @@ def smoke(model_name):
     mask = (torch.arange(srcb.size(1))[None, :] < slenb[:, None])
     tgt_in = torch.full((2, 5), PAD, dtype=torch.long)
     tgt_in[:, 0] = BOS
-    logits = m.train_forward(tgt_in, enc_out, mask)
+    logits = m.train_forward(tgt_in, enc_out, mask, h)
     print("logit shapes:", [tuple(l.shape) for l in logits])
     loss = sum(l.mean() for l in logits)
     loss.backward()

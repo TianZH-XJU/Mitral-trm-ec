@@ -79,8 +79,12 @@ def encode_clean_padded_t1(model, srcs, src_stoi):
 
 @torch.no_grad()
 def decode_alpha_t1(model, srcs, src_stoi, tgt_itos, w, stats,
-                    depth=DEPTH, mode="pol"):
-    """Batched fixed-depth alpha decode for the recursive Transformer."""
+                    depth=DEPTH, mode="pol", alpha_rec=None):
+    """Batched fixed-depth alpha decode for the recursive Transformer.
+
+    alpha_rec: optional list; when provided, per-token active-row
+    alpha values are appended (for feature-scale diagnostics).
+    """
     from e6_transformer_pilot import pos_enc
     B = len(srcs)
     mem, src_mask = encode_clean_padded_t1(model, srcs, src_stoi)
@@ -125,6 +129,8 @@ def decode_alpha_t1(model, srcs, src_stoi, tgt_itos, w, stats,
             else:
                 alpha = stage2_core.alpha_from_feats(
                     w, feats[:, :k + 1, :], stats)[:, k]
+            if alpha_rec is not None:
+                alpha_rec.append(alpha[active.numpy()])
             at = torch.as_tensor(alpha, dtype=z.dtype).view(B, 1, 1)
             z = z + at * delta
             prev_delta = delta

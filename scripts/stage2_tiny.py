@@ -216,51 +216,89 @@ class Mamba1Tiny(nn.Module):
 
 
 class TinyRecursiveMamba(nn.Module):
-    """d_model=64, d_state=8, expand=1, batch-parallel training."""
+    """d_model=64, d_state=8, expand=1, batch-parallel training.
+
+    v2 (implementation audit fixes):
+      1. Source conditioning: cross-attention from the decoder
+         stream to the encoder memory. The v1 computed mem and
+         never used it -> unconditional LM (invalid).
+      2. Decode runs base + refine over the FULL prefix each step,
+         exactly mirroring the full-sequence training scans (v1
+         refined a single position with a zero SSM state, which
+         training never does).
+    """
 
     def __init__(self, src_vocab, tgt_vocab, emb=32):
         super().__init__()
         d = 64
+        self.d = d
         self.src_emb = nn.Embedding(src_vocab, emb)
         self.tgt_emb = nn.Embedding(tgt_vocab, emb)
         self.proj = nn.Linear(emb, d)
         self.enc = Mamba1Tiny(d, 8, 1)
         self.base = Mamba1Tiny(d, 8, 1)
         self.refine = Mamba1Tiny(d, 8, 1)
+        # source conditioning (NEW in v2)
+        self.cross = TinyMHA(d, 4)
+        self.ln_q = nn.LayerNorm(d)
+        self.ln_m = nn.LayerNorm(d)
         self.out = nn.Linear(d, tgt_vocab)
 
-    def forward(self, srcb, tgt_in):
-        """Teacher-forced; returns per-depth logits. Batched scan."""
+    def _mix(self, z, mem, src_mask):
+        """Cross-attend from the decoder stream to the encoder
+        memory. src_mask is normalized to (B,1,1,S) True=masked."""
+        sm = None
+        if src_mask is not None:
+            sm = src_mask
+            if sm.dim() == 2:          # (B,S)
+                sm = sm[:, None, None, :]
+            elif sm.dim() == 3:        # (B,1,S)
+                sm = sm[:, None, :]
+        return z + self.cross(self.ln_q(z), self.ln_m(mem), sm)
+
+    def forward(self, srcb, tgt_in, src_mask=None):
+        """Teacher-forced; returns per-depth logits. Batched scan.
+
+        Full-sequence causal scans; exactly mirrored by decode()'s
+        full-prefix scans.
+        """
         se = self.proj(self.src_emb(srcb))         # (B,S,d)
         mem = self.enc(se)                          # (B,S,d)
         te = self.proj(self.tgt_emb(tgt_in))       # (B,T,d)
+        te = self._mix(te, mem, src_mask)           # condition
         z0 = self.base(te)                          # (B,T,d)
         logits = [self.out(z0)]
         z = z0
         for k in range(K_REFINE):
-            z = self.refine(z)
+            z = self.refine(self._mix(z, mem, src_mask))
             logits.append(self.out(z))
         return logits
 
     @torch.no_grad()
     def decode(self, src, src_stoi, tgt_itos, force=None, depth=None):
-        """Per-sample greedy decode for validation."""
+        """Per-sample greedy decode for validation.
+
+        Runs base + refine over the FULL prefix each step, exactly
+        mirroring the full-sequence training scans.
+        """
         srcb, slenb = H.pad_batch([H.to_ids(src, src_stoi)])
         se = self.proj(self.src_emb(srcb))
         mem = self.enc(se)                          # (1,S,d)
+        smask = ~(torch.arange(srcb.size(1))[None, :]
+                  < slenb[:, None])[None]
         prev = BOS
         toks = []
         xs = []
         while len(toks) < MAX_LEN:
             x = self.proj(self.tgt_emb(
-                torch.tensor([[prev]])))
+                torch.tensor([[prev]])))            # (1,1,d)
             xs.append(x)
-            cat = torch.cat(xs, dim=1)
-            z = self.base(cat)[:, -1:]
+            cat = self._mix(torch.cat(xs, dim=1), mem, smask)
+            z = self.base(cat)                      # (1,t,d)
             d = depth if depth is not None else (
                 force if force is not None else 3)
             for k in range(d):
-                z = self.refine(z)
+                z = self.refine(self._mix(z, mem, smask))
             pred = int(self.out(z[:, -1]).argmax())
             toks.append(pred)
             if pred == EOS:
@@ -317,12 +355,9 @@ def train_model(model_name, seed):
             tgt_in[:, 0] = BOS
             if maxt > 1:
                 tgt_in[:, 1:maxt] = gold[:, :maxt - 1]
-            if model_name == "tiny_transformer":
-                smask = (torch.arange(srcb.size(1))[None, :]
-                         < slenb[:, None])[None]
-                logits = model(srcb, tgt_in, smask)
-            else:
-                logits = model(srcb, tgt_in)
+            smask = (torch.arange(srcb.size(1))[None, :]
+                     < slenb[:, None])[None]
+            logits = model(srcb, tgt_in, smask)
             loss = 0.0
             for d_, w in enumerate(DEPTH_W):
                 lp = Fn.cross_entropy(

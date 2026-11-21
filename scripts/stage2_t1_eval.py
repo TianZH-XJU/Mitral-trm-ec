@@ -243,10 +243,12 @@ def eval_seed(model, seed, src_stoi, tgt_itos):
                 dz.norm(dim=-1).mean() / math.sqrt(128))
 
     # ---- D: original threshold halting (0.85, 0.90)
+    # Same 256 samples as forced depth (paired comparison).
     tau0, tau1 = 0.85, 0.90
     halting_em = []
+    halt_ncell = []
     from e6_transformer_pilot import pos_enc
-    for r in sub[:128]:
+    for r in sub:
         srcb, slenb = H.pad_batch(
             [H.to_ids(r["src"], src_stoi)])
         mem, src_mask = model.encode(srcb, slenb)
@@ -291,14 +293,39 @@ def eval_seed(model, seed, src_stoi, tgt_itos):
             prev = pred
         halting_em.append(int(ids_to_tokens(toks, tgt_itos)
                               == r["gold"]))
+        halt_ncell.append(n_cell)
     halt_result = {
         "em": float(np.mean(halting_em)),
         "n": len(halting_em),
         "tau0": tau0, "tau1": tau1,
+        "n_cell_mean": float(np.mean(halt_ncell)),
+        "per_sample": halting_em,
     }
+    # paired halting-vs-e3 on the same samples (group bootstrap)
+    d_he = np.mean(halting_em) - np.mean(em_cache[3])
+    rng_h = np.random.RandomState(0)
+    by_g = {}
+    for i, gk in enumerate(gkeys):
+        by_g.setdefault(gk, []).append(i)
+    gs = list(by_g)
+    pairs_h = list(zip(halting_em, em_cache[3]))
+    diffs_h = []
+    for _ in range(20000):
+        sel = []
+        for _ in gs:
+            sel.extend(by_g[rng_h.choice(gs)])
+        pa = np.array([pairs_h[i][0] for i in sel])
+        pb = np.array([pairs_h[i][1] for i in sel])
+        diffs_h.append(pa.mean() - pb.mean())
+    diffs_h.sort()
+    halt_result["vs_forced_e3_diff"] = float(d_he)
+    halt_result["vs_forced_e3_ci95"] = [
+        float(diffs_h[int(0.025 * len(diffs_h))]),
+        float(diffs_h[int(0.975 * len(diffs_h))])]
 
     # ---- E: frozen GRU alpha policy zero-shot transfer
-    # load the best GRU alpha genotype
+    # Same 256 samples, batched; per-sample outputs saved for the
+    # paired comparison against forced e3.
     best_w = None
     import glob
     for f in glob.glob(f"{OUT}/stage2_gru_s0_GA_oseed0.json"):
@@ -308,20 +335,50 @@ def eval_seed(model, seed, src_stoi, tgt_itos):
     gru_stats = json.load(open(
         "runs/gate_exp/p3r/p3r1/feat_stats_s0.json"))
     if best_w is not None:
-        # decode the same 128 samples with the frozen policy
-        alpha_em = []
-        n_cell_pol = []
-        for r in sub[:128]:
-            # use decode_alpha_t1 with GRU stats and GRU policy
-            toks, nc = decode_alpha_t1(
-                model, [r["src"]], src_stoi, tgt_itos,
-                best_w, gru_stats, mode="pol")
-            hyp = ids_to_tokens(toks[0], tgt_itos)
-            alpha_em.append(int(hyp == r["gold"]))
-            n_cell_pol.append(nc)
+        alpha_rec = []
+        toks_pol, nc_pol = decode_alpha_t1(
+            model, [r["src"] for r in sub], src_stoi, tgt_itos,
+            best_w, gru_stats, mode="pol", alpha_rec=alpha_rec)
+        alpha_em = [int(ids_to_tokens(t, tgt_itos) == r["gold"])
+                   for r, t in zip(sub, toks_pol)]
+        all_a = (np.concatenate(alpha_rec) if alpha_rec
+                 else np.array([]))
+        # paired comparison vs forced e3 on the SAME samples
+        d_ha = np.mean(alpha_em) - np.mean(em_cache[3])
+        # group-cluster paired bootstrap on the same 256
+        rng = np.random.RandomState(0)
+        by_g = {}
+        for i, gk in enumerate(gkeys):
+            by_g.setdefault(gk, []).append(i)
+        gs = list(by_g)
+        diffs = []
+        pairs = list(zip(alpha_em, em_cache[3]))
+        for _ in range(20000):
+            sel = []
+            for _ in gs:
+                sel.extend(by_g[rng.choice(gs)])
+            pa = np.array([pairs[i][0] for i in sel])
+            pb = np.array([pairs[i][1] for i in sel])
+            diffs.append(pa.mean() - pb.mean())
+        diffs.sort()
+        ci = [diffs[int(0.025 * len(diffs))],
+              diffs[int(0.975 * len(diffs))]]
         alpha_result = {
             "em": float(np.mean(alpha_em)),
             "n": len(alpha_em),
+            "vs_forced_e3_diff": float(d_ha),
+            "vs_forced_e3_ci95": [float(x) for x in ci],
+            "per_sample": alpha_em,
+            "alpha_stats": {
+                "mean": float(all_a.mean()) if all_a.size else None,
+                "std": float(all_a.std()) if all_a.size else None,
+                "q10": float(np.quantile(all_a, 0.10))
+                if all_a.size else None,
+                "q50": float(np.quantile(all_a, 0.50))
+                if all_a.size else None,
+                "q90": float(np.quantile(all_a, 0.90))
+                if all_a.size else None,
+            },
             "genotype": best_w.tolist(),
             "gru_stats_mean": gru_stats["mean"],
             "gru_stats_std": gru_stats["std"],
@@ -332,6 +389,8 @@ def eval_seed(model, seed, src_stoi, tgt_itos):
     result = {
         "seed": seed,
         "forced_em": forced_em,
+        "forced_per_sample": {str(d): em_cache[d]
+                               for d in (0, 1, 2, 3)},
         "seq_transitions": seq_trans,
         "depth_summary": depth_sum,
         "halting": halt_result,

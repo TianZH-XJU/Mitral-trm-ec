@@ -110,7 +110,7 @@ def decode_batch(model, srcs, src_stoi, tgt_itos, depth=3,
         c_new/dc are None for the vanilla RNN."""
         p = torch.softmax(model.out(z), dim=-1)
         e_soft = p @ model.emb.weight
-        inp = torch.cat([prev_emb, e_soft, ctx], dim=-1)
+        inp = torch.cat([prev_emb, ctx, e_soft], dim=-1)
         if is_lstm:
             dh_, dc_ = model.refine(inp, (z, cstate))
             return dh_, dc_, dh_ - z, dc_ - cstate
@@ -220,7 +220,7 @@ def record_latent(model, srcs, src_stoi, depth=3):
     def refine(z, cstate, prev_emb, ctx):
         p = torch.softmax(model.out(z), dim=-1)
         e_soft = p @ model.emb.weight
-        inp = torch.cat([prev_emb, e_soft, ctx], dim=-1)
+        inp = torch.cat([prev_emb, ctx, e_soft], dim=-1)
         if is_lstm:
             dh_, dc_ = model.refine(inp, (z, cstate))
             return dh_, dc_
