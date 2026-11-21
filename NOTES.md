@@ -761,3 +761,47 @@ T1 s1/s2 与 M1 三种子训练后台进行，完成后自动接入电池。
 - [ ] frozen GRU alpha 策略 zero-shot 迁移（保持特征定义和归一化
       统计量不变，直接用于 Transformer）
 - [ ] 阈值 sketch 不在 fold-4 重复调参（fold-4 仅测固定 0.85/0.90）
+\n
+## 第二十八阶段：GRU 电池完成 + alpha-only 独立确认（2026-11-21）
+
+### GRU 三电池全部完成（45 搜索）
+
+| seed | baseline EM | 最佳策略 | 最佳内层 EM |
+|---|---|---|---|
+| s0 | 0.8646 | DE | 0.8698 (+0.52pp) |
+| s1 | 0.8281 | GA | 0.8490 (+2.08pp) |
+| s2 | 0.8854 | GA/DE | 0.8958 (+1.04pp) |
+
+### alpha-only 独立确认（fold-4 外层 640 样本）
+
+冻结每 seed 内层最佳 alpha 基因型，在 fold-4 留出集上独立评估：
+
+| seed | 策略 | 外层 base EM | 外层 policy EM | dEM | 95% CI | 判定 |
+|---|---|---|---|---|---|---|
+| s0 | DE | 0.9672 | 0.9672 | +0.00pp | [-0.52, +0.53]pp | FAIL (边际) |
+| s1 | GA | 0.9797 | 0.9750 | -0.47pp | [-1.36, 0.00]pp | FAIL |
+| s2 | DE | 0.9688 | 0.9688 | +0.00pp | [-0.47, +0.54]pp | NON-INFERIOR |
+
+**诚实结论**：内层搜索的 alpha 增益（+0.5~+2.1pp）没有稳健迁移到
+外层 fold-4（1/3 种子通过非劣效检验，s0 差 0.02pp，s1 明确失败）。
+alpha 增益相对折间方差较小，论文中将如实报告为"内层增益、外层
+非劣效"而非"泛化改进"。
+
+### 接力脚本关键修复（预防性检查发现）
+
+1. `model.emb.weight` -> `model.tgt_emb.weight`（4 处，否则
+   AttributeError 崩溃）
+2. 3 处 `while True` -> 有界循环（与 stage2_core 同源的无限循环 bug）
+3. **T1 编码器 PAD 污染**：EncLayer 无内部 PAD masking，混合长度
+   批处理编码系统性污染 mem。修复为逐样本精确长度编码后堆叠
+   （encode_clean_padded），16 样本 x 4 深度等价性验证 PASS
+4. 合并 A/B 重复解码 + 批处理解码（固定深度评估 ~2h -> ~15-20min）
+
+### 串行队列进度
+
+1. GRU s0/s1/s2 电池 ✅ 45/45
+2. alpha-only 独立确认 ✅ (1/3 非劣效, 如实报告)
+3. Transformer s1/s2 泛化评估 🔄 运行中
+4. RNN 3 种子训练 ⏳
+5. LSTM 3 种子训练 ⏳
+6. Mamba-1-Tiny 条件测试 ⏳
