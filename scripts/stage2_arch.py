@@ -68,7 +68,7 @@ def decode_alpha_t1(model, srcs, src_stoi, tgt_itos, w, stats,
     xs_all = torch.zeros(B, 0, 128)            # prefix K/V cache (inputs)
     n_cell = 0
     sqrt_d = math.sqrt(128)
-    while True:
+    for _ in range(H.MAX_LEN):  # bounded loop (bug fix, same as core)
         active = ~done
         if not bool(active.any()):
             break
@@ -145,7 +145,7 @@ def decode_alpha_m1(model, srcs, src_stoi, tgt_itos, w, stats,
     sqrt_d = math.sqrt(128)
     prev_z = torch.zeros(B, 128)
     prev_tok = prev.clone()
-    while True:
+    for _ in range(H.MAX_LEN):  # bounded loop (bug fix, same as core)
         active = ~done
         if not bool(active.any()):
             break

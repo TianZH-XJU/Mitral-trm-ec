@@ -49,7 +49,7 @@ def decode_fixed_t1(model, src, src_stoi, tgt_itos, depth):
         z = model.base.fwd(x, cat, mem, None, src_mask)
         for _ in range(depth):
             p = torch.softmax(model.out(z), dim=-1)
-            e_soft = p @ model.emb.weight
+            e_soft = p @ model.tgt_emb.weight
             z = model.refine.fwd(z + e_soft, cat, mem, None, src_mask)
         pred = int(model.out(z).argmax())
         toks.append(pred)
@@ -71,7 +71,7 @@ def record_latent_t1(model, srcs, src_stoi, tgt_itos, depth=3):
     toks = [[] for _ in range(B)]
     zs_buf = [[] for _ in range(B)]
     xs_all = torch.zeros(B, 0, 128)
-    while True:
+    for _ in range(MAX_LEN):  # bounded loop (bug fix)
         active = ~done
         if not bool(active.any()):
             break
@@ -83,7 +83,7 @@ def record_latent_t1(model, srcs, src_stoi, tgt_itos, depth=3):
         z = z0
         for k in range(depth):
             p = torch.softmax(model.out(z), dim=-1)
-            e_soft = p @ model.emb.weight
+            e_soft = p @ model.tgt_emb.weight
             z_new = model.refine.fwd(
                 z + e_soft, xs_all, mem, None, src_mask)
             z = z_new
@@ -208,7 +208,7 @@ def eval_seed(model, seed, src_stoi, tgt_itos):
             if top0 > tau0:
                 pred = int(model.out(z).argmax())
             else:
-                p_soft = p @ model.emb.weight
+                p_soft = p @ model.tgt_emb.weight
                 z1 = model.refine.fwd(z + p_soft, cat, mem, None,
                                       src_mask)
                 n_cell += 1
@@ -221,7 +221,7 @@ def eval_seed(model, seed, src_stoi, tgt_itos):
                     for _ in range(2):
                         p3 = torch.softmax(
                             model.out(z3), dim=-1)
-                        e_soft = p3 @ model.emb.weight
+                        e_soft = p3 @ model.tgt_emb.weight
                         z3 = model.refine.fwd(
                             z3 + e_soft, cat, mem, None, src_mask)
                         n_cell += 1
