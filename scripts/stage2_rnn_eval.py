@@ -294,15 +294,18 @@ def eval_seed(model_name, seed):
 
     # ---- A+B: forced depths and transitions
     em_cache = {}
+    forced_ncell = {}
     for depth in (0, 1, 2, 3):
-        toks_all, _, _ = decode_batch(
+        toks_all, nc, _ = decode_batch(
             model, [r["src"] for r in sub], src_stoi, tgt_itos,
             depth=depth, mode="fix")
         ems = [int(ids_to_tokens(t, tgt_itos) == r["gold"])
                for r, t in zip(sub, toks_all)]
         em_cache[depth] = ems
+        forced_ncell[str(depth)] = nc / len(sub)
         print(f"{model_name} s{seed} e{depth}: "
-              f"EM={float(np.mean(ems)):.4f}", flush=True)
+              f"EM={float(np.mean(ems)):.4f} "
+              f"n_cell={nc / len(sub):.1f}", flush=True)
     seq_trans = {}
     for a, b in ((0, 1), (1, 2), (2, 3)):
         c = Counter()
@@ -412,6 +415,7 @@ def eval_seed(model_name, seed):
         "seed": seed,
         "forced_em": {str(d): float(np.mean(em_cache[d]))
                       for d in (0, 1, 2, 3)},
+        "forced_n_cell": forced_ncell,
         "forced_per_sample": {str(d): em_cache[d]
                               for d in (0, 1, 2, 3)},
         "seq_transitions": seq_trans,
