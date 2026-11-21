@@ -123,19 +123,6 @@ def eval_seed(model, seed, src_stoi, tgt_itos):
 
     # ---- A: forced depth e0-e3
     forced_em = {}
-    for depth in (0, 1, 2, 3):
-        ems = []
-        for r in sub:
-            toks = decode_fixed_t1(model, r["src"], src_stoi,
-                                   tgt_itos, depth)
-            ems.append(int(ids_to_tokens(toks, tgt_itos)
-                           == r["gold"]))
-        forced_em[str(depth)] = float(np.mean(ems))
-        print(f"T1 s{seed} e{depth}: EM={forced_em[str(depth)]:.4f}",
-              flush=True)
-
-    # ---- B: four-way transitions at each adjacent depth pair
-    seq_trans = {}
     em_cache = {}
     for depth in (0, 1, 2, 3):
         ems = []
@@ -145,6 +132,12 @@ def eval_seed(model, seed, src_stoi, tgt_itos):
             ems.append(int(ids_to_tokens(toks, tgt_itos)
                            == r["gold"]))
         em_cache[depth] = ems
+        forced_em[str(depth)] = float(np.mean(ems))
+        print(f"T1 s{seed} e{depth}: EM={forced_em[str(depth)]:.4f}",
+              flush=True)
+
+    # ---- B: four-way transitions at each adjacent depth pair
+    seq_trans = {}
     for a, b in ((0, 1), (1, 2), (2, 3)):
         c = Counter()
         for x, y in zip(em_cache[a], em_cache[b]):
