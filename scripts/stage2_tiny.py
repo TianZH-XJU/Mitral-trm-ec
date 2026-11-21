@@ -34,7 +34,7 @@ from model_seq2seq import ids_to_tokens  # noqa: E402
 
 OUT = "runs/gate_exp/stage2"
 K_REFINE = 3
-EPOCHS, BATCH, LR = 15, 64, 1e-3
+EPOCHS, BATCH, LR = 15, 64, 5e-4
 DEPTH_W = (0.1, 0.2, 0.3, 0.4)
 MAX_LEN = 200
 THREADS = int(os.environ.get("TINY_THREADS", "4"))
@@ -187,7 +187,9 @@ class Mamba1Tiny(nn.Module):
             torch.log(torch.arange(1, self.d_inner + 1,
                                    dtype=torch.float32)))
         self.D = nn.Parameter(torch.ones(self.d_inner))
-        self.dt_bias = nn.Parameter(torch.ones(1))
+        # Mamba-1 official dt init: softplus(dt_bias) ~= 0.05
+        self.dt_bias = nn.Parameter(
+            torch.tensor(math.log(math.expm1(0.05))))
         self.out_proj = nn.Linear(self.d_inner, d_model, bias=False)
 
     def forward(self, u):
@@ -197,11 +199,17 @@ class Mamba1Tiny(nn.Module):
         x, z, Bp, Cp, dt = torch.split(
             zxbc, [self.d_inner, self.d_inner, self.n, self.n, 1],
             dim=-1)
-        # x: (B,T,di); z: (B,T,di); Bp: (B,T,n); Cp: (B,T,n);
-        # dt: (B,T,1)
-        Delta = Fn.softplus(dt + self.dt_bias)     # (B,T,1)
-        A = -torch.exp(self.A_log)                  # (di,), strictly < 0
-        # safety clamp: exponent <= 0 => A_bar <= 1 even under bugs
+        # Hard-bound EVERY multiplicative factor; sign and
+        # input-dependence are preserved (S6 semantics intact).
+        x = torch.tanh(x)                           # (B,T,di)
+        z = torch.tanh(z)                           # gate in [-0.28,0.5]
+        Bp = torch.tanh(Bp)                         # (B,T,n)
+        Cp = torch.tanh(Cp)                         # (B,T,n)
+        D = torch.tanh(self.D)                      # (di,), (-1,1)
+        # official small discretization + hard cap
+        Delta = Fn.softplus(dt + self.dt_bias).clamp(1e-4, 0.1)
+        # keep A away from the near-integrator regime
+        A = -torch.exp(self.A_log).clamp(min=0.5)   # <= -0.5
         A_bar = torch.exp(torch.clamp(
             A[None, None, :] * Delta, max=0.0))    # (B,T,di) in (0,1]
         B_bar = Bp * Delta                        # (B,T,n)
@@ -214,8 +222,9 @@ class Mamba1Tiny(nn.Module):
             xt = x[:, t]                           # (B,di)
             h = Ab.unsqueeze(-1) * h \
                 + Bb.unsqueeze(1) * xt.unsqueeze(-1)  # (B,di,n)
+            h = h.clamp(-1e3, 1e3)                 # last-resort guard
             yt = (Cp[:, t].unsqueeze(1) * h).sum(-1) \
-                + self.D * xt                      # (B,di)
+                + D * xt                          # (B,di)
             ys.append(yt)
         y = torch.stack(ys, dim=1)                 # (B,T,di)
         y = y * Fn.silu(z)                         # gate
@@ -245,6 +254,10 @@ class TinyRecursiveMamba(nn.Module):
         self.enc = Mamba1Tiny(d, 8, 1)
         self.base = Mamba1Tiny(d, 8, 1)
         self.refine = Mamba1Tiny(d, 8, 1)
+        # inter-stage LayerNorms: cut the multiplicative cascade
+        self.ln_enc = nn.LayerNorm(d)
+        self.ln_base = nn.LayerNorm(d)
+        self.ln_refine = nn.LayerNorm(d)
         # source conditioning (NEW in v2)
         self.cross = TinyMHA(d, 4)
         self.ln_q = nn.LayerNorm(d)
@@ -270,14 +283,15 @@ class TinyRecursiveMamba(nn.Module):
         full-prefix scans.
         """
         se = self.proj(self.src_emb(srcb))         # (B,S,d)
-        mem = self.enc(se)                          # (B,S,d)
+        mem = self.ln_enc(self.enc(se))             # (B,S,d)
         te = self.proj(self.tgt_emb(tgt_in))       # (B,T,d)
         te = self._mix(te, mem, src_mask)           # condition
-        z0 = self.base(te)                          # (B,T,d)
+        z0 = self.ln_base(self.base(te))            # (B,T,d)
         logits = [self.out(z0)]
         z = z0
         for k in range(K_REFINE):
-            z = self.refine(self._mix(z, mem, src_mask))
+            z = self.ln_refine(
+                self.refine(self._mix(z, mem, src_mask)))
             logits.append(self.out(z))
         return logits
 
@@ -290,7 +304,7 @@ class TinyRecursiveMamba(nn.Module):
         """
         srcb, slenb = H.pad_batch([H.to_ids(src, src_stoi)])
         se = self.proj(self.src_emb(srcb))
-        mem = self.enc(se)                          # (1,S,d)
+        mem = self.ln_enc(self.enc(se))             # (1,S,d)
         # 2-dim True=masked (unified with the training path)
         smask = ~(torch.arange(srcb.size(1))[None, :]
                   < slenb[:, None])
@@ -302,11 +316,12 @@ class TinyRecursiveMamba(nn.Module):
                 torch.tensor([[prev]])))            # (1,1,d)
             xs.append(x)
             cat = self._mix(torch.cat(xs, dim=1), mem, smask)
-            z = self.base(cat)                      # (1,t,d)
+            z = self.ln_base(self.base(cat))        # (1,t,d)
             d = depth if depth is not None else (
                 force if force is not None else 3)
             for k in range(d):
-                z = self.refine(self._mix(z, mem, smask))
+                z = self.ln_refine(
+                    self.refine(self._mix(z, mem, smask)))
             pred = int(self.out(z[:, -1]).argmax())
             toks.append(pred)
             if pred == EOS:
