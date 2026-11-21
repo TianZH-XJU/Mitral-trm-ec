@@ -284,8 +284,9 @@ class TinyRecursiveMamba(nn.Module):
         srcb, slenb = H.pad_batch([H.to_ids(src, src_stoi)])
         se = self.proj(self.src_emb(srcb))
         mem = self.enc(se)                          # (1,S,d)
+        # 2-dim True=masked (unified with the training path)
         smask = ~(torch.arange(srcb.size(1))[None, :]
-                  < slenb[:, None])[None]
+                  < slenb[:, None])
         prev = BOS
         toks = []
         xs = []
@@ -355,8 +356,12 @@ def train_model(model_name, seed):
             tgt_in[:, 0] = BOS
             if maxt > 1:
                 tgt_in[:, 1:maxt] = gold[:, :maxt - 1]
-            smask = (torch.arange(srcb.size(1))[None, :]
-                     < slenb[:, None])[None]
+            # True = masked PAD; 2-dim (B,S); _mix normalizes to
+            # (B,1,1,S). (v2 fix: was (1,B,S) with True=valid -- the
+            # dim-3 branch broadcast B against T and the polarity
+            # was inverted, crashing/NaNing the first batch.)
+            smask = ~(torch.arange(srcb.size(1))[None, :]
+                      < slenb[:, None])
             logits = model(srcb, tgt_in, smask)
             loss = 0.0
             for d_, w in enumerate(DEPTH_W):

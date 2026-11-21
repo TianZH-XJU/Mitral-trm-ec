@@ -350,12 +350,40 @@ def eval_seed(model_name, seed):
     for du in du_h:
         for d in du:
             du_hist[d] += 1
+    # paired group-cluster bootstrap helper (same convention as
+    # stage2_t1_eval)
+    key = H.key_fn()
+    gkeys = [key(r["src"]) for r in sub]
+
+    def paired_ci(pa, pb, n_boot=20000, seed=0):
+        rng = np.random.RandomState(seed)
+        by_g = {}
+        for i, gk in enumerate(gkeys):
+            by_g.setdefault(gk, []).append(i)
+        gs = list(by_g)
+        pairs = list(zip(pa, pb))
+        diffs = []
+        for _ in range(n_boot):
+            sel = []
+            for _ in gs:
+                sel.extend(by_g[rng.choice(gs)])
+            va = np.array([pairs[i][0] for i in sel])
+            vb = np.array([pairs[i][1] for i in sel])
+            diffs.append(va.mean() - vb.mean())
+        diffs.sort()
+        return [float(diffs[int(0.025 * len(diffs))]),
+                float(diffs[int(0.975 * len(diffs))])]
+
+    d_he = float(np.mean(halt_em) - np.mean(em_cache[3]))
     halt_result = {
         "em": float(np.mean(halt_em)),
         "n": len(halt_em), "tau0": 0.85, "tau1": 0.90,
         "n_cell_mean": nc_h / len(sub),
         "depth_hist": {str(k): v for k, v in sorted(
             du_hist.items())},
+        "per_sample": halt_em,
+        "vs_forced_e3_diff": d_he,
+        "vs_forced_e3_ci95": paired_ci(halt_em, em_cache[3]),
     }
 
     # ---- E: frozen GRU alpha policy zero-shot transfer
@@ -368,11 +396,15 @@ def eval_seed(model_name, seed):
         depth=3, mode="pol", w=w, stats=stats)
     pol_em = [int(ids_to_tokens(t, tgt_itos) == r["gold"])
               for r, t in zip(sub, toks_p)]
+    d_pe = float(np.mean(pol_em) - np.mean(em_cache[3]))
     alpha_result = {
         "policy_em": float(np.mean(pol_em)),
         "alpha1_em": float(np.mean(em_cache[3])),
         "n": len(pol_em),
         "policy_n_cell_mean": nc_p / len(sub),
+        "per_sample": pol_em,
+        "vs_forced_e3_diff": d_pe,
+        "vs_forced_e3_ci95": paired_ci(pol_em, em_cache[3]),
         "genotype": w.tolist(),
     }
 
@@ -380,6 +412,8 @@ def eval_seed(model_name, seed):
         "seed": seed,
         "forced_em": {str(d): float(np.mean(em_cache[d]))
                       for d in (0, 1, 2, 3)},
+        "forced_per_sample": {str(d): em_cache[d]
+                              for d in (0, 1, 2, 3)},
         "seq_transitions": seq_trans,
         "depth_summary": depth_sum,
         "halting": halt_result,
