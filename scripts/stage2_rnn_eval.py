@@ -134,28 +134,48 @@ def decode_batch(model, srcs, src_stoi, tgt_itos, depth=3,
         cstate = c2
 
         if mode == "halt":
+            # TRUE conditional execution (gather/scatter), matching
+            # halting_lib.decode_batch(mode="split"): rows that stop
+            # at a gate never run the deeper refinement cells.
             p0 = torch.softmax(model.out(z), dim=-1)
             top0 = p0.max(-1).values
             stop0 = top0 > tau[0]
-            z1, c1, d1h, d1c = refine(z, cstate, prev_emb, ctx)
-            n_cell += int((active & ~stop0).sum())
-            p1 = torch.softmax(model.out(z1), dim=-1)
-            top1 = p1.max(-1).values
-            stop1 = (~stop0) & (top1 > tau[1])
-            z3, c3 = z1, c1
-            for _ in range(2):
-                z3, c3, _, _ = refine(z3, c3, prev_emb, ctx)
-            n_cell += int((active & ~stop0 & ~stop1).sum() * 2)
-            pred0 = model.out(z).argmax(-1)
-            pred1 = model.out(z1).argmax(-1)
-            pred3 = model.out(z3).argmax(-1)
-            pred = torch.where(stop0, pred0,
-                               torch.where(stop1, pred1, pred3))
+            pred = model.out(z).argmax(-1)
+            go0 = active & ~stop0
+            idx0 = torch.nonzero(go0).flatten()
+            if idx0.numel():
+                z_sub, c_sub = z[idx0], (
+                    cstate[idx0] if is_lstm else None)
+                pe_sub, ctx_sub = prev_emb[idx0], ctx[idx0]
+                z1_sub, c1_sub, _, _ = refine(
+                    z_sub, c_sub, pe_sub, ctx_sub)
+                n_cell += int(idx0.numel())
+                p1 = torch.softmax(model.out(z1_sub), dim=-1)
+                top1 = p1.max(-1).values
+                stop1_sub = top1 > tau[1]
+                stop1_full = torch.zeros(
+                    B, dtype=torch.bool)
+                stop1_full[idx0[stop1_sub]] = True
+                pred[idx0[stop1_sub]] = model.out(
+                    z1_sub[stop1_sub]).argmax(-1)
+                keep_sub = ~stop1_sub
+                idx1 = idx0[keep_sub]
+                if idx1.numel():
+                    z3_sub = z1_sub[keep_sub]
+                    c3_sub = c1_sub[keep_sub] if is_lstm else None
+                    for _ in range(2):
+                        z3_sub, c3_sub, _, _ = refine(
+                            z3_sub, c3_sub,
+                            pe_sub[keep_sub], ctx_sub[keep_sub])
+                        n_cell += int(idx1.numel())
+                    pred[idx1] = model.out(z3_sub).argmax(-1)
+            else:
+                stop1_full = torch.zeros(B, dtype=torch.bool)
             for i in range(B):
                 if bool(active[i]):
                     depth_used[i].append(
                         0 if bool(stop0[i]) else
-                        (1 if bool(stop1[i]) else 3))
+                        (1 if bool(stop1_full[i]) else 3))
         else:
             prev_delta = None
             feats = np.zeros((B, depth, 4), dtype=np.float64)
@@ -333,15 +353,39 @@ def eval_seed(model_name, seed):
     is_lstm = isinstance(model, RecursiveLSTM)
     per_d = all_zs.shape[-1] // (2 if is_lstm else 1)
     depth_sum = {}
+    dh_prev = dc_prev = None
     for k in range(4):
-        zk = all_zs[:, k, :per_d].float()
+        hk = all_zs[:, k, :per_d].float()
         depth_sum[str(k)] = {
-            "znorm_mean": float(zk.norm(dim=-1).mean() / SQ)}
+            "znorm_mean": float(hk.norm(dim=-1).mean() / SQ)}
+        dh_now = None
         if k > 0:
-            dz = (all_zs[:, k, :per_d]
-                  - all_zs[:, k - 1, :per_d]).float()
+            dh_now = (all_zs[:, k, :per_d]
+                      - all_zs[:, k - 1, :per_d]).float()
             depth_sum[str(k)]["dz_mean"] = float(
-                dz.norm(dim=-1).mean() / SQ)
+                dh_now.norm(dim=-1).mean() / SQ)
+        if k > 1 and dh_prev is not None and dh_now is not None:
+            depth_sum[str(k)]["da_cos_h"] = float(
+                (dh_now * dh_prev).sum(-1) / (
+                    dh_now.norm(dim=-1) * dh_prev.norm(dim=-1)
+                    + 1e-9)).mean()
+        dh_prev = dh_now
+        if is_lstm:
+            ck = all_zs[:, k, per_d:].float()
+            depth_sum[str(k)]["c_znorm_mean"] = float(
+                ck.norm(dim=-1).mean() / SQ)
+            dc_now = None
+            if k > 0:
+                dc_now = (all_zs[:, k, per_d:]
+                          - all_zs[:, k - 1, per_d:]).float()
+                depth_sum[str(k)]["c_dz_mean"] = float(
+                    dc_now.norm(dim=-1).mean() / SQ)
+            if k > 1 and dc_prev is not None and dc_now is not None:
+                depth_sum[str(k)]["da_cos_c"] = float(
+                    (dc_now * dc_prev).sum(-1) / (
+                        dc_now.norm(dim=-1) * dc_prev.norm(dim=-1)
+                        + 1e-9)).mean()
+            dc_prev = dc_now
 
     # ---- D: threshold halting (0.85, 0.90) on 256
     toks_h, nc_h, du_h = decode_batch(
