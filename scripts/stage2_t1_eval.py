@@ -32,6 +32,30 @@ MAX_LEN = 200
 
 
 @torch.no_grad()
+def encode_clean_padded(model, srcs, src_stoi):
+    """Per-sample exact-length encoding (no PAD contamination).
+
+    The T1 encoder has no internal PAD masking, so batched encode
+    with mixed lengths contaminates mem. Encoding each sample at its
+    exact length reproduces the historical per-sample decode setup;
+    the stacked padded positions are masked in cross-attention.
+    """
+    ids = [H.to_ids(s, src_stoi) for s in srcs]
+    B = len(ids)
+    slenb = torch.tensor([len(t) for t in ids])
+    S = int(slenb.max())
+    mem = torch.zeros(B, S, 128)
+    src_mask = torch.zeros(B, 1, 1, S, dtype=torch.bool)
+    for i, t in enumerate(ids):
+        m_i, _ = model.encode(
+            torch.as_tensor(t, dtype=torch.long).view(1, -1),
+            slenb[i:i + 1])
+        mem[i, :len(t)] = m_i[0]
+        src_mask[i, :, :, len(t):] = True
+    return mem, src_mask
+
+
+@torch.no_grad()
 def decode_fixed_t1(model, src, src_stoi, tgt_itos, depth):
     """Per-sample greedy decode at fixed depth (0/1/2/3)."""
     from e6_transformer_pilot import pos_enc
@@ -60,12 +84,55 @@ def decode_fixed_t1(model, src, src_stoi, tgt_itos, depth):
 
 
 @torch.no_grad()
+def decode_fixed_t1_batch(model, srcs, src_stoi, tgt_itos, depth,
+                          chunk=32):
+    """Batched greedy decode at fixed depth (0/1/2/3).
+
+    Equivalent to decode_fixed_t1 per sample; kept as a separate
+    function so correctness can be cross-checked directly.
+    """
+    from e6_transformer_pilot import pos_enc
+    out = []
+    for lo in range(0, len(srcs), chunk):
+        cs = srcs[lo:lo + chunk]
+        B = len(cs)
+        mem, src_mask = encode_clean_padded(model, cs, src_stoi)
+        prev = torch.full((B,), H.BOS, dtype=torch.long)
+        done = torch.zeros(B, dtype=torch.bool)
+        toks = [[] for _ in range(B)]
+        xs_all = torch.zeros(B, 0, 128)
+        for _ in range(MAX_LEN):  # bounded loop
+            active = ~done
+            if not bool(active.any()):
+                break
+            t = xs_all.shape[1]
+            x = model.tgt_emb(prev.view(B, 1)) \
+                + pos_enc(t, 128)[None]
+            xs_all = torch.cat([xs_all, x], dim=1)
+            z = model.base.fwd(x, xs_all, mem, None, src_mask)
+            for _ in range(depth):
+                p = torch.softmax(model.out(z), dim=-1)
+                e_soft = p @ model.tgt_emb.weight
+                z = model.refine.fwd(
+                    z + e_soft, xs_all, mem, None, src_mask)
+            pred = model.out(z).argmax(-1).view(B)
+            pred_m = torch.where(
+                done, torch.full_like(pred, H.PAD), pred)
+            for i in range(B):
+                if bool(active[i]):
+                    toks[i].append(int(pred_m[i]))
+            done |= pred == H.EOS
+            prev = pred_m
+        out.extend(toks)
+    return out
+
+
+@torch.no_grad()
 def record_latent_t1(model, srcs, src_stoi, tgt_itos, depth=3):
     """Record per-depth 128-d latent vectors (free-running stack)."""
     from e6_transformer_pilot import pos_enc
     B = len(srcs)
-    srcb, slenb = H.pad_batch([H.to_ids(s, src_stoi) for s in srcs])
-    mem, src_mask = model.encode(srcb, slenb)
+    mem, src_mask = encode_clean_padded(model, srcs, src_stoi)
     prev = torch.full((B,), H.BOS, dtype=torch.long)
     done = torch.zeros(B, dtype=torch.bool)
     toks = [[] for _ in range(B)]
@@ -125,12 +192,11 @@ def eval_seed(model, seed, src_stoi, tgt_itos):
     forced_em = {}
     em_cache = {}
     for depth in (0, 1, 2, 3):
-        ems = []
-        for r in sub:
-            toks = decode_fixed_t1(model, r["src"], src_stoi,
-                                   tgt_itos, depth)
-            ems.append(int(ids_to_tokens(toks, tgt_itos)
-                           == r["gold"]))
+        toks_all = decode_fixed_t1_batch(
+            model, [r["src"] for r in sub], src_stoi, tgt_itos,
+            depth)
+        ems = [int(ids_to_tokens(t, tgt_itos) == r["gold"])
+               for r, t in zip(sub, toks_all)]
         em_cache[depth] = ems
         forced_em[str(depth)] = float(np.mean(ems))
         print(f"T1 s{seed} e{depth}: EM={forced_em[str(depth)]:.4f}",

@@ -54,13 +54,36 @@ def load_transformer(seed):
 
 
 @torch.no_grad()
+def encode_clean_padded_t1(model, srcs, src_stoi):
+    """Per-sample exact-length encoding (no PAD contamination).
+
+    The T1 encoder has no internal PAD masking, so batched encode
+    with mixed lengths contaminates mem. This reproduces the
+    historical per-sample decode; PAD positions are masked in
+    cross-attention via src_mask.
+    """
+    ids = [H.to_ids(s, src_stoi) for s in srcs]
+    B = len(ids)
+    slenb = torch.tensor([len(t) for t in ids])
+    S = int(slenb.max())
+    mem = torch.zeros(B, S, 128)
+    src_mask = torch.zeros(B, 1, 1, S, dtype=torch.bool)
+    for i, t in enumerate(ids):
+        m_i, _ = model.encode(
+            torch.as_tensor(t, dtype=torch.long).view(1, -1),
+            slenb[i:i + 1])
+        mem[i, :len(t)] = m_i[0]
+        src_mask[i, :, :, len(t):] = True
+    return mem, src_mask
+
+
+@torch.no_grad()
 def decode_alpha_t1(model, srcs, src_stoi, tgt_itos, w, stats,
                     depth=DEPTH, mode="pol"):
     """Batched fixed-depth alpha decode for the recursive Transformer."""
     from e6_transformer_pilot import pos_enc
     B = len(srcs)
-    srcb, slenb = H.pad_batch([H.to_ids(s, src_stoi) for s in srcs])
-    mem, src_mask = model.encode(srcb, slenb)  # (B,S,d),(B,1,1,S)
+    mem, src_mask = encode_clean_padded_t1(model, srcs, src_stoi)
     hh = torch.zeros(B, 128)                   # unused; blocks are attn
     prev = torch.full((B,), H.BOS, dtype=torch.long)
     done = torch.zeros(B, dtype=torch.bool)
