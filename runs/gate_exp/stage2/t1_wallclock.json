@@ -1,0 +1,20 @@
+{
+ "n_samples": 16,
+ "threads": 2,
+ "n_warmup": 2,
+ "n_repeat": 10,
+ "protocol": "T1 per-sample decode_incremental executor for BOTH arms; force=3 vs tau=0.85/0.90; ratio isolates the halting decision; executor differs from GRU/RNN/LSTM active-subset batch benchmark; no hooks",
+ "forced_e3": {
+  "median_ms_per_sample": 105.84218749863794,
+  "p10_ms_per_sample": 104.69999312590517,
+  "p90_ms_per_sample": 108.58604687491606,
+  "n_passes": 10
+ },
+ "halt": {
+  "median_ms_per_sample": 31.423484375409316,
+  "p10_ms_per_sample": 31.16971812378324,
+  "p90_ms_per_sample": 32.02608562532987,
+  "n_passes": 10
+ },
+ "halt_over_e3_ratio": 0.2968899747637368
+}
