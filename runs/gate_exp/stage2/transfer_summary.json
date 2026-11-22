@@ -1,0 +1,107 @@
+{
+ "protocol": "Frozen GRU s0 GA policy + GRU s0 feature stats, zero-shot on RNN/LSTM/T1; same group-balanced 256 samples per target; pre-registered NI margin LCB >= -0.5pp",
+ "ni_margin_pp": -0.5,
+ "n_seeds": 9,
+ "n_non_inferior": 4,
+ "rows": [
+  {
+   "arch": "rnn",
+   "seed": 0,
+   "policy_em": 0.4296875,
+   "diff": -0.00390625,
+   "ci": [
+    -0.01171875,
+    0.0
+   ],
+   "verdict": "INCONCLUSIVE"
+  },
+  {
+   "arch": "rnn",
+   "seed": 1,
+   "policy_em": 0.55859375,
+   "diff": 0.01171875,
+   "ci": [
+    -0.00390625,
+    0.03125
+   ],
+   "verdict": "NON-INFERIOR"
+  },
+  {
+   "arch": "rnn",
+   "seed": 2,
+   "policy_em": 0.484375,
+   "diff": 0.00390625,
+   "ci": [
+    0.0,
+    0.01171875
+   ],
+   "verdict": "NON-INFERIOR"
+  },
+  {
+   "arch": "lstm",
+   "seed": 0,
+   "policy_em": 0.62109375,
+   "diff": -0.0078125,
+   "ci": [
+    -0.01953125,
+    0.0
+   ],
+   "verdict": "INCONCLUSIVE"
+  },
+  {
+   "arch": "lstm",
+   "seed": 1,
+   "policy_em": 0.3203125,
+   "diff": 0.0078125,
+   "ci": [
+    -0.0078125,
+    0.0234375
+   ],
+   "verdict": "INCONCLUSIVE"
+  },
+  {
+   "arch": "lstm",
+   "seed": 2,
+   "policy_em": 0.32421875,
+   "diff": -0.00390625,
+   "ci": [
+    -0.01171875,
+    0.0
+   ],
+   "verdict": "INCONCLUSIVE"
+  },
+  {
+   "arch": "t1",
+   "seed": 0,
+   "policy_em": 0.89453125,
+   "diff": 0.0234375,
+   "ci": [
+    0.0,
+    0.046875
+   ],
+   "verdict": "NON-INFERIOR"
+  },
+  {
+   "arch": "t1",
+   "seed": 1,
+   "policy_em": 0.68359375,
+   "diff": 0.03515625,
+   "ci": [
+    0.00390625,
+    0.06640625
+   ],
+   "verdict": "NON-INFERIOR"
+  },
+  {
+   "arch": "t1",
+   "seed": 2,
+   "policy_em": 0.8515625,
+   "diff": -0.00390625,
+   "ci": [
+    -0.02734375,
+    0.01953125
+   ],
+   "verdict": "INCONCLUSIVE"
+  }
+ ]
+}
