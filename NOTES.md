@@ -1001,3 +1001,47 @@ n=64 轨迹, 与 EM 的 n=256 需分开标注; c_znorm 尺度差异只作
 3. 方法学定位保留: 冻结无训练门 vs ACT/PonderNet
 4. 撤回: v1 "只有 GRU 能解码" (实现伪影); "alpha 跨架构可迁移" (1/3 + 中性)
 5. Mamba 负结果放附录, 标单 seed / 未过门槛
+\n
+## 第三十三阶段: 执行审计 + wall-clock + 迁移收敛 + 论文表述纪律
+
+### 阶段2实际执行审计 (runtime_audit.json, commit 17fc302)
+- GRU/RNN/LSTM base+refinement 全 active-subset 化 + hook 计数
+- 12 场景 (3架构 x e0/e1/e3/mix) token/N_cell/depth 与 reference
+  逐样本全等; 24/24 hook 恒等式 (base=SUM n_gen,
+  refine=SUM ncell-base) 通过
+- 强制 e0 下三模型合计 52458 token 触发 0 次 refinement (真实跳过)
+- N_cell 从逻辑计数升级为'输出等价实现的实际行级调用数'
+
+### wall-clock benchmark (runtime_benchmark.json, commit 3d832fb)
+- B=1(16样本)/B=4,8,32(64样本), 2 warmup+10 repeat, A/B/B/A交错,
+  count=False无hook; 12配置 halt/e3 ratio 0.43-0.64 (省36-57%)
+- 分布12/12无重叠; 比 N_cell 省74%小: base/attention/投影/门控/
+  Python开销两策略都要付且不计入N_cell (公共开销~2.1-2.3 refine)
+- ratio随batch增大趋近1 (b32 0.61-0.64); 三架构b1聚类0.43-0.45
+- 注意: 与论文sec:exp-wall旧执行器(paymax,0.31-0.54)是独立测量,
+  不可混用; 新执行器更保守; b1=16样本, b4->b32才是纯batch趋势
+
+### 阶段4 迁移收敛 (transfer_summary.json, commit 73a8837)
+- 冻结GRU s0 GA策略对RNN/LSTM/T1 9 seed: 4/9非劣(rnn s1/s2,
+  t1 s0/s1), 5/9 INCONCLUSIVE, 0显著负
+- 结合GRU自己alpha_confirm 1/3非劣(1个贴边0.019pp失败):
+  贡献三 = 单策略零样本迁移可行性 + 强seed依赖, 非跨架构通用
+
+### 论文表述纪律 (阶段4第3-4项, 供 main.tex 更新)
+1. RNN/LSTM 与 GRU 的 attention 机制不同 (dot-product QKV vs
+   additive Bahdanau) 且参数量不等 (343K/689K vs 560K GRU vs
+   799K T1): 必须写成'统一数据与递归任务下不同架构变体的行为比较',
+   不声称严格控制了所有模型组件, 不把差异完全归因于循环单元本身.
+   低成本处理: 论文 limitation 明确披露; 不做 Bahdanau 替换重训.
+2. Mamba v2 s0: 单 seed 未过 e3>=0.30 门槛 (组平衡256 e3=.246),
+   不训练 s1/s2; 定位为 tiny 边界探针 (149K,d=64), 附录短节,
+   标单seed/未过门槛, 不报均值, 不进 headline, 不改判据.
+3. 贡献一证据链: (a)预测不变 (audit token全等) (b)计数可信 (hook
+   等式) (c)call节省 (N_cell 74-75%) (d)时间实现 (wall-clock
+   ratio 0.43-0.64) (e)差额解释 (公共开销). 旧paymax墙钟与新
+   active-subset 墙钟是两套独立执行器, 分开报告.
+4. 贡献三: '4/9迁移+1/3本架构确认, 单策略零样本, seed波动大,
+   功效不足以排除接近-0.5pp的伤害, 不主张架构排序'. CI端点
+   量子化~0.39pp, -0.5pp阈值贴边敏感. T1 s1名义显著正经
+   Bonferroni校正后不显著. 尺度错配(GRU D~0.31/T1~1.75)是
+   假说且方向与观察相反, 不写成解释.
