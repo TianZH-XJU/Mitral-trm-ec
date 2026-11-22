@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.3.31)  22 NOV 2026 13:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.3.31)  22 NOV 2026 14:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -873,29 +873,58 @@ Underfull \hbox (badness 1377) in paragraph at lines 83--84
  []
 
 [3] [4]
-Underfull \hbox (badness 1147) in paragraph at lines 129--130
-\T1/ptm/m/n/10.95 (+20) LSTM the $\OML/cmm/m/it/10.95 e[]  \OMS/cmsy/m/n/10.95 
-!  \OML/cmm/m/it/10.95 e[]$ \T1/ptm/m/n/10.95 (+20) jump ac-counts for 75--
+<figures/fig_depth.png, id=132, 520.344pt x 260.172pt>
+File: figures/fig_depth.png Graphic file (type png)
+<use figures/fig_depth.png>
+Package pdftex.def Info: figures/fig_depth.png  used on input line 135.
+(pdftex.def)             Requested size: 219.08614pt x 109.5454pt.
+
+Underfull \hbox (badness 4013) in paragraph at lines 156--157
+\OML/cmm/m/it/10.95 e[]$ \T1/ptm/m/n/10.95 (+20) to $\OML/cmm/m/it/10.95 e[]$ \
+T1/ptm/m/n/10.95 (+20) and then flat-tens: seed-averaged
  []
 
 
-Underfull \hbox (badness 1024) in paragraph at lines 129--130
-\T1/ptm/m/n/10.95 (+20) 92% of the dis-place-ment ac-cu-mu-lated by $\OML/cmm/m
-/it/10.95 e[]$\T1/ptm/m/n/10.95 (+20) ,
+Underfull \hbox (badness 1769) in paragraph at lines 156--157
+\T1/ptm/m/n/10.95 (+20) within each ar-chi-tec-ture, the first re-fine-ment
  []
 
 
-Underfull \hbox (badness 1565) in paragraph at lines 129--130
+Underfull \hbox (badness 1565) in paragraph at lines 156--157
 \T1/ptm/m/n/10.95 (+20) seed $\OML/cmm/m/it/10.95 e[]$ \T1/ptm/m/n/10.95 (+20) 
 scores are 0.879/0.844/0.891 (GRU),
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 129--130
+Underfull \hbox (badness 10000) in paragraph at lines 156--157
 \T1/ptm/m/n/10.95 (+20) 0.434/0.547/0.480 (RNN), 0.629/0.313/0.328
  []
 
-[5] (main.bbl
+<figures/fig_transitions.png, id=136, 520.344pt x 260.172pt>
+File: figures/fig_transitions.png Graphic file (type png)
+<use figures/fig_transitions.png>
+Package pdftex.def Info: figures/fig_transitions.png  used on input line 160.
+(pdftex.def)             Requested size: 219.08614pt x 109.5454pt.
+[5 <./figures/fig_depth.png> <./figures/fig_transitions.png>]
+<figures/fig1_p2r1_pareto.png, id=154, 717.4002pt x 225.4824pt>
+File: figures/fig1_p2r1_pareto.png Graphic file (type png)
+<use figures/fig1_p2r1_pareto.png>
+Package pdftex.def Info: figures/fig1_p2r1_pareto.png  used on input line 199.
+(pdftex.def)             Requested size: 219.08614pt x 68.85976pt.
+<figures/crossarch_latent_figure.png, id=161, 1084.05pt x 578.16pt>
+File: figures/crossarch_latent_figure.png Graphic file (type png)
+<use figures/crossarch_latent_figure.png>
+Package pdftex.def Info: figures/crossarch_latent_figure.png  used on input lin
+e 247.
+(pdftex.def)             Requested size: 219.08614pt x 116.83856pt.
+ [6 <./figures/fig1_p2r1_pareto.png>]
+<figures/optimizer_curves.png, id=176, 578.16pt x 361.35pt>
+File: figures/optimizer_curves.png Graphic file (type png)
+<use figures/optimizer_curves.png>
+Package pdftex.def Info: figures/optimizer_curves.png  used on input line 304.
+(pdftex.def)             Requested size: 219.08614pt x 136.92847pt.
+ [7 <./figures/crossarch_latent_figure.png> <./figures/optimizer_curves.png>] (
+main.bbl [8]
 Underfull \hbox (badness 1337) in paragraph at lines 42--45
 []\T1/ptm/m/n/10 (+20) Alex Graves. 2016.  Adap-tive com-pu-ta-tion time
  []
@@ -911,21 +940,15 @@ Underfull \hbox (badness 10000) in paragraph at lines 68--72
 []\T1/ptm/m/n/10 (+20) Roy Schwartz, Gabriel Stanovsky, Swabha
  []
 
-[6])
-<figures/optimizer_curves.png, id=164, 578.16pt x 361.35pt>
-File: figures/optimizer_curves.png Graphic file (type png)
-<use figures/optimizer_curves.png>
-Package pdftex.def Info: figures/optimizer_curves.png  used on input line 181.
-(pdftex.def)             Requested size: 219.08614pt x 136.92847pt.
-
-Underfull \hbox (badness 1337) in paragraph at lines 188--189
+)
+Underfull \hbox (badness 1337) in paragraph at lines 395--396
 \T1/ptm/m/n/10.95 (+20) and LSTM $\OMS/cmsy/m/n/10.95 ^^B$ \T1/ptm/m/n/10.95 (+
 20) {forced $\OML/cmm/m/it/10.95 e[]$\T1/ptm/m/n/10.95 (+20) , forced $\OML/cmm
 /m/it/10.95 e[]$\T1/ptm/m/n/10.95 (+20) , forced
  []
 
 
-Underfull \hbox (badness 1067) in paragraph at lines 188--189
+Underfull \hbox (badness 1067) in paragraph at lines 395--396
 \OML/cmm/m/it/10.95 e[]$\T1/ptm/m/n/10.95 (+20) , thresh-old $\OT1/cmr/m/n/10.9
 5 (0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 85\OML/cmm/m/it/10.95 ; \OT1/cmr/m/
 n/10.95 0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 90)$\T1/ptm/m/n/10.95 (+20) } 
@@ -933,31 +956,24 @@ $\OT1/cmr/m/n/10.95 = 12$ \T1/ptm/m/n/10.95 (+20) set-tings on
  []
 
 
-Underfull \hbox (badness 2809) in paragraph at lines 188--189
+Underfull \hbox (badness 2809) in paragraph at lines 395--396
 \T1/ptm/m/n/10.95 (+20) the 256-sample man-i-fest, per-sample to-kens,
  []
 
 
-Underfull \hbox (badness 1275) in paragraph at lines 188--189
+Underfull \hbox (badness 1275) in paragraph at lines 395--396
 \T1/ptm/m/n/10.95 (+20) de-coder ex-actly ($\OT1/cmr/m/n/10.95 12\OML/cmm/m/it/
 10.95 =\OT1/cmr/m/n/10.95 12$\T1/ptm/m/n/10.95 (+20) ). The hooks sat-isfy
  []
 
 
-Underfull \hbox (badness 3735) in paragraph at lines 192--207
-\T1/ptm/m/n/10.95 (+20) Table [][]3[][] re-ports the active-subset ex-ecu-tor's
+Underfull \hbox (badness 3735) in paragraph at lines 399--400
+\T1/ptm/m/n/10.95 (+20) Table [][]5[][] re-ports the active-subset ex-ecu-tor's
 
  []
 
-[7 <./figures/optimizer_curves.png>]
-<figures/crossarch_latent_figure.png, id=182, 1084.05pt x 578.16pt>
-File: figures/crossarch_latent_figure.png Graphic file (type png)
-<use figures/crossarch_latent_figure.png>
-Package pdftex.def Info: figures/crossarch_latent_figure.png  used on input lin
-e 213.
-(pdftex.def)             Requested size: 219.08614pt x 116.83856pt.
-
-Underfull \hbox (badness 1226) in paragraph at lines 245--246
+[9]
+Underfull \hbox (badness 1226) in paragraph at lines 414--415
 \T1/ptm/m/n/10.95 (+20) nif-i-cantly neg-a-tive on $\OT1/cmr/m/n/10.95 2$ \T1/p
 tm/m/n/10.95 (+20) (RNN $\OML/cmm/m/it/10.95 s[]$\T1/ptm/m/n/10.95 (+20) : $\OM
 S/cmsy/m/n/10.95 ^^@\OT1/cmr/m/n/10.95 1\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95
@@ -965,44 +981,44 @@ S/cmsy/m/n/10.95 ^^@\OT1/cmr/m/n/10.95 1\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95
  []
 
 
-Underfull \hbox (badness 5954) in paragraph at lines 245--246
+Underfull \hbox (badness 5954) in paragraph at lines 414--415
 \T1/ptm/m/n/10.95 (+20) and in-con-clu-sive on $\OT1/cmr/m/n/10.95 1$ \T1/ptm/m
 /n/10.95 (+20) (T1 $\OML/cmm/m/it/10.95 s[]$\T1/ptm/m/n/10.95 (+20) : $\OMS/cms
 y/m/n/10.95 ^^@\OT1/cmr/m/n/10.95 2\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 34$\
 T1/ptm/m/n/10.95 (+20) pp
  []
 
-[8 <./figures/crossarch_latent_figure.png>]
-<figures/fig2_p3r1_fixed_depth.png, id=210, 433.62pt x 231.264pt>
+<figures/fig2_p3r1_fixed_depth.png, id=225, 433.62pt x 231.264pt>
 File: figures/fig2_p3r1_fixed_depth.png Graphic file (type png)
 <use figures/fig2_p3r1_fixed_depth.png>
 Package pdftex.def Info: figures/fig2_p3r1_fixed_depth.png  used on input line 
-379.
+451.
 (pdftex.def)             Requested size: 175.26958pt x 93.4779pt.
-<figures/fig4_p3r0_trajectory.png, id=211, 578.16pt x 216.81pt>
+<figures/fig4_p3r0_trajectory.png, id=226, 578.16pt x 216.81pt>
 File: figures/fig4_p3r0_trajectory.png Graphic file (type png)
 <use figures/fig4_p3r0_trajectory.png>
-Package pdftex.def Info: figures/fig4_p3r0_trajectory.png  used on input line 3
-86.
+Package pdftex.def Info: figures/fig4_p3r0_trajectory.png  used on input line 4
+58.
 (pdftex.def)             Requested size: 197.17618pt x 73.93938pt.
- [9 <./figures/fig2_p3r1_fixed_depth.png>] [10
+[10] [11
 
- <./figures/fig4_p3r0_trajectory.png>] (main.aux)
+ <./figures/fig2_p3r1_fixed_depth.png> <./figures/fig4_p3r0_trajectory.png>] (m
+ain.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: E532BD34F4C2046E75C988F44515DFF6;4197.
+(rerunfilecheck)             Checksum: EC57179A12E880D7C6511EB10A6E8453;2880.
  ) 
 Here is how much of TeX's memory you used:
- 25996 strings out of 467871
- 478044 string characters out of 5427000
- 932016 words of memory out of 5000000
- 54061 multiletter control sequences out of 15000+600000
- 684848 words of font info for 305 fonts, out of 8000000 for 9000
+ 26034 strings out of 467871
+ 478867 string characters out of 5427000
+ 929879 words of memory out of 5000000
+ 54088 multiletter control sequences out of 15000+600000
+ 685238 words of font info for 311 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,12n,94p,1468b,630s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,13n,94p,1468b,620s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <D:/Program Files (x86)/tex/fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/Pro
 gram Files (x86)/tex/fonts/type1/public/amsfonts/cm/cmmi10.pfb><D:/Program File
 s (x86)/tex/fonts/type1/public/amsfonts/cm/cmmi7.pfb><D:/Program Files (x86)/te
@@ -1019,9 +1035,9 @@ fonts/symbols/msam10.pfb><D:/Program Files (x86)/tex/fonts/type1/urw/helvetic/u
 hvb8a.pfb><D:/Program Files (x86)/tex/fonts/type1/urw/times/utmb8a.pfb><D:/Prog
 ram Files (x86)/tex/fonts/type1/urw/times/utmr8a.pfb><D:/Program Files (x86)/te
 x/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (10 pages, 658465 bytes).
+Output written on main.pdf (11 pages, 851481 bytes).
 PDF statistics:
- 320 PDF objects out of 1000 (max. 8388607)
- 61 named destinations out of 1000 (max. 500000)
- 49345 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 331 PDF objects out of 1000 (max. 8388607)
+ 63 named destinations out of 1000 (max. 500000)
+ 49328 words of extra memory for PDF output out of 51595 (max. 10000000)
 

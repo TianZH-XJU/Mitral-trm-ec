@@ -125,128 +125,44 @@ The best inner policy is frozen and confirmed once on a 640-example outer fold. 
 The three lines combine into one account. The latent curves show why halting is safe where depth one already saturates, the call counts say what the saving consists of, and the step-size search bounds what a frozen update policy gains before transfer fails to hold. We report the negative cases alongside the positive ones.
 
 
-\subsection{Recursive Computation and Depth-dependent Performance}
-Across the four architectures, forced exact-match accuracy gains almost all of its depth benefit at the first refinement. On GRU, RNN, and LSTM the $e_0\!\to\!e_1$ jump accounts for 75--92\% of the displacement accumulated by $e_3$, averaging seeds within each architecture, and the curve is nearly flat afterwards. The three-seed $e_3$ scores are 0.879/0.844/0.891 (GRU), 0.434/0.547/0.480 (RNN), 0.629/0.313/0.328 (LSTM), and 0.871/0.648/0.855 (T1). Prediction-change rates decline with depth in every model. T1 is the exception to saturation: its updates stay strongly collinear at $e_2$ (cosine 0.94--0.96) and its state norm grows with depth.
+\section{Results and Analysis}
+\label{sec:results}
 
-\subsection{Causal Halting and Actual Computation Savings}
-Threshold halting preserves exact-match accuracy on most architecture-seeds while cutting the number of executed calls. On the frozen GRU it reproduces the deepest baseline bit-for-bit at 25.7\% of its calls on two seeds; on the third it beats the shallower $e_1$ baseline by 1.86pp at 52.1\% of that baseline's calls, a non-significant gain whose 95\% interval spans zero. Pooling the four architectures, the rule is non-inferior or better on 9 of 12 seeds, significantly worse on 2 (RNN $s_2$, T1 $s_2$), and inconclusive on 1 (T1 $s_0$). Runtime hooks close the accounting loop: forced $e_0$ triggers zero refinement calls on all 52{,}458 generated tokens across the three recurrent models, and the counter matches the intercepted call count in all 12 settings. Counting calls is not the same as counting time. A separate active-subset executor, which skips rows that have finished decoding, gives halt-to-forced-$e_3$ wall-clock ratios of 0.43--0.64 on GRU/RNN/LSTM; a per-sample T1 executor gives 0.297. These time ratios exceed the call ratios because base steps, attention, output projection, gating, and per-step Python work are paid by both arms and are excluded from $N_{\mathrm{cell}}$; the two executors are reported side by side, never combined.
+The three lines of this study answer the questions raised in the introduction: whether the counted extra steps are executed, what changes in the latent state, and whether a tuned step-size policy transfers to another model. Every claim is backed by a table or figure computed from the released artifacts. The depth curve is where the account starts, since it shows where extra computation pays and where it does not.
 
-\subsection{Cross-architecture Latent State Dynamics}
-The T1 exception belongs to a broader split. Six trajectory summaries, state norm, update norm, relative update, direction cosine, total displacement, and prediction-change rate, separate bounded gated states from unbounded accumulators. GRU, RNN, and LSTM hidden states stay between 0.68 and 0.96 in normalized norm and shrink their updates at every depth; LSTM cell state and T1 occupy a different scale, roughly 5 to 8, and keep changing. The sharpest separation is directional: at $e_2$ the bounded group has update cosine 0.07--0.39, whereas T1 remains at 0.94--0.96. Prediction-change rates decline with depth in all four architectures. These are within-model descriptors, not cross-architecture rankings; absolute norms are not comparable across models, and the two regimes should not be read as a quality ordering.
-
-\subsection{Generalization and Cross-architecture Transfer}
-The policy selected on an inner subset is frozen before any outer evaluation. On the GRU's own outer fold, one of three seeds meets the non-inferiority bound; of the other two, one fails marginally and one clearly fails. Moving that single frozen GRU policy to RNN, LSTM, and T1 gives four non-inferior seeds out of nine, five inconclusive, and no significant loss. A separate frozen threshold policy evaluated once on the untouched COGS development set reproduces the held-out compute ratios for two seeds and differs by 0.003 on the third.
-
-\subsection{Negative Results and Boundary Conditions}
-Several results limit the claims. Mamba-1-Tiny does not pass the pre-set 0.30 EM gate on the 256-sample evaluation and is reported as a single-seed probe. Threshold halting loses accuracy on two seeds, RNN $s_2$ and T1 $s_2$, where the depth curve has not saturated. The evolved policy transfers to only part of the target seeds, four of nine non-inferior as reported above, and the outer confirmation passes on one of three. These cases are reported alongside the positive results; they mark the conditions under which recursive control is safe.
-
-\section{Conclusion}
-\label{sec:conclusion}
-The benefit of recursion is not spread evenly across depths. On several seeds the model has already settled after the first refinement, and later steps change little; a causal threshold removes those steps without losing accuracy on most architecture-seeds. Two seeds still lose accuracy under that same fixed threshold, so the saving depends on where each depth curve saturates.
-
-Latent trajectories explain the split. Bounded gated states shrink their updates after the first refinement, whereas unbounded states keep accumulating along a consistent direction. The first-refinement pattern therefore belongs to the bounded regime, not to recursive models in general, and absolute state norms should not be read as a ranking.
-
-Evolutionary search moves the fixed step size only slightly: the median gain is one sample of the 192-example inner subset across 45 searches, and no single optimizer wins consistently. The selected step-size policy passes outer confirmation on one of three seeds, and the same frozen policy is non-inferior on four of nine transfers. These gains do not become reliable cross-architecture improvements; we treat this gap as a substantive limit of the approach.
-
-TRACER is one way to work with recursive computation: trace predictions and states, decide whether to spend another step, and test how far a tuned update travels. More depth is not always more accuracy; knowing when an extra step helps, and whether a control rule still holds on a new model, matters just as much. Taken together, the three lines serve one goal: we trace recursive states to understand when depth helps, halt computation to avoid redundant refinement, and evolve update policies to test how far a policy carries, recording where each rule holds and where it fails.
-
-\section*{Limitations}
-Limited computing resources kept the models small and the number of architectures and seeds modest. The primary task is a single semantic parsing dataset (COGS), and the observed patterns should not be assumed to carry to large language models or broader reasoning workloads. Because attention type and parameter count also vary across the four architectures, these comparisons describe behavioral variants under one task rather than controlled ablations of the recurrent cell. Experiments ran on CPU with a fixed two-thread setting, so the wall-clock numbers describe this setting rather than large-scale GPU serving or much deeper recursion; whether the latent dynamics and control rules persist in those regimes remains open.
-
-\bibliography{references}
-
-\appendix
-\section{Equal-Budget Search Across Five Optimizers}
-\label{app:search}
-Across $3$ model seeds $\times$ $5$ algorithms (RS, GA, MGA, DE, sep-CMA-ES) $\times$ $3$ optimizer seeds $=45$ searches, each with a budget of $336$ candidate evaluations, gains are small and quantized to the inner subset's $1/192=0.52$pp. Table~\ref{tab:optagg} aggregates over the $9$ runs per algorithm. Every algorithm's median is $+0.52$pp; the mean ranges from $+0.41$pp (sepCMA) to $+0.81$pp (GA, DE), and win rates are 67--89\%. The single $+2.08$pp run is an outlier, not evidence of an algorithm ranking. Baseline EM varies by $2.4$pp across model seeds, several times the search effect. With three optimizer seeds per cell this is a finite-budget comparison, not a general optimizer study. Figure~\ref{fig:optcurves} shows best-so-far gain over each run's own baseline (pooling raw EM across different baselines would be misleading).
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig_depth.png}
+\caption{Forced exact match by depth for four architectures. Lines are seed means; shaded bands span three seeds (256 group-balanced examples).}
+\label{fig:depth}
+\end{figure}
 \begin{table}[t]
 \centering
 \footnotesize
-\begin{tabular}{@{}lcccc@{}}
-\toprule
-Algorithm & Mean (pp) & Median (pp) & Std (pp) & Win \\
-\midrule
-RS & $+0.64$ & $+0.52$ & 0.63 & 67\% \\
-GA & $+0.81$ & $+0.52$ & 0.64 & 89\% \\
-MGA & $+0.46$ & $+0.52$ & 0.17 & 89\% \\
-DE & $+0.81$ & $+0.52$ & 0.53 & 89\% \\
-sepCMA & $+0.41$ & $+0.52$ & 0.35 & 67\% \\
-\bottomrule
-\end{tabular}
-\caption{Forty-five-search aggregation; gain in pp vs.\ $\alpha\!\equiv\!1$ on the 192-example inner subset.}
-\label{tab:optagg}
-\end{table}
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{figures/optimizer_curves.png}
-\caption{Best-so-far gain over each run's own baseline (means of nine runs).}
-\label{fig:optcurves}
-\end{figure}
-
-\section{Executed-Call Audit of the Active-Subset Executor}
-\label{app:runtime}
-To verify that $N_{\mathrm{cell}}$ reflects executed work rather than a predicted-exit label, we implemented a forward-hook-instrumented decoder in which \emph{both} the base and refinement cells run only on active/continuing rows. Across GRU, Vanilla RNN and LSTM $\times$ \{forced $e_0$, forced $e_1$, forced $e_3$, threshold $(0.85,0.90)$\} $=12$ settings on the 256-sample manifest, per-sample tokens, $N_{\mathrm{cell}}$ and depth histograms match the reference decoder exactly ($12/12$). The hooks satisfy $\sum \mathrm{base\_rows}=\sum n_{\mathrm{gen}}$ and $\sum \mathrm{refine\_rows}=\sum N_{\mathrm{cell}}-\sum \mathrm{base\_rows}$ in all $24$ checks. Under forced $e_0$, all $52{,}458$ generated tokens across the three models trigger zero refinement calls. Hence $N_{\mathrm{cell}}$ is the actual row-wise call count of an output-equivalent implementation.
-
-\section{Wall-Clock Benchmarks and Executor Semantics}
-\label{app:wallbench}
-Table~\ref{tab:wall} reports the active-subset executor's halt/forced-$e_3$ wall-clock ratios ($b{=}1$: 16 manifest samples; $b{=}4/8/32$: 64; 2 warmup + 10 interleaved passes; two CPU threads; no hooks). The 12 halt-versus-forced latency distributions are disjoint. The gap between the $\approx$0.26 call ratio and the 0.43--0.64 time ratio is shared overhead (base step, attention, output projection, gating, per-step Python work) of $\approx$2.1--2.3 refinement-equivalents at small batch, paid by both arms. Ratios approach one as batch grows because batched refinements are cheaper per call and gather/full-buffer costs scale with batch. A separate per-sample T1 executor gives halt/e3 $=0.297$ on the same 16 samples; its T1 forced-depth pay-max batch scaling is $\times2.39/\times3.44/\times4.28$ at $b{=}4/8/32$, which is \emph{not} a halt/e3 ratio and must not be multiplied with it. Absolute latency is not comparable across batches (different $N$) or executors.
-\begin{table}[t]
-\centering
 \begin{tabular}{lcccc}
 \toprule
-Model & $b{=}1$ & $b{=}4$ & $b{=}8$ & $b{=}32$ \\
+Architecture & $e_0$ & $e_1$ & $e_2$ & $e_3$ \\
 \midrule
-GRU & 0.439 & 0.440 & 0.484 & 0.577 \\
-RNN & 0.452 & 0.468 & 0.555 & 0.640 \\
-LSTM & 0.430 & 0.471 & 0.538 & 0.611 \\
+GRU & $0.749$ & $0.868$ & $0.870$ & $0.871$ \\
+RNN & $0.298$ & $0.479$ & $0.491$ & $0.487$ \\
+LSTM & $0.215$ & $0.411$ & $0.415$ & $0.423$ \\
+T1 & $0.654$ & $0.815$ & $0.803$ & $0.792$ \\
 \bottomrule
 \end{tabular}
-\caption{Active-subset executor: halt/forced-$e_3$ median wall-clock ratio.}
-\label{tab:wall}
+\caption{Forced exact match by depth, seed-averaged over three seeds per architecture (256 group-balanced examples).}
+\label{tab:depth}
 \end{table}
 
-\section{Cross-Architecture Latent Dynamics}
-\label{app:latent}
-Using a fixed group-balanced 256-sample manifest, we record four-depth free-running latent trajectories for GRU, RNN, LSTM (hidden $h$ and cell $c$ separately) and T1 across three seeds each, and compute state norm $\Vert z_k\Vert/\sqrt d$, update norm, relative update, direction cosine, total displacement, and prediction-change rate (95\% group-cluster bootstrap CIs). Two regimes emerge: bounded gated states (GRU 0.891--0.900, RNN 0.916--0.922, LSTM-$h$ 0.680--0.691) and unbounded accumulators (LSTM-$c$ 5.47--7.86, T1 5.16--5.63); the latter rise monotonically with depth and are not directly comparable in absolute norm. First-refinement dominance (75--92\% of total displacement at $e_1$; prediction flips decay 5--11$\times$) holds where depth 1 saturates; T1 instead shows persistently collinear updates ($\cos\!\approx\!0.95$) and is a different regime. Figure~\ref{fig:latcross} and the released table summarize all metrics. A single-seed Mamba-1-Tiny ($d{=}64$, 149K parameters; e3 EM 0.246 below the 0.30 gate) is reported descriptively only, including its internal SSM state norm, and is excluded from the main table.
+Figure~\ref{fig:depth} and Table~\ref{tab:depth} show what extra depth adds. Forced exact match rises sharply from $e_0$ to $e_1$ and then flattens: seed-averaged within each architecture, the first refinement delivers 94--98\% of the accuracy gain that $e_3$ reaches on GRU, RNN, and LSTM. The three-seed $e_3$ scores are 0.879/0.844/0.891 (GRU), 0.434/0.547/0.480 (RNN), 0.629/0.313/0.328 (LSTM), and 0.871/0.648/0.855 (T1). T1 also reaches its accuracy peak by $e_1$, but its latent state keeps changing; the trajectory analysis will take up that difference.
+
 \begin{figure}[t]
 \centering
-\includegraphics[width=\columnwidth]{figures/crossarch_latent_figure.png}
-\caption{Six latent-dynamics metrics across depth; seed ranges shaded.}
-\label{fig:latcross}
+\includegraphics[width=\columnwidth]{figures/fig_transitions.png}
+\caption{Prediction transitions between adjacent depths, averaged over 12 architecture-seeds.}
+\label{fig:transitions}
 \end{figure}
 
-\section{Zero-Shot Transfer of the Frozen Step-Size Policy}
-\label{app:transfer}
-Freezing GRU $s_0$'s GA policy (weights and feature-normalization statistics) and applying it unchanged to RNN/LSTM/T1 on the same 256 samples gives $4/9$ non-inferior seeds (LCB$_{95}\!\geq\!-0.5$pp; RNN $s_1,s_2$, T1 $s_0,s_1$), $5/9$ inconclusive, and no significant negative (Table~\ref{tab:trans}). The policy's own architecture-level confirmation is $1/3$ (outer fold, 640 samples; $s_2$ passes with LCB $-0.469$pp, $s_0$ fails marginally at $-0.519$pp). Bootstrap endpoints are quantized to $1/256=0.39$pp, so the $-0.5$pp threshold is edge-sensitive; T1 $s_1$'s nominal gain ($+3.52$pp, CI $[+0.39,+6.64]$) does not survive Bonferroni correction over nine tests; architecture-seed counts give no ranking power (Fisher $p=1.0$ for T1 $2/3$ vs.\ LSTM $0/3$). A feature-scale mismatch (GRU $D\!\approx\!0.31$, RNN $\approx\!0.89$, T1 $\approx\!1.75$) is a candidate mechanism whose predicted direction is opposite to the observed ranking, hence unverified.
-\begin{table}[t]
-\centering
-\small
-\begin{tabular}{lccl}
-\toprule
-Target & Seed & $\Delta$ (pp) & 95\% CI (pp) / verdict \\
-\midrule
-RNN & 0 & $-0.39$ & $[-1.17,0.00]$ inconclusive \\
-RNN & 1 & $+1.17$ & $[-0.39,3.12]$ non-inferior \\
-RNN & 2 & $+0.39$ & $[0.00,1.17]$ non-inferior \\
-LSTM & 0 & $-0.78$ & $[-1.95,0.00]$ inconclusive \\
-LSTM & 1 & $+0.78$ & $[-0.78,2.34]$ inconclusive \\
-LSTM & 2 & $-0.39$ & $[-1.17,0.00]$ inconclusive \\
-T1 & 0 & $+2.34$ & $[0.00,4.69]$ non-inferior \\
-T1 & 1 & $+3.52$ & $[0.39,6.64]$ non-inferior \\
-T1 & 2 & $-0.39$ & $[-2.73,1.95]$ inconclusive \\
-\bottomrule
-\end{tabular}
-\caption{Frozen GRU-s0 alpha policy: per-seed EM difference vs.\ forced $e_3$.}
-\label{tab:trans}
-\end{table}
-
-\section{Full Halting Transfer Across Architecture-Seeds}
-\label{app:transfer-full}
-Under the shared 256-sample protocol, the fixed $(0.85,0.90)$ threshold is non-inferior or better on $9$ of $12$ architecture-seeds (GRU $3/3$ bit-exact, LSTM $3/3$ bit-exact, RNN $s_0,s_1$, T1 $s_1$), significantly negative on $2$ (RNN $s_2$: $-1.95$pp $[-3.91,-0.39]$; T1 $s_2$: $-4.69$pp $[-7.81,-1.95]$), and inconclusive on $1$ (T1 $s_0$: $-2.34$pp $[-5.47,+0.78]$). Cell savings of 67--74\% hold throughout, but must be read as loss-free only where the forced-depth curve saturates after $e_1$; LSTM $s_1/s_2$'s bit-exact result rests on weak baselines ($e_3\!\approx\!0.31$--$0.33$) with little headroom to lose. The rule supported by the evidence is conditional: halting preserves accuracy where depth-1 saturation already holds, not universally.
-
-\section{Detailed Result Tables}
-\label{app:tables}
-The main text reports the headline numbers; this appendix collects the full per-seed evidence so that every claim can be checked against the raw artifacts. Table~\ref{tab:halting} gives the per-seed halting results, Table~\ref{tab:frontier} compares the fixed threshold with the cheapest searched policy, and Table~\ref{tab:confirm} records the one-shot confirmation. Under this same outer protocol the fixed threshold is non-inferior on all three GRU seeds, whereas two of the nine evolutionary policies are non-inferior; this is why the main text treats the search gain as small. The feature-group ablations on $s_0$ (Table~\ref{tab:halting} and Figure~\ref{fig:latent}) show a gain of $+0.00$pp for the entropy-only mask B. Tables~\ref{tab:decomp}, \ref{tab:devconfirm}, and \ref{tab:latent} provide the policy decomposition, the development-set check, and the latent dynamics statistics. Figures~\ref{fig:latent} and \ref{fig:traj} show the search curves and the depth trajectories.
+Adjacent-depth transitions explain where that gain comes from. Repairs concentrate in the first refinement: the 12-architecture-seed mean falls from 0.173 at $e_0\!\to\!e_1$ to 0.021 and 0.011 later, while preserved predictions rise from 0.471 to 0.632. Harm stays below 0.02 on average, yet T1 shows a higher rate in its later steps (0.043 at $e_1\!\to\!e_2$), so the safety of further refinement is not uniform. Unresolved predictions remain near 0.35 throughout and reach 0.59 on LSTM, the part of the input that extra depth could in principle help but does not.
 
 \begin{table}[t]
 \centering
@@ -272,11 +188,20 @@ Seed & Policy & $\Delta$EM (pp) & 95\% CI (pp) & $N_{\mathrm{cell}}$ & NI \\
  & CMA-ES & $+2.02$ & $[0.00, 6.95]$ & 0.5100 & \checkmark \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Confidence halting retains exact-match accuracy at a fraction of the executed compute.} Held-out fold ($n{=}645$ per seed), relative to each seed's frozen best fixed depth ($e_3$ for seeds 0--1, $e_1$ for seed 2). NI denotes non-inferiority, decided by the preregistered rule LCB$_{95\%}(\Delta\mathrm{EM}) \geq -0.5$pp, \emph{not} by point estimates; CMA-ES denotes sep-CMA-ES. The threshold policy is non-inferior on all three seeds; only 2 of 9 evolutionary policies pass, although 7 of 9 satisfy the point-estimate margin.}
+\caption{\textbf{Confidence halting retains exact-match accuracy at a fraction of the executed compute.} Held-out fold ($n{=}645$ per seed), relative to each seed's frozen best fixed depth ($e_3$ for seeds 0--1, $e_1$ for seed 2). NI denotes non-inferiority, decided by the preregistered rule LCB$_{95\%}(\Delta\mathrm{EM}) \geq -0.5$pp, \emph{not} by point estimates; CMA-ES denotes sep-CMA-ES. The threshold policy is non-inferior on all three seeds; only 2 of 9 evolutionary policies pass, although 8 of 9 satisfy the point-estimate margin.}
 \label{tab:halting}
 \end{table}
 
-\begin{table}[t]
+Threshold halting preserves exact-match accuracy while cutting executed calls. Table~\ref{tab:halting} gives the per-seed results relative to each seed's best fixed depth. On the frozen GRU the threshold reproduces the deepest baseline bit-for-bit at 25.7\% of its calls on two seeds; on the third it beats the shallower $e_1$ baseline by 1.86pp at 52.1\% of that baseline's calls, a non-significant gain whose 95\% interval spans zero. Across four architectures the rule is non-inferior or better on 9 of 12 seeds, significantly worse on two (RNN $s_2$, T1 $s_2$), and inconclusive on one (T1 $s_0$). The non-inferiority decision follows the preregistered lower-bound rule, not point estimates: eight of the nine evolutionary policies clear the point-estimate margin, but only two clear the interval bound.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig1_p2r1_pareto.png}
+\caption{Exact-match difference against executed-call ratio for the threshold and equal-budget searched policies on three GRU seeds.}
+\label{fig:frontier}
+\end{figure}
+
+Figure~\ref{fig:frontier} places the threshold on the accuracy--compute frontier. The cheapest policy the optimizers find removes at most 2.1\% more calls than the threshold, and on seeds 0 and 1 it fails the non-inferiority bound that the threshold passes. \begin{table}[t]
 \centering
 \footnotesize
 \setlength{\tabcolsep}{2.5pt}
@@ -298,27 +223,112 @@ $s_2$ & threshold & $+1.86$ & 0.5212 & --- & \checkmark \\
 }
 \caption{\textbf{The threshold already sits on the accuracy--compute frontier.} For each seed we contrast the preregistered threshold with the cheapest policy the equal-budget optimizers found. The searched policies buy at most 2.1\% more saving than the threshold and, on seeds 0--1, do not pass the non-inferiority bound that the threshold passes. NI denotes the preregistered rule LCB$_{95\%}(\Delta\mathrm{EM}) \geq -0.5$pp; extra saving is the compute the searched policy removes beyond the threshold, relative to the threshold's own saving. Full policy list in Table~\ref{tab:halting}.}
 \label{tab:frontier}
+\end{table} Runtime hooks close the accounting loop: under forced $e_0$ the instrumented decoder triggers zero refinement calls on all 52{,}458 generated tokens of the three recurrent models, and the counted calls match the intercepted calls in all 12 settings. Table~\ref{tab:wall} turns the call reduction into wall-clock time. The active-subset executor gives halt-to-forced-$e_3$ ratios of 0.43--0.64 across batch sizes 1, 4, 8, and 32; a separate per-sample T1 executor gives 0.297. These time ratios exceed the call ratios because base steps, attention, output projection, gating, and per-step Python work are paid by both arms and are excluded from $N_{\mathrm{cell}}$. The two executors are reported side by side, never combined.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+Model & $b{=}1$ & $b{=}4$ & $b{=}8$ & $b{=}32$ \\
+\midrule
+GRU & 0.439 & 0.440 & 0.484 & 0.577 \\
+RNN & 0.452 & 0.468 & 0.555 & 0.640 \\
+LSTM & 0.430 & 0.471 & 0.538 & 0.611 \\
+\bottomrule
+\end{tabular}
+\caption{Active-subset executor: halt/forced-$e_3$ median wall-clock ratio.}
+\label{tab:wall}
+\end{table}
+
+The second line of results turns from when to stop to what a refinement changes. Figure~\ref{fig:latcross} and Table~\ref{tab:latstat} summarize six trajectory metrics recorded under free-running greedy decoding on the 256-sample manifest. Two regimes separate. Bounded gated states, the GRU, RNN, and LSTM hidden state, stay between 0.68 and 0.96 in normalized norm and shrink their updates with depth; the first refinement carries 75--92\% of their total displacement. Unbounded accumulators, the LSTM cell state and T1, occupy a different scale around 5 to 8 and keep changing. The sharpest separation is directional: at $e_2$ the bounded group has update cosine 0.07--0.39, whereas T1 reaches 0.95. Prediction-change rates decline with depth in every architecture. These are within-model descriptors; absolute norms are not comparable across models, and the two regimes are not a quality ranking. The single-seed Mamba probe is described separately and stays out of the four-architecture statistics.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/crossarch_latent_figure.png}
+\caption{Six latent-dynamics metrics across depth; seed ranges shaded.}
+\label{fig:latcross}
+\end{figure}
+\begin{table}[t]
+\centering\footnotesize
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Arch & norm $e_0$ & upd $e_1$ & cos $e_2$ & $\Delta y$ $e_3$ \\
+\midrule
+GRU & 0.89 & 0.70 & 0.20 & 0.0005 \\
+RNN & 0.92 & 0.87 & 0.09 & 0.0042 \\
+LSTM & 0.69 & 0.48 & 0.38 & 0.0041 \\
+T1 & 5.38 & 1.79 & 0.95 & 0.0027 \\
+\bottomrule
+\end{tabular}
+\caption{Seed means of four latent summaries (3 seeds, 256 samples). Norm is $\lVert z_k\rVert/\sqrt d$; full depth-wise intervals are in the released table.}
+\label{tab:latstat}
+\end{table}
+
+The third line asks whether the update itself can be improved. Table~\ref{tab:optagg} aggregates 45 equal-budget searches across five optimizers. Every algorithm has a median gain of $+0.52$pp, one sample of the 192-example inner subset, and mean gains range from $+0.41$pp for sep-CMA-ES to $+0.81$pp for GA and DE. The baseline has a standard deviation of 2.4pp across model seeds, several times the search effect, and the single $+2.08$pp run is an outlier. Random search is competitive and no single optimizer wins consistently. Figure~\ref{fig:optcurves} shows the best-so-far gain of each run over its own baseline. The input ablations show that a time-only policy and a dynamics-only policy each reproduce the full GA gain on $s_0$, whereas an entropy-only policy does not, so the gain cannot be attributed uniquely to a schedule or to the input dynamics. \begin{table}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{1.5pt}
+\begin{tabular}{lcccc|ccc}
+\toprule
+& \multicolumn{4}{c|}{Search (inner EM gain, pp)} & \multicolumn{3}{c}{Ablation (GA, $s_0$)} \\
+Seed & RS & GA & DE & CMA & A: $k/K$ & B: $H$ & C: $D,A$ \\
+\midrule
+$s_0$ & $+0.00$ & $+0.52$ & $+0.52$ & $+0.00$ & $+0.52$ & $+0.00$ & $+0.52$ \\
+$s_1$ & $+1.04$ & $+1.56$ & $+1.04$ & $+2.08$ & n/a & n/a & n/a \\
+$s_2$ & $+0.52$ & $+0.52$ & $+1.04$ & $+0.00$ & n/a & n/a & n/a \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Step-size policies improve fixed-depth exact match at constant compute.} Fixed-depth (constant $N_{\mathrm{cell}}$) improvements over the original $\alpha{\approx}1$ update on the inner subset ($n{=}192$); all searches use exactly 336 evaluations, and CMA denotes sep-CMA-ES. A hand-designed linearly decaying schedule ($\alpha_k = 1.0-0.5k/K$, i.e., $[1.0, 0.833, 0.667]$ at depth 3) and fixed $\alpha \in \{0.75, 0.5, 0.25\}$ never exceed the $\alpha{\approx}1$ baseline. Ablations on $s_0$ restrict the policy input to a single feature group; the full-feature GA result corresponds to the GA column.}
+\label{tab:latent}
 \end{table}
 
 \begin{table}[t]
 \centering
 \footnotesize
-\setlength{\tabcolsep}{2.5pt}
-\resizebox{\linewidth}{!}{%
-\begin{tabular}{lccccc}
+\begin{tabular}{@{}lcccc@{}}
 \toprule
-Seed & J1 $\Delta$EM & J4 $\Delta$EM & flips & gates & step size \\
+Algorithm & Mean (pp) & Median (pp) & Std (pp) & Win \\
 \midrule
-$s_0$ & $+0.00$ & $+0.00$ & 0 / 0 & $+0.00$ & $+0.00$ \\
-$s_1$ & $+0.00$ & $-0.31$ & 0 / 2 & $-0.31$ & $+0.00$ \\
-$s_2$ & $+1.86$ & $-0.16$ & 1 / 14 & $-2.02$ & $+0.00$ \\
+RS & $+0.64$ & $+0.52$ & 0.63 & 67\% \\
+GA & $+0.81$ & $+0.52$ & 0.64 & 89\% \\
+MGA & $+0.46$ & $+0.52$ & 0.17 & 89\% \\
+DE & $+0.81$ & $+0.52$ & 0.53 & 89\% \\
+sepCMA & $+0.41$ & $+0.52$ & 0.35 & 67\% \\
 \bottomrule
-\end{tabular}%
-}
-\caption{\textbf{Where the joint policy loses.} Held-out fold ($n{=}645$ per seed); J1 is the threshold policy and J4 the jointly tuned policy, with $\Delta$EM in percentage points against each seed's frozen best fixed depth (Table~\ref{tab:confirm}). The last two columns split the J4--J1 gap into the share carried by the searched halting gates and the share carried by the searched step sizes, measured by re-decoding J4 with $\alpha{=}1$; flips count the sequences whose EM changes between J1 and J4, as repair/harm.}
-\label{tab:decomp}
+\end{tabular}
+\caption{Forty-five-search aggregation; gain in pp vs.\ $\alpha\!\equiv\!1$ on the 192-example inner subset.}
+\label{tab:optagg}
 \end{table}
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/optimizer_curves.png}
+\caption{Best-so-far gain over each run's own baseline (means of nine runs).}
+\label{fig:optcurves}
+\end{figure}
 
+The selected policy is frozen before any outer evaluation. On the GRU's own outer fold, one of three seeds meets the non-inferiority bound; of the other two, one fails marginally and one clearly fails. Moving that single frozen GRU policy to RNN, LSTM, and T1 gives four non-inferior seeds out of nine, five inconclusive, and no significant loss, as Table~\ref{tab:trans} details. A separate frozen threshold policy evaluated once on the untouched COGS development set reproduces the held-out compute ratios for two seeds and differs by 0.003 on the third. Table~\ref{tab:confirm} separates gains that survive confirmation from gains seen only on the inner subset.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lccl}
+\toprule
+Target & Seed & $\Delta$ (pp) & 95\% CI (pp) / verdict \\
+\midrule
+RNN & 0 & $-0.39$ & $[-1.17,0.00]$ inconclusive \\
+RNN & 1 & $+1.17$ & $[-0.39,3.12]$ non-inferior \\
+RNN & 2 & $+0.39$ & $[0.00,1.17]$ non-inferior \\
+LSTM & 0 & $-0.78$ & $[-1.95,0.00]$ inconclusive \\
+LSTM & 1 & $+0.78$ & $[-0.78,2.34]$ inconclusive \\
+LSTM & 2 & $-0.39$ & $[-1.17,0.00]$ inconclusive \\
+T1 & 0 & $+2.34$ & $[0.00,4.69]$ non-inferior \\
+T1 & 1 & $+3.52$ & $[0.39,6.64]$ non-inferior \\
+T1 & 2 & $-0.39$ & $[-2.73,1.95]$ inconclusive \\
+\bottomrule
+\end{tabular}
+\caption{Frozen GRU-s0 alpha policy: per-seed EM difference vs.\ forced $e_3$.}
+\label{tab:trans}
+\end{table}
 \begin{table}[t]
 \centering
 \footnotesize
@@ -336,6 +346,8 @@ $s_2$ & $+1.86$ & 0.5212 & $-0.16$ & $[-0.6, 0.0]$ & $\times$ \\
 \caption{\textbf{One-shot confirmation separates retained gains from inner-subset gains.} Held-out fold ($n{=}645$ per seed); NI denotes non-inferiority; CIs are 95\% group-cluster bootstrap intervals of $\Delta$EM (pp) vs.\ the frozen-depth baseline (20{,}000 resamples). J1 passes non-inferiority on all seeds, on $s_2$ only marginally, with 95\% CI $[-0.50, +7.43]$pp, i.e., an LCB of $-0.4975$pp, only 0.0025pp above the bound. The best joint EC policy (selected by inner fitness) fails on $s_1$ and $s_2$, losing on $s_2$ the entire EM gain of the threshold policy (paired $\Delta$EM $-2.02$pp vs.\ J1).}
 \label{tab:confirm}
 \end{table}
+
+Several results limit these claims. Mamba-1-Tiny does not pass the pre-set 0.30 EM gate on the 256-sample evaluation and is reported as a single-seed probe. Threshold halting loses accuracy on RNN $s_2$ and T1 $s_2$, where the depth curve has not saturated. The evolved policy transfers to only part of the target seeds, and the outer confirmation passes on one of three. These cases appear alongside the positive results because they mark the conditions under which recursive control is safe. Table~\ref{tab:devconfirm} gives the one-shot development-set check that closes the evaluation.
 
 \begin{table}[t]
 \centering
@@ -356,23 +368,83 @@ $s_2$ / $e_1$ & 96.77 & 96.97 & $+0.20$ & $[-0.10, +0.51]$ & 0.5182 & \checkmark
 \label{tab:devconfirm}
 \end{table}
 
+\section{Conclusion}
+\label{sec:conclusion}
+The benefit of recursion is not spread evenly across depths. On several seeds the model has already settled after the first refinement, and later steps change little; a causal threshold removes those steps without losing accuracy on most architecture-seeds. Two seeds still lose accuracy under that same fixed threshold, so the saving depends on where each depth curve saturates.
+
+Latent trajectories explain the split. Bounded gated states shrink their updates after the first refinement, whereas unbounded states keep accumulating along a consistent direction. The first-refinement pattern therefore belongs to the bounded regime, not to recursive models in general, and absolute state norms should not be read as a ranking.
+
+Evolutionary search moves the fixed step size only slightly: the median gain is one sample of the 192-example inner subset across 45 searches, and no single optimizer wins consistently. The selected step-size policy passes outer confirmation on one of three seeds, and the same frozen policy is non-inferior on four of nine transfers. These gains do not become reliable cross-architecture improvements; we treat this gap as a substantive limit of the approach.
+
+TRACER is one way to work with recursive computation: trace predictions and states, decide whether to spend another step, and test how far a tuned update travels. More depth is not always more accuracy; knowing when an extra step helps, and whether a control rule still holds on a new model, matters just as much. Taken together, the three lines serve one goal: we trace recursive states to understand when depth helps, halt computation to avoid redundant refinement, and evolve update policies to test how far a policy carries, recording where each rule holds and where it fails.
+
+\section*{Limitations}
+Limited computing resources kept the models small and the number of architectures and seeds modest. The primary task is a single semantic parsing dataset (COGS), and the observed patterns should not be assumed to carry to large language models or broader reasoning workloads. Because attention type and parameter count also vary across the four architectures, these comparisons describe behavioral variants under one task rather than controlled ablations of the recurrent cell. Experiments ran on CPU with a fixed two-thread setting, so the wall-clock numbers describe this setting rather than large-scale GPU serving or much deeper recursion; whether the latent dynamics and control rules persist in those regimes remains open.
+
+\bibliography{references}
+
+\appendix
+\section{Equal-Budget Search Across Five Optimizers}
+\label{app:search}
+Across $3$ model seeds $\times$ $5$ algorithms (RS, GA, MGA, DE, sep-CMA-ES) $\times$ $3$ optimizer seeds $=45$ searches, each with a budget of $336$ candidate evaluations, gains are small and quantized to the inner subset's $1/192=0.52$pp. Table~\ref{tab:optagg} aggregates over the $9$ runs per algorithm. Every algorithm's median is $+0.52$pp; the mean ranges from $+0.41$pp (sepCMA) to $+0.81$pp (GA, DE), and win rates are 67--89\%. The single $+2.08$pp run is an outlier, not evidence of an algorithm ranking. Baseline EM varies by $2.4$pp across model seeds, several times the search effect. With three optimizer seeds per cell this is a finite-budget comparison, not a general optimizer study. Figure~\ref{fig:optcurves} shows best-so-far gain over each run's own baseline (pooling raw EM across different baselines would be misleading).
+
+
+
+\section{Executed-Call Audit of the Active-Subset Executor}
+\label{app:runtime}
+To verify that $N_{\mathrm{cell}}$ reflects executed work rather than a predicted-exit label, we implemented a forward-hook-instrumented decoder in which \emph{both} the base and refinement cells run only on active/continuing rows. Across GRU, Vanilla RNN and LSTM $\times$ \{forced $e_0$, forced $e_1$, forced $e_3$, threshold $(0.85,0.90)$\} $=12$ settings on the 256-sample manifest, per-sample tokens, $N_{\mathrm{cell}}$ and depth histograms match the reference decoder exactly ($12/12$). The hooks satisfy $\sum \mathrm{base\_rows}=\sum n_{\mathrm{gen}}$ and $\sum \mathrm{refine\_rows}=\sum N_{\mathrm{cell}}-\sum \mathrm{base\_rows}$ in all $24$ checks. Under forced $e_0$, all $52{,}458$ generated tokens across the three models trigger zero refinement calls. Hence $N_{\mathrm{cell}}$ is the actual row-wise call count of an output-equivalent implementation.
+
+\section{Wall-Clock Benchmarks and Executor Semantics}
+\label{app:wallbench}
+Table~\ref{tab:wall} reports the active-subset executor's halt/forced-$e_3$ wall-clock ratios ($b{=}1$: 16 manifest samples; $b{=}4/8/32$: 64; 2 warmup + 10 interleaved passes; two CPU threads; no hooks). The 12 halt-versus-forced latency distributions are disjoint. The gap between the $\approx$0.26 call ratio and the 0.43--0.64 time ratio is shared overhead (base step, attention, output projection, gating, per-step Python work) of $\approx$2.1--2.3 refinement-equivalents at small batch, paid by both arms. Ratios approach one as batch grows because batched refinements are cheaper per call and gather/full-buffer costs scale with batch. A separate per-sample T1 executor gives halt/e3 $=0.297$ on the same 16 samples; its T1 forced-depth pay-max batch scaling is $\times2.39/\times3.44/\times4.28$ at $b{=}4/8/32$, which is \emph{not} a halt/e3 ratio and must not be multiplied with it. Absolute latency is not comparable across batches (different $N$) or executors.
+
+
+\section{Cross-Architecture Latent Dynamics}
+\label{app:latent}
+Using a fixed group-balanced 256-sample manifest, we record four-depth free-running latent trajectories for GRU, RNN, LSTM (hidden $h$ and cell $c$ separately) and T1 across three seeds each, and compute state norm $\Vert z_k\Vert/\sqrt d$, update norm, relative update, direction cosine, total displacement, and prediction-change rate (95\% group-cluster bootstrap CIs). Two regimes emerge: bounded gated states (GRU 0.891--0.900, RNN 0.916--0.922, LSTM-$h$ 0.680--0.691) and unbounded accumulators (LSTM-$c$ 5.47--7.86, T1 5.16--5.63); the latter rise monotonically with depth and are not directly comparable in absolute norm. First-refinement dominance (75--92\% of total displacement at $e_1$; prediction flips decay 5--11$\times$) holds where depth 1 saturates; T1 instead shows persistently collinear updates ($\cos\!\approx\!0.95$) and is a different regime. Figure~\ref{fig:latcross} and the released table summarize all metrics. A single-seed Mamba-1-Tiny ($d{=}64$, 149K parameters; e3 EM 0.246 below the 0.30 gate) is reported descriptively only, including its internal SSM state norm, and is excluded from the main table.
+
+
+\section{Zero-Shot Transfer of the Frozen Step-Size Policy}
+\label{app:transfer}
+Freezing GRU $s_0$'s GA policy (weights and feature-normalization statistics) and applying it unchanged to RNN/LSTM/T1 on the same 256 samples gives $4/9$ non-inferior seeds (LCB$_{95}\!\geq\!-0.5$pp; RNN $s_1,s_2$, T1 $s_0,s_1$), $5/9$ inconclusive, and no significant negative (Table~\ref{tab:trans}). The policy's own architecture-level confirmation is $1/3$ (outer fold, 640 samples; $s_2$ passes with LCB $-0.469$pp, $s_0$ fails marginally at $-0.519$pp). Bootstrap endpoints are quantized to $1/256=0.39$pp, so the $-0.5$pp threshold is edge-sensitive; T1 $s_1$'s nominal gain ($+3.52$pp, CI $[+0.39,+6.64]$) does not survive Bonferroni correction over nine tests; architecture-seed counts give no ranking power (Fisher $p=1.0$ for T1 $2/3$ vs.\ LSTM $0/3$). A feature-scale mismatch (GRU $D\!\approx\!0.31$, RNN $\approx\!0.89$, T1 $\approx\!1.75$) is a candidate mechanism whose predicted direction is opposite to the observed ranking, hence unverified.
+
+
+\section{Full Halting Transfer Across Architecture-Seeds}
+\label{app:transfer-full}
+Under the shared 256-sample protocol, the fixed $(0.85,0.90)$ threshold is non-inferior or better on $9$ of $12$ architecture-seeds (GRU $3/3$ bit-exact, LSTM $3/3$ bit-exact, RNN $s_0,s_1$, T1 $s_1$), significantly negative on $2$ (RNN $s_2$: $-1.95$pp $[-3.91,-0.39]$; T1 $s_2$: $-4.69$pp $[-7.81,-1.95]$), and inconclusive on $1$ (T1 $s_0$: $-2.34$pp $[-5.47,+0.78]$). Cell savings of 67--74\% hold throughout, but must be read as loss-free only where the forced-depth curve saturates after $e_1$; LSTM $s_1/s_2$'s bit-exact result rests on weak baselines ($e_3\!\approx\!0.31$--$0.33$) with little headroom to lose. The rule supported by the evidence is conditional: halting preserves accuracy where depth-1 saturation already holds, not universally.
+
+\section{Detailed Result Tables}
+\label{app:tables}
+The main text reports the headline numbers; this appendix collects the full per-seed evidence so that every claim can be checked against the raw artifacts. Table~\ref{tab:halting} gives the per-seed halting results, Table~\ref{tab:frontier} compares the fixed threshold with the cheapest searched policy, and Table~\ref{tab:confirm} records the one-shot confirmation. Under this same outer protocol the fixed threshold is non-inferior on all three GRU seeds, whereas two of the nine evolutionary policies are non-inferior; this is why the main text treats the search gain as small. The feature-group ablations on $s_0$ (Table~\ref{tab:halting} and Figure~\ref{fig:latent}) show a gain of $+0.00$pp for the entropy-only mask B. Tables~\ref{tab:decomp}, \ref{tab:devconfirm}, and \ref{tab:latent} provide the policy decomposition, the development-set check, and the latent dynamics statistics. Figures~\ref{fig:latent} and \ref{fig:traj} show the search curves and the depth trajectories.
+
+
+
+
+
 \begin{table}[t]
 \centering
 \footnotesize
-\setlength{\tabcolsep}{1.5pt}
-\begin{tabular}{lcccc|ccc}
+\setlength{\tabcolsep}{2.5pt}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lccccc}
 \toprule
-& \multicolumn{4}{c|}{Search (inner EM gain, pp)} & \multicolumn{3}{c}{Ablation (GA, $s_0$)} \\
-Seed & RS & GA & DE & CMA & A: $k/K$ & B: $H$ & C: $D,A$ \\
+Seed & J1 $\Delta$EM & J4 $\Delta$EM & flips & gates & step size \\
 \midrule
-$s_0$ & $+0.00$ & $+0.52$ & $+0.52$ & $+0.00$ & $+0.52$ & $+0.00$ & $+0.52$ \\
-$s_1$ & $+1.04$ & $+1.56$ & $+1.04$ & $+2.08$ & n/a & n/a & n/a \\
-$s_2$ & $+0.52$ & $+0.52$ & $+1.04$ & $+0.00$ & n/a & n/a & n/a \\
+$s_0$ & $+0.00$ & $+0.00$ & 0 / 0 & $+0.00$ & $+0.00$ \\
+$s_1$ & $+0.00$ & $-0.31$ & 0 / 2 & $-0.31$ & $+0.00$ \\
+$s_2$ & $+1.86$ & $-0.16$ & 1 / 14 & $-2.02$ & $+0.00$ \\
 \bottomrule
-\end{tabular}
-\caption{\textbf{Step-size policies improve fixed-depth exact match at constant compute.} Fixed-depth (constant $N_{\mathrm{cell}}$) improvements over the original $\alpha{\approx}1$ update on the inner subset ($n{=}192$); all searches use exactly 336 evaluations, and CMA denotes sep-CMA-ES. A hand-designed linearly decaying schedule ($\alpha_k = 1.0-0.5k/K$, i.e., $[1.0, 0.833, 0.667]$ at depth 3) and fixed $\alpha \in \{0.75, 0.5, 0.25\}$ never exceed the $\alpha{\approx}1$ baseline. Ablations on $s_0$ restrict the policy input to a single feature group; the full-feature GA result corresponds to the GA column.}
-\label{tab:latent}
+\end{tabular}%
+}
+\caption{\textbf{Where the joint policy loses.} Held-out fold ($n{=}645$ per seed); J1 is the threshold policy and J4 the jointly tuned policy, with $\Delta$EM in percentage points against each seed's frozen best fixed depth (Table~\ref{tab:confirm}). The last two columns split the J4--J1 gap into the share carried by the searched halting gates and the share carried by the searched step sizes, measured by re-decoding J4 with $\alpha{=}1$; flips count the sequences whose EM changes between J1 and J4, as repair/harm.}
+\label{tab:decomp}
 \end{table}
+
+
+
+
+
+
 
 \begin{figure}[tb]
 \centering

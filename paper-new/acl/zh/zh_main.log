@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (MiKTeX 25.12) (preloaded format=xelatex 2026.11.2)  22 NOV 2026 13:10
+This is XeTeX, Version 3.141592653-2.6-0.999997 (MiKTeX 25.12) (preloaded format=xelatex 2026.11.2)  22 NOV 2026 14:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1345,16 +1345,29 @@ Overfull \hbox (34.54077pt too wide) in paragraph at lines 331--331
  []
 
 LaTeX Font Info:    Calculating math sizes for size <5.1> on input line 331.
-[2] [3] [4] [5] [6] [7] [8] [9] [10]
+[2] [3] [4] [5] [6]
+File: ../figures/fig_depth.png Graphic file (type bmp)
+<../figures/fig_depth.png>
+File: ../figures/fig_transitions.png Graphic file (type bmp)
+<../figures/fig_transitions.png>
+ [7] [8]
+File: ../figures/fig1_p2r1_pareto.png Graphic file (type bmp)
+<../figures/fig1_p2r1_pareto.png>
+ [9]
+File: ../figures/crossarch_latent_figure.png Graphic file (type bmp)
+<../figures/crossarch_latent_figure.png>
+ [10]
+File: ../figures/optimizer_curves.png Graphic file (type bmp)
+<../figures/optimizer_curves.png>
+ [11] [12] [13] [14]
 File: ../figures/fig2_p3r1_fixed_depth.png Graphic file (type bmp)
 <../figures/fig2_p3r1_fixed_depth.png>
- [11]
+ [15]
 File: ../figures/fig4_p3r0_trajectory.png Graphic file (type bmp)
 <../figures/fig4_p3r0_trajectory.png>
 File: ../figures/fig3_p3r3_confirm.png Graphic file (type bmp)
 <../figures/fig3_p3r3_confirm.png>
- [12] (zh_main.bbl [13]) [14]
-(zh_main.aux)
+ [16] (zh_main.bbl [17]) [18] (zh_main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026/08/11>
@@ -1364,15 +1377,15 @@ L3 programming layer <2026/08/11>
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 Package rerunfilecheck Info: File `zh_main.out' has not changed.
-(rerunfilecheck)             Checksum: 014B39CE92C83FB67F1CDE2A493B3241;1466.
+(rerunfilecheck)             Checksum: 913A82723BB0B70209F12BBCF9E1D567;754.
  ) 
 Here is how much of TeX's memory you used:
- 29908 strings out of 402987
- 654867 string characters out of 5452250
- 1165484 words of memory out of 5000000
- 58101 multiletter control sequences out of 15000+600000
+ 30016 strings out of 402987
+ 659482 string characters out of 5452250
+ 1166213 words of memory out of 5000000
+ 58204 multiletter control sequences out of 15000+600000
  676806 words of font info for 323 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  93i,16n,111p,565b,1661s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on zh_main.pdf (14 pages).
+Output written on zh_main.pdf (18 pages).
