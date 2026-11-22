@@ -1,55 +1,39 @@
 # TRACER 论文修改报告（当前版本）
 
 目标文件：`paper-new/acl/main.tex`（英文主稿）、`paper-new/acl/zh/zh_main.tex`（中文全译）。
-论文标题：**TRACER: Token-level Recursive Analysis, Control, and Evolutionary Refinement for Sequence Models**。
+标题：**TRACER: Token-level Recursive Analysis, Control, and Evolutionary Refinement for Sequence Models**。
 
-本报告取代旧版 `report.md`（其内容针对前稿 "Causal Confidence Halting for Frozen Recursive Sequence Models"，仅作历史记录）。
+本报告取代旧 `report.md`（旧稿标题为 "Causal Confidence Halting for Frozen Recursive Sequence Models"）。
 
-## 一、章节结构
+## 一、章节结构（已逐项验证）
 
-| 章节 | 内容 |
-|---|---|
-| 1 Introduction | 三段，无子标题 |
-| 2 Related Work | 五段：递归/循环计算、动态深度与早退、迭代精化、潜状态动力学、无导数搜索 |
-| 3 Method | 八段连续叙述 |
-| 4 Experiments | 仅 4.1 Dataset、4.2 Environment、4.3 Design |
-| **5 Results and Analysis** | **独立第五章，无 subsection，按三条主线用连续段落展开** |
-| 6 Conclusion / 7 Limitations | 结论四段；局限性一个自然段 |
-| References / Appendix | 参考文献；完整逐种子证据与补充实验 |
+1 Introduction（3 段）→ 2 Related Work（5 段）→ 3 Method → 4 Experiments（仅 4.1 Dataset / 4.2 Environment / 4.3 Design）→ **5 Results and Analysis（独立章，无 subsection）** → 6 Conclusion → 7 Limitations（单段）→ References → Appendix。
 
-## 二、已移入第五章正文的图表（正文共 5 图 + 11 表）
+中英文两版结构一致；第五章均无 `\subsection`。
 
-- 图 `fig:depth`：四架构×3 seed 的 e0–e3 强制准确率曲线（由 stage2 eval JSON 生成）
-- 图 `fig:transitions`：相邻深度四类转移率（由 seq_transitions JSON 生成）
-- 图 `fig:frontier`：阈值与等预算搜索策略的准确率—计算前沿
-- 图 `fig:latcross`：跨架构六项潜状态指标曲线
-- 图 `fig:optcurves`：五算法 336 预算下的 best-so-far 增益曲线
-- 表 `tab:depth`、`tab:halt12`（12 架构—种子停算，含 EM/ΔEM/CI/NI）、`tab:halting`、`tab:frontier`、`tab:wall`、`tab:latstat`、`tab:opt5`（RS/GA/MGA/DE/sep-CMA-ES 五算法）、`tab:alpha_confirm`（外层 1/3）、`tab:trans`（迁移 4/9）、`tab:confirm`、`tab:devconfirm`
+## 二、已移入第五章正文的图表（中英一致：5 图 + 11 表）
 
-附录保留完整逐种子证据、历史四算法表（`tab:latent_hist`，明确标注已被 `tab:opt5` 取代）、hook 审计、墙钟协议与更长配置表。
+图：`fig:framework`（总体框架，Method）、`fig:depth`、`fig:transitions`、`fig:frontier`、`fig:latcross`、`fig:optcurves`。
+表：`tab:depth`、`tab:halt12`、`tab:halting`、`tab:frontier`、`tab:wall`、`tab:latstat`、`tab:opt5`、`tab:alpha_confirm`、`tab:trans`、`tab:confirm`、`tab:devconfirm`。
 
-## 三、数据口径与结果纪律
+- `tab:halt12`：12 架构—种子停算结果，列含 forced-$e_3$ EM、halt EM、ΔEM、95% CI、**$N_{\mathrm{cell}}$ 比例**、NI 判定，区分显著负（×）与不确定（?）。
+- `tab:wall`：caption 明列批大小、样本数（b=1:16；b=4/8/32:64）、两线程、执行器类型，并声明 T1 逐样本执行器（0.297）为独立测量。
+- `tab:latstat`：四种子 0 的均值与 95% 组簇自助区间；三 seed 范围在 `fig:latcross` 中以阴影给出。
+- 附录保留完整逐种子证据、hook 审计、墙钟协议，以及旧四算法历史表（`tab:latent_hist`，明确标注被 `tab:opt5` 取代）。
 
-- 45 次搜索 = 3 模型种子 × 5 算法 × 3 优化器种子，每次 336 评估；MGA 作为独立算法列入正文表 `tab:opt5`。
-- 192 样本内层子集上 1 个样本 = 0.52pp，为收益分辨率下限。
-- 外层确认 1/3（seed 0 LCB −0.519pp，差 0.019pp 未过界）；迁移 4/9 非劣、5/9 不确定、0 显著负。
-- 停算 9/12 非劣或更优、2 显著负（RNN s2、T1 s2）、1 不确定（T1 s0）；52,458 tokens 零 refinement call；GRU/RNN/LSTM 墙钟比 0.43–0.64，T1 逐样本执行器 0.297，两者不合并。
-- latent 六指标按组 bootstrap；有界态与无界态分开描述，绝对范数不排名；Mamba 单 seed（e3=0.246，未过 0.30 门槛）仅作边界性负结果。
-- T1 s2 的 e3 以原始 JSON 0.85546875 为准，正文统一写作 0.856（三位小数四舍五入）。
+## 三、数据口径
+
+- 45 搜索 = 3 模型种子 × 5 算法（含 **MGA**）× 3 优化器种子，各 336 次评估；192 样本子集 1 样本 = 0.52pp。
+- GRU 外层确认 1/3（seed 0 LCB −0.519pp，差 0.019pp 未过界）；迁移 4/9 非劣、5 不确定、0 显著负。
+- 停算 9/12 非劣、2 显著负（RNN s2、T1 s2）、1 不确定（T1 s0）；hook：52,458 tokens 零 refinement call、12/12 设置一致。
+- 墙钟：GRU/RNN/LSTM active-subset 0.43–0.64；T1 逐样本执行器 0.297；不合并。
+- latent：六指标、256 样本、3 seed、组簇 bootstrap；有界态与无界累积态分开，绝对范数不排名；Mamba 单 seed（e3=0.246，未过 0.30）仅作边界负结果。
+- T1 s2 的 e3 按原始 JSON 为 0.856（三位小数）。
 
 ## 四、参考文献
 
-- `references.bib` 共 **128** 条（含用户提供的 77 篇候选池与 subagent 联网核验条目）；编译后 `main.bbl` 含 **62** 条，即正文实际使用 **62 个唯一引用键**（目标 ≥60）。
-- 区分同行评审论文（`@inproceedings`/`@article`，含 DOI 或 ACL Anthology/官方 proceedings 链接）与 arXiv 预印本（`@misc` + `archivePrefix` + `eprint`）。
-- 引用嵌入 Introduction（3 段以内）、Related Work（5 段）、Dataset，按论点分组，未堆砌到单句。
+`references.bib` 共 128 条（含用户 77 篇候选池全部纳入）；`main.bbl` 实际引用 **62 个唯一键**（≥60）。同行评审条目含 DOI/官方链接，arXiv 预印本用 `@misc`+`eprint` 明确标注。引用嵌入引言（仍 3 段）、Related Work（5 段）与 Dataset，按论点分组。
 
-## 五、交付前检查
+## 五、验证
 
-- 英文：`pdflatex ×2 + bibtex`，14 页，无 undefined citation、无 undefined reference、无 overfull。
-- 中文：`xelatex + bibtex + xelatex ×2`，24 页，无 undefined。
-- `manuscript_consistency_audit.py`：**170 checks, 0 FAIL**。
-- 中文版已同步全部结构、图表、数据与引用。
-
-## 六、历史实验口径
-
-J1/J4 联合控制、645 样本 fold 与 256 样本跨架构协议、192 样本内层与 640 样本外层属于不同实验批次，正文明确区分，未合并统计；旧四算法表仅以历史补充形式置于附录。
+英文 14 页、中文 24 页，均无 undefined citation/reference、无 overfull；`manuscript_consistency_audit.py`：170 checks, 0 FAIL。

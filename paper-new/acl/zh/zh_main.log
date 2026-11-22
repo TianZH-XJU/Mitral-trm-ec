@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (MiKTeX 25.12) (preloaded format=xelatex 2026.11.2)  22 NOV 2026 18:10
+This is XeTeX, Version 3.141592653-2.6-0.999997 (MiKTeX 25.12) (preloaded format=xelatex 2026.11.2)  22 NOV 2026 18:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1265,23 +1265,105 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 26.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
-] [2] [3] [4]
-[5] [6]
+]
+
+Package fontspec Info: 
+(fontspec)             Could not resolve font "Microsoft YaHei Bold/I" (it
+(fontspec)             probably doesn't exist).
+
+
+Package fontspec Info: 
+(fontspec)             Could not resolve font "Microsoft YaHei/I" (it probably
+(fontspec)             doesn't exist).
+
+
+Package fontspec Info: 
+(fontspec)             Font family 'MicrosoftYaHei(0)' created for font
+(fontspec)             'Microsoft YaHei' with options
+(fontspec)             [Script={CJK},BoldFont={* Bold}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.: <->"Microsoft
+(fontspec)             YaHei/OT:script=hani;language=dflt;"
+(fontspec)             - 'bold' (b/n) with NFSS spec.: <->"Microsoft YaHei
+(fontspec)             Bold/OT:script=hani;language=dflt;"
+(fontspec)             - 'bold italic' (b/it) with NFSS spec.: <->"Microsoft
+(fontspec)             YaHei/BI/OT:script=hani;language=dflt;"
+
+LaTeX Font Info:    Calculating math sizes for size <5.8> on input line 331.
+LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <6.8> not available
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 331.
+
+
+LaTeX Font Warning: Font shape `TU/MicrosoftYaHei(0)/m/it' undefined
+(Font)              using `TU/MicrosoftYaHei(0)/m/n' instead on input line 331.
+
+
+LaTeX Font Info:    Calculating math sizes for size <5.3> on input line 331.
+LaTeX Font Info:    Calculating math sizes for size <6.8> on input line 331.
+LaTeX Font Info:    Calculating math sizes for size <6.6> on input line 331.
+LaTeX Font Info:    Calculating math sizes for size <5.2> on input line 331.
+
+Package fontspec Info: 
+(fontspec)             Could not resolve font "FangSong/BI" (it probably
+(fontspec)             doesn't exist).
+
+
+Package fontspec Info: 
+(fontspec)             Could not resolve font "FangSong/B" (it probably
+(fontspec)             doesn't exist).
+
+
+Package fontspec Info: 
+(fontspec)             Could not resolve font "FangSong/I" (it probably
+(fontspec)             doesn't exist).
+
+
+Package fontspec Info: 
+(fontspec)             Font family 'FangSong(0)' created for font 'FangSong'
+(fontspec)             with options [Script={CJK}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <->"FangSong/OT:script=hani;language=dflt;"
+
+Missing character: There is no 基 in font [lmroman7-regular]:mapping=tex-text;!
+Missing character: There is no 步 in font [lmroman7-regular]:mapping=tex-text;!
+Missing character: There is no 精 in font [lmroman7-regular]:mapping=tex-text;!
+Missing character: There is no 炼 in font [lmroman7-regular]:mapping=tex-text;!
+Missing character: There is no 调 in font [lmroman7-regular]:mapping=tex-text;!
+Missing character: There is no 用 in font [lmroman7-regular]:mapping=tex-text;!
+LaTeX Font Info:    Calculating math sizes for size <5.4> on input line 331.
+LaTeX Font Info:    Calculating math sizes for size <5.5> on input line 331.
+
+Overfull \hbox (34.54077pt too wide) in paragraph at lines 331--331
+ \OML/cmm/m/it/6.8 ^^[  []$ 
+ []
+
+LaTeX Font Info:    Calculating math sizes for size <5.1> on input line 331.
+[2] [3] [4] [5] [6] [7]
 File: ../figures/fig_depth.png Graphic file (type bmp)
 <../figures/fig_depth.png>
- [7]
 File: ../figures/fig_transitions.png Graphic file (type bmp)
 <../figures/fig_transitions.png>
  [8] [9]
 File: ../figures/fig1_p2r1_pareto.png Graphic file (type bmp)
 <../figures/fig1_p2r1_pareto.png>
  [10]
+Overfull \vbox (54.75607pt too high) has occurred while \output is active []
+
+
+[11]
 File: ../figures/crossarch_latent_figure.png Graphic file (type bmp)
 <../figures/crossarch_latent_figure.png>
- [11]
+ [12]
 File: ../figures/optimizer_curves.png Graphic file (type bmp)
 <../figures/optimizer_curves.png>
- [12] [13] [14] [15]
+ [13] [14] [15]
 File: ../figures/fig2_p3r1_fixed_depth.png Graphic file (type bmp)
 <../figures/fig2_p3r1_fixed_depth.png>
  [16]
@@ -1289,8 +1371,7 @@ File: ../figures/fig4_p3r0_trajectory.png Graphic file (type bmp)
 <../figures/fig4_p3r0_trajectory.png>
 File: ../figures/fig3_p3r3_confirm.png Graphic file (type bmp)
 <../figures/fig3_p3r3_confirm.png>
- [17] (zh_main.bbl
-[18] [19]
+ [17] (zh_main.bbl [18] [19]
 Underfull \hbox (badness 1077) in paragraph at lines 145--149
 []\TU/lmr/m/n/12 Nikolaus Hansen and Andreas Ostermeier. 2001.  []Completely de
 randomized self-
@@ -1309,18 +1390,18 @@ L3 programming layer <2026/08/11>
  ***********
 
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 Package rerunfilecheck Info: File `zh_main.out' has not changed.
 (rerunfilecheck)             Checksum: 913A82723BB0B70209F12BBCF9E1D567;754.
  ) 
 Here is how much of TeX's memory you used:
- 29152 strings out of 402987
- 632602 string characters out of 5452250
- 1055030 words of memory out of 5000000
- 57419 multiletter control sequences out of 15000+600000
- 639432 words of font info for 115 fonts, out of 8000000 for 9000
+ 30165 strings out of 402987
+ 662805 string characters out of 5452250
+ 1172982 words of memory out of 5000000
+ 58353 multiletter control sequences out of 15000+600000
+ 676806 words of font info for 323 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 93i,12n,111p,750b,587s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 93i,16n,111p,750b,1661s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on zh_main.pdf (24 pages).

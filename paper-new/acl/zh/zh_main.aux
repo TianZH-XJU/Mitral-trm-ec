@@ -26,8 +26,6 @@
 \citation{bulatov2022recurrent}
 \citation{peng2023rwkv}
 \citation{sun2023retentive}
-\@writefile{toc}{\contentsline {section}{\numberline {2}相关工作}{2}{section.2}\protected@file@percent }
-\newlabel{sec:related}{{2}{2}{相关工作}{section.2}{}}
 \citation{teerapittayanon2016branchynet}
 \citation{huang2018multiscale}
 \citation{figurnov2017spatially}
@@ -37,6 +35,11 @@
 \citation{raposo2024mixture}
 \citation{fedus2022switch}
 \citation{jiang2018trust,tian2023calibration}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \textbf  {因果停算跳过冗余精炼，同时审计执行调用。} \textbf  {(a)} 在 token $i$ 处，冻结的递归 GRU 步（$e_0, e_1, e_3$，灰色）由因果置信阈值（蓝色，本文）用前缀信号（$x_i^{(0)}, x_i^{(1)}$）门控，未被执行的精炼不会运行，而运行时拦截从输入到输出统计真实调用数（$N_{\mathrm  {cell}}$，绿色）。\textbf  {(b)} 在固定深度上，进化式步长策略通过 $\alpha _i^{(k)}$ 调制 $\Delta z_i^{(k)}$，其增益与迁移边界在实验中另有评估。}}{3}{figure.caption.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:method_overview}{{1}{3}{\textbf {因果停算跳过冗余精炼，同时审计执行调用。} \textbf {(a)} 在 token $i$ 处，冻结的递归 GRU 步（$e_0, e_1, e_3$，灰色）由因果置信阈值（蓝色，本文）用前缀信号（$x_i^{(0)}, x_i^{(1)}$）门控，未被执行的精炼不会运行，而运行时拦截从输入到输出统计真实调用数（$N_{\mathrm {cell}}$，绿色）。\textbf {(b)} 在固定深度上，进化式步长策略通过 $\alpha _i^{(k)}$ 调制 $\Delta z_i^{(k)}$，其增益与迁移边界在实验中另有评估。}{figure.caption.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}相关工作}{3}{section.2}\protected@file@percent }
+\newlabel{sec:related}{{2}{3}{相关工作}{section.2}{}}
 \citation{lee2018deterministic}
 \citation{lee2020iterative}
 \citation{cheng2022mrp}
@@ -63,54 +66,57 @@
 \citation{weissenhorn2022compositional}
 \@writefile{toc}{\contentsline {section}{\numberline {4}实验}{5}{section.4}\protected@file@percent }
 \newlabel{sec:exp}{{4}{5}{实验}{section.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}数据集}{5}{subsection.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}实验环境}{5}{subsection.4.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces 架构配置。Mamba 为单种子边界探针。}}{6}{table.caption.1}\protected@file@percent }
-\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{tab:models}{{1}{6}{架构配置。Mamba 为单种子边界探针。}{table.caption.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}数据集}{6}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}实验环境}{6}{subsection.4.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces 架构配置。Mamba 为单种子边界探针。}}{6}{table.caption.2}\protected@file@percent }
+\newlabel{tab:models}{{1}{6}{架构配置。Mamba 为单种子边界探针。}{table.caption.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.3}实验设计}{6}{subsection.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5}结果与实验分析}{7}{section.5}\protected@file@percent }
-\newlabel{sec:results}{{5}{7}{结果与实验分析}{section.5}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces 各深度的强制精确匹配率，每个架构对三个种子取平均（256 个组均衡样本）。}}{8}{table.caption.3}\protected@file@percent }
-\newlabel{tab:depth}{{2}{8}{各深度的强制精确匹配率，每个架构对三个种子取平均（256 个组均衡样本）。}{table.caption.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces 四个架构的强制精确匹配率随深度的变化。曲线为种子均值，阴影覆盖三个种子（256 个组均衡样本）。}}{8}{figure.caption.2}\protected@file@percent }
-\newlabel{fig:depth}{{1}{8}{四个架构的强制精确匹配率随深度的变化。曲线为种子均值，阴影覆盖三个种子（256 个组均衡样本）。}{figure.caption.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces 相邻深度之间的预测转移率，跨 12 个架构—种子取平均。}}{9}{figure.caption.4}\protected@file@percent }
-\newlabel{fig:transitions}{{2}{9}{相邻深度之间的预测转移率，跨 12 个架构—种子取平均。}{figure.caption.4}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces \textbf  {置信停算以一小部分执行计算量保持住精确匹配准确率。} 留出折（每种子 $n{=}645$），相对各种子冻结的最佳固定深度（种子 0--1 为 $e_3$，种子 2 为 $e_1$）。非劣效由预注册规则 LCB$_{95\%}(\Delta \mathrm  {EM}) \geq -0.5$pp 判定，\emph  {而非}点估计；CMA-ES 指 sep-CMA-ES。阈值策略在三个种子上都非劣效；9 个进化式策略中只有 2 个通过，尽管 7 个满足点估计容差。}}{10}{table.caption.5}\protected@file@percent }
-\newlabel{tab:halting}{{3}{10}{\textbf {置信停算以一小部分执行计算量保持住精确匹配准确率。} 留出折（每种子 $n{=}645$），相对各种子冻结的最佳固定深度（种子 0--1 为 $e_3$，种子 2 为 $e_1$）。非劣效由预注册规则 LCB$_{95\%}(\Delta \mathrm {EM}) \geq -0.5$pp 判定，\emph {而非}点估计；CMA-ES 指 sep-CMA-ES。阈值策略在三个种子上都非劣效；9 个进化式策略中只有 2 个通过，尽管 7 个满足点估计容差。}{table.caption.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces 三个 GRU 种子上阈值策略与等预算搜索策略的准确率差与执行调用比。}}{10}{figure.caption.6}\protected@file@percent }
-\newlabel{fig:frontier}{{3}{10}{三个 GRU 种子上阈值策略与等预算搜索策略的准确率差与执行调用比。}{figure.caption.6}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces active-subset 执行器的停算与强制 $e_3$ 中位墙钟时间比。}}{11}{table.caption.8}\protected@file@percent }
-\newlabel{tab:wall}{{5}{11}{active-subset 执行器的停算与强制 $e_3$ 中位墙钟时间比。}{table.caption.8}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces \textbf  {阈值本身已经位于准确率--计算量前沿上。} 每个种子都把预注册阈值与等预算优化器找到的最省策略相对照。被搜索到的策略比阈值最多再多省 2.1\%，而且在种子 0--1 上它们通不过阈值通得过的非劣效界。非劣效由预注册规则 LCB$_{95\%}(\Delta \mathrm  {EM}) \geq -0.5$pp 判定；额外节省指被搜索到的策略相对阈值自身节省额多去掉的那部分计算量。完整策略列表见表~\ref {tab:halting}。}}{11}{table.caption.7}\protected@file@percent }
-\newlabel{tab:frontier}{{4}{11}{\textbf {阈值本身已经位于准确率--计算量前沿上。} 每个种子都把预注册阈值与等预算优化器找到的最省策略相对照。被搜索到的策略比阈值最多再多省 2.1\%，而且在种子 0--1 上它们通不过阈值通得过的非劣效界。非劣效由预注册规则 LCB$_{95\%}(\Delta \mathrm {EM}) \geq -0.5$pp 判定；额外节省指被搜索到的策略相对阈值自身节省额多去掉的那部分计算量。完整策略列表见表~\ref {tab:halting}。}{table.caption.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces 四个架构的六项潜状态动力学指标随深度的变化，阴影为种子范围。}}{12}{figure.caption.9}\protected@file@percent }
-\newlabel{fig:latcross}{{4}{12}{四个架构的六项潜状态动力学指标随深度的变化，阴影为种子范围。}{figure.caption.9}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces 四项潜状态指标的种子均值（3 个种子，256 样本）。范数为 $\lVert z_k\rVert /\sqrt  d$；完整逐深度区间见公开结果表。}}{12}{table.caption.10}\protected@file@percent }
-\newlabel{tab:latstat}{{6}{12}{四项潜状态指标的种子均值（3 个种子，256 样本）。范数为 $\lVert z_k\rVert /\sqrt d$；完整逐深度区间见公开结果表。}{table.caption.10}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces 45 次搜索汇总；相对 $\alpha \!\equiv \!1$ 基线的增益（pp），192 样本内层子集。}}{13}{table.caption.11}\protected@file@percent }
-\newlabel{tab:optagg}{{7}{13}{45 次搜索汇总；相对 $\alpha \!\equiv \!1$ 基线的增益（pp），192 样本内层子集。}{table.caption.11}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces 每次搜索相对自身基线的最佳至当前增益（每种算法九次运行的均值）。}}{13}{figure.caption.12}\protected@file@percent }
-\newlabel{fig:optcurves}{{5}{13}{每次搜索相对自身基线的最佳至当前增益（每种算法九次运行的均值）。}{figure.caption.12}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces \textbf  {步长策略在计算量恒定时提高固定深度的精确匹配准确率。} 相对原始 $\alpha {\approx }1$ 更新、在内层子集（$n{=}192$）上的固定深度（$N_{\mathrm  {cell}}$ 恒定）改进；所有搜索恰用 336 次评估，CMA 指 sep-CMA-ES。人工设计的线性递减 schedule（$\alpha _k = 1.0-0.5k/K$，深度 3 时即 $[1.0, 0.833, 0.667]$）与固定 $\alpha \in \{0.75, 0.5, 0.25\}$ 都不超过 $\alpha {\approx }1$ 基线。$s_0$ 上的消融把策略输入限制到单一特征组；全特征 GA 结果对应 GA 列。}}{13}{table.caption.13}\protected@file@percent }
-\newlabel{tab:latent}{{8}{13}{\textbf {步长策略在计算量恒定时提高固定深度的精确匹配准确率。} 相对原始 $\alpha {\approx }1$ 更新、在内层子集（$n{=}192$）上的固定深度（$N_{\mathrm {cell}}$ 恒定）改进；所有搜索恰用 336 次评估，CMA 指 sep-CMA-ES。人工设计的线性递减 schedule（$\alpha _k = 1.0-0.5k/K$，深度 3 时即 $[1.0, 0.833, 0.667]$）与固定 $\alpha \in \{0.75, 0.5, 0.25\}$ 都不超过 $\alpha {\approx }1$ 基线。$s_0$ 上的消融把策略输入限制到单一特征组；全特征 GA 结果对应 GA 列。}{table.caption.13}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces 冻结的 GRU-s0 步长策略：各种子相对强制 $e_3$ 的 EM 差（pp）。}}{14}{table.caption.14}\protected@file@percent }
-\newlabel{tab:trans}{{9}{14}{冻结的 GRU-s0 步长策略：各种子相对强制 $e_3$ 的 EM 差（pp）。}{table.caption.14}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces \textbf  {一次性确认区分了保留下来的收益与内层子集上的收益。} 留出折（每种子 $n{=}645$）；非劣效记号见上；置信区间为 $\Delta $EM（pp）相对冻结深度基准的 95\% 组聚类自助区间（20{,}000 次重采样）。J1 在所有种子上非劣效，在 $s_2$ 上仅勉强通过，95\% CI 为 $[-0.50, +7.43]$pp，即 LCB 为 $-0.4975$pp，只高出容限 0.0025pp。由内层适应度选出的最佳联合进化策略在 $s_1$ 与 $s_2$ 上未通过，并在 $s_2$ 上把阈值策略的 EM 增益（配对 $\Delta $EM $-2.02$pp vs.\ J1）全部让出。}}{14}{table.caption.15}\protected@file@percent }
-\newlabel{tab:confirm}{{10}{14}{\textbf {一次性确认区分了保留下来的收益与内层子集上的收益。} 留出折（每种子 $n{=}645$）；非劣效记号见上；置信区间为 $\Delta $EM（pp）相对冻结深度基准的 95\% 组聚类自助区间（20{,}000 次重采样）。J1 在所有种子上非劣效，在 $s_2$ 上仅勉强通过，95\% CI 为 $[-0.50, +7.43]$pp，即 LCB 为 $-0.4975$pp，只高出容限 0.0025pp。由内层适应度选出的最佳联合进化策略在 $s_1$ 与 $s_2$ 上未通过，并在 $s_2$ 上把阈值策略的 EM 增益（配对 $\Delta $EM $-2.02$pp vs.\ J1）全部让出。}{table.caption.15}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces \textbf  {在未触碰数据上的一次性确认。} 官方 COGS 开发集（$n{=}3{,}000$；组聚类配对自助，20{,}000 次重采样），用冻结的预注册阈值与各种子冻结的最佳固定深度只评估一次。计算量比率与留出折的数值（0.2575 / 0.2570 / 0.5212）在种子0--1上到第三位小数一致，种子2相差0.003（相对0.6\%），因此被执行调用层面的节省本身在划分之间以不足百分之一的幅度迁移。}}{15}{table.caption.16}\protected@file@percent }
-\newlabel{tab:devconfirm}{{11}{15}{\textbf {在未触碰数据上的一次性确认。} 官方 COGS 开发集（$n{=}3{,}000$；组聚类配对自助，20{,}000 次重采样），用冻结的预注册阈值与各种子冻结的最佳固定深度只评估一次。计算量比率与留出折的数值（0.2575 / 0.2570 / 0.5212）在种子0--1上到第三位小数一致，种子2相差0.003（相对0.6\%），因此被执行调用层面的节省本身在划分之间以不足百分之一的幅度迁移。}{table.caption.16}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces 各深度的强制精确匹配率，每个架构对三个种子取平均（256 个组均衡样本）。}}{8}{table.caption.4}\protected@file@percent }
+\newlabel{tab:depth}{{2}{8}{各深度的强制精确匹配率，每个架构对三个种子取平均（256 个组均衡样本）。}{table.caption.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}结果与实验分析}{8}{section.5}\protected@file@percent }
+\newlabel{sec:results}{{5}{8}{结果与实验分析}{section.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces 四个架构的强制精确匹配率随深度的变化。曲线为种子均值，阴影覆盖三个种子（256 个组均衡样本）。}}{8}{figure.caption.3}\protected@file@percent }
+\newlabel{fig:depth}{{2}{8}{四个架构的强制精确匹配率随深度的变化。曲线为种子均值，阴影覆盖三个种子（256 个组均衡样本）。}{figure.caption.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces 相邻深度之间的预测转移率，跨 12 个架构—种子取平均。}}{9}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:transitions}{{3}{9}{相邻深度之间的预测转移率，跨 12 个架构—种子取平均。}{figure.caption.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces \textbf  {置信停算以一小部分执行计算量保持住精确匹配准确率。} 留出折（每种子 $n{=}645$），相对各种子冻结的最佳固定深度（种子 0--1 为 $e_3$，种子 2 为 $e_1$）。非劣效由预注册规则 LCB$_{95\%}(\Delta \mathrm  {EM}) \geq -0.5$pp 判定，\emph  {而非}点估计；CMA-ES 指 sep-CMA-ES。阈值策略在三个种子上都非劣效；9 个进化式策略中只有 2 个通过，尽管 7 个满足点估计容差。}}{10}{table.caption.6}\protected@file@percent }
+\newlabel{tab:halting}{{3}{10}{\textbf {置信停算以一小部分执行计算量保持住精确匹配准确率。} 留出折（每种子 $n{=}645$），相对各种子冻结的最佳固定深度（种子 0--1 为 $e_3$，种子 2 为 $e_1$）。非劣效由预注册规则 LCB$_{95\%}(\Delta \mathrm {EM}) \geq -0.5$pp 判定，\emph {而非}点估计；CMA-ES 指 sep-CMA-ES。阈值策略在三个种子上都非劣效；9 个进化式策略中只有 2 个通过，尽管 7 个满足点估计容差。}{table.caption.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces 三个 GRU 种子上阈值策略与等预算搜索策略的准确率差与执行调用比。}}{10}{figure.caption.8}\protected@file@percent }
+\newlabel{fig:frontier}{{4}{10}{三个 GRU 种子上阈值策略与等预算搜索策略的准确率差与执行调用比。}{figure.caption.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces 256 样本上的阈值停算。$\Delta $EM 相对强制 $e_3$；NI 按 LCB$_{95}\geq -0.5$pp。$N_{\mathrm  {cell}}$ 为停算与强制 $e_3$ 的调用比。$\times $：显著变差；$?$：不确定。九非劣、两显著负、一不确定。}}{11}{table.caption.7}\protected@file@percent }
+\newlabel{tab:halt12}{{4}{11}{256 样本上的阈值停算。$\Delta $EM 相对强制 $e_3$；NI 按 LCB$_{95}\geq -0.5$pp。$N_{\mathrm {cell}}$ 为停算与强制 $e_3$ 的调用比。$\times $：显著变差；$?$：不确定。九非劣、两显著负、一不确定。}{table.caption.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces \textbf  {阈值本身已经位于准确率--计算量前沿上。} 每个种子都把预注册阈值与等预算优化器找到的最省策略相对照。被搜索到的策略比阈值最多再多省 2.1\%，而且在种子 0--1 上它们通不过阈值通得过的非劣效界。非劣效由预注册规则 LCB$_{95\%}(\Delta \mathrm  {EM}) \geq -0.5$pp 判定；额外节省指被搜索到的策略相对阈值自身节省额多去掉的那部分计算量。完整策略列表见表~\ref {tab:halting}。}}{11}{table.caption.9}\protected@file@percent }
+\newlabel{tab:frontier}{{5}{11}{\textbf {阈值本身已经位于准确率--计算量前沿上。} 每个种子都把预注册阈值与等预算优化器找到的最省策略相对照。被搜索到的策略比阈值最多再多省 2.1\%，而且在种子 0--1 上它们通不过阈值通得过的非劣效界。非劣效由预注册规则 LCB$_{95\%}(\Delta \mathrm {EM}) \geq -0.5$pp 判定；额外节省指被搜索到的策略相对阈值自身节省额多去掉的那部分计算量。完整策略列表见表~\ref {tab:halting}。}{table.caption.9}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces active-subset 执行器的停算与强制 $e_3$ 中位墙钟时间比；两线程、2 次预热、10 次交错测试；$b{=}1$ 用 16 个样本，$b{=}4/8/32$ 用 64 个。逐样本 T1 执行器（0.297）为独立测量，未并入本表。}}{12}{table.caption.10}\protected@file@percent }
+\newlabel{tab:wall}{{6}{12}{active-subset 执行器的停算与强制 $e_3$ 中位墙钟时间比；两线程、2 次预热、10 次交错测试；$b{=}1$ 用 16 个样本，$b{=}4/8/32$ 用 64 个。逐样本 T1 执行器（0.297）为独立测量，未并入本表。}{table.caption.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces 四个架构的六项潜状态动力学指标随深度的变化，阴影为种子范围。}}{12}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:latcross}{{5}{12}{四个架构的六项潜状态动力学指标随深度的变化，阴影为种子范围。}{figure.caption.11}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces 种子 0 的均值与 95\% 组簇自助区间（256 样本）。三种子的范围见图~\ref {fig:latcross}；范数为 $\lVert z_k\rVert /\sqrt  d$。}}{13}{table.caption.12}\protected@file@percent }
+\newlabel{tab:latstat}{{7}{13}{种子 0 的均值与 95\% 组簇自助区间（256 样本）。三种子的范围见图~\ref {fig:latcross}；范数为 $\lVert z_k\rVert /\sqrt d$。}{table.caption.12}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces 45 次搜索中的五种优化器（3 模型种子 × 5 算法 × 3 优化器种子，各 336 次评估）。增益为相对 $\alpha \equiv 1$ 基线的 pp，192 样本内层子集，一个样本为 $0.52$pp；MGA 作为独立算法报告。}}{13}{table.caption.13}\protected@file@percent }
+\newlabel{tab:opt5}{{8}{13}{45 次搜索中的五种优化器（3 模型种子 × 5 算法 × 3 优化器种子，各 336 次评估）。增益为相对 $\alpha \equiv 1$ 基线的 pp，192 样本内层子集，一个样本为 $0.52$pp；MGA 作为独立算法报告。}{table.caption.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces 每次搜索相对自身基线的最佳至当前增益（每种算法九次运行的均值）。}}{13}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:optcurves}{{6}{13}{每次搜索相对自身基线的最佳至当前增益（每种算法九次运行的均值）。}{figure.caption.14}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces 三个 GRU 步长策略的外层折确认（每种子 $n=640$）。仅种子 2 满足非劣效界；种子 0 以 0.019pp 之差未过界（LCB $-0.519$pp）。}}{14}{table.caption.15}\protected@file@percent }
+\newlabel{tab:alpha_confirm}{{9}{14}{三个 GRU 步长策略的外层折确认（每种子 $n=640$）。仅种子 2 满足非劣效界；种子 0 以 0.019pp 之差未过界（LCB $-0.519$pp）。}{table.caption.15}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces 冻结的 GRU-s0 步长策略：各种子相对强制 $e_3$ 的 EM 差（pp）。}}{14}{table.caption.16}\protected@file@percent }
+\newlabel{tab:trans}{{10}{14}{冻结的 GRU-s0 步长策略：各种子相对强制 $e_3$ 的 EM 差（pp）。}{table.caption.16}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces \textbf  {一次性确认区分了保留下来的收益与内层子集上的收益。} 留出折（每种子 $n{=}645$）；非劣效记号见上；置信区间为 $\Delta $EM（pp）相对冻结深度基准的 95\% 组聚类自助区间（20{,}000 次重采样）。J1 在所有种子上非劣效，在 $s_2$ 上仅勉强通过，95\% CI 为 $[-0.50, +7.43]$pp，即 LCB 为 $-0.4975$pp，只高出容限 0.0025pp。由内层适应度选出的最佳联合进化策略在 $s_1$ 与 $s_2$ 上未通过，并在 $s_2$ 上把阈值策略的 EM 增益（配对 $\Delta $EM $-2.02$pp vs.\ J1）全部让出。}}{14}{table.caption.17}\protected@file@percent }
+\newlabel{tab:confirm}{{11}{14}{\textbf {一次性确认区分了保留下来的收益与内层子集上的收益。} 留出折（每种子 $n{=}645$）；非劣效记号见上；置信区间为 $\Delta $EM（pp）相对冻结深度基准的 95\% 组聚类自助区间（20{,}000 次重采样）。J1 在所有种子上非劣效，在 $s_2$ 上仅勉强通过，95\% CI 为 $[-0.50, +7.43]$pp，即 LCB 为 $-0.4975$pp，只高出容限 0.0025pp。由内层适应度选出的最佳联合进化策略在 $s_1$ 与 $s_2$ 上未通过，并在 $s_2$ 上把阈值策略的 EM 增益（配对 $\Delta $EM $-2.02$pp vs.\ J1）全部让出。}{table.caption.17}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {12}{\ignorespaces \textbf  {在未触碰数据上的一次性确认。} 官方 COGS 开发集（$n{=}3{,}000$；组聚类配对自助，20{,}000 次重采样），用冻结的预注册阈值与各种子冻结的最佳固定深度只评估一次。计算量比率与留出折的数值（0.2575 / 0.2570 / 0.5212）在种子0--1上到第三位小数一致，种子2相差0.003（相对0.6\%），因此被执行调用层面的节省本身在划分之间以不足百分之一的幅度迁移。}}{15}{table.caption.18}\protected@file@percent }
+\newlabel{tab:devconfirm}{{12}{15}{\textbf {在未触碰数据上的一次性确认。} 官方 COGS 开发集（$n{=}3{,}000$；组聚类配对自助，20{,}000 次重采样），用冻结的预注册阈值与各种子冻结的最佳固定深度只评估一次。计算量比率与留出折的数值（0.2575 / 0.2570 / 0.5212）在种子0--1上到第三位小数一致，种子2相差0.003（相对0.6\%），因此被执行调用层面的节省本身在划分之间以不足百分之一的幅度迁移。}{table.caption.18}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {6}结论}{15}{section.6}\protected@file@percent }
 \newlabel{sec:conclusion}{{6}{15}{结论}{section.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {13}{\ignorespaces 旧协议下的四算法历史试验（RS、GA、DE、sep-CMA-ES，无 MGA），已被正文表~\ref {tab:opt5} 取代。}}{16}{table.caption.20}\protected@file@percent }
+\newlabel{tab:latent_hist}{{13}{16}{旧协议下的四算法历史试验（RS、GA、DE、sep-CMA-ES，无 MGA），已被正文表~\ref {tab:opt5} 取代。}{table.caption.20}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {A}详细结果表}{16}{appendix.A}\protected@file@percent }
 \newlabel{app:tables}{{A}{16}{详细结果表}{appendix.A}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {12}{\ignorespaces \textbf  {联合策略在哪里输掉。} 留出折（每种子 $n{=}645$）；J1 是阈值策略，J4 是联合调优的策略，$\Delta $EM 以百分点计，相对各种子冻结的最佳固定深度（表~\ref {tab:confirm}）。最后两列把 J4--J1 的差距拆成由被搜索到的停算门控承担的部分与由被搜索到的步长承担的部分，后者通过把 J4 的 $\alpha $ 钉为 1 重新解码得到；翻转计数 J1 与 J4 之间 EM 改变的样本数，写作 修复/破坏。}}{16}{table.caption.18}\protected@file@percent }
-\newlabel{tab:decomp}{{12}{16}{\textbf {联合策略在哪里输掉。} 留出折（每种子 $n{=}645$）；J1 是阈值策略，J4 是联合调优的策略，$\Delta $EM 以百分点计，相对各种子冻结的最佳固定深度（表~\ref {tab:confirm}）。最后两列把 J4--J1 的差距拆成由被搜索到的停算门控承担的部分与由被搜索到的步长承担的部分，后者通过把 J4 的 $\alpha $ 钉为 1 重新解码得到；翻转计数 J1 与 J4 之间 EM 改变的样本数，写作 修复/破坏。}{table.caption.18}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces \textbf  {等预算的进化式搜索在固定深度上改进隐状态更新。} 相对原始 $\alpha {\approx }1$ 更新的内层子集 EM 增益（pp），随机搜索与三种进化式优化器各用 336 次评估的等预算。$s_0$ 上的特征组消融显示：只有时间索引与只有动力学对都能各自复现全特征增益，而只有熵不能。}}{17}{figure.caption.19}\protected@file@percent }
-\newlabel{fig:latent}{{6}{17}{\textbf {等预算的进化式搜索在固定深度上改进隐状态更新。} 相对原始 $\alpha {\approx }1$ 更新的内层子集 EM 增益（pp），随机搜索与三种进化式优化器各用 336 次评估的等预算。$s_0$ 上的特征组消融显示：只有时间索引与只有动力学对都能各自复现全特征增益，而只有熵不能。}{figure.caption.19}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces \textbf  {随深度增长，精炼步对隐状态的改变越来越小。} 冻结 GRU 解码器在固定阻尼下的隐状态轨迹，逐步的位移与方向一致性。后期位移集中于小值，这正是启发我们让步长策略在决策时刻读取熵、位移与方向一致性的动机。}}{17}{figure.caption.20}\protected@file@percent }
-\newlabel{fig:traj}{{7}{17}{\textbf {随深度增长，精炼步对隐状态的改变越来越小。} 冻结 GRU 解码器在固定阻尼下的隐状态轨迹，逐步的位移与方向一致性。后期位移集中于小值，这正是启发我们让步长策略在决策时刻读取熵、位移与方向一致性的动机。}{figure.caption.20}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {14}{\ignorespaces \textbf  {联合策略在哪里输掉。} 留出折（每种子 $n{=}645$）；J1 是阈值策略，J4 是联合调优的策略，$\Delta $EM 以百分点计，相对各种子冻结的最佳固定深度（表~\ref {tab:confirm}）。最后两列把 J4--J1 的差距拆成由被搜索到的停算门控承担的部分与由被搜索到的步长承担的部分，后者通过把 J4 的 $\alpha $ 钉为 1 重新解码得到；翻转计数 J1 与 J4 之间 EM 改变的样本数，写作 修复/破坏。}}{16}{table.caption.21}\protected@file@percent }
+\newlabel{tab:decomp}{{14}{16}{\textbf {联合策略在哪里输掉。} 留出折（每种子 $n{=}645$）；J1 是阈值策略，J4 是联合调优的策略，$\Delta $EM 以百分点计，相对各种子冻结的最佳固定深度（表~\ref {tab:confirm}）。最后两列把 J4--J1 的差距拆成由被搜索到的停算门控承担的部分与由被搜索到的步长承担的部分，后者通过把 J4 的 $\alpha $ 钉为 1 重新解码得到；翻转计数 J1 与 J4 之间 EM 改变的样本数，写作 修复/破坏。}{table.caption.21}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces \textbf  {等预算的进化式搜索在固定深度上改进隐状态更新。} 相对原始 $\alpha {\approx }1$ 更新的内层子集 EM 增益（pp），随机搜索与三种进化式优化器各用 336 次评估的等预算。$s_0$ 上的特征组消融显示：只有时间索引与只有动力学对都能各自复现全特征增益，而只有熵不能。}}{17}{figure.caption.22}\protected@file@percent }
+\newlabel{fig:latent}{{7}{17}{\textbf {等预算的进化式搜索在固定深度上改进隐状态更新。} 相对原始 $\alpha {\approx }1$ 更新的内层子集 EM 增益（pp），随机搜索与三种进化式优化器各用 336 次评估的等预算。$s_0$ 上的特征组消融显示：只有时间索引与只有动力学对都能各自复现全特征增益，而只有熵不能。}{figure.caption.22}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces \textbf  {随深度增长，精炼步对隐状态的改变越来越小。} 冻结 GRU 解码器在固定阻尼下的隐状态轨迹，逐步的位移与方向一致性。后期位移集中于小值，这正是启发我们让步长策略在决策时刻读取熵、位移与方向一致性的动机。}}{17}{figure.caption.23}\protected@file@percent }
+\newlabel{fig:traj}{{8}{17}{\textbf {随深度增长，精炼步对隐状态的改变越来越小。} 冻结 GRU 解码器在固定阻尼下的隐状态轨迹，逐步的位移与方向一致性。后期位移集中于小值，这正是启发我们让步长策略在决策时刻读取熵、位移与方向一致性的动机。}{figure.caption.23}{}}
 \bibstyle{acl_natbib}
 \bibdata{references}
 \bibcite{bolukbasi2017adaptive}{{1}{2017}{{Bolukbasi et~al.}}{{Bolukbasi, Wang, Dekel, and Saligrama}}}
@@ -119,8 +125,8 @@
 \bibcite{dai2019transformerxl}{{4}{2019}{{Dai et~al.}}{{Dai, Yang, Yang, Carbonell, Le, and Salakhutdinov}}}
 \bibcite{das2011survey}{{5}{2011}{{Das and Suganthan}}{{}}}
 \bibcite{dehghani2019universal}{{6}{2019}{{Dehghani et~al.}}{{Dehghani, Gouws, Vinyals, Uszkoreit, and Kaiser}}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces \textbf  {联合进化收益在一次性确认下消失。} 留出 $\Delta $EM 与 95\% 组聚类自助区间，阈值停算策略（J1）与联合进化策略（J4）在各种子上的对比。虚线标出预注册的 $-0.5$pp 非劣效界；J1 在三个种子上都高于该界，$s_2$ 的区间逼近该界。}}{18}{figure.caption.21}\protected@file@percent }
-\newlabel{fig:confirm}{{8}{18}{\textbf {联合进化收益在一次性确认下消失。} 留出 $\Delta $EM 与 95\% 组聚类自助区间，阈值停算策略（J1）与联合进化策略（J4）在各种子上的对比。虚线标出预注册的 $-0.5$pp 非劣效界；J1 在三个种子上都高于该界，$s_2$ 的区间逼近该界。}{figure.caption.21}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces \textbf  {联合进化收益在一次性确认下消失。} 留出 $\Delta $EM 与 95\% 组聚类自助区间，阈值停算策略（J1）与联合进化策略（J4）在各种子上的对比。虚线标出预注册的 $-0.5$pp 非劣效界；J1 在三个种子上都高于该界，$s_2$ 的区间逼近该界。}}{18}{figure.caption.24}\protected@file@percent }
+\newlabel{fig:confirm}{{9}{18}{\textbf {联合进化收益在一次性确认下消失。} 留出 $\Delta $EM 与 95\% 组聚类自助区间，阈值停算策略（J1）与联合进化策略（J4）在各种子上的对比。虚线标出预注册的 $-0.5$pp 非劣效界；J1 在三个种子上都高于该界，$s_2$ 的区间逼近该界。}{figure.caption.24}{}}
 \bibcite{docampobayon2025noninferiority}{{7}{2025}{{do~Campo~Bay{\'o}n and S{\'a}nchez-Gij{\'o}n}}{{}}}
 \bibcite{fedus2022switch}{{8}{2022}{{Fedus et~al.}}{{Fedus, Zoph, and Shazeer}}}
 \bibcite{figurnov2017spatially}{{9}{2017}{{Figurnov et~al.}}{{Figurnov, Collins, Zhu, Zhang, Huang, Vetrov, and Salakhutdinov}}}

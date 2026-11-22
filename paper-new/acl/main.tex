@@ -62,6 +62,32 @@ Derivative-free search supplies the third component. Genetic algorithms remain a
 
 We begin with a frozen recursive sequence model that produces four decoding depths, from $e_0$ to $e_3$. The base step reads the source memory, the previous token, and the previous hidden state to produce $z^{(0)}$. A shared refinement cell maps $z^{(k)}$ to $z^{(k+1)}$ using the previous token, the base attention context, and a soft embedding of the current prediction. In the checkpoints used below, training applies multi-depth supervision at all four depths with weights $(0.1,0.2,0.3,0.4)$, and a single output head is shared across them. Every later component keeps these parameters fixed and operates on the same four-depth rollout.
 
+
+\begin{figure}[t]
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+  font=\sffamily\fontsize{8pt}{9.6pt}\selectfont,
+  >=Stealth, line width=0.8pt,
+  box/.style={draw, rounded corners=2pt, inner sep=5pt, text width=3.6cm, align=center},
+  blue/.style={box, draw=oiBlue, fill=oiBlue!12},
+  green/.style={box, draw=oiGreen, fill=oiGreen!12},
+  orange/.style={box, draw=oiOrange, fill=oiOrange!12}
+]
+\node[blue] (a) at (0,2.2) {\textbf{1. Trace}\\ depth $e_0..e_3$, repairs,\\ prediction changes};
+\node[green] (b) at (5.0,2.2) {\textbf{2. Analyze}\\ latent norm, update,\\ direction, displacement};
+\node[orange] (c) at (10.0,2.2) {\textbf{3. Control}\\ causal halting + hook audit;\\ equal-budget step-size search};
+\draw[->,draw=oiBlue] (a) -- (b);
+\draw[->,draw=oiGreen] (b) -- (c);
+\node[align=center,font=\sffamily\fontsize{7.4pt}{9pt}\selectfont] at (5.0,0.7)
+  {One executed-call definition and one non-inferiority rule across all three lines};
+\end{tikzpicture}%
+}
+\caption{TRACER: measure recursive computation, analyze the latent trajectory, then control execution and updates. Each line is evaluated with the same frozen checkpoints and call-counting rule.}
+\label{fig:framework}
+\end{figure}
+
+
 On this rollout, we first measure what the extra depths buy. For every token, we compare its predictions at two adjacent depths and assign one of four outcomes. A wrong prediction that becomes correct is a repair, and a correct one that becomes wrong is harm. When the prediction is unchanged, we call it preserve if it was correct and unresolved if it was wrong. This separation matters because a single-depth accuracy score folds together tokens that refinement fixed and tokens that refinement broke.
 
 The transitions above are token-specific, so we decide for each token whether to spend the extra computation. Causal halting makes this decision at two points on the rollout: after the base step and again after the first refinement. At each point we compare the top-1 probability of the current prediction with a fixed threshold. A token stops when the probability exceeds that threshold; the two thresholds are $0.85$ and $0.90$ for every model and seed. Each decision uses only signals computed before the refinement it gates, so a stopped token never reads the computation it has chosen to skip. A token that passes both gates continues to $e_3$.
@@ -138,6 +164,7 @@ The three lines of this study answer the questions raised in the introduction: w
 \caption{Forced exact match by depth for four architectures. Lines are seed means; shaded bands span three seeds (256 group-balanced examples).}
 \label{fig:depth}
 \end{figure}
+
 \begin{table}[t]
 \centering
 \footnotesize
@@ -199,25 +226,27 @@ Threshold halting preserves exact-match accuracy while cutting executed calls. T
 \begin{table}[t]
 \centering
 \footnotesize
-\setlength{\tabcolsep}{1.5pt}
-\begin{tabular}{@{}llccccl@{}}
+\setlength{\tabcolsep}{1.2pt}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{@{}llcccccl@{}}
 \toprule
-Arch & Seed & f-$e_3$ EM & halt EM & $\Delta$EM & 95\% CI & NI \\ \midrule
-GRU & $s_0$ & $0.879$ & $0.879$ & $+0.00$ & $[0.00,0.00]$ & \checkmark \\
-GRU & $s_1$ & $0.844$ & $0.844$ & $+0.00$ & $[0.00,0.00]$ & \checkmark \\
-GRU & $s_2$ & $0.891$ & $0.891$ & $+0.00$ & $[0.00,0.00]$ & \checkmark \\
-RNN & $s_0$ & $0.434$ & $0.438$ & $+0.39$ & $[0.00,1.17]$ & \checkmark \\
-RNN & $s_1$ & $0.547$ & $0.551$ & $+0.39$ & $[0.00,1.17]$ & \checkmark \\
-RNN & $s_2$ & $0.480$ & $0.461$ & $-1.95$ & $[-3.91,-0.39]$ & $\times$ \\
-LSTM & $s_0$ & $0.629$ & $0.629$ & $+0.00$ & $[0.00,0.00]$ & \checkmark \\
-LSTM & $s_1$ & $0.312$ & $0.312$ & $+0.00$ & $[0.00,0.00]$ & \checkmark \\
-LSTM & $s_2$ & $0.328$ & $0.328$ & $+0.00$ & $[0.00,0.00]$ & \checkmark \\
-T1 & $s_0$ & $0.871$ & $0.848$ & $-2.34$ & $[-5.47,0.78]$ & $\ ?$ \\
-T1 & $s_1$ & $0.648$ & $0.703$ & $+5.47$ & $[1.17,10.16]$ & \checkmark \\
-T1 & $s_2$ & $0.856$ & $0.809$ & $-4.69$ & $[-7.81,-1.95]$ & $\times$ \\
+Arch & Seed & f-$e_3$ EM & halt EM & $\Delta$EM & 95\% CI & $N_{\mathrm{cell}}$ & NI \\ \midrule
+GRU & $s_0$ & $0.879$ & $0.879$ & $+0.00$ & $[0.00,0.00]$ & 0.266 & \checkmark \\
+GRU & $s_1$ & $0.844$ & $0.844$ & $+0.00$ & $[0.00,0.00]$ & 0.268 & \checkmark \\
+GRU & $s_2$ & $0.891$ & $0.891$ & $+0.00$ & $[0.00,0.00]$ & 0.267 & \checkmark \\
+RNN & $s_0$ & $0.434$ & $0.438$ & $+0.39$ & $[0.00,1.17]$ & 0.317 & \checkmark \\
+RNN & $s_1$ & $0.547$ & $0.551$ & $+0.39$ & $[0.00,1.17]$ & 0.324 & \checkmark \\
+RNN & $s_2$ & $0.480$ & $0.461$ & $-1.95$ & $[-3.91,-0.39]$ & 0.322 & $\times$ \\
+LSTM & $s_0$ & $0.629$ & $0.629$ & $+0.00$ & $[0.00,0.00]$ & 0.302 & \checkmark \\
+LSTM & $s_1$ & $0.312$ & $0.312$ & $+0.00$ & $[0.00,0.00]$ & 0.320 & \checkmark \\
+LSTM & $s_2$ & $0.328$ & $0.328$ & $+0.00$ & $[0.00,0.00]$ & 0.324 & \checkmark \\
+T1 & $s_0$ & $0.871$ & $0.848$ & $-2.34$ & $[-5.47,0.78]$ & 0.260 & $\ ?$ \\
+T1 & $s_1$ & $0.648$ & $0.703$ & $+5.47$ & $[1.17,10.16]$ & 0.262 & \checkmark \\
+T1 & $s_2$ & $0.856$ & $0.809$ & $-4.69$ & $[-7.81,-1.95]$ & 0.267 & $\times$ \\
 \bottomrule
-\end{tabular}
-\caption{Halting on 256 samples; $\Delta$EM vs. forced $e_3$, NI by LCB$_{95}\geq-0.5$pp. $\times$: significant loss; $?$: inconclusive. Nine non-inferior, two negative, one inconclusive.}
+\end{tabular}%
+}
+\caption{Halting on the 256-sample manifest. $\Delta$EM vs. forced $e_3$; NI by LCB$_{95}\geq-0.5$pp. $N_{\mathrm{cell}}$ is the halt-to-forced-$e_3$ call ratio. $\times$: significant loss; $?$: inconclusive. Nine non-inferior, two negative, one inconclusive.}
 \label{tab:halt12}
 \end{table}
 
@@ -228,7 +257,9 @@ T1 & $s_2$ & $0.856$ & $0.809$ & $-4.69$ & $[-7.81,-1.95]$ & $\times$ \\
 \label{fig:frontier}
 \end{figure}
 
-Figure~\ref{fig:frontier} places the threshold on the accuracy--compute frontier. The cheapest policy the optimizers find removes at most 2.1\% more calls than the threshold, and on seeds 0 and 1 it fails the non-inferiority bound that the threshold passes. \begin{table}[t]
+Figure~\ref{fig:frontier} places the threshold on the accuracy--compute frontier. The cheapest policy the optimizers find removes at most 2.1\% more calls than the threshold, and on seeds 0 and 1 it fails the non-inferiority bound that the threshold passes.
+
+\begin{table}[t]
 \centering
 \footnotesize
 \setlength{\tabcolsep}{2.5pt}
@@ -250,7 +281,9 @@ $s_2$ & threshold & $+1.86$ & 0.5212 & --- & \checkmark \\
 }
 \caption{\textbf{The threshold already sits on the accuracy--compute frontier.} For each seed we contrast the preregistered threshold with the cheapest policy the equal-budget optimizers found. The searched policies buy at most 2.1\% more saving than the threshold and, on seeds 0--1, do not pass the non-inferiority bound that the threshold passes. NI denotes the preregistered rule LCB$_{95\%}(\Delta\mathrm{EM}) \geq -0.5$pp; extra saving is the compute the searched policy removes beyond the threshold, relative to the threshold's own saving. Full policy list in Table~\ref{tab:halting}.}
 \label{tab:frontier}
-\end{table} Runtime hooks close the accounting loop: under forced $e_0$ the instrumented decoder triggers zero refinement calls on all 52{,}458 generated tokens of the three recurrent models, and the counted calls match the intercepted calls in all 12 settings. Table~\ref{tab:wall} turns the call reduction into wall-clock time. The active-subset executor gives halt-to-forced-$e_3$ ratios of 0.43--0.64 across batch sizes 1, 4, 8, and 32; a separate per-sample T1 executor gives 0.297. These time ratios exceed the call ratios because base steps, attention, output projection, gating, and per-step Python work are paid by both arms and are excluded from $N_{\mathrm{cell}}$. The two executors are reported side by side, never combined.
+\end{table}
+
+Runtime hooks close the accounting loop: under forced $e_0$ the instrumented decoder triggers zero refinement calls on all 52{,}458 generated tokens of the three recurrent models, and the counted calls match the intercepted calls in all 12 settings. Table~\ref{tab:wall} turns the call reduction into wall-clock time. The active-subset executor gives halt-to-forced-$e_3$ ratios of 0.43--0.64 across batch sizes 1, 4, 8, and 32; a separate per-sample T1 executor gives 0.297. These time ratios exceed the call ratios because base steps, attention, output projection, gating, and per-step Python work are paid by both arms and are excluded from $N_{\mathrm{cell}}$. The two executors are reported side by side, never combined.
 
 \begin{table}[t]
 \centering
@@ -263,7 +296,7 @@ RNN & 0.452 & 0.468 & 0.555 & 0.640 \\
 LSTM & 0.430 & 0.471 & 0.538 & 0.611 \\
 \bottomrule
 \end{tabular}
-\caption{Active-subset executor: halt/forced-$e_3$ median wall-clock ratio.}
+\caption{Halt/forced-$e_3$ median wall-clock ratio of the active-subset executor, two CPU threads, 2 warmup and 10 interleaved passes; $b{=}1$ uses 16 manifest samples, $b{=}4/8/32$ use 64. The per-sample T1 executor (0.297) is a separate measurement and is not combined here.}
 \label{tab:wall}
 \end{table}
 
@@ -275,19 +308,22 @@ The second line of results turns from when to stop to what a refinement changes.
 \caption{Six latent-dynamics metrics across depth; seed ranges shaded.}
 \label{fig:latcross}
 \end{figure}
+
 \begin{table}[t]
-\centering\footnotesize
+\centering
+\footnotesize
+\resizebox{\linewidth}{!}{%
 \begin{tabular}{@{}lcccc@{}}
 \toprule
-Arch & norm $e_0$ & upd $e_1$ & cos $e_2$ & $\Delta y$ $e_3$ \\
-\midrule
-GRU & 0.89 & 0.70 & 0.20 & 0.0005 \\
-RNN & 0.92 & 0.87 & 0.09 & 0.0042 \\
-LSTM & 0.69 & 0.48 & 0.38 & 0.0041 \\
-T1 & 5.38 & 1.79 & 0.95 & 0.0027 \\
+Arch & norm $e_0$ & upd $e_1$ & cos $e_2$ & $\Delta y$ $e_3$ \\ \midrule
+GRU & 0.90 $[0.90,0.90]$ & 0.70 $[0.70,0.70]$ & 0.19 $[0.18,0.19]$ & 0.0004 $[0.0002,0.0007]$ \\
+RNN & 0.92 $[0.92,0.92]$ & 0.89 $[0.88,0.89]$ & 0.09 $[0.09,0.09]$ & 0.0059 $[0.0038,0.0082]$ \\
+LSTM & 0.69 $[0.69,0.69]$ & 0.48 $[0.48,0.48]$ & 0.39 $[0.38,0.39]$ & 0.0023 $[0.0014,0.0032]$ \\
+T1 & 5.16 $[5.13,5.20]$ & 1.83 $[1.83,1.84]$ & 0.96 $[0.96,0.96]$ & 0.0020 $[0.0012,0.0030]$ \\
 \bottomrule
-\end{tabular}
-\caption{Seed means of four latent summaries (3 seeds, 256 samples). Norm is $\lVert z_k\rVert/\sqrt d$; full depth-wise intervals are in the released table.}
+\end{tabular}%
+}
+\caption{Seed-0 means with 95\% group-cluster bootstrap intervals (256 samples). Seed ranges across the three seeds are shaded in Figure~\ref{fig:latcross}; norm is $\lVert z_k\rVert/\sqrt d$.}
 \label{tab:latstat}
 \end{table}
 
@@ -308,8 +344,7 @@ sepCMA & $+0.41$ & $+0.52$ & 0.35 & 67\% \\
 \end{tabular}
 \caption{All five optimizers in the 45-search study (3 model seeds $\times$ 5 algorithms $\times$ 3 optimizer seeds, 336 evaluations each). Gains are in pp over the $\alpha\equiv1$ baseline on the 192-example inner subset; one example equals $0.52$pp. MGA is reported as a separate algorithm.}
 \label{tab:opt5}
-\end{table} 
-
+\end{table}
 
 \begin{figure}[t]
 \centering
@@ -358,6 +393,7 @@ T1 & 2 & $-0.39$ & $[-2.73,1.95]$ inconclusive \\
 \caption{Frozen GRU-s0 alpha policy: per-seed EM difference vs.\ forced $e_3$.}
 \label{tab:trans}
 \end{table}
+
 \begin{table}[t]
 \centering
 \footnotesize
@@ -412,7 +448,6 @@ Limited computing resources kept the models small and the number of architecture
 
 \bibliography{references}
 
-
 \begin{table}[t]
 \centering
 \footnotesize
@@ -463,10 +498,6 @@ Under the shared 256-sample protocol, the fixed $(0.85,0.90)$ threshold is non-i
 \section{Detailed Result Tables}
 \label{app:tables}
 The main text reports the headline numbers; this appendix collects the full per-seed evidence so that every claim can be checked against the raw artifacts. Table~\ref{tab:halting} gives the per-seed halting results, Table~\ref{tab:frontier} compares the fixed threshold with the cheapest searched policy, and Table~\ref{tab:confirm} records the one-shot confirmation. Under this same outer protocol the fixed threshold is non-inferior on all three GRU seeds, whereas two of the nine evolutionary policies are non-inferior; this is why the main text treats the search gain as small. The feature-group ablations on $s_0$ (Table~\ref{tab:halting} and Figure~\ref{fig:latent}) show a gain of $+0.00$pp for the entropy-only mask B. Tables~\ref{tab:decomp} and \ref{tab:devconfirm} provide the policy decomposition, the development-set check, and the latent dynamics statistics. Figures~\ref{fig:latent} and \ref{fig:traj} show the search curves and the depth trajectories.
-
-
-
-
 
 \begin{table}[t]
 \centering

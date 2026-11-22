@@ -37,6 +37,302 @@
 
 我们提出 TRACER，一个把递归视为先测量、再控制的对象的框架。第一个组件仅使用其所门控的精化之前就已可得的置信度停算词元；基于置信度的推理早已用这类读数调整深度或弃答 \citep{liu2020fastbert,xin2020deebert,geifman2017selective}。带前向钩子的 active-subset 执行器确认被跳过的精化确实没有被计算。第二个组件记录四个架构的潜状态轨迹，把每条轨迹化为范数、位移与更新方向；这些摘要描述模型内部跨精化的变化，揭示首次增益在何处饱和、何处没有。第三个组件在 336 次评估的等预算下搜索一个五参数步长策略，并在留出数据与三个未见架构上检验冻结后的策略。等预算比较很重要，因为增益相对于种子波动很小，而非劣效检验为"以更少计算换取不损失准确率"提供了合适的统计框架 \citep{docampobayon2025noninferiority,gu2023evaluation}。在 COGS 上，停算在多数种子上以最深调用数的四分之一保持准确率，审计过的执行器确认节省的调用并未执行，单序列延迟随调用数下降。跨架构轨迹呈现两种状态机制，而非一种普适的精化动力学。进化搜索的中位增益为内层子集的一个样本，冻结策略只在部分目标种子上非劣。我们与正面结果一并报告这些边界。
 
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+    font=\sffamily\fontsize{6.8pt}{8.2pt}\selectfont,
+    >=Stealth,
+    line width=0.65pt,
+    % Card Styles
+    cardBlue/.style={
+        draw=oiBlue, fill=oiBlue!14,
+        line width=1.15pt, rounded corners=2.5pt, inner sep=0pt
+    },
+    cardGray/.style={
+        draw=oiGray, fill=white,
+        line width=0.75pt, rounded corners=2.5pt, inner sep=0pt
+    },
+    cardGreen/.style={
+        draw=oiGreen, fill=oiGreen!12,
+        line width=0.75pt, rounded corners=2.5pt, inner sep=0pt
+    },
+    cardOrange/.style={
+        draw=oiOrange, fill=oiOrange!12,
+        line width=0.85pt, rounded corners=2.5pt, inner sep=0pt
+    },
+    hdr/.style={
+        font=\sffamily\fontsize{6.6pt}{7.8pt}\selectfont\bfseries,
+        text=white, align=center, inner xsep=2pt, inner ysep=2.2pt,
+        rounded corners=1.8pt
+    },
+    probe/.style={
+        circle, draw=oiBlue, fill=white, line width=0.95pt,
+        minimum size=4.4pt, inner sep=0pt
+    },
+    panelBadge/.style={
+        font=\sffamily\fontsize{7pt}{8pt}\selectfont\bfseries,
+        text=white, fill=oiGray!85!black, rounded corners=2pt, inner xsep=5pt, inner ysep=2pt
+    },
+    panelTitle/.style={
+        font=\sffamily\fontsize{7.5pt}{9pt}\selectfont\bfseries,
+        text=black, inner sep=0pt
+    },
+    tag/.style={font=\sffamily\fontsize{5.8pt}{6.8pt}\selectfont, inner sep=1pt}
+]
+
+% Two-tone Header Card Macro
+\newcommand{\richcard}[7]{
+    \node[#4] (#1) at (#2) {
+        \begin{minipage}{#3}
+            \centering
+            \tikz{\node[hdr, fill=#5, minimum width=#3, text width=\dimexpr#3-4pt\relax] {#6};}\\[-0.5pt]
+            \begin{minipage}{\dimexpr#3-8pt\relax}
+                \vspace{3pt}\centering #7 \vspace{3pt}
+            \end{minipage}
+        \end{minipage}
+    };
+}
+
+\def\xLeft{-0.25}
+\def\xRight{19.35}
+
+% ==============================================================================
+% PANEL (a) CONTENT
+% ==============================================================================
+\node[panelBadge, anchor=west] (badgeA) at (-0.05, 5.02) {(a)};
+\node[panelTitle, right=5pt of badgeA] (titleA) {Token 级因果自适应停算与实际计算量核算};
+
+% Legend placed directly after titleA with normal spacing
+\node[draw=oiGray, fill=white, minimum width=8pt, minimum height=5.5pt, inner sep=0pt, rounded corners=1pt, right=12pt of titleA] (l1) {};
+\node[tag, right=2pt of l1] (l1t) {冻结 GRU ($F$)};
+\node[draw=oiBlue, fill=oiBlue!22, line width=0.9pt, minimum width=8pt, minimum height=5.5pt, inner sep=0pt, rounded corners=1pt, right=7pt of l1t] (l2) {};
+\node[tag, right=2pt of l2] (l2t) {本文（因果控制）};
+\node[draw=oiGreen, fill=oiGreen!18, minimum width=8pt, minimum height=5.5pt, inner sep=0pt, rounded corners=1pt, right=7pt of l2t] (l3) {};
+\node[tag, right=2pt of l3] (l3t) {数据 / I/O};
+\node[draw=oiOrange, fill=oiOrange!18, minimum width=8pt, minimum height=5.5pt, inner sep=0pt, rounded corners=1pt, right=7pt of l3t] (l4) {};
+\node[tag, right=2pt of l4] (l4t) {泛化代价};
+
+\def\yA{2.78}
+
+% 1. Input Card (Green)
+\richcard{inA}{1.20, \yA}{2.45cm}{cardGreen}{oiGreen}{输入样例}{
+    \textit{“一朵玫瑰帮了一条狗。”}\\[2.5pt]
+    \tikz{
+        \foreach \x/\lbl in {0/$y_{i-1}$, 0.90/$c_i$} {
+            \draw[draw=oiGreen, fill=white, rounded corners=0.8pt] (\x,0) rectangle ++(0.78, 0.22);
+            \node[font=\sffamily\fontsize{5.3pt}{5.3pt}\selectfont] at (\x+0.39, 0.11) {\lbl};
+        }
+    }\\[2pt]
+    Context \& Prefix
+}
+
+% 2. Base Step e_0 (Gray)
+\richcard{baseA}{3.95, \yA}{2.05cm}{cardGray}{oiGray}{基步 ($e_0$)}{
+    冻结 GRU 单元\\[2.5pt]
+    \tikz{
+        \foreach \k in {0,1,2,3,4} {
+            \draw[draw=oiGray, fill=oiGray!30] (\k*0.25,0) rectangle ++(0.19, 0.17);
+        }
+    }\\[2pt]
+    Latent $z_i^{(0)}$
+}
+
+% 3. Gate 0 (Blue - Ours)
+\richcard{gate0}{6.60, \yA}{2.30cm}{cardBlue}{oiBlue}{门控 0（本文）}{
+    $x_i^{(0)} \in \mathbb{R}^8$\\[1.5pt]
+    \tikz{
+        \node[font=\sffamily\fontsize{5.2pt}{5.2pt}\selectfont, text=oiOrange, anchor=south] at (1.12, 0.24) {$\tau_0$};
+        \draw[draw=oiGray!70, fill=white, rounded corners=0.6pt] (0,0) rectangle (1.55, 0.20);
+        \fill[oiBlue!55] (0.02,0.02) rectangle (1.30, 0.18);
+        \draw[draw=oiOrange, line width=0.95pt] (1.12, -0.03) -- (1.12, 0.24);
+    }\\[1.5pt]
+    $\mathrm{top}_1 \ge \tau_0$?
+}
+
+% 4. Refinement 1 e_1 (Gray)
+\richcard{ref1}{9.45, \yA}{2.30cm}{cardGray}{oiGray}{精炼 1 ($e_1$)}{
+    Frozen Cell $F$\\[2.5pt]
+    \tikz{
+        \foreach \k in {0,1,2,3,4} {
+            \draw[draw=oiGray, fill=oiGray!48] (\k*0.25,0) rectangle ++(0.19, 0.17);
+        }
+    }\\[2pt]
+    $z_i^{(1)} = z_i^{(0)} + \Delta z_i^{(0)}$
+}
+
+% 5. Gate 1 (Blue - Ours)
+\richcard{gate1}{12.30, \yA}{2.30cm}{cardBlue}{oiBlue}{门控 1（本文）}{
+    $x_i^{(1)} \in \mathbb{R}^{12}$\\[1.5pt]
+    \tikz{
+        \node[font=\sffamily\fontsize{5.2pt}{5.2pt}\selectfont, text=oiOrange, anchor=south] at (1.22, 0.24) {$\tau_1$};
+        \draw[draw=oiGray!70, fill=white, rounded corners=0.6pt] (0,0) rectangle (1.55, 0.20);
+        \fill[oiBlue!55] (0.02,0.02) rectangle (1.38, 0.18);
+        \draw[draw=oiOrange, line width=0.95pt] (1.22, -0.03) -- (1.22, 0.24);
+    }\\[1.5pt]
+    $\mathrm{top}_1 \ge \tau_1$?
+}
+
+% 6. Remaining Refinements x2 -> e_3 (Stacked Gray Cards)
+\node[draw=oiGray, fill=white, rounded corners=2.5pt, minimum width=2.35cm, minimum height=50pt] (refK_s2) at (15.27, \yA+0.12) {};
+\node[draw=oiGray, fill=white, rounded corners=2.5pt, minimum width=2.35cm, minimum height=50pt] (refK_s1) at (15.20, \yA+0.06) {};
+\richcard{refK}{15.13, \yA}{2.35cm}{cardGray}{oiGray}{精炼（$\times 2$）}{
+    Frozen $F \rightarrow e_3$\\[2.5pt]
+    \tikz{
+        \foreach \k in {0,1,2,3,4} {
+            \draw[draw=oiGray, fill=oiGray!68] (\k*0.25,0) rectangle ++(0.19, 0.17);
+        }
+    }\\[2pt]
+    $z_i^{(k+1)} = z_i^{(k)} + \Delta z_i^{(k)}$
+}
+
+% 7. Output Card (Green)
+\richcard{outA}{17.90, \yA}{2.35cm}{cardGreen}{oiGreen}{输出 token $y_i$}{
+    \texttt{rose(x\_1) ...}\\[2.5pt]
+    \tikz{
+        \draw[draw=oiGreen, fill=white, rounded corners=1pt] (0,0) rectangle (1.65, 0.19);
+        \node[font=\sffamily\fontsize{5.3pt}{5.3pt}\selectfont, text=black] at (0.825, 0.095) {Audited $N_{\mathrm{cell}}$};
+    }\\[2pt]
+    精确轨迹
+}
+
+% Main Pipeline Arrows
+\draw[->] (inA.east) -- (baseA.west);
+\draw[->] (baseA.east) -- (gate0.west);
+\draw[->] (gate0.east) -- node[tag, above=1pt] {否} (ref1.west);
+\draw[->] (ref1.east) -- (gate1.west);
+\draw[->] (gate1.east) -- node[tag, above=1pt] {否} (refK.west);
+\draw[->] (refK.east) -- (outA.west);
+
+% Top Early-Exit Rails (Blue)
+\draw[->, draw=oiBlue, line width=0.95pt]
+    (gate0.north) -- ++(0, 0.72) -| node[tag, pos=0.22, above=1pt, text=oiBlue] {\textbf{是}: Halt early ($0$ refinement calls; $87\text{--}91\%$ stable)} ([xshift=-8pt]outA.north);
+
+\draw[->, draw=oiBlue, line width=0.95pt]
+    (gate1.north) -- ++(0, 0.34) -| node[tag, pos=0.28, above=1pt, text=oiBlue] {\textbf{是}: Halt early ($1$ refinement call)} ([xshift=8pt]outA.north);
+
+% Runtime Interception Audit Bus (Bottom)
+\node[draw=oiBlue, fill=oiBlue!14, line width=1.05pt, rounded corners=2.5pt, inner xsep=8pt, inner ysep=3.2pt, align=center] (counter) at (9.45, 0.90) {
+    \textbf{\textcolor{oiBlue}{实际计算量核算（运行时拦截）：}} \quad
+    $N_{\mathrm{cell}} = \#\{\mathrm{基步}\} + \#\{\mathrm{精炼调用}\}$
+};
+
+% Interception Probes on Frozen Modules
+\node[probe] (pr1) at (baseA.south) {};
+\node[probe] (pr2) at (ref1.south) {};
+\node[probe] (pr3) at (refK.south) {};
+
+\draw[dashed, draw=oiBlue, line width=0.8pt] (pr1) -- ++(0, -0.46) -| ([xshift=-2.6cm]counter.north);
+\draw[->, dashed, draw=oiBlue, line width=0.8pt] (pr2) -- (pr2 |- counter.north);
+\draw[dashed, draw=oiBlue, line width=0.8pt] (pr3) -- ++(0, -0.46) -| ([xshift=2.6cm]counter.north);
+\draw[->, dashed, draw=oiBlue, line width=0.8pt] (counter.east) -| (outA.south);
+
+% Background layers for Panel (a)
+\begin{pgfonlayer}{background}
+    % Outer Panel (a) Frame
+    \draw[draw=oiGray!65, fill=oiGray!4, line width=0.85pt, rounded corners=4pt]
+        (\xLeft, 0.48) rectangle (\xRight, 5.26);
+    \fill[oiGray!14, rounded corners=3.5pt] (\xLeft+0.02, 4.79) rectangle (\xRight-0.02, 5.24);
+    \draw[draw=oiGray!45, line width=0.5pt] (\xLeft, 4.79) -- (\xRight, 4.79);
+
+    % Inner Zone Box for Recursive GRU Seq2Seq
+    \node[draw=oiGray, fill=oiGray!7, dashed, line width=0.7pt, rounded corners=3.5pt, inner sep=6.5pt,
+          fit=(baseA)(ref1)(refK)(refK_s2),
+          label={[tag, text=oiGray, anchor=south west]north west:\textbf{递归 GRU Seq2Seq（冻结检查点）}}] {};
+\end{pgfonlayer}
+
+
+% ==============================================================================
+% PANEL (b) CONTENT
+% ==============================================================================
+\node[panelBadge, anchor=west] (badgeB) at (-0.05, 0.00) {(b)};
+\node[panelTitle, right=5pt of badgeB] (titleB) {演化式隐状态步长控制与联合控制分析（固定预算）};
+
+\def\yB{-1.52}
+
+% 1. 因果信号 (Green)
+\richcard{inB}{1.20, \yB}{2.45cm}{cardGreen}{oiGreen}{因果信号}{
+    状态 $z_i^{(k)}$ 与前缀\\[2.5pt]
+    \tikz{
+        \foreach \lbl/\x in {$\tilde{H}$/0, $\tilde{D}$/0.46, $\tilde{A}$/0.92, $\frac{k}{K}$/1.38} {
+            \node[draw=oiGreen, fill=white, rounded corners=0.8pt, minimum width=11pt, minimum height=10pt, inner sep=0.5pt, font=\sffamily\fontsize{5.4pt}{5.4pt}\selectfont] at (\x+0.2, 0.1) {\lbl};
+        }
+    }\\[1.5pt]
+    第 $k$ 步的因果量
+}
+
+% 2. Frozen Cell Update Proposal (Gray)
+\richcard{propB}{4.05, \yB}{2.25cm}{cardGray}{oiGray}{冻结提议}{
+    Cell $F$ Delta\\[2.5pt]
+    \tikz{
+        \draw[->, draw=oiGray, line width=1.15pt] (0,0.08) -- (1.45,0.08);
+        \node[font=\sffamily\fontsize{5.5pt}{5.5pt}\selectfont, text=oiGray, above] at (0.725, 0.08) {$\Delta z_i^{(k)}$};
+    }\\[1.5pt]
+    未缩放步（$\alpha=1$）
+}
+
+% 3. Step-Size Policy (Blue - Ours)
+\richcard{stepB}{7.55, \yB}{3.75cm}{cardBlue}{oiBlue}{步长策略（本文）}{
+    $\alpha_i^{(k)} = \sigma\!\left(w_0 + w_1\tilde{H} + w_2\tilde{D} + w_3\tilde{A} + w_4\frac{k}{K}\right)$\\[2.5pt]
+    \tikz{
+        \draw[draw=oiGray!60, fill=white, rounded corners=0.6pt] (0,0) rectangle (2.05, 0.17);
+        \fill[oiBlue!65] (0.02,0.02) rectangle (1.30, 0.15);
+        \node[font=\sffamily\fontsize{5.3pt}{5.3pt}\selectfont, text=oiBlue, anchor=west] at (2.12, 0.085) {$\alpha_i^{(k)} \in (0,1)$};
+    }
+}
+
+% 4. 调制后的精炼 (Blue - Ours)
+\richcard{modB}{11.75, \yB}{3.55cm}{cardBlue}{oiBlue}{调制后的精炼}{
+    $z_i^{(k+1)} = z_i^{(k)} + \alpha_i^{(k)}\Delta z_i^{(k)}$\\[2.5pt]
+    \tikz{
+        \draw[->, draw=oiGray!65, dashed, line width=0.8pt] (0,0.16) -- (1.30,0.16);
+        \draw[->, draw=oiBlue, line width=1.2pt] (0,0.03) -- (0.82,0.03);
+        \node[font=\sffamily\fontsize{5.3pt}{5.3pt}\selectfont, text=oiBlue, anchor=west] at (1.38, 0.095) {$\times K$ ($N_{\mathrm{cell}}$ const.)};
+    }
+}
+
+% 5. 联合 Control Generalization Failure (Orange - Cost/Failure)
+\richcard{jointB}{16.65, \yB}{4.85cm}{cardOrange}{oiOrange}{联合控制（$26$ 个有效自由度）}{
+    Gates ($24\mathrm{D}$) $+$ Step-Size ($5\mathrm{D}$)\\[2pt]
+    \tikz{
+        \node[font=\sffamily\fontsize{5.1pt}{5.1pt}\selectfont, text=oiOrange, anchor=south] at (0.85, 0.24) {$-0.5\text{pp}$ NI};
+        \draw[draw=oiGray!70] (0,0.10) -- (2.35,0.10);
+        \draw[draw=oiOrange, dashed, line width=0.9pt] (0.85, -0.02) -- (0.85, 0.23);
+        \draw[draw=oiOrange, line width=1.15pt] (0.40, 0.10) -- (1.65, 0.10);
+        \draw[draw=oiOrange, line width=0.9pt] (0.40, 0.04) -- (0.40, 0.16);
+        \draw[draw=oiOrange, line width=0.9pt] (1.65, 0.04) -- (1.65, 0.16);
+        \fill[oiOrange] (1.15, 0.10) circle (1.7pt);
+        \node[font=\sffamily\fontsize{5.3pt}{5.3pt}\selectfont, text=oiOrange, anchor=west] at (2.42, 0.10) {未通过留出集非劣效};
+    }
+}
+
+% Panel (b) Flow Arrows
+\draw[->] (inB.east) -- (propB.west);
+\draw[->] (propB.east) -- (stepB.west);
+\draw[->] (stepB.east) -- (modB.west);
+\draw[->, dashed, draw=oiOrange, line width=0.85pt] (modB.east) -- node[tag, above=1pt, text=oiOrange] {联合} (jointB.west);
+
+% Background layers for Panel (b)
+\begin{pgfonlayer}{background}
+    % Inner Zone Box for Constant-Compute Control
+    \node[draw=oiBlue, fill=oiBlue!6, dashed, line width=0.85pt, rounded corners=3.5pt, inner sep=6pt,
+          fit=(stepB)(modB)] (zoneB) {};
+    \node[tag, text=oiBlue, anchor=north] (zoneBLabel) at ($(zoneB.south)+(0,-1.5pt)$) {\textbf{固定深度隐状态动力学控制（本文）}};
+
+    % Outer Panel (b) Frame (Dynamically encloses zoneBLabel with generous bottom margin)
+    \path let \p1 = (zoneBLabel.south) in
+        node[draw=oiGray!65, fill=oiGray!4, line width=0.85pt, rounded corners=4pt, inner sep=0pt,
+             fit={(\xLeft, \y1-6pt) (\xRight, 0.24)}] (panelBBox) {};
+    \fill[oiGray!14, rounded corners=3.5pt] (\xLeft+0.02, -0.22) rectangle (\xRight-0.02, 0.22);
+    \draw[draw=oiGray!45, line width=0.5pt] (\xLeft, -0.22) -- (\xRight, -0.22);
+\end{pgfonlayer}
+
+\end{tikzpicture}
+}
+\caption{\textbf{因果停算跳过冗余精炼，同时审计执行调用。} \textbf{(a)} 在 token $i$ 处，冻结的递归 GRU 步（$e_0, e_1, e_3$，灰色）由因果置信阈值（蓝色，本文）用前缀信号（$x_i^{(0)}, x_i^{(1)}$）门控，未被执行的精炼不会运行，而运行时拦截从输入到输出统计真实调用数（$N_{\mathrm{cell}}$，绿色）。\textbf{(b)} 在固定深度上，进化式步长策略通过 $\alpha_i^{(k)}$ 调制 $\Delta z_i^{(k)}$，其增益与迁移边界在实验中另有评估。}
+\label{fig:method_overview}
+\end{figure}
+
 \section{相关工作}
 \label{sec:related}
 
@@ -188,6 +484,33 @@ T1 & $0.654$ & $0.815$ & $0.803$ & $0.792$ \\
 \label{tab:halting}
 \end{table}
 
+\begin{table}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{1.2pt}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{@{}llcccccl@{}}
+\toprule
+架构 & 种子 & 强制 $e_3$ & 停算 & $\Delta$EM & 95\% CI & $N_{\mathrm{cell}}$ & NI \\ \midrule
+GRU & $s_0$ & $0.879$ & $0.879$ & $+0.00$ & $[0.00,0.00]$ & 0.266 & \checkmark \\
+GRU & $s_1$ & $0.844$ & $0.844$ & $+0.00$ & $[0.00,0.00]$ & 0.268 & \checkmark \\
+GRU & $s_2$ & $0.891$ & $0.891$ & $+0.00$ & $[0.00,0.00]$ & 0.267 & \checkmark \\
+RNN & $s_0$ & $0.434$ & $0.438$ & $+0.39$ & $[0.00,1.17]$ & 0.317 & \checkmark \\
+RNN & $s_1$ & $0.547$ & $0.551$ & $+0.39$ & $[0.00,1.17]$ & 0.324 & \checkmark \\
+RNN & $s_2$ & $0.480$ & $0.461$ & $-1.95$ & $[-3.91,-0.39]$ & 0.322 & $\times$ \\
+LSTM & $s_0$ & $0.629$ & $0.629$ & $+0.00$ & $[0.00,0.00]$ & 0.302 & \checkmark \\
+LSTM & $s_1$ & $0.312$ & $0.312$ & $+0.00$ & $[0.00,0.00]$ & 0.320 & \checkmark \\
+LSTM & $s_2$ & $0.328$ & $0.328$ & $+0.00$ & $[0.00,0.00]$ & 0.324 & \checkmark \\
+T1 & $s_0$ & $0.871$ & $0.848$ & $-2.34$ & $[-5.47,0.78]$ & 0.260 & $\ ?$ \\
+T1 & $s_1$ & $0.648$ & $0.703$ & $+5.47$ & $[1.17,10.16]$ & 0.262 & \checkmark \\
+T1 & $s_2$ & $0.856$ & $0.809$ & $-4.69$ & $[-7.81,-1.95]$ & 0.267 & $\times$ \\
+\bottomrule
+\end{tabular}%
+}
+\caption{256 样本上的阈值停算。$\Delta$EM 相对强制 $e_3$；NI 按 LCB$_{95}\geq-0.5$pp。$N_{\mathrm{cell}}$ 为停算与强制 $e_3$ 的调用比。$\times$：显著变差；$?$：不确定。九非劣、两显著负、一不确定。}
+\label{tab:halt12}
+\end{table}
+
 图~\ref{fig:frontier} 与表~\ref{tab:frontier} 将阈值置于准确率与计算的前沿上。优化器找到的最省策略最多比阈值少用 2.1\% 的调用，且在种子 0 与 1 上未通过阈值通过的非劣效界。运行时钩子补全了计算量核算：强制 $e_0$ 下，带插桩的解码器在三个循环模型的 52{,}458 个生成词元上触发零次精化调用，计数调用与拦截调用在全部 12 种设置中一致。表~\ref{tab:wall} 把调用减少换算成墙钟时间。active-subset 执行器在批大小 1、4、8、32 上给出 0.43--0.64 的停算与强制 $e_3$ 之比；逐样本的 T1 执行器给出 0.297。这些时间比高于调用比，因为基步、注意力、输出投影、门控与每步 Python 工作两侧都要付出，且不计入 $N_{\mathrm{cell}}$。两个执行器分开报告，不合并统计。
 
 \begin{figure}[H]
@@ -230,7 +553,7 @@ RNN & 0.452 & 0.468 & 0.555 & 0.640 \\
 LSTM & 0.430 & 0.471 & 0.538 & 0.611 \\
 \bottomrule
 \end{tabular}
-\caption{active-subset 执行器的停算与强制 $e_3$ 中位墙钟时间比。}
+\caption{active-subset 执行器的停算与强制 $e_3$ 中位墙钟时间比；两线程、2 次预热、10 次交错测试；$b{=}1$ 用 16 个样本，$b{=}4/8/32$ 用 64 个。逐样本 T1 执行器（0.297）为独立测量，未并入本表。}
 \label{tab:wall}
 \end{table}
 
@@ -242,31 +565,32 @@ LSTM & 0.430 & 0.471 & 0.538 & 0.611 \\
 \caption{四个架构的六项潜状态动力学指标随深度的变化，阴影为种子范围。}
 \label{fig:latcross}
 \end{figure}
-\begin{table}[H]
-\centering\footnotesize
+\begin{table}[t]
+\centering
+\footnotesize
+\resizebox{\linewidth}{!}{%
 \begin{tabular}{@{}lcccc@{}}
 \toprule
-架构 & 状态范数 $e_0$ & 更新范数 $e_1$ & 余弦 $e_2$ & 预测变化 $e_3$ \\
-\midrule
-GRU & 0.89 & 0.70 & 0.20 & 0.0005 \\
-RNN & 0.92 & 0.87 & 0.09 & 0.0042 \\
-LSTM & 0.69 & 0.48 & 0.38 & 0.0041 \\
-T1 & 5.38 & 1.79 & 0.95 & 0.0027 \\
+Arch & norm $e_0$ & upd $e_1$ & cos $e_2$ & $\Delta y$ $e_3$ \\ \midrule
+GRU & 0.90 $[0.90,0.90]$ & 0.70 $[0.70,0.70]$ & 0.19 $[0.18,0.19]$ & 0.0004 $[0.0002,0.0007]$ \\
+RNN & 0.92 $[0.92,0.92]$ & 0.89 $[0.88,0.89]$ & 0.09 $[0.09,0.09]$ & 0.0059 $[0.0038,0.0082]$ \\
+LSTM & 0.69 $[0.69,0.69]$ & 0.48 $[0.48,0.48]$ & 0.39 $[0.38,0.39]$ & 0.0023 $[0.0014,0.0032]$ \\
+T1 & 5.16 $[5.13,5.20]$ & 1.83 $[1.83,1.84]$ & 0.96 $[0.96,0.96]$ & 0.0020 $[0.0012,0.0030]$ \\
 \bottomrule
-\end{tabular}
-\caption{四项潜状态指标的种子均值（3 个种子，256 样本）。范数为 $\lVert z_k\rVert/\sqrt d$；完整逐深度区间见公开结果表。}
+\end{tabular}%
+}
+\caption{种子 0 的均值与 95\% 组簇自助区间（256 样本）。三种子的范围见图~\ref{fig:latcross}；范数为 $\lVert z_k\rVert/\sqrt d$。}
 \label{tab:latstat}
 \end{table}
 
-第三条主线问更新本身能否改进。表~\ref{tab:optagg} 汇总了五个优化器的 45 次等预算搜索。每种算法的中位增益都是 $+0.52$pp，即 192 样本内层子集中的一个样本，均值从 sep-CMA-ES 的 $+0.41$pp 到 GA 与 DE 的 $+0.81$pp。跨模型种子，基线标准差为 2.4pp，是搜索效应的数倍，单次 $+2.08$pp 运行是异常点。随机搜索具有竞争力，没有单一优化器稳定胜出。图~\ref{fig:optcurves} 给出每次运行相对自身基线的迄今最佳增益。输入消融显示，仅时间策略与仅输入侧动力学特征策略各自在 $s_0$ 上复现了 GA 的全部增益，而仅熵策略不能，因此增益不能唯一归因于时间调度或输入侧动力学特征。
+第三条主线问更新本身能否改进。表~\ref{tab:opt5} 汇总了五个优化器的 45 次等预算搜索。每种算法的中位增益都是 $+0.52$pp，即 192 样本内层子集中的一个样本，均值从 sep-CMA-ES 的 $+0.41$pp 到 GA 与 DE 的 $+0.81$pp。跨模型种子，基线标准差为 2.4pp，是搜索效应的数倍，单次 $+2.08$pp 运行是异常点。随机搜索具有竞争力，没有单一优化器稳定胜出。图~\ref{fig:optcurves} 给出每次运行相对自身基线的迄今最佳增益。输入消融显示，仅时间策略与仅输入侧动力学特征策略各自在 $s_0$ 上复现了 GA 的全部增益，而仅熵策略不能，因此增益不能唯一归因于时间调度或输入侧动力学特征。
 
 \begin{table}[t]
 \centering
 \footnotesize
 \begin{tabular}{@{}lcccc@{}}
 \toprule
-Algorithm & Mean (pp) & Median (pp) & Std (pp) & Win \\
-\midrule
+Algorithm & Mean (pp) & Median (pp) & Std (pp) & Win \\ \midrule
 RS & $+0.64$ & $+0.52$ & 0.63 & 67\% \\
 GA & $+0.81$ & $+0.52$ & 0.64 & 89\% \\
 MGA & $+0.46$ & $+0.52$ & 0.17 & 89\% \\
@@ -274,31 +598,32 @@ DE & $+0.81$ & $+0.52$ & 0.53 & 89\% \\
 sepCMA & $+0.41$ & $+0.52$ & 0.35 & 67\% \\
 \bottomrule
 \end{tabular}
-\caption{45 次搜索汇总；相对 $\alpha\!\equiv\!1$ 基线的增益（pp），192 样本内层子集。}
-\label{tab:optagg}
+\caption{45 次搜索中的五种优化器（3 模型种子 × 5 算法 × 3 优化器种子，各 336 次评估）。增益为相对 $\alpha\equiv1$ 基线的 pp，192 样本内层子集，一个样本为 $0.52$pp；MGA 作为独立算法报告。}
+\label{tab:opt5}
 \end{table}
+
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{optimizer_curves.png}
 \caption{每次搜索相对自身基线的最佳至当前增益（每种算法九次运行的均值）。}
 \label{fig:optcurves}
 \end{figure}
-\begin{table}[H]
+
+
+\begin{table}[t]
 \centering
 \footnotesize
-\setlength{\tabcolsep}{1.5pt}
-\begin{tabular}{lcccc|ccc}
+\begin{tabular}{@{}llccl@{}}
 \toprule
- & \multicolumn{4}{c|}{搜索（内层 EM 增益，pp）} & \multicolumn{3}{c}{消融（GA，$s_0$）} \\
-种子 & RS & GA & DE & CMA & A: $k/K$ & B: $H$ & C: $D,A$ \\
-\midrule
-$s_0$ & $+0.00$ & $+0.52$ & $+0.52$ & $+0.00$ & $+0.52$ & $+0.00$ & $+0.52$ \\
-$s_1$ & $+1.04$ & $+1.56$ & $+1.04$ & $+2.08$ & n/a & n/a & n/a \\
-$s_2$ & $+0.52$ & $+0.52$ & $+1.04$ & $+0.00$ & n/a & n/a & n/a \\
+Seed & Best & Outer $\Delta$EM & 95\% CI (pp) & NI \\ \midrule
+$s_0$ & DE & $+0.000$ & $[-0.519,+0.527]$ & $\times$ \\
+$s_1$ & GA & $-0.469$ & $[-1.357,+0.000]$ & $\times$ \\
+$s_2$ & DE & $+0.000$ & $[-0.469,+0.538]$ & \checkmark \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{步长策略在计算量恒定时提高固定深度的精确匹配准确率。} 相对原始 $\alpha{\approx}1$ 更新、在内层子集（$n{=}192$）上的固定深度（$N_{\mathrm{cell}}$ 恒定）改进；所有搜索恰用 336 次评估，CMA 指 sep-CMA-ES。人工设计的线性递减 schedule（$\alpha_k = 1.0-0.5k/K$，深度 3 时即 $[1.0, 0.833, 0.667]$）与固定 $\alpha \in \{0.75, 0.5, 0.25\}$ 都不超过 $\alpha{\approx}1$ 基线。$s_0$ 上的消融把策略输入限制到单一特征组；全特征 GA 结果对应 GA 列。}
-\label{tab:latent}
+\caption{三个 GRU 步长策略的外层折确认（每种子 $n=640$）。仅种子 2 满足非劣效界；种子 0 以 0.019pp 之差未过界（LCB $-0.519$pp）。}
+\label{tab:alpha_confirm}
 \end{table}
 
 选出的策略在任何外层评估之前就已冻结。在 GRU 自己的外层折上，三个种子中有一个满足非劣效界；另外两个中一个勉强未达界，一个明显未达界。把这一条冻结 GRU 策略用于 RNN、LSTM 与 T1，得到 9 个种子中 4 个非劣、5 个不确定，没有显著变差，表~\ref{tab:trans} 给出细节。另一条冻结阈值策略在未触碰的 COGS 开发集上只评估一次，在两个种子上复现了留出计算比，在第三个种子上相差 0.003。表~\ref{tab:confirm} 区分了在确认中保留下来的增益与只出现在内层子集上的增益。
@@ -378,9 +703,26 @@ TRACER 把三件事放在一起：追踪预测与状态，判断是否需要再�
 有限的计算资源使模型规模较小，架构与种子数量也不多。实验只覆盖 COGS 一个语义解析数据集，观察到的模式不应直接推及大语言模型或更广的推理任务。四个架构在注意力类型与参数量上也不相同，因此这些比较描述的是同一任务下的行为变体，而不是对循环单元的受控消融。实验在 CPU 上以固定两线程设置完成，墙钟数字只描述这一环境，不代表大规模 GPU 服务或深得多的递归。至于潜状态动力学与控制规则在这些设置下是否仍然成立，目前还没有答案。
 
 \appendix
+
+\begin{table}[H]
+\centering\footnotesize
+\begin{tabular}{lcccc|ccc}
+\toprule
+ & \multicolumn{4}{c|}{内层 EM 增益（pp）} & \multicolumn{3}{c}{消融（GA, $s_0$）} \\
+种子 & RS & GA & DE & CMA & A: $k/K$ & B: $H$ & C: $D,A$ \\
+\midrule
+$s_0$ & $+0.00$ & $+0.52$ & $+0.52$ & $+0.00$ & $+0.52$ & $+0.00$ & $+0.52$ \\
+$s_1$ & $+1.04$ & $+1.56$ & $+1.04$ & $+2.08$ & n/a & n/a & n/a \\
+$s_2$ & $+0.52$ & $+0.52$ & $+1.04$ & $+0.00$ & n/a & n/a & n/a \\
+\bottomrule
+\end{tabular}
+\caption{旧协议下的四算法历史试验（RS、GA、DE、sep-CMA-ES，无 MGA），已被正文表~\ref{tab:opt5} 取代。}
+\label{tab:latent_hist}
+\end{table}
+
 \section{详细结果表}
 \label{app:tables}
-正文给出主要数字，这里收集逐种子的完整证据，便于对照原始结果文件。表~\ref{tab:halting} 是停算逐种子结果，表~\ref{tab:frontier} 比较固定阈值与最省的策略，表~\ref{tab:confirm} 记录一次性确认，表~\ref{tab:latent} 给出潜状态动力学统计，表~\ref{tab:decomp} 是策略分解，表~\ref{tab:devconfirm} 是开发集检查。图~\ref{fig:latent}、图~\ref{fig:traj} 与图~\ref{fig:confirm} 分别给出搜索曲线、深度轨迹与迁移结果。
+正文给出主要数字，这里收集逐种子的完整证据，便于对照原始结果文件。表~\ref{tab:halting} 是停算逐种子结果，表~\ref{tab:frontier} 比较固定阈值与最省的策略，表~\ref{tab:confirm} 记录一次性确认，历史表~\ref{tab:latent_hist} 给出潜状态动力学统计，表~\ref{tab:decomp} 是策略分解，表~\ref{tab:devconfirm} 是开发集检查。图~\ref{fig:latent}、图~\ref{fig:traj} 与图~\ref{fig:confirm} 分别给出搜索曲线、深度轨迹与迁移结果。
 
 
 
