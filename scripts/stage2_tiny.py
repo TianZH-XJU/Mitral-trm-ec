@@ -192,8 +192,11 @@ class Mamba1Tiny(nn.Module):
             torch.tensor(math.log(math.expm1(0.05))))
         self.out_proj = nn.Linear(self.d_inner, d_model, bias=False)
 
-    def forward(self, u):
-        """Full-sequence scan. u: (B, T, d_model) → (B, T, d_model)."""
+    def forward(self, u, return_state=False):
+        """Full-sequence scan. u: (B, T, d_model) → (B, T, d_model).
+        return_state=True also returns the SSM scan states
+        (B, T, d_inner, d_state) for latent diagnostics. Default path
+        is unchanged (train/decode equivalence preserved)."""
         B, T, _ = u.shape
         zxbc = self.in_proj(u)
         x, z, Bp, Cp, dt = torch.split(
@@ -216,6 +219,7 @@ class Mamba1Tiny(nn.Module):
         # batch scan over T
         h = torch.zeros(B, self.d_inner, self.n)
         ys = []
+        hs = [] if return_state else None
         for t in range(T):
             Ab = A_bar[:, t]                       # (B,di)
             Bb = B_bar[:, t]                       # (B,n)
@@ -223,12 +227,17 @@ class Mamba1Tiny(nn.Module):
             h = Ab.unsqueeze(-1) * h \
                 + Bb.unsqueeze(1) * xt.unsqueeze(-1)  # (B,di,n)
             h = h.clamp(-1e3, 1e3)                 # last-resort guard
+            if return_state:
+                hs.append(h)
             yt = (Cp[:, t].unsqueeze(1) * h).sum(-1) \
                 + D * xt                          # (B,di)
             ys.append(yt)
         y = torch.stack(ys, dim=1)                 # (B,T,di)
         y = y * Fn.silu(z)                         # gate
-        return self.out_proj(y)
+        out = self.out_proj(y)
+        if return_state:
+            return out, torch.stack(hs, dim=1)
+        return out
 
 
 class TinyRecursiveMamba(nn.Module):
