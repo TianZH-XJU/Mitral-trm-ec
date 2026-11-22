@@ -55,62 +55,54 @@
 \citation{stanley2002neat,such2017neuro}
 \@writefile{toc}{\contentsline {section}{\numberline {3}方法}{4}{section.3}\protected@file@percent }
 \newlabel{sec:method}{{3}{4}{方法}{section.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces 递归编码器--解码器架构（依据实际实现绘制）。编码器产生源端记忆与初始解码状态；基步 extsc{GRUCell} 由上一词元嵌入与注意力上下文得到 $z^{(0)}$。所有深度共享同一个精化 extsc{GRUCell} 与同一个输出头，深度增加不引入新参数。}}{4}{figure.caption.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \textbf  {TRACER：一个框架，三条研究主线。} \textbf  {(a)} 冻结的递归模型产生 $e_0$ 至 $e_3$ 四个深度。两道因果门控只读取其所控制的精化之前已可得的置信度，因此停下的词元不会进入被跳过的调用；前向钩子核对真实执行调用数 $N_{\mathrm  {cell}}$。\textbf  {(b)} 同一批检查点给出自由运行的潜状态轨迹，归纳为六项模型内摘要及自助区间，区分有界门控态与无界累积态。\textbf  {(c)} 在固定深度下，五参数步长策略缩放每次精化；策略先被冻结，再做一次性外层确认与跨架构迁移测试。三个面板共享同一执行调用定义与非劣效判据，每个面板最右侧标出相应结论的成立条件或边界。}}{5}{figure.caption.1}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:arch}{{1}{4}{递归编码器--解码器架构（依据实际实现绘制）。编码器产生源端记忆与初始解码状态；基步 extsc{GRUCell} 由上一词元嵌入与注意力上下文得到 $z^{(0)}$。所有深度共享同一个精化 extsc{GRUCell} 与同一个输出头，深度增加不引入新参数。}{figure.caption.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces 某输出位置上的递归精化。基步产生 $z^{(0)}$；共享算子 $F$ 用上一词元嵌入、基步注意力上下文与当前预测的软嵌入 $p^{(k)}E$ 把 $z^{(k)}$ 映射为 $z^{(k+1)}$。共享输出头在每个深度给出分布，参数量不随深度增加。}}{4}{figure.caption.2}\protected@file@percent }
-\newlabel{fig:refine}{{2}{4}{某输出位置上的递归精化。基步产生 $z^{(0)}$；共享算子 $F$ 用上一词元嵌入、基步注意力上下文与当前预测的软嵌入 $p^{(k)}E$ 把 $z^{(k)}$ 映射为 $z^{(k+1)}$。共享输出头在每个深度给出分布，参数量不随深度增加。}{figure.caption.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces 因果词元级停算。每道门控只读取其所控制的精化之前已算出的信号，停下的词元不会使用被跳过的计算。预测的退出深度与实际执行的调用不是同一个量：active-subset 执行器只对继续解码的行运行单元，前向钩子核对拦截到的调用数与 $N_{\mathrm  {cell}}$ 一致。}}{5}{figure.caption.3}\protected@file@percent }
-\newlabel{fig:halt}{{3}{5}{因果词元级停算。每道门控只读取其所控制的精化之前已算出的信号，停下的词元不会使用被跳过的计算。预测的退出深度与实际执行的调用不是同一个量：active-subset 执行器只对继续解码的行运行单元，前向钩子核对拦截到的调用数与 $N_{\mathrm {cell}}$ 一致。}{figure.caption.3}{}}
+\newlabel{fig:method_overview}{{1}{5}{\textbf {TRACER：一个框架，三条研究主线。} \textbf {(a)} 冻结的递归模型产生 $e_0$ 至 $e_3$ 四个深度。两道因果门控只读取其所控制的精化之前已可得的置信度，因此停下的词元不会进入被跳过的调用；前向钩子核对真实执行调用数 $N_{\mathrm {cell}}$。\textbf {(b)} 同一批检查点给出自由运行的潜状态轨迹，归纳为六项模型内摘要及自助区间，区分有界门控态与无界累积态。\textbf {(c)} 在固定深度下，五参数步长策略缩放每次精化；策略先被冻结，再做一次性外层确认与跨架构迁移测试。三个面板共享同一执行调用定义与非劣效判据，每个面板最右侧标出相应结论的成立条件或边界。}{figure.caption.1}{}}
 \citation{kim2020cogs}
 \citation{keysers2020measuring,furrer2020compositional}
 \citation{herzig2021span,shaw2021compositional}
 \citation{zheng2022disentangled}
 \citation{qiu2022evaluating,li2023slog}
 \citation{weissenhorn2022compositional}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces 进化式潜状态步长控制。四个因果可得特征与一个截距项构成五维策略；sigmoid 将其映射为 $\alpha ^{(k)}$，用于缩放固定深度下的精化位移。模型权重与精化步数不变，因此准确率变化只来自更新规则。}}{6}{figure.caption.4}\protected@file@percent }
-\newlabel{fig:alpha}{{4}{6}{进化式潜状态步长控制。四个因果可得特征与一个截距项构成五维策略；sigmoid 将其映射为 $\alpha ^{(k)}$，用于缩放固定深度下的精化位移。模型权重与精化步数不变，因此准确率变化只来自更新规则。}{figure.caption.4}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}实验}{6}{section.4}\protected@file@percent }
 \newlabel{sec:exp}{{4}{6}{实验}{section.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces \textbf  {TRACER 总览：追踪、停算与控制递归计算。} \textbf  {(a)} 在词元 $i$ 上，冻结的递归 GRU 产生 $e_0,e_1,e_3$ 三个深度（灰色）。两道因果置信门控（蓝色）只读取其所控制的精化之前就已可得的前缀信号 $x_i^{(0)},x_i^{(1)}$，因此停下的词元不会进入被跳过的调用。运行时拦截（绿色）统计真实的基步与精化调用，得到 $N_{\mathrm  {cell}}$，而不是推断出的退出深度。\textbf  {(b)} 在固定深度下，五参数策略把预测熵、更新幅度、更新方向与深度映射为步长 $\alpha _i^{(k)}\in (0,1)$，在不改变 $N_{\mathrm  {cell}}$ 的前提下缩放精化位移。该策略在冻结后只做一次外层确认，并在不做重新搜索的情况下迁移；迁移只覆盖部分目标种子（九个中四个非劣），这标出了所学规则的边界。}}{7}{figure.caption.5}\protected@file@percent }
-\newlabel{fig:method_overview}{{5}{7}{\textbf {TRACER 总览：追踪、停算与控制递归计算。} \textbf {(a)} 在词元 $i$ 上，冻结的递归 GRU 产生 $e_0,e_1,e_3$ 三个深度（灰色）。两道因果置信门控（蓝色）只读取其所控制的精化之前就已可得的前缀信号 $x_i^{(0)},x_i^{(1)}$，因此停下的词元不会进入被跳过的调用。运行时拦截（绿色）统计真实的基步与精化调用，得到 $N_{\mathrm {cell}}$，而不是推断出的退出深度。\textbf {(b)} 在固定深度下，五参数策略把预测熵、更新幅度、更新方向与深度映射为步长 $\alpha _i^{(k)}\in (0,1)$，在不改变 $N_{\mathrm {cell}}$ 的前提下缩放精化位移。该策略在冻结后只做一次外层确认，并在不做重新搜索的情况下迁移；迁移只覆盖部分目标种子（九个中四个非劣），这标出了所学规则的边界。}{figure.caption.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}数据集}{7}{subsection.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}实验环境}{7}{subsection.4.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces 架构配置。Mamba 为单种子边界探针。}}{8}{table.caption.6}\protected@file@percent }
-\newlabel{tab:models}{{1}{8}{架构配置。Mamba 为单种子边界探针。}{table.caption.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}实验设计}{8}{subsection.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5}结果与实验分析}{9}{section.5}\protected@file@percent }
-\newlabel{sec:results}{{5}{9}{结果与实验分析}{section.5}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces 各深度的强制精确匹配率，每个架构对三个种子取平均（256 个组均衡样本）。}}{10}{table.caption.8}\protected@file@percent }
-\newlabel{tab:depth}{{2}{10}{各深度的强制精确匹配率，每个架构对三个种子取平均（256 个组均衡样本）。}{table.caption.8}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces 四个架构的强制精确匹配率随深度的变化。曲线为种子均值，阴影覆盖三个种子（256 个组均衡样本）。}}{10}{figure.caption.7}\protected@file@percent }
-\newlabel{fig:depth}{{6}{10}{四个架构的强制精确匹配率随深度的变化。曲线为种子均值，阴影覆盖三个种子（256 个组均衡样本）。}{figure.caption.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces 相邻深度之间的预测转移率，跨 12 个架构—种子取平均。}}{11}{figure.caption.9}\protected@file@percent }
-\newlabel{fig:transitions}{{7}{11}{相邻深度之间的预测转移率，跨 12 个架构—种子取平均。}{figure.caption.9}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces 256 样本上的阈值停算。$\Delta $EM 相对强制 $e_3$；NI 按 LCB$_{95}\geq -0.5$pp。$N_{\mathrm  {cell}}$ 为停算与强制 $e_3$ 的调用比。$\times $：显著变差；$?$：不确定。九非劣、两显著负、一不确定。}}{12}{table.caption.10}\protected@file@percent }
-\newlabel{tab:halt12}{{3}{12}{256 样本上的阈值停算。$\Delta $EM 相对强制 $e_3$；NI 按 LCB$_{95}\geq -0.5$pp。$N_{\mathrm {cell}}$ 为停算与强制 $e_3$ 的调用比。$\times $：显著变差；$?$：不确定。九非劣、两显著负、一不确定。}{table.caption.10}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces 四个架构的六项潜状态动力学指标随深度的变化，阴影为种子范围。}}{12}{figure.caption.12}\protected@file@percent }
-\newlabel{fig:latcross}{{8}{12}{四个架构的六项潜状态动力学指标随深度的变化，阴影为种子范围。}{figure.caption.12}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces active-subset 执行器的停算与强制 $e_3$ 中位墙钟时间比；两线程、2 次预热、10 次交错测试；$b{=}1$ 用 16 个样本，$b{=}4/8/32$ 用 64 个。逐样本 Transformer 执行器（0.297）为独立测量，未并入本表。}}{13}{table.caption.11}\protected@file@percent }
-\newlabel{tab:wall}{{4}{13}{active-subset 执行器的停算与强制 $e_3$ 中位墙钟时间比；两线程、2 次预热、10 次交错测试；$b{=}1$ 用 16 个样本，$b{=}4/8/32$ 用 64 个。逐样本 Transformer 执行器（0.297）为独立测量，未并入本表。}{table.caption.11}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces 种子 0 的均值与 95\% 组簇自助区间（256 样本）。三种子的范围见图~\ref {fig:latcross}；范数为 $\lVert z_k\rVert /\sqrt  d$。}}{13}{table.caption.13}\protected@file@percent }
-\newlabel{tab:latstat}{{5}{13}{种子 0 的均值与 95\% 组簇自助区间（256 样本）。三种子的范围见图~\ref {fig:latcross}；范数为 $\lVert z_k\rVert /\sqrt d$。}{table.caption.13}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces 45 次搜索中的五种优化器（3 模型种子 × 5 算法 × 3 优化器种子，各 336 次评估）。增益为相对 $\alpha \equiv 1$ 基线的 pp，192 样本内层子集，一个样本为 $0.52$pp；MGA 作为独立算法报告。}}{14}{table.caption.14}\protected@file@percent }
-\newlabel{tab:opt5}{{6}{14}{45 次搜索中的五种优化器（3 模型种子 × 5 算法 × 3 优化器种子，各 336 次评估）。增益为相对 $\alpha \equiv 1$ 基线的 pp，192 样本内层子集，一个样本为 $0.52$pp；MGA 作为独立算法报告。}{table.caption.14}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces 每次搜索相对自身基线的最佳至当前增益（每种算法九次运行的均值）。}}{14}{figure.caption.15}\protected@file@percent }
-\newlabel{fig:optcurves}{{9}{14}{每次搜索相对自身基线的最佳至当前增益（每种算法九次运行的均值）。}{figure.caption.15}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces 三个 GRU 步长策略的外层折确认（每种子 $n=640$）。仅种子 2 满足非劣效界；种子 0 以 0.019pp 之差未过界（LCB $-0.519$pp）。}}{15}{table.caption.16}\protected@file@percent }
-\newlabel{tab:alpha_confirm}{{7}{15}{三个 GRU 步长策略的外层折确认（每种子 $n=640$）。仅种子 2 满足非劣效界；种子 0 以 0.019pp 之差未过界（LCB $-0.519$pp）。}{table.caption.16}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces 冻结的 GRU-s0 步长策略：各种子相对强制 $e_3$ 的 EM 差（pp）。}}{15}{table.caption.17}\protected@file@percent }
-\newlabel{tab:trans}{{8}{15}{冻结的 GRU-s0 步长策略：各种子相对强制 $e_3$ 的 EM 差（pp）。}{table.caption.17}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces \textbf  {在未触碰数据上的一次性确认。} 官方 COGS 开发集（$n{=}3{,}000$；组聚类配对自助，20{,}000 次重采样），用冻结的预注册阈值与各种子冻结的最佳固定深度只评估一次。计算量比率与留出折的数值（0.2575 / 0.2570 / 0.5212）在种子0--1上到第三位小数一致，种子2相差0.003（相对0.6\%），因此被执行调用层面的节省本身在划分之间以不足百分之一的幅度迁移。}}{15}{table.caption.18}\protected@file@percent }
-\newlabel{tab:devconfirm}{{9}{15}{\textbf {在未触碰数据上的一次性确认。} 官方 COGS 开发集（$n{=}3{,}000$；组聚类配对自助，20{,}000 次重采样），用冻结的预注册阈值与各种子冻结的最佳固定深度只评估一次。计算量比率与留出折的数值（0.2575 / 0.2570 / 0.5212）在种子0--1上到第三位小数一致，种子2相差0.003（相对0.6\%），因此被执行调用层面的节省本身在划分之间以不足百分之一的幅度迁移。}{table.caption.18}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}数据集}{6}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}实验环境}{6}{subsection.4.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces 架构配置。Mamba 为单种子边界探针。}}{6}{table.caption.2}\protected@file@percent }
+\newlabel{tab:models}{{1}{6}{架构配置。Mamba 为单种子边界探针。}{table.caption.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}实验设计}{7}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}结果与实验分析}{8}{section.5}\protected@file@percent }
+\newlabel{sec:results}{{5}{8}{结果与实验分析}{section.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces 四个架构的强制精确匹配率随深度的变化。曲线为种子均值，阴影覆盖三个种子（256 个组均衡样本）。}}{8}{figure.caption.3}\protected@file@percent }
+\newlabel{fig:depth}{{2}{8}{四个架构的强制精确匹配率随深度的变化。曲线为种子均值，阴影覆盖三个种子（256 个组均衡样本）。}{figure.caption.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces 各深度的强制精确匹配率，每个架构对三个种子取平均（256 个组均衡样本）。}}{9}{table.caption.4}\protected@file@percent }
+\newlabel{tab:depth}{{2}{9}{各深度的强制精确匹配率，每个架构对三个种子取平均（256 个组均衡样本）。}{table.caption.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces 相邻深度之间的预测转移率，跨 12 个架构—种子取平均。}}{9}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:transitions}{{3}{9}{相邻深度之间的预测转移率，跨 12 个架构—种子取平均。}{figure.caption.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces 256 样本上的阈值停算。$\Delta $EM 相对强制 $e_3$；NI 按 LCB$_{95}\geq -0.5$pp。$N_{\mathrm  {cell}}$ 为停算与强制 $e_3$ 的调用比。$\times $：显著变差；$?$：不确定。九非劣、两显著负、一不确定。}}{10}{table.caption.6}\protected@file@percent }
+\newlabel{tab:halt12}{{3}{10}{256 样本上的阈值停算。$\Delta $EM 相对强制 $e_3$；NI 按 LCB$_{95}\geq -0.5$pp。$N_{\mathrm {cell}}$ 为停算与强制 $e_3$ 的调用比。$\times $：显著变差；$?$：不确定。九非劣、两显著负、一不确定。}{table.caption.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces active-subset 执行器的停算与强制 $e_3$ 中位墙钟时间比；两线程、2 次预热、10 次交错测试；$b{=}1$ 用 16 个样本，$b{=}4/8/32$ 用 64 个。逐样本 Transformer 执行器（0.297）为独立测量，未并入本表。}}{11}{table.caption.7}\protected@file@percent }
+\newlabel{tab:wall}{{4}{11}{active-subset 执行器的停算与强制 $e_3$ 中位墙钟时间比；两线程、2 次预热、10 次交错测试；$b{=}1$ 用 16 个样本，$b{=}4/8/32$ 用 64 个。逐样本 Transformer 执行器（0.297）为独立测量，未并入本表。}{table.caption.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces 种子 0 的均值与 95\% 组簇自助区间（256 样本）。三种子的范围见图~\ref {fig:latcross}；范数为 $\lVert z_k\rVert /\sqrt  d$。}}{11}{table.caption.9}\protected@file@percent }
+\newlabel{tab:latstat}{{5}{11}{种子 0 的均值与 95\% 组簇自助区间（256 样本）。三种子的范围见图~\ref {fig:latcross}；范数为 $\lVert z_k\rVert /\sqrt d$。}{table.caption.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces 四个架构的六项潜状态动力学指标随深度的变化，阴影为种子范围。}}{11}{figure.caption.8}\protected@file@percent }
+\newlabel{fig:latcross}{{4}{11}{四个架构的六项潜状态动力学指标随深度的变化，阴影为种子范围。}{figure.caption.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces 45 次搜索中的五种优化器（3 模型种子 × 5 算法 × 3 优化器种子，各 336 次评估）。增益为相对 $\alpha \equiv 1$ 基线的 pp，192 样本内层子集，一个样本为 $0.52$pp；MGA 作为独立算法报告。}}{12}{table.caption.10}\protected@file@percent }
+\newlabel{tab:opt5}{{6}{12}{45 次搜索中的五种优化器（3 模型种子 × 5 算法 × 3 优化器种子，各 336 次评估）。增益为相对 $\alpha \equiv 1$ 基线的 pp，192 样本内层子集，一个样本为 $0.52$pp；MGA 作为独立算法报告。}{table.caption.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces 每次搜索相对自身基线的最佳至当前增益（每种算法九次运行的均值）。}}{12}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:optcurves}{{5}{12}{每次搜索相对自身基线的最佳至当前增益（每种算法九次运行的均值）。}{figure.caption.11}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces 三个 GRU 步长策略的外层折确认（每种子 $n=640$）。仅种子 2 满足非劣效界；种子 0 以 0.019pp 之差未过界（LCB $-0.519$pp）。}}{13}{table.caption.12}\protected@file@percent }
+\newlabel{tab:alpha_confirm}{{7}{13}{三个 GRU 步长策略的外层折确认（每种子 $n=640$）。仅种子 2 满足非劣效界；种子 0 以 0.019pp 之差未过界（LCB $-0.519$pp）。}{table.caption.12}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces 冻结的 GRU-s0 步长策略：各种子相对强制 $e_3$ 的 EM 差（pp）。}}{13}{table.caption.13}\protected@file@percent }
+\newlabel{tab:trans}{{8}{13}{冻结的 GRU-s0 步长策略：各种子相对强制 $e_3$ 的 EM 差（pp）。}{table.caption.13}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces \textbf  {在未触碰数据上的一次性确认。} 官方 COGS 开发集（$n{=}3{,}000$；组聚类配对自助，20{,}000 次重采样），用冻结的预注册阈值与各种子冻结的最佳固定深度只评估一次。计算量比率与留出折的数值（0.2575 / 0.2570 / 0.5212）在种子0--1上到第三位小数一致，种子2相差0.003（相对0.6\%），因此被执行调用层面的节省本身在划分之间以不足百分之一的幅度迁移。}}{14}{table.caption.14}\protected@file@percent }
+\newlabel{tab:devconfirm}{{9}{14}{\textbf {在未触碰数据上的一次性确认。} 官方 COGS 开发集（$n{=}3{,}000$；组聚类配对自助，20{,}000 次重采样），用冻结的预注册阈值与各种子冻结的最佳固定深度只评估一次。计算量比率与留出折的数值（0.2575 / 0.2570 / 0.5212）在种子0--1上到第三位小数一致，种子2相差0.003（相对0.6\%），因此被执行调用层面的节省本身在划分之间以不足百分之一的幅度迁移。}{table.caption.14}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}结论}{14}{section.6}\protected@file@percent }
+\newlabel{sec:conclusion}{{6}{14}{结论}{section.6}{}}
 \bibstyle{acl_natbib}
 \bibdata{references}
 \bibcite{bolukbasi2017adaptive}{{1}{2017}{{Bolukbasi et~al.}}{{Bolukbasi, Wang, Dekel, and Saligrama}}}
 \bibcite{bulatov2022recurrent}{{2}{2022}{{Bulatov et~al.}}{{Bulatov, Kuratov, and Burtsev}}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}结论}{16}{section.6}\protected@file@percent }
-\newlabel{sec:conclusion}{{6}{16}{结论}{section.6}{}}
 \bibcite{cheng2022mrp}{{3}{2022}{{Cheng and Zhang}}{{}}}
 \bibcite{dai2019transformerxl}{{4}{2019}{{Dai et~al.}}{{Dai, Yang, Yang, Carbonell, Le, and Salakhutdinov}}}
 \bibcite{das2011survey}{{5}{2011}{{Das and Suganthan}}{{}}}
@@ -171,4 +163,4 @@
 \bibcite{yang2024looped}{{60}{2024}{{Yang et~al.}}{{Yang, Lee, Nowak, and Papailiopoulos}}}
 \bibcite{zheng2022disentangled}{{61}{2022}{{Zheng and Lapata}}{{}}}
 \bibcite{zhou2020patience}{{62}{2020}{{Zhou et~al.}}{{Zhou, Xu, Ge, McAuley, Xu, and Wei}}}
-\gdef \@abspage@last{22}
+\gdef \@abspage@last{21}

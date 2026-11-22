@@ -62,106 +62,9 @@ Derivative-free search supplies the third component. Genetic algorithms remain a
 
 We begin with a frozen recursive sequence model that produces four decoding depths, from $e_0$ to $e_3$. The base step reads the source memory, the previous token, and the previous hidden state to produce $z^{(0)}$. A shared refinement cell maps $z^{(k)}$ to $z^{(k+1)}$ using the previous token, the base attention context, and a soft embedding of the current prediction. In the checkpoints used below, training applies multi-depth supervision at all four depths with weights $(0.1,0.2,0.3,0.4)$, and a single output head is shared across them. Every later component keeps these parameters fixed and operates on the same four-depth rollout.
 
-\begin{figure}[t]
-\centering
-\resizebox{\columnwidth}{!}{%
-\begin{tikzpicture}[font=\sffamily\scriptsize, >=Stealth, line width=0.7pt,
-  b/.style={draw, rounded corners=2pt, align=center, inner sep=3pt},
-  g/.style={b, draw=oiGray, fill=oiGray!10},
-  u/.style={b, draw=oiBlue, fill=oiBlue!12},
-  o/.style={b, draw=oiOrange, fill=oiOrange!12}]
-\node[g] (src) at (0,0) {source\\tokens};
-\node[g] (enc) at (1.9,0) {Encoder\\GRU};
-\node[g] (mem) at (3.9,0.75) {source memory\\(encoder states)};
-\node[g] (st) at (3.9,-0.75) {decoder state\\$h_{t-1}$};
-\node[u] (att) at (6.0,0.75) {Bahdanau\\attention};
-\node[u] (base) at (6.0,-0.75) {base step\\GRUCell};
-\node[g] (emb) at (4.55,-1.75) {$e(y_{t-1})$};
-\node[u] (z0) at (8.1,-0.75) {$z^{(0)}=h_t$};
-\node[o] (ref) at (10.2,-0.75) {shared refinement\\GRUCell};
-\node[g] (soft) at (8.6,-1.75) {$\tilde e(p^{(k)})=p^{(k)}E$};
-\node[u] (out) at (12.4,-0.75) {shared output\\head $W_o$};
-\node[g] (pred) at (14.2,-0.75) {prediction\\$p^{(k)},\ \hat y_t$};
-\draw[->] (src) -- (enc);
-\draw[->] (enc) -- (mem); \draw[->] (enc) -- (st);
-\draw[->] (mem) -- (att); \draw[->] (st) -- (att);
-\draw[->] (att) -- node[above,font=\sffamily\tiny] {context $a_t$} (base);
-\draw[->] (emb) -- (base); \draw[->] (st) -- (base);
-\draw[->] (base) -- (z0); \draw[->] (z0) -- (ref);
-\draw[->] (soft) -- (ref); \draw[->] (emb.east) .. controls (9.0,-1.6) .. (ref.south);
-\draw[->] (ref) -- (out); \draw[->] (out) -- (pred);
-\draw[->,dashed] (pred.east) .. controls (14.6,0.2) .. (soft.east);
-\end{tikzpicture}%
-}
-\caption{Recursive encoder--decoder architecture reproduced from the implemented model. The encoder produces a source memory and an initial decoder state. A base \textsc{GRUCell} emits $z^{(0)}$ from the previous token embedding and the attention context. A single refinement \textsc{GRUCell}, shared across all depths, reads the previous token embedding, the same context, and a soft embedding of the current prediction. One output head is shared across depths.}
-\label{fig:arch}
-\end{figure}
-
 On this rollout, we first measure what the extra depths buy. For every token, we compare its predictions at two adjacent depths and assign one of four outcomes. A wrong prediction that becomes correct is a repair, and a correct one that becomes wrong is harm. When the prediction is unchanged, we call it preserve if it was correct and unresolved if it was wrong. This separation matters because a single-depth accuracy score folds together tokens that refinement fixed and tokens that refinement broke.
 
-\begin{figure}[t]
-\centering
-\resizebox{\columnwidth}{!}{%
-\begin{tikzpicture}[font=\sffamily\scriptsize, >=Stealth, line width=0.7pt,
-  b/.style={draw, rounded corners=2pt, align=center, inner sep=3pt},
-  u/.style={b, draw=oiBlue, fill=oiBlue!12},
-  g/.style={b, draw=oiGray, fill=oiGray!10},
-  o/.style={b, draw=oiOrange, fill=oiOrange!12}]
-\node[g] (inp) at (0,0) {$e(y_{t-1}),\ a_t,\ \tilde e(p^{(k)})$};
-\node[u] (z0) at (2.0,0) {$z^{(0)}$};
-\node[o] (r0) at (4.2,0) {shared $F$};
-\node[u] (z1) at (6.4,0) {$z^{(1)}$};
-\node[o] (r1) at (8.6,0) {shared $F$};
-\node[u] (z2) at (10.8,0) {$z^{(2)}$};
-\node[o] (r2) at (13.0,0) {shared $F$};
-\node[u] (z3) at (15.2,0) {$z^{(3)}$};
-\node[g] (o0) at (2.0,-1.3) {$W_o \to p^{(0)}$};
-\node[g] (o1) at (6.4,-1.3) {$W_o \to p^{(1)}$};
-\node[g] (o2) at (10.8,-1.3) {$W_o \to p^{(2)}$};
-\node[g] (o3) at (15.2,-1.3) {$W_o \to p^{(3)}$};
-\draw[->] (z0) -- (r0) -- (z1) -- (r1) -- (z2) -- (r2) -- (z3);
-\draw[->] (inp.east) .. controls (2.5,1.1) .. (r0.north);
-\draw[->] (inp.east) .. controls (6.5,1.4) .. (r1.north);
-\draw[->] (inp.east) .. controls (10.5,1.6) .. (r2.north);
-\draw[->] (z0) -- (o0); \draw[->] (z1) -- (o1); \draw[->] (z2) -- (o2); \draw[->] (z3) -- (o3);
-\draw[->,dashed] (o0.east) .. controls (3.4,-0.9) .. (r0.south);
-\draw[->,dashed] (o1.east) .. controls (7.6,-0.9) .. (r1.south);
-\end{tikzpicture}%
-}
-\caption{Recursive refinement at one output position. The base step produces $z^{(0)}$. The same refinement operator $F$ maps $z^{(k)}$ to $z^{(k+1)}$ using the previous token embedding, the base attention context, and the soft embedding $p^{(k)}E$ of the current prediction. The shared output head emits a distribution at every depth; no new parameters are added as depth grows.}
-\label{fig:refine}
-\end{figure}
-
 The transitions above are token-specific, so we decide for each token whether to spend the extra computation. Causal halting makes this decision at two points on the rollout: after the base step and again after the first refinement. At each point we compare the top-1 probability of the current prediction with a fixed threshold. A token stops when the probability exceeds that threshold; the two thresholds are $0.85$ and $0.90$ for every model and seed. Each decision uses only signals computed before the refinement it gates, so a stopped token never reads the computation it has chosen to skip. A token that passes both gates continues to $e_3$.
-
-\begin{figure}[t]
-\centering
-\resizebox{\columnwidth}{!}{%
-\begin{tikzpicture}[font=\sffamily\scriptsize, >=Stealth, line width=0.7pt,
-  b/.style={draw, rounded corners=2pt, align=center, inner sep=3pt},
-  u/.style={b, draw=oiBlue, fill=oiBlue!12},
-  g/.style={b, draw=oiGray, fill=oiGray!10},
-  r/.style={b, draw=oiOrange, fill=oiOrange!12}]
-\node[g] (base) at (0,0) {base step\\$\top_1$ confidence};
-\node[u] (g0) at (2.7,0) {gate 0\\$\tau_0=0.85$};
-\node[r] (s0) at (5.0,1.2) {token stops\\predict at $e_0$};
-\node[u] (g1) at (5.0,-0.9) {gate 1\\$\tau_1=0.90$};
-\node[r] (s1) at (7.6,-0.2) {token stops\\predict at $e_1$};
-\node[g] (deep) at (7.6,-1.6) {continues to\\$e_2,e_3$};
-\node[g] (audit) at (10.2,-0.9) {active subset\\
-forward hooks\\count $N_{\mathrm{cell}}$};
-\draw[->] (base) -- (g0);
-\draw[->] (g0) -- node[above,font=\sffamily\tiny] {above $\tau_0$} (s0);
-\draw[->] (g0) -- node[below,font=\sffamily\tiny] {otherwise} (g1);
-\draw[->] (g1) -- node[above,font=\sffamily\tiny] {above $\tau_1$} (s1);
-\draw[->] (g1) -- node[below,font=\sffamily\tiny] {otherwise} (deep);
-\draw[->] (g1.east) .. controls (9.0,-0.3) .. (audit.north);
-\draw[->] (deep.east) .. controls (9.0,-1.5) .. (audit.south);
-\end{tikzpicture}%
-}
-\caption{Causal token-level halting. Each gate reads only signals computed before the refinement it controls, so a stopped token never consults the computation it skips. The predicted exit depth is not the same quantity as executed work: the active-subset executor runs a cell only on continuing rows, and forward hooks verify the intercepted call count against $N_{\mathrm{cell}}$.}
-\label{fig:halt}
-\end{figure}
 
 Predicted exit depth and executed calls are different quantities. To measure the latter, the executor gathers the active rows before each base call and the continuing rows before each refinement call. It scatters their outputs back into the batch, so finished and stopped rows never enter a call. We define $N_{\mathrm{cell}}$ as the calls the executor makes: one base call per active row plus one call per refinement that row executes. Forward hooks on the decoder and refinement cells record the input row count of every call. When these hook counts match $N_{\mathrm{cell}}$, the drop in counted calls reflects computation the executor really did not perform.
 
@@ -171,331 +74,93 @@ From each trajectory we compute six summaries: the normalized state norm $\lVert
 
 The refinement rule itself need not be the best update. At a fixed depth we rescale each step as $z^{(k+1)}=z^{(k)}+\alpha^{(k)}\Delta z^{(k)}$, with $\alpha^{(k)}=\sigma(w_0+w_1\tilde H+w_2\tilde D+w_3\tilde A+w_4\,k/K)$: an intercept plus four causally available features, prediction entropy $H$, update magnitude $D$, update direction $A$, and depth $k/K$. The search changes only these five coefficients; model weights and the number of refinement steps stay fixed, so any accuracy change is a latent-dynamics effect at constant compute.
 
-\begin{figure}[t]
-\centering
-\resizebox{\columnwidth}{!}{%
-\begin{tikzpicture}[font=\sffamily\scriptsize, >=Stealth, line width=0.7pt,
-  b/.style={draw, rounded corners=2pt, align=center, inner sep=3pt},
-  g/.style={b, draw=oiGray, fill=oiGray!10},
-  u/.style={b, draw=oiBlue, fill=oiBlue!12},
-  o/.style={b, draw=oiOrange, fill=oiOrange!12}]
-\node[g] (H) at (0,1.15) {entropy $\tilde H$};
-\node[g] (D) at (0,0.4) {update magnitude $\tilde D$};
-\node[g] (A) at (0,-0.4) {update direction $\tilde A$};
-\node[g] (k) at (0,-1.15) {depth $k/K$};
-\node[u] (lin) at (3.2,0) {$w_0+\sum_j w_j f_j$};
-\node[o] (sig) at (5.6,0) {$\sigma(\cdot)$};
-\node[u] (a) at (7.5,0) {$\alpha^{(k)}$};
-\node[g] (dz) at (9.7,0) {$\Delta z^{(k)}$};
-\node[u] (eq) at (12.1,0) {$z^{(k+1)}=z^{(k)}+\alpha^{(k)}\Delta z^{(k)}$};
-\draw[->] (H) -- (lin); \draw[->] (D) -- (lin); \draw[->] (A) -- (lin); \draw[->] (k) -- (lin);
-\draw[->] (lin) -- (sig) -- (a) -- (eq); \draw[->] (dz) -- (eq);
-\node[font=\sffamily\tiny,align=center] at (5.6,-1.0) {five coefficients; search changes\\only these weights};
-\end{tikzpicture}%
-}
-\caption{Evolutionary latent step-size control. Four causally available features and an intercept form a five-parameter policy. A sigmoid maps them to $\alpha^{(k)}$, which rescales the refinement displacement at fixed depth. Model weights and the number of refinement steps are unchanged, so any accuracy difference isolates the update rule.}
-\label{fig:alpha}
-\end{figure}
-
 Five algorithms search the same policy under a common budget of 336 evaluations: random search, a genetic algorithm, a mutation-guided variant, differential evolution, and sep-CMA-ES. For each model seed we take the best policy on the inner folds, freeze its weights and feature-normalization statistics, and confirm it once on a 640-sample outer fold. We then apply that frozen policy unchanged to Vanilla RNN, LSTM, and Transformer with no further search, and report the seeds that are non-inferior and those that are not.
 
-Figure~\ref{fig:framework} places the three components on a single timeline. Panel~(a) separates a prediction-level question from an execution-level one: the gates decide whether more refinement is worth running, while the hook audit verifies that the skipped calls no longer appear in the executed path. Panel~(b) holds depth fixed so that the effect of the update rule is not confounded with the effect of extra steps, and shows where the learned rule is tested: once on a held-out fold and then on unseen architectures without re-search. The rest of this section defines each component in the order in which the figure presents them.
-
-Panel~(a) reads left to right. The base step of a frozen recursive GRU yields $e_0$ and a top-1 confidence; gate 0 compares it with $\tau_0=0.85$, and a token above the threshold stops before refinement 1 runs. Tokens that continue reach $e_1$, where gate 1 repeats the test with $\tau_1=0.90$; only the remaining rows enter the two later refinements to $e_3$. The audited counter therefore records one base call per active row plus one call per executed refinement, which is the quantity compared across systems in Section~\ref{sec:results}. Panel~(b) reads in the same direction: the current state and prefix provide entropy $\tilde H$, update magnitude $\tilde D$, update direction $\tilde A$, and depth $k/K$; the frozen cell supplies the unscaled displacement $\Delta z_i^{(k)}$; the policy turns these into $\alpha_i^{(k)}$, and the modulated refinement applies it at constant $N_{\mathrm{cell}}$. Five algorithms search the five coefficients under a 336-evaluation budget, and the selected policy is frozen before the outer check and the cross-architecture transfer reported at the right of the panel.
+Figure~\ref{fig:framework} summarizes the whole method in one view. Panel~(a) separates prediction-level from execution-level questions: a gate decides whether more refinement is worth running, and the hook audit verifies that the skipped calls are absent from the executed path. Panel~(b) fixes the input sample and records what a refinement changes inside the model, so that the halting rule can be read against the state dynamics rather than against accuracy alone. Panel~(c) holds depth fixed so the update rule is not confounded with extra steps, and tests the selected policy first on a held-out fold and then on unseen architectures. Each panel closes with the condition under which its claim holds, which is the argument developed in the result sections.
 
 \begin{figure*}[t]
 \centering
 \resizebox{\textwidth}{!}{%
 \begin{tikzpicture}[
-    font=\sffamily\fontsize{6.8pt}{8.2pt}\selectfont,
-    >=Stealth,
-    line width=0.65pt,
-    % Card Styles
-    cardBlue/.style={
-        draw=oiBlue, fill=oiBlue!14,
-        line width=1.15pt, rounded corners=2.5pt, inner sep=0pt
-    },
-    cardGray/.style={
-        draw=oiGray, fill=white,
-        line width=0.75pt, rounded corners=2.5pt, inner sep=0pt
-    },
-    cardGreen/.style={
-        draw=oiGreen, fill=oiGreen!12,
-        line width=0.75pt, rounded corners=2.5pt, inner sep=0pt
-    },
-    cardOrange/.style={
-        draw=oiOrange, fill=oiOrange!12,
-        line width=0.85pt, rounded corners=2.5pt, inner sep=0pt
-    },
-    hdr/.style={
-        font=\sffamily\fontsize{6.6pt}{7.8pt}\selectfont\bfseries,
-        text=white, align=center, inner xsep=2pt, inner ysep=2.2pt,
-        rounded corners=1.8pt
-    },
-    probe/.style={
-        circle, draw=oiBlue, fill=white, line width=0.95pt,
-        minimum size=4.4pt, inner sep=0pt
-    },
-    panelBadge/.style={
-        font=\sffamily\fontsize{7pt}{8pt}\selectfont\bfseries,
-        text=white, fill=oiGray!85!black, rounded corners=2pt, inner xsep=5pt, inner ysep=2pt
-    },
-    panelTitle/.style={
-        font=\sffamily\fontsize{7.5pt}{9pt}\selectfont\bfseries,
-        text=black, inner sep=0pt
-    },
-    tag/.style={font=\sffamily\fontsize{5.8pt}{6.8pt}\selectfont, inner sep=1pt}
+  font=\sffamily\fontsize{7pt}{8.4pt}\selectfont,
+  >=Stealth, line width=0.7pt,
+  b/.style={draw, rounded corners=2.5pt, align=center, inner sep=4pt, minimum height=31pt},
+  gy/.style={b, draw=oiGray!85, fill=oiGray!10},
+  bl/.style={b, draw=oiBlue, fill=oiBlue!12, line width=1pt},
+  gr/.style={b, draw=oiGreen, fill=oiGreen!12},
+  og/.style={b, draw=oiOrange, fill=oiOrange!12},
+  badge/.style={font=\sffamily\fontsize{8pt}{9.4pt}\selectfont\bfseries, text=white,
+                fill=oiGray!85!black, rounded corners=2pt, inner xsep=5pt, inner ysep=2pt},
+  ptitle/.style={font=\sffamily\fontsize{8pt}{9.4pt}\selectfont\bfseries},
+  tag/.style={font=\sffamily\fontsize{6pt}{7.2pt}\selectfont, inner sep=1pt},
+  note/.style={font=\sffamily\fontsize{6.2pt}{7.4pt}\selectfont, text=oiGray!90!black, align=center}
 ]
-
-% Two-tone Header Card Macro
-\newcommand{\richcard}[7]{
-    \node[#4] (#1) at (#2) {
-        \begin{minipage}{#3}
-            \centering
-            \tikz{\node[hdr, fill=#5, minimum width=#3, text width=\dimexpr#3-4pt\relax] {#6};}\\[-0.5pt]
-            \begin{minipage}{\dimexpr#3-8pt\relax}
-                \vspace{3pt}\centering #7 \vspace{3pt}
-            \end{minipage}
-        \end{minipage}
-    };
-}
-
-\def\xLeft{-0.25}
-\def\xRight{19.35}
-
-% ==============================================================================
-% PANEL (a) CONTENT
-% ==============================================================================
-\node[panelBadge, anchor=west] (badgeA) at (-0.05, 5.02) {(a)};
-\node[panelTitle, right=5pt of badgeA] (titleA) {Causal Token-Level Adaptive Halting \& Actual Computation Accounting};
-
-% Legend placed directly after titleA with normal spacing
-\node[draw=oiGray, fill=white, minimum width=8pt, minimum height=5.5pt, inner sep=0pt, rounded corners=1pt, right=12pt of titleA] (l1) {};
-\node[tag, right=2pt of l1] (l1t) {Frozen GRU ($F$)};
-\node[draw=oiBlue, fill=oiBlue!22, line width=0.9pt, minimum width=8pt, minimum height=5.5pt, inner sep=0pt, rounded corners=1pt, right=7pt of l1t] (l2) {};
-\node[tag, right=2pt of l2] (l2t) {Ours (Causal Control)};
-\node[draw=oiGreen, fill=oiGreen!18, minimum width=8pt, minimum height=5.5pt, inner sep=0pt, rounded corners=1pt, right=7pt of l2t] (l3) {};
-\node[tag, right=2pt of l3] (l3t) {Data / I/O};
-\node[draw=oiOrange, fill=oiOrange!18, minimum width=8pt, minimum height=5.5pt, inner sep=0pt, rounded corners=1pt, right=7pt of l3t] (l4) {};
-\node[tag, right=2pt of l4] (l4t) {Transfer Boundary};
-
-\def\yA{2.78}
-
-% 1. Input Card (Green)
-\richcard{inA}{1.20, \yA}{2.45cm}{cardGreen}{oiGreen}{Input Example}{
-    \textit{``A rose helped a dog.''}\\[2.5pt]
-    \tikz{
-        \foreach \x/\lbl in {0/$y_{i-1}$, 0.90/$c_i$} {
-            \draw[draw=oiGreen, fill=white, rounded corners=0.8pt] (\x,0) rectangle ++(0.78, 0.22);
-            \node[font=\sffamily\fontsize{5.3pt}{5.3pt}\selectfont] at (\x+0.39, 0.11) {\lbl};
-        }
-    }\\[2pt]
-    Context \& Prefix
-}
-
-% 2. Base Step e_0 (Gray)
-\richcard{baseA}{3.95, \yA}{2.05cm}{cardGray}{oiGray}{Base Step ($e_0$)}{
-    Frozen GRU Cell\\[2.5pt]
-    \tikz{
-        \foreach \k in {0,1,2,3,4} {
-            \draw[draw=oiGray, fill=oiGray!30] (\k*0.25,0) rectangle ++(0.19, 0.17);
-        }
-    }\\[2pt]
-    Latent $z_i^{(0)}$
-}
-
-% 3. Gate 0 (Blue - Ours)
-\richcard{gate0}{6.60, \yA}{2.30cm}{cardBlue}{oiBlue}{Gate 0 (Ours)}{
-    $x_i^{(0)} \in \mathbb{R}^8$\\[1.5pt]
-    \tikz{
-        \node[font=\sffamily\fontsize{5.2pt}{5.2pt}\selectfont, text=oiOrange, anchor=south] at (1.12, 0.24) {$\tau_0$};
-        \draw[draw=oiGray!70, fill=white, rounded corners=0.6pt] (0,0) rectangle (1.55, 0.20);
-        \fill[oiBlue!55] (0.02,0.02) rectangle (1.30, 0.18);
-        \draw[draw=oiOrange, line width=0.95pt] (1.12, -0.03) -- (1.12, 0.24);
-    }\\[1.5pt]
-    $\mathrm{top}_1 \ge \tau_0$?
-}
-
-% 4. Refinement 1 e_1 (Gray)
-\richcard{ref1}{9.45, \yA}{2.30cm}{cardGray}{oiGray}{Refinement 1 ($e_1$)}{
-    Frozen Cell $F$\\[2.5pt]
-    \tikz{
-        \foreach \k in {0,1,2,3,4} {
-            \draw[draw=oiGray, fill=oiGray!48] (\k*0.25,0) rectangle ++(0.19, 0.17);
-        }
-    }\\[2pt]
-    $z_i^{(1)} = z_i^{(0)} + \Delta z_i^{(0)}$
-}
-
-% 5. Gate 1 (Blue - Ours)
-\richcard{gate1}{12.30, \yA}{2.30cm}{cardBlue}{oiBlue}{Gate 1 (Ours)}{
-    $x_i^{(1)} \in \mathbb{R}^{12}$\\[1.5pt]
-    \tikz{
-        \node[font=\sffamily\fontsize{5.2pt}{5.2pt}\selectfont, text=oiOrange, anchor=south] at (1.22, 0.24) {$\tau_1$};
-        \draw[draw=oiGray!70, fill=white, rounded corners=0.6pt] (0,0) rectangle (1.55, 0.20);
-        \fill[oiBlue!55] (0.02,0.02) rectangle (1.38, 0.18);
-        \draw[draw=oiOrange, line width=0.95pt] (1.22, -0.03) -- (1.22, 0.24);
-    }\\[1.5pt]
-    $\mathrm{top}_1 \ge \tau_1$?
-}
-
-% 6. Remaining Refinements x2 -> e_3 (Stacked Gray Cards)
-\node[draw=oiGray, fill=white, rounded corners=2.5pt, minimum width=2.35cm, minimum height=50pt] (refK_s2) at (15.27, \yA+0.12) {};
-\node[draw=oiGray, fill=white, rounded corners=2.5pt, minimum width=2.35cm, minimum height=50pt] (refK_s1) at (15.20, \yA+0.06) {};
-\richcard{refK}{15.13, \yA}{2.35cm}{cardGray}{oiGray}{Refinements ($\times 2$)}{
-    Frozen $F \rightarrow e_3$\\[2.5pt]
-    \tikz{
-        \foreach \k in {0,1,2,3,4} {
-            \draw[draw=oiGray, fill=oiGray!68] (\k*0.25,0) rectangle ++(0.19, 0.17);
-        }
-    }\\[2pt]
-    $z_i^{(k+1)} = z_i^{(k)} + \Delta z_i^{(k)}$
-}
-
-% 7. Output Card (Green)
-\richcard{outA}{17.90, \yA}{2.35cm}{cardGreen}{oiGreen}{Output Token $y_i$}{
-    \texttt{rose(x\_1) ...}\\[2.5pt]
-    \tikz{
-        \draw[draw=oiGreen, fill=white, rounded corners=1pt] (0,0) rectangle (1.65, 0.19);
-        \node[font=\sffamily\fontsize{5.3pt}{5.3pt}\selectfont, text=black] at (0.825, 0.095) {Audited $N_{\mathrm{cell}}$};
-    }\\[2pt]
-    Exact Trajectory
-}
-
-% Main Pipeline Arrows
+% ---------------- PANEL (a) ----------------
+\node[badge] (badgeA) at (-0.1, 7.35) {(a)};
+\node[ptitle, right=5pt of badgeA] (titleA) {Recursive computation and causal halting};
+\def\yA{6.25}
+\node[gr] (inA) at (0.85,\yA) {Source sentence\\and prefix};
+\node[gy] (baseA) at (3.05,\yA) {Base step $e_0$\\shared cell};
+\node[bl] (gateA0) at (5.25,\yA) {Gate 0\\$\mathrm{top}_1\ge\tau_0=0.85$};
+\node[gy] (refA1) at (7.65,\yA) {Refinement $e_1$\\shared cell};
+\node[bl] (gateA1) at (9.95,\yA) {Gate 1\\$\mathrm{top}_1\ge\tau_1=0.90$};
+\node[gy] (refAK) at (12.35,\yA) {Refinements $e_2,e_3$};
+\node[gr] (outA) at (15.15,\yA) {Output token\\current prediction};
 \draw[->] (inA.east) -- (baseA.west);
-\draw[->] (baseA.east) -- (gate0.west);
-\draw[->] (gate0.east) -- node[tag, above=1pt] {No} (ref1.west);
-\draw[->] (ref1.east) -- (gate1.west);
-\draw[->] (gate1.east) -- node[tag, above=1pt] {No} (refK.west);
-\draw[->] (refK.east) -- (outA.west);
-
-% Top Early-Exit Rails (Blue)
-\draw[->, draw=oiBlue, line width=0.95pt]
-    (gate0.north) -- ++(0, 0.72) -| node[tag, pos=0.22, above=1pt, text=oiBlue] {\textbf{Yes}: Halt early ($0$ refinement calls; $87\text{--}91\%$ stable)} ([xshift=-8pt]outA.north);
-
-\draw[->, draw=oiBlue, line width=0.95pt]
-    (gate1.north) -- ++(0, 0.34) -| node[tag, pos=0.28, above=1pt, text=oiBlue] {\textbf{Yes}: Halt early ($1$ refinement call)} ([xshift=8pt]outA.north);
-
-% Runtime Interception Audit Bus (Bottom)
-\node[draw=oiBlue, fill=oiBlue!14, line width=1.05pt, rounded corners=2.5pt, inner xsep=8pt, inner ysep=3.2pt, align=center] (counter) at (9.45, 0.90) {
-    \textbf{\textcolor{oiBlue}{Actual Computation Accounting (Runtime Interception):}} \quad
-    $N_{\mathrm{cell}} = \#\{\mathrm{base\ steps}\} + \#\{\mathrm{refinement\ calls}\}$
-};
-
-% Interception Probes on Frozen Modules
-\node[probe] (pr1) at (baseA.south) {};
-\node[probe] (pr2) at (ref1.south) {};
-\node[probe] (pr3) at (refK.south) {};
-
-\draw[dashed, draw=oiBlue, line width=0.8pt] (pr1) -- ++(0, -0.46) -| ([xshift=-2.6cm]counter.north);
-\draw[->, dashed, draw=oiBlue, line width=0.8pt] (pr2) -- (pr2 |- counter.north);
-\draw[dashed, draw=oiBlue, line width=0.8pt] (pr3) -- ++(0, -0.46) -| ([xshift=2.6cm]counter.north);
-\draw[->, dashed, draw=oiBlue, line width=0.8pt] (counter.east) -| (outA.south);
-
-% Background layers for Panel (a)
+\draw[->] (baseA.east) -- (gateA0.west);
+\draw[->] (gateA0.east) -- node[tag,below] {continue} (refA1.west);
+\draw[->] (refA1.east) -- (gateA1.west);
+\draw[->] (gateA1.east) -- node[tag,below] {continue} (refAK.west);
+\draw[->] (refAK.east) -- (outA.west);
+\draw[->,draw=oiBlue] (gateA0.north) -- ++(0,0.34) -| node[tag,above,pos=0.40] {halt: 0 refinements} (outA.north);
+\draw[->,draw=oiBlue] (gateA1.north) -- ++(0,0.78) -| node[tag,above,pos=0.40] {halt after $e_1$} (outA.north);
+\node[bl] (auditA) at (8.0,5.05) {Executed-call audit: $N_{\mathrm{cell}}=\#\{\text{base calls}\}+\#\{\text{refinement calls}\}$};
+\draw[dashed,draw=oiBlue] (baseA.south) -- ++(0,-0.28) -| (auditA.west);
+\draw[dashed,draw=oiBlue] (refA1.south) -- ++(0,-0.42) -| (auditA.north);
+\draw[dashed,draw=oiBlue] (refAK.south) -- ++(0,-0.60) -| (auditA.east);
+\node[note] at (15.7,5.0) {decision uses signals\\available before the gated step};
+% ---------------- PANEL (b) ----------------
+\node[badge] (badgeB) at (-0.1, 3.35) {(b)};
+\node[ptitle, right=5pt of badgeB] (titleB) {Cross-architecture latent state dynamics};
+\def\yB{2.25}
+\node[gr] (inB) at (0.85,\yB) {Four recursive\\architectures};
+\node[gy] (trajB) at (4.05,\yB) {Free-running traces\\$z^{(0)},\ldots,z^{(3)}$};
+\node[bl] (metB) at (7.85,\yB) {Six summaries\\norm, update, cosine,\\displacement, $\Delta y$};
+\node[og] (regB) at (12.15,\yB) {Bounded gated states\\vs.\ unbounded accumulators};
+\node[gr] (sumB) at (16.25,\yB) {Within-model summaries\\with bootstrap intervals};
+\draw[->] (inB.east) -- (trajB.west);
+\draw[->] (trajB.east) -- (metB.west);
+\draw[->] (metB.east) -- (regB.west);
+\draw[->] (regB.east) -- (sumB.west);
+\node[note] at (8.2,1.25) {LSTM hidden and cell separated; absolute norms are not used to rank architectures};
+% ---------------- PANEL (c) ----------------
+\node[badge] (badgeC) at (-0.1, -0.55) {(c)};
+\node[ptitle, right=5pt of badgeC] (titleC) {Evolutionary latent step-size control and transfer};
+\def\yC{-1.65}
+\node[gr] (sigC) at (0.85,\yC) {Causal signals\\$\tilde H,\ \tilde D,\ \tilde A,\ k/K$};
+\node[gy] (delC) at (3.95,\yC) {Frozen cell\\displacement $\Delta z^{(k)}$};
+\node[bl] (polC) at (7.15,\yC) {Step-size policy\\$\alpha^{(k)}=\sigma(\cdot)$, five weights};
+\node[bl] (modC) at (10.55,\yC) {Scaled update\\$z^{(k+1)}=z^{(k)}+\alpha^{(k)}\Delta z^{(k)}$};
+\node[og] (cfC) at (13.95,\yC) {Outer confirmation\\1 of 3 seeds non-inferior};
+\node[og] (trC) at (17.05,\yC) {Frozen-policy transfer\\4 of 9 non-inferior};
+\draw[->] (sigC.east) -- (delC.west);
+\draw[->] (delC.east) -- (polC.west);
+\draw[->] (polC.east) -- (modC.west);
+\draw[->,dashed,draw=oiOrange] (modC.east) -- (cfC.west);
+\draw[->,dashed,draw=oiOrange] (cfC.east) -- (trC.west);
+\node[note] at (8.7,-2.65) {45 searches, 336 evaluations each; depth and model weights stay fixed};
+% ---------------- frames ----------------
 \begin{pgfonlayer}{background}
-    % Outer Panel (a) Frame
-    \draw[draw=oiGray!65, fill=oiGray!4, line width=0.85pt, rounded corners=4pt]
-        (\xLeft, 0.48) rectangle (\xRight, 5.26);
-    \fill[oiGray!14, rounded corners=3.5pt] (\xLeft+0.02, 4.79) rectangle (\xRight-0.02, 5.24);
-    \draw[draw=oiGray!45, line width=0.5pt] (\xLeft, 4.79) -- (\xRight, 4.79);
-
-    % Inner Zone Box for Recursive GRU Seq2Seq
-    \node[draw=oiGray, fill=oiGray!7, dashed, line width=0.7pt, rounded corners=3.5pt, inner sep=6.5pt,
-          fit=(baseA)(ref1)(refK)(refK_s2),
-          label={[tag, text=oiGray, anchor=south west]north west:\textbf{Recursive GRU Seq2Seq (Frozen Checkpoints)}}] {};
+\node[draw=oiGray!55, fill=oiGray!4, rounded corners=4pt, inner sep=7pt,
+      fit=(inA)(outA)(auditA)] (frameA) {};
+\node[draw=oiGray!55, fill=oiGray!4, rounded corners=4pt, inner sep=7pt,
+      fit=(inB)(sumB)] (frameB) {};
+\node[draw=oiGray!55, fill=oiGray!4, rounded corners=4pt, inner sep=7pt,
+      fit=(sigC)(trC)] (frameC) {};
 \end{pgfonlayer}
-
-
-% ==============================================================================
-% PANEL (b) CONTENT
-% ==============================================================================
-\node[panelBadge, anchor=west] (badgeB) at (-0.05, 0.00) {(b)};
-\node[panelTitle, right=5pt of badgeB] (titleB) {Evolutionary Latent Step-Size Control and Transfer (Fixed Budget)};
-
-\def\yB{-1.52}
-
-% 1. Causal Signals (Green)
-\richcard{inB}{1.20, \yB}{2.45cm}{cardGreen}{oiGreen}{Causal Signals}{
-    State $z_i^{(k)}$ \& Prefix\\[2.5pt]
-    \tikz{
-        \foreach \lbl/\x in {$\tilde{H}$/0, $\tilde{D}$/0.46, $\tilde{A}$/0.92, $\frac{k}{K}$/1.38} {
-            \node[draw=oiGreen, fill=white, rounded corners=0.8pt, minimum width=11pt, minimum height=10pt, inner sep=0.5pt, font=\sffamily\fontsize{5.4pt}{5.4pt}\selectfont] at (\x+0.2, 0.1) {\lbl};
-        }
-    }\\[1.5pt]
-    Causal at Step $k$
-}
-
-% 2. Frozen Cell Update Proposal (Gray)
-\richcard{propB}{4.05, \yB}{2.25cm}{cardGray}{oiGray}{Frozen Proposal}{
-    Cell $F$ Delta\\[2.5pt]
-    \tikz{
-        \draw[->, draw=oiGray, line width=1.15pt] (0,0.08) -- (1.45,0.08);
-        \node[font=\sffamily\fontsize{5.5pt}{5.5pt}\selectfont, text=oiGray, above] at (0.725, 0.08) {$\Delta z_i^{(k)}$};
-    }\\[1.5pt]
-    Unscaled Step ($\alpha=1$)
-}
-
-% 3. Step-Size Policy (Blue - Ours)
-\richcard{stepB}{7.55, \yB}{3.75cm}{cardBlue}{oiBlue}{Step-Size Policy (Ours)}{
-    $\alpha_i^{(k)} = \sigma\!\left(w_0 + w_1\tilde{H} + w_2\tilde{D} + w_3\tilde{A} + w_4\frac{k}{K}\right)$\\[2.5pt]
-    \tikz{
-        \draw[draw=oiGray!60, fill=white, rounded corners=0.6pt] (0,0) rectangle (2.05, 0.17);
-        \fill[oiBlue!65] (0.02,0.02) rectangle (1.30, 0.15);
-        \node[font=\sffamily\fontsize{5.3pt}{5.3pt}\selectfont, text=oiBlue, anchor=west] at (2.12, 0.085) {$\alpha_i^{(k)} \in (0,1)$};
-    }
-}
-
-% 4. Modulated Refinement (Blue - Ours)
-\richcard{modB}{11.75, \yB}{3.55cm}{cardBlue}{oiBlue}{Modulated Refinement}{
-    $z_i^{(k+1)} = z_i^{(k)} + \alpha_i^{(k)}\Delta z_i^{(k)}$\\[2.5pt]
-    \tikz{
-        \draw[->, draw=oiGray!65, dashed, line width=0.8pt] (0,0.16) -- (1.30,0.16);
-        \draw[->, draw=oiBlue, line width=1.2pt] (0,0.03) -- (0.82,0.03);
-        \node[font=\sffamily\fontsize{5.3pt}{5.3pt}\selectfont, text=oiBlue, anchor=west] at (1.38, 0.095) {$\times K$ ($N_{\mathrm{cell}}$ const.)};
-    }
-}
-
-% 5. Transfer boundary (Orange)
-\richcard{jointB}{16.65, \yB}{4.85cm}{cardOrange}{oiOrange}{Zero-Shot Transfer (Frozen GRU $s_0$)}{
-    RNN / LSTM / Transformer; no re-search\\[2pt]
-    \tikz{
-        \node[font=\sffamily\fontsize{5.1pt}{5.1pt}\selectfont, text=oiOrange, anchor=south] at (0.85, 0.24) {$-0.5\text{pp}$ NI};
-        \draw[draw=oiGray!70] (0,0.10) -- (2.35,0.10);
-        \draw[draw=oiOrange, dashed, line width=0.9pt] (0.85, -0.02) -- (0.85, 0.23);
-        \draw[draw=oiOrange, line width=1.15pt] (0.40, 0.10) -- (1.65, 0.10);
-        \draw[draw=oiOrange, line width=0.9pt] (0.40, 0.04) -- (0.40, 0.16);
-        \draw[draw=oiOrange, line width=0.9pt] (1.65, 0.04) -- (1.65, 0.16);
-        \fill[oiOrange] (1.15, 0.10) circle (1.7pt);
-        \node[font=\sffamily\fontsize{5.3pt}{5.3pt}\selectfont, text=oiOrange, anchor=west] at (2.42, 0.10) {4/9 NI, 5/9 inconcl.};
-    }
-}
-
-% Panel (b) Flow Arrows
-\draw[->] (inB.east) -- (propB.west);
-\draw[->] (propB.east) -- (stepB.west);
-\draw[->] (stepB.east) -- (modB.west);
-\draw[->, dashed, draw=oiOrange, line width=0.85pt] (modB.east) -- node[tag, above=1pt, text=oiOrange] {transfer} (jointB.west);
-
-% Background layers for Panel (b)
-\begin{pgfonlayer}{background}
-    % Inner Zone Box for Constant-Compute Control
-    \node[draw=oiBlue, fill=oiBlue!6, dashed, line width=0.85pt, rounded corners=3.5pt, inner sep=6pt,
-          fit=(stepB)(modB)] (zoneB) {};
-    \node[tag, text=oiBlue, anchor=north] (zoneBLabel) at ($(zoneB.south)+(0,-1.5pt)$) {\textbf{Fixed-Depth Latent Dynamics Control (Ours)}};
-
-    % Outer Panel (b) Frame (Dynamically encloses zoneBLabel with generous bottom margin)
-    \path let \p1 = (zoneBLabel.south) in
-        node[draw=oiGray!65, fill=oiGray!4, line width=0.85pt, rounded corners=4pt, inner sep=0pt,
-             fit={(\xLeft, \y1-6pt) (\xRight, 0.24)}] (panelBBox) {};
-    \fill[oiGray!14, rounded corners=3.5pt] (\xLeft+0.02, -0.22) rectangle (\xRight-0.02, 0.22);
-    \draw[draw=oiGray!45, line width=0.5pt] (\xLeft, -0.22) -- (\xRight, -0.22);
-\end{pgfonlayer}
-
 \end{tikzpicture}%
 }
-\caption{\textbf{TRACER overview: trace, halt, and control recursive computation.} \textbf{(a)} At token $i$, a frozen recursive GRU produces depths $e_0,e_1,e_3$ (gray). Two causal confidence gates (blue) read prefix signals $x_i^{(0)},x_i^{(1)}$ that are available before the refinement they control, so a stopped token never enters the skipped call. Runtime interception (green) counts the actual base and refinement calls, yielding $N_{\mathrm{cell}}$ rather than an inferred exit depth. \textbf{(b)} At fixed depth, a five-parameter policy maps prediction entropy, update magnitude, update direction, and depth to a step size $\alpha_i^{(k)}\in(0,1)$ that rescales the refinement displacement without changing $N_{\mathrm{cell}}$. The policy is frozen before outer confirmation and transferred without re-search; transfer is partial (four of nine target seeds non-inferior), which marks the boundary of the learned rule.}
+\caption{\textbf{TRACER: one framework, three lines of study.} \textbf{(a)} A frozen recursive model produces depths $e_0$ to $e_3$. Two causal gates read confidence available before the refinement they control, so stopped tokens never enter the skipped call; forward hooks verify the executed-call count $N_{\mathrm{cell}}$. \textbf{(b)} The same checkpoints yield free-running latent trajectories, reduced to six within-model summaries with bootstrap intervals, separating bounded gated states from unbounded accumulators. \textbf{(c)} At fixed depth, a five-parameter step-size policy rescales each refinement; the policy is frozen before a single outer check and a cross-architecture transfer test. The three panels share one call-counting rule and one non-inferiority criterion, and the rightmost column of each panel marks the condition or boundary of the corresponding claim.}
 \label{fig:framework}
 \end{figure*}
 

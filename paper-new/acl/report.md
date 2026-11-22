@@ -33,7 +33,13 @@
 | `fig:alpha` | 熵/幅度/方向/深度四特征 + 截距 → sigmoid → $\alpha^{(k)}$ | `p3r_core.alpha_from_policy` |
 | `fig:framework`（中文 `fig:method_overview`） | TRACER 两面板详细总览：面板 (a) 因果停算 + 实际调用核算；面板 (b) 步长策略 + 冻结确认与迁移 | 原稿 `paper/acl/main.tex` 的 Figure 1 |
 
-`fig:framework` 已从原稿 `paper/acl/main.pdf` 第 2 页的 Figure 1 提取完整 TikZ 源码（294 行）替换原先的简化三框图。图中旧的“Joint Control (26 Active DoF) / Fails held-out NI”已按最终协议改为“Zero-Shot Transfer (Frozen GRU s0) / 4/9 NI, 5/9 inconcl.”，图例“Generalization Cost”改为“Transfer Boundary”。图注与两段正文说明同步改写：第一段区分预测层面与执行层面，第二段按信号流逐项解释面板 (a) 的门控与 $N_{\mathrm{cell}}$ 计数、面板 (b) 的四特征→$\alpha$→缩放更新→外层确认与迁移。所有图均使用同一配色与模块命名，中英文共用同一图像资产。
+Method 中原有的 5 张分散方法图（架构图、递归精化图、因果停算图、步长控制图、简化框架图）已全部删除，只保留**一张综合大图** `fig:framework`（中文 `fig:method_overview`），放在 Method 末尾。该图重新设计为三个面板，使读者一眼看到三条主线：
+
+- 面板 (a) **Recursive computation and causal halting**：不再写 “Frozen GRU”，改为通用的“base step $e_0$ / shared cell”与图注“A frozen recursive model”，覆盖所有递归模型；保留两道因果门控、提前退出轨道、以及 $N_{\mathrm{cell}}$ 执行调用审计总线。
+- 面板 (b) **Cross-architecture latent state dynamics**（新增）：四种递归架构 → 自由运行轨迹 $z^{(0)}\ldots z^{(3)}$ → 六项摘要 → 有界门控态 vs. 无界累积态 → 模型内自助区间；并注明 LSTM hidden/cell 分开、绝对范数不排名。
+- 面板 (c) **Evolutionary latent step-size control and transfer**：因果信号 $\tilde H,\tilde D,\tilde A,k/K$ → 冻结单元位移 → 五参数策略 $\alpha^{(k)}$ → 缩放更新 → 外层确认 1/3 → 冻结策略迁移 4/9。**不再出现 “RNN / LSTM / Transformer; no re-search”**，只写“Frozen-policy transfer / 4 of 9 non-inferior”。
+
+图注与两段正文说明同步改写：第一段说明三面板共享执行调用定义与非劣效判据、每条主线在结果章节展开；第二段逐一解释三条主线。所有方法内容集中在这张图中，中英文共用同一 TikZ 资产。
 
 ## 4. 删除的散点图与历史实验表
 
