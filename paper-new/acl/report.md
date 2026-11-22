@@ -19,27 +19,20 @@
 - 三张结果图由脚本重绘，图例由 `T1` 改为 `Transformer`：`fig_depth.png`、`fig_transitions.png`、`crossarch_latent_figure.png`。
 - 验证：`T1` 仅出现在英文 `\usepackage[T1]{fontenc}`，无任何架构名残留。
 
-## 3. 恢复的原始架构图与新增方法图
+## 3. Method 总览图：单张三面板 TikZ 综合图
 
-仓库中的 `results/figures/supp_fig5_transformer.png` 与 `paper/acl/figures/supp_fig5_transformer.png` 经检查内容相同，但**并非模型架构图**：它是旧 GRU 策略的准确率—计算量散点图加转移柱状图。因此没有被当作架构图使用，已从 `paper-new/acl/figures/` 删除。
+当前英文稿与中文稿的 Method 均只保留**一张全宽 TikZ 总览图**，原先独立的架构图、递归精化图、因果停算图和步长控制图均已移除。英文标签为 `fig:framework`，中文标签为 `fig:method_overview`。
 
-依据 `src/model_recursive.py` 的真实前向逻辑绘制了 4 张 TikZ 方法图，并保留总体框架图：
-
-| 图 | 内容 | 依据 |
+| 面板 | 内容 | 图中重点 |
 |---|---|---|
-| `fig:arch` | 编码器—解码器结构、Bahdanau 上下文、基步、共享精化单元、共享输出头 | `forward_depths`/`greedy_decode` |
-| `fig:refine` | $z^{(0)}\to z^{(3)}$ 的共享精化与每深度输出头 | `z_new = refine([e(y_{t-1}), ctx, pE], z)` |
-| `fig:halt` | $e_0$ 后 $\tau_0=0.85$、$e_1$ 后 $\tau_1=0.90$ 两道门控、active subset、hook 计数 | `halting_lib.py` |
-| `fig:alpha` | 熵/幅度/方向/深度四特征 + 截距 → sigmoid → $\alpha^{(k)}$ | `p3r_core.alpha_from_policy` |
-| `fig:framework`（中文 `fig:method_overview`） | TRACER 两面板详细总览：面板 (a) 因果停算 + 实际调用核算；面板 (b) 步长策略 + 冻结确认与迁移 | 原稿 `paper/acl/main.tex` 的 Figure 1 |
+| (a) Recursive computation and causal halting | 通用冻结递归模型上的因果停算 | 不再以 Frozen GRU 代表全部模型；展示 $e_0/e_1$ 两道置信门控、停止/继续路径，以及 forward-hook 对真实 $N_{\mathrm{cell}}$ 调用的核验 |
+| (b) Cross-architecture latent state dynamics | 四个主分析架构的跨深度状态轨迹 | $z^{(0)}$--$z^{(3)}$、六项 latent 摘要、有界门控态与无界累积态、LSTM hidden/cell 分开，以及绝对范数不用于架构排名 |
+| (c) Evolutionary latent step-size control and transfer | 固定深度下的更新缩放与外部验证 | $	ilde H,\tilde D,\tilde A,k/K$、五参数步长策略、恒定深度和模型权重、45 次搜索/每次 336 次评估、外层确认 1/3、冻结策略迁移 4/9 |
 
-Method 中原有的 5 张分散方法图（架构图、递归精化图、因果停算图、步长控制图、简化框架图）已全部删除，只保留**一张综合大图** `fig:framework`（中文 `fig:method_overview`），放在 Method 末尾。该图重新设计为三个面板，使读者一眼看到三条主线：
-
-- 面板 (a) **Recursive computation and causal halting**：不再写 “Frozen GRU”，改为通用的“base step $e_0$ / shared cell”与图注“A frozen recursive model”，覆盖所有递归模型；保留两道因果门控、提前退出轨道、以及 $N_{\mathrm{cell}}$ 执行调用审计总线。
-- 面板 (b) **Cross-architecture latent state dynamics**（新增）：四种递归架构 → 自由运行轨迹 $z^{(0)}\ldots z^{(3)}$ → 六项摘要 → 有界门控态 vs. 无界累积态 → 模型内自助区间；并注明 LSTM hidden/cell 分开、绝对范数不排名。
-- 面板 (c) **Evolutionary latent step-size control and transfer**：因果信号 $\tilde H,\tilde D,\tilde A,k/K$ → 冻结单元位移 → 五参数策略 $\alpha^{(k)}$ → 缩放更新 → 外层确认 1/3 → 冻结策略迁移 4/9。**不再出现 “RNN / LSTM / Transformer; no re-search”**，只写“Frozen-policy transfer / 4 of 9 non-inferior”。
-
-图注与两段正文说明同步改写：第一段说明三面板共享执行调用定义与非劣效判据、每条主线在结果章节展开；第二段逐一解释三条主线。所有方法内容集中在这张图中，中英文共用同一 TikZ 资产。
+- 面板 (a) 由原先的 “Frozen GRU” 上升为适用于全部四个主分析递归架构的通用停算流程；各架构保留自身的基步与共享精化单元。
+- 面板 (c) 不再列出目标架构名称，也不出现 “no re-search”；以 frozen-policy transfer 与实际迁移结果表达验证边界。
+- 三个面板共用实验协议中的执行调用定义与非劣效判据，但表达三条并列研究主线，不暗示 latent dynamics 已被证明是进化搜索收益的因果前提。
+- 中英文图结构一致，分别使用对应语言的图注与正文说明。
 
 ## 4. 删除的散点图与历史实验表
 
@@ -63,9 +56,9 @@ Method 中原有的 5 张分散方法图（架构图、递归精化图、因果�
 
 ## 6. 最终图表目录
 
-正文 9 图：5 张方法图（Method）+ 4 张结果图（Results：深度曲线、转移率、六指标 latent、搜索曲线）。
-
-正文 9 表：`tab:models`、`tab:depth`、`tab:halt12`、`tab:wall`、`tab:latstat`、`tab:opt5`、`tab:alpha_confirm`、`tab:trans`、`tab:devconfirm`。
+- Method：**1 张全宽三面板综合 TikZ 图**（英文 `fig:framework`；中文 `fig:method_overview`）。
+- Results：4 张定量结果图（深度曲线、相邻深度转移、六指标 latent trajectory、优化器搜索曲线）。
+- 正文合计：**5 图、9 表**。表格为 `tab:models`、`tab:depth`、`tab:halt12`、`tab:wall`、`tab:latstat`、`tab:opt5`、`tab:alpha_confirm`、`tab:trans`、`tab:devconfirm`。
 
 ## 7. 关键数据核对
 
