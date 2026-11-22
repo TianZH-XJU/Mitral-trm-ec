@@ -31,9 +31,9 @@
 | `fig:refine` | $z^{(0)}\to z^{(3)}$ 的共享精化与每深度输出头 | `z_new = refine([e(y_{t-1}), ctx, pE], z)` |
 | `fig:halt` | $e_0$ 后 $\tau_0=0.85$、$e_1$ 后 $\tau_1=0.90$ 两道门控、active subset、hook 计数 | `halting_lib.py` |
 | `fig:alpha` | 熵/幅度/方向/深度四特征 + 截距 → sigmoid → $\alpha^{(k)}$ | `p3r_core.alpha_from_policy` |
-| `fig:framework`（中文 `fig:method_overview`） | TRACER 三条主线总览，移至 Method 末尾 | 原有 |
+| `fig:framework`（中文 `fig:method_overview`） | TRACER 两面板详细总览：面板 (a) 因果停算 + 实际调用核算；面板 (b) 步长策略 + 冻结确认与迁移 | 原稿 `paper/acl/main.tex` 的 Figure 1 |
 
-所有图均使用同一配色与模块命名，中英文共用同一图像资产。
+`fig:framework` 已从原稿 `paper/acl/main.pdf` 第 2 页的 Figure 1 提取完整 TikZ 源码（294 行）替换原先的简化三框图。图中旧的“Joint Control (26 Active DoF) / Fails held-out NI”已按最终协议改为“Zero-Shot Transfer (Frozen GRU s0) / 4/9 NI, 5/9 inconcl.”，图例“Generalization Cost”改为“Transfer Boundary”。图注与两段正文说明同步改写：第一段区分预测层面与执行层面，第二段按信号流逐项解释面板 (a) 的门控与 $N_{\mathrm{cell}}$ 计数、面板 (b) 的四特征→$\alpha$→缩放更新→外层确认与迁移。所有图均使用同一配色与模块命名，中英文共用同一图像资产。
 
 ## 4. 删除的散点图与历史实验表
 
