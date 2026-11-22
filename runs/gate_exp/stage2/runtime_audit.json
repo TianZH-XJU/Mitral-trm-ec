@@ -1,0 +1,204 @@
+{
+ "stage": "active-subset audit",
+ "n_samples": 256,
+ "threads": 2,
+ "gru": {
+  "e0": {
+   "match": true,
+   "hook_counts": {
+    "base": 17146
+   },
+   "hook_checks": {
+    "base_rows": 17146,
+    "sum_n_gen": 17146,
+    "sum_n_cell": 17146,
+    "refine_rows": 0,
+    "base_eq_gen": true,
+    "refine_eq_ncell_minus_base": true
+   },
+   "sum_n_cell": 17146
+  },
+  "e1": {
+   "match": true,
+   "hook_counts": {
+    "base": 17167,
+    "refine_g1": 17167
+   },
+   "hook_checks": {
+    "base_rows": 17167,
+    "sum_n_gen": 17167,
+    "sum_n_cell": 34334,
+    "refine_rows": 17167,
+    "base_eq_gen": true,
+    "refine_eq_ncell_minus_base": true
+   },
+   "sum_n_cell": 34334
+  },
+  "e3": {
+   "match": true,
+   "hook_counts": {
+    "base": 17088,
+    "refine_g1": 17088,
+    "refine_g2": 17088,
+    "refine_g3": 17088
+   },
+   "hook_checks": {
+    "base_rows": 17088,
+    "sum_n_gen": 17088,
+    "sum_n_cell": 68352,
+    "refine_rows": 51264,
+    "base_eq_gen": true,
+    "refine_eq_ncell_minus_base": true
+   },
+   "sum_n_cell": 68352
+  },
+  "mixed": {
+   "match": true,
+   "hook_counts": {
+    "base": 17099,
+    "refine_g1": 689,
+    "refine_g2": 192,
+    "refine_g3": 192
+   },
+   "hook_checks": {
+    "base_rows": 17099,
+    "sum_n_gen": 17099,
+    "sum_n_cell": 18172,
+    "refine_rows": 1073,
+    "base_eq_gen": true,
+    "refine_eq_ncell_minus_base": true
+   },
+   "sum_n_cell": 18172
+  }
+ },
+ "rnn": {
+  "e0": {
+   "match": true,
+   "hook_counts": {
+    "base": 18353
+   },
+   "hook_checks": {
+    "base_rows": 18353,
+    "sum_n_gen": 18353,
+    "sum_n_cell": 18353,
+    "refine_rows": 0,
+    "base_eq_gen": true,
+    "refine_eq_ncell_minus_base": true
+   },
+   "sum_n_cell": 18353
+  },
+  "e1": {
+   "match": true,
+   "hook_counts": {
+    "base": 17532,
+    "refine_all": 17532
+   },
+   "hook_checks": {
+    "base_rows": 17532,
+    "sum_n_gen": 17532,
+    "sum_n_cell": 35064,
+    "refine_rows": 17532,
+    "base_eq_gen": true,
+    "refine_eq_ncell_minus_base": true
+   },
+   "sum_n_cell": 35064
+  },
+  "e3": {
+   "match": true,
+   "hook_counts": {
+    "base": 19505,
+    "refine_all": 58515
+   },
+   "hook_checks": {
+    "base_rows": 19505,
+    "sum_n_gen": 19505,
+    "sum_n_cell": 78020,
+    "refine_rows": 58515,
+    "base_eq_gen": true,
+    "refine_eq_ncell_minus_base": true
+   },
+   "sum_n_cell": 78020
+  },
+  "mixed": {
+   "match": true,
+   "hook_counts": {
+    "base": 18761,
+    "refine_all": 6001
+   },
+   "hook_checks": {
+    "base_rows": 18761,
+    "sum_n_gen": 18761,
+    "sum_n_cell": 24762,
+    "refine_rows": 6001,
+    "base_eq_gen": true,
+    "refine_eq_ncell_minus_base": true
+   },
+   "sum_n_cell": 24762
+  }
+ },
+ "lstm": {
+  "e0": {
+   "match": true,
+   "hook_counts": {
+    "base": 16959
+   },
+   "hook_checks": {
+    "base_rows": 16959,
+    "sum_n_gen": 16959,
+    "sum_n_cell": 16959,
+    "refine_rows": 0,
+    "base_eq_gen": true,
+    "refine_eq_ncell_minus_base": true
+   },
+   "sum_n_cell": 16959
+  },
+  "e1": {
+   "match": true,
+   "hook_counts": {
+    "base": 16974,
+    "refine_all": 16974
+   },
+   "hook_checks": {
+    "base_rows": 16974,
+    "sum_n_gen": 16974,
+    "sum_n_cell": 33948,
+    "refine_rows": 16974,
+    "base_eq_gen": true,
+    "refine_eq_ncell_minus_base": true
+   },
+   "sum_n_cell": 33948
+  },
+  "e3": {
+   "match": true,
+   "hook_counts": {
+    "base": 16946,
+    "refine_all": 50838
+   },
+   "hook_checks": {
+    "base_rows": 16946,
+    "sum_n_gen": 16946,
+    "sum_n_cell": 67784,
+    "refine_rows": 50838,
+    "base_eq_gen": true,
+    "refine_eq_ncell_minus_base": true
+   },
+   "sum_n_cell": 67784
+  },
+  "mixed": {
+   "match": true,
+   "hook_counts": {
+    "base": 16946,
+    "refine_all": 3555
+   },
+   "hook_checks": {
+    "base_rows": 16946,
+    "sum_n_gen": 16946,
+    "sum_n_cell": 20501,
+    "refine_rows": 3555,
+    "base_eq_gen": true,
+    "refine_eq_ncell_minus_base": true
+   },
+   "sum_n_cell": 20501
+  }
+ }
+}
