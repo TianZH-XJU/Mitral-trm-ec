@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.3.31)  19 NOV 2026 20:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.3.31)  22 NOV 2026 11:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1155,13 +1155,19 @@ Files (x86)/tex/fonts/enc/dvips/base/8r.enc}
 
 
 ]
-Underfull \vbox (badness 2818) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
-Underfull \vbox (badness 2818) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [2{D:/Program Files (x86)/tex/fonts/enc/dvips/inconsolata/i4-t1-0.enc}] [3] [4
 ]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 Underfull \hbox (badness 1953) in paragraph at lines 472--473
 \OMS/cmsy/m/n/10.95 f\OT1/cmr/m/n/10.95 0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.9
 5 50\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.95 0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n
@@ -1175,39 +1181,28 @@ L/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 99\OMS/cmsy/m/n/10.95 g$ \T1/ptm/m/n/10.95
  (+20) on
  []
 
-[5]
-<figures/fig2_p3r1_fixed_depth.png, id=253, 433.62pt x 231.264pt>
+
+Underfull \vbox (badness 1418) has occurred while \output is active []
+
+
+Underfull \vbox (badness 1418) has occurred while \output is active []
+
+ [5]
+<figures/fig2_p3r1_fixed_depth.png, id=276, 433.62pt x 231.264pt>
 File: figures/fig2_p3r1_fixed_depth.png Graphic file (type png)
 <use figures/fig2_p3r1_fixed_depth.png>
 Package pdftex.def Info: figures/fig2_p3r1_fixed_depth.png  used on input line 
 527.
 (pdftex.def)             Requested size: 175.26958pt x 93.4779pt.
-<figures/fig4_p3r0_trajectory.png, id=255, 578.16pt x 216.81pt>
+<figures/fig4_p3r0_trajectory.png, id=278, 578.16pt x 216.81pt>
 File: figures/fig4_p3r0_trajectory.png Graphic file (type png)
 <use figures/fig4_p3r0_trajectory.png>
 Package pdftex.def Info: figures/fig4_p3r0_trajectory.png  used on input line 5
 34.
 (pdftex.def)             Requested size: 197.17618pt x 73.93938pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [6 <./figures/fig2_p3r1_fixed_depth.png>]
-Underfull \vbox (badness 7722) has occurred while \output is active []
-
-
-Underfull \vbox (badness 7722) has occurred while \output is active []
-
- [7 <./figures/fig4_p3r0_trajectory.png>]
-Underfull \vbox (badness 4316) has occurred while \output is active []
-
-
-Underfull \vbox (badness 4316) has occurred while \output is active []
-
- [8]
-(main.bbl
+[6] [7 <./figures/fig2_p3r1_fixed_depth.png> <./figures/fig4_p3r0_trajectory.pn
+g>] [8] [9] (main.bbl
 Underfull \hbox (badness 1337) in paragraph at lines 42--45
 []\T1/ptm/m/n/10 (+20) Alex Graves. 2016.  Adap-tive com-pu-ta-tion time
  []
@@ -1218,12 +1213,87 @@ Underfull \hbox (badness 1205) in paragraph at lines 42--45
 arXiv preprint
  []
 
-[9]
+
 Underfull \hbox (badness 10000) in paragraph at lines 68--72
 []\T1/ptm/m/n/10 (+20) Roy Schwartz, Gabriel Stanovsky, Swabha
  []
 
-) [10
+)
+Overfull \hbox (42.54536pt too wide) in paragraph at lines 640--651
+ [][] 
+ []
+
+<figures/optimizer_curves.png, id=321, 578.16pt x 361.35pt>
+File: figures/optimizer_curves.png Graphic file (type png)
+<use figures/optimizer_curves.png>
+Package pdftex.def Info: figures/optimizer_curves.png  used on input line 656.
+(pdftex.def)             Requested size: 219.08614pt x 136.92847pt.
+
+Underfull \hbox (badness 1337) in paragraph at lines 663--664
+\T1/ptm/m/n/10.95 (+20) and LSTM $\OMS/cmsy/m/n/10.95 ^^B$ \T1/ptm/m/n/10.95 (+
+20) {forced $\OML/cmm/m/it/10.95 e[]$\T1/ptm/m/n/10.95 (+20) , forced $\OML/cmm
+/m/it/10.95 e[]$\T1/ptm/m/n/10.95 (+20) , forced
+ []
+
+
+Underfull \hbox (badness 1067) in paragraph at lines 663--664
+\OML/cmm/m/it/10.95 e[]$\T1/ptm/m/n/10.95 (+20) , thresh-old $\OT1/cmr/m/n/10.9
+5 (0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 85\OML/cmm/m/it/10.95 ; \OT1/cmr/m/
+n/10.95 0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 90)$\T1/ptm/m/n/10.95 (+20) } 
+$\OT1/cmr/m/n/10.95 = 12$ \T1/ptm/m/n/10.95 (+20) set-tings on
+ []
+
+
+Underfull \hbox (badness 2809) in paragraph at lines 663--664
+\T1/ptm/m/n/10.95 (+20) the 256-sample man-i-fest, per-sample to-kens,
+ []
+
+
+Underfull \hbox (badness 1275) in paragraph at lines 663--664
+\T1/ptm/m/n/10.95 (+20) de-coder ex-actly ($\OT1/cmr/m/n/10.95 12\OML/cmm/m/it/
+10.95 =\OT1/cmr/m/n/10.95 12$\T1/ptm/m/n/10.95 (+20) ). The hooks sat-isfy
+ []
+
+[10]
+Underfull \hbox (badness 3735) in paragraph at lines 667--682
+\T1/ptm/m/n/10.95 (+20) Table [][]8[][] re-ports the active-subset ex-ecu-tor's
+
+ []
+
+<figures/crossarch_latent_figure.png, id=331, 1084.05pt x 578.16pt>
+File: figures/crossarch_latent_figure.png Graphic file (type png)
+<use figures/crossarch_latent_figure.png>
+Package pdftex.def Info: figures/crossarch_latent_figure.png  used on input lin
+e 688.
+(pdftex.def)             Requested size: 219.08614pt x 116.83856pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Overfull \hbox (25.56015pt too wide) in paragraph at lines 698--713
+ [][] 
+ []
+
+[11 <./figures/optimizer_curves.png> <./figures/crossarch_latent_figure.png>]
+Underfull \hbox (badness 1226) in paragraph at lines 719--720
+\T1/ptm/m/n/10.95 (+20) nif-i-cantly neg-a-tive on $\OT1/cmr/m/n/10.95 2$ \T1/p
+tm/m/n/10.95 (+20) (RNN $\OML/cmm/m/it/10.95 s[]$\T1/ptm/m/n/10.95 (+20) : $\OM
+S/cmsy/m/n/10.95 ^^@\OT1/cmr/m/n/10.95 1\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95
+ 95$\T1/ptm/m/n/10.95 (+20) pp
+ []
+
+
+Underfull \hbox (badness 5954) in paragraph at lines 719--720
+\T1/ptm/m/n/10.95 (+20) and in-con-clu-sive on $\OT1/cmr/m/n/10.95 1$ \T1/ptm/m
+/n/10.95 (+20) (T1 $\OML/cmm/m/it/10.95 s[]$\T1/ptm/m/n/10.95 (+20) : $\OMS/cms
+y/m/n/10.95 ^^@\OT1/cmr/m/n/10.95 2\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 34$\
+T1/ptm/m/n/10.95 (+20) pp
+ []
+
+[12
 
 ] (main.aux)
  ***********
@@ -1236,16 +1306,16 @@ LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 2.45pt have occurred.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 014046590CF0AF63C6075D6AA0F54CD4;3867.
+(rerunfilecheck)             Checksum: 2CB08F6046DB777971E05331A83540E0;5504.
  ) 
 Here is how much of TeX's memory you used:
- 27135 strings out of 467871
- 497627 string characters out of 5427000
- 1016363 words of memory out of 5000000
- 55029 multiletter control sequences out of 15000+600000
- 754756 words of font info for 490 fonts, out of 8000000 for 9000
+ 27206 strings out of 467871
+ 498773 string characters out of 5427000
+ 1017613 words of memory out of 5000000
+ 55066 multiletter control sequences out of 15000+600000
+ 755948 words of font info for 504 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,16n,94p,1500b,1622s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,16n,94p,1893b,1622s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <D:/Program Files (x86)/tex/fonts/type1/public/inconsolata/Inconsolata-zi4r.p
 fb><D:/Program Files (x86)/tex/fonts/type1/public/amsfonts/cm/cmbx10.pfb><D:/Pr
 ogram Files (x86)/tex/fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/Program Fil
@@ -1273,9 +1343,9 @@ etic/uhvb8a.pfb><D:/Program Files (x86)/tex/fonts/type1/urw/helvetic/uhvr8a.pfb
 iles (x86)/tex/fonts/type1/urw/times/utmb8a.pfb><D:/Program Files (x86)/tex/fon
 ts/type1/urw/times/utmr8a.pfb><D:/Program Files (x86)/tex/fonts/type1/urw/times
 /utmri8a.pfb>
-Output written on main.pdf (10 pages, 524765 bytes).
+Output written on main.pdf (12 pages, 828773 bytes).
 PDF statistics:
- 438 PDF objects out of 1000 (max. 8388607)
- 65 named destinations out of 1000 (max. 500000)
- 116919 words of extra memory for PDF output out of 128383 (max. 10000000)
+ 489 PDF objects out of 1000 (max. 8388607)
+ 78 named destinations out of 1000 (max. 500000)
+ 116977 words of extra memory for PDF output out of 128383 (max. 10000000)
 
