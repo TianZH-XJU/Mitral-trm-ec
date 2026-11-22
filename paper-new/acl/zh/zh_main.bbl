@@ -1,23 +1,10 @@
-\begin{thebibliography}{14}
+\begin{thebibliography}{9}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Banino et~al.(2021)Banino, Balaguer, and Blundell}]{banino2021ponder}
 Andrea Banino, Jan Balaguer, and Charles Blundell. 2021.
 \newblock Pondernet: Learning to ponder.
 \newblock In \emph{ICML 2021 Workshop on Automated Machine Learning (AutoML)}.
-
-\bibitem[{Cameron and Miller(2015)}]{cameron2015practitioner}
-A.~Colin Cameron and Douglas~L. Miller. 2015.
-\newblock A practitioner's guide to cluster-robust inference.
-\newblock \emph{Journal of Human Resources}, 50(2):317--372.
-
-\bibitem[{Cho et~al.(2014)Cho, van Merri{\"e}nboer, Gulcehre, Bahdanau,
-  Bougares, Schwenk, and Bengio}]{cho2014gru}
-Kyunghyun Cho, Bart van Merri{\"e}nboer, Caglar Gulcehre, Dzmitry Bahdanau,
-  Fethi Bougares, Holger Schwenk, and Yoshua Bengio. 2014.
-\newblock Learning phrase representations using rnn encoder--decoder for
-  statistical machine translation.
-\newblock In \emph{Proceedings of EMNLP}.
 
 \bibitem[{Dehghani et~al.(2019)Dehghani, Gouws, Vinyals, Uszkoreit, and
   Kaiser}]{dehghani2019universal}
@@ -63,29 +50,10 @@ Tal Schuster, Adam Fisch, Tommi Jaakkola, and Regina Barzilay. 2021.
 \newblock Consistent accelerated inference via confident adaptive transformers.
 \newblock In \emph{Proceedings of EMNLP}, pages 4962--4979.
 
-\bibitem[{Schwartz et~al.(2020)Schwartz, Stanovsky, Swayamdipta, Dodge, and
-  Smith}]{schwartz2020right}
-Roy Schwartz, Gabriel Stanovsky, Swabha Swayamdipta, Jesse Dodge, and Noah~A.
-  Smith. 2020.
-\newblock The right tool for the job: Matching model and instance complexities.
-\newblock In \emph{Proceedings of ACL}, pages 6640--6651.
-
 \bibitem[{Stanley et~al.(2019)Stanley, Clune, Lehman, and
   Miikkulainen}]{stanley2019designing}
 Kenneth~O. Stanley, Jeff Clune, Joel Lehman, and Risto Miikkulainen. 2019.
 \newblock Designing neural networks through neuroevolution.
 \newblock \emph{Nature Machine Intelligence}, 1:24--35.
-
-\bibitem[{Sutskever et~al.(2014)Sutskever, Vinyals, and
-  Le}]{sutskever2014seq2seq}
-Ilya Sutskever, Oriol Vinyals, and Quoc~V. Le. 2014.
-\newblock Sequence to sequence learning with neural networks.
-\newblock In \emph{Advances in Neural Information Processing Systems
-  (NeurIPS)}.
-
-\bibitem[{Zilberstein(1996)}]{zilberstein1996anytime}
-Shlomo Zilberstein. 1996.
-\newblock Using anytime algorithms in intelligent systems.
-\newblock \emph{AI Magazine}, 17(3):73--83.
 
 \end{thebibliography}
