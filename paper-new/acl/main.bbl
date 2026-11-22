@@ -1,23 +1,44 @@
-\begin{thebibliography}{14}
+\begin{thebibliography}{62}
 \providecommand{\natexlab}[1]{#1}
 
-\bibitem[{Banino et~al.(2021)Banino, Balaguer, and Blundell}]{banino2021ponder}
-Andrea Banino, Jan Balaguer, and Charles Blundell. 2021.
-\newblock Pondernet: Learning to ponder.
-\newblock In \emph{ICML 2021 Workshop on Automated Machine Learning (AutoML)}.
+\bibitem[{Bolukbasi et~al.(2017)Bolukbasi, Wang, Dekel, and
+  Saligrama}]{bolukbasi2017adaptive}
+Tolga Bolukbasi, Joseph Wang, Ofer Dekel, and Venkatesh Saligrama. 2017.
+\newblock Adaptive neural networks for efficient inference.
+\newblock In \emph{Proceedings of the 34th International Conference on Machine
+  Learning}, volume~70 of \emph{Proceedings of Machine Learning Research},
+  pages 527--536. PMLR.
 
-\bibitem[{Cameron and Miller(2015)}]{cameron2015practitioner}
-A.~Colin Cameron and Douglas~L. Miller. 2015.
-\newblock A practitioner's guide to cluster-robust inference.
-\newblock \emph{Journal of Human Resources}, 50(2):317--372.
+\bibitem[{Bulatov et~al.(2022)Bulatov, Kuratov, and
+  Burtsev}]{bulatov2022recurrent}
+Aydar Bulatov, Yury Kuratov, and Mikhail Burtsev. 2022.
+\newblock Recurrent memory transformer.
+\newblock In \emph{Advances in Neural Information Processing Systems 35
+  (NeurIPS 2022)}, pages 11079--11091.
 
-\bibitem[{Cho et~al.(2014)Cho, van Merri{\"e}nboer, Gulcehre, Bahdanau,
-  Bougares, Schwenk, and Bengio}]{cho2014gru}
-Kyunghyun Cho, Bart van Merri{\"e}nboer, Caglar Gulcehre, Dzmitry Bahdanau,
-  Fethi Bougares, Holger Schwenk, and Yoshua Bengio. 2014.
-\newblock Learning phrase representations using rnn encoder--decoder for
-  statistical machine translation.
-\newblock In \emph{Proceedings of EMNLP}.
+\bibitem[{Cheng and Zhang(2022)}]{cheng2022mrp}
+Hao Cheng and Zhihua Zhang. 2022.
+\newblock \href {https://doi.org/10.18653/v1/2022.findings-acl.25} {{MR-P}: A
+  parallel decoding algorithm for iterative refinement non-autoregressive
+  translation}.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  ACL 2022}, pages 285--296. Association for Computational Linguistics.
+
+\bibitem[{Dai et~al.(2019)Dai, Yang, Yang, Carbonell, Le, and
+  Salakhutdinov}]{dai2019transformerxl}
+Zihang Dai, Zhilin Yang, Yiming Yang, Jaime Carbonell, Quoc Le, and Ruslan
+  Salakhutdinov. 2019.
+\newblock \href {https://doi.org/10.18653/v1/P19-1285} {{Transformer-XL}:
+  Attentive language models beyond a fixed-length context}.
+\newblock In \emph{Proceedings of the 57th Annual Meeting of the Association
+  for Computational Linguistics}, pages 2978--2988. Association for
+  Computational Linguistics.
+
+\bibitem[{Das and Suganthan(2011)}]{das2011survey}
+Swagatam Das and Ponnuthurai~Nagaratnam Suganthan. 2011.
+\newblock \href {https://doi.org/10.1109/TEVC.2010.2059031} {Differential
+  evolution: A survey of the state-of-the-art}.
+\newblock \emph{IEEE Transactions on Evolutionary Computation}, 15(1):4--31.
 
 \bibitem[{Dehghani et~al.(2019)Dehghani, Gouws, Vinyals, Uszkoreit, and
   Kaiser}]{dehghani2019universal}
@@ -27,21 +48,174 @@ Mostafa Dehghani, Stephan Gouws, Oriol Vinyals, Jakob Uszkoreit, and Lukasz
 \newblock In \emph{International Conference on Learning Representations
   (ICLR)}.
 
-\bibitem[{Eiben and Smith(2015)}]{eiben2015introduction}
-Agoston~E. Eiben and James~E. Smith. 2015.
-\newblock \emph{Introduction to Evolutionary Computing}, 2nd edition.
-\newblock Springer.
+\bibitem[{do~Campo~Bay{\'o}n and
+  S{\'a}nchez-Gij{\'o}n(2025)}]{docampobayon2025noninferiority}
+Mar{\'i}a do~Campo~Bay{\'o}n and Pilar S{\'a}nchez-Gij{\'o}n. 2025.
+\newblock \href {https://doi.org/10.1017/nlp.2024.4} {Evaluating nmt using the
+  non-inferiority principle}.
+\newblock \emph{Natural Language Processing}, 31(4):1042--1061.
 
-\bibitem[{Elbayad et~al.(2020)Elbayad, Gu, Grave, and Auli}]{elbayad2020depth}
-Maha Elbayad, Jiatao Gu, Edouard Grave, and Michael Auli. 2020.
-\newblock Depth-adaptive transformer.
-\newblock In \emph{International Conference on Learning Representations
-  (ICLR)}.
+\bibitem[{Fedus et~al.(2022)Fedus, Zoph, and Shazeer}]{fedus2022switch}
+William Fedus, Barret Zoph, and Noam Shazeer. 2022.
+\newblock Switch transformers: Scaling to trillion parameter models with simple
+  and efficient sparsity.
+\newblock \emph{Journal of Machine Learning Research}, 23(120):1--39.
+
+\bibitem[{Figurnov et~al.(2017)Figurnov, Collins, Zhu, Zhang, Huang, Vetrov,
+  and Salakhutdinov}]{figurnov2017spatially}
+Michael Figurnov, Maxwell~D. Collins, Yukun Zhu, Li~Zhang, Jonathan Huang,
+  Dmitry Vetrov, and Ruslan Salakhutdinov. 2017.
+\newblock \href {https://doi.org/10.1109/CVPR.2017.194} {Spatially adaptive
+  computation time for residual networks}.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition (CVPR)}, pages 1039--1048. IEEE.
+
+\bibitem[{Furrer et~al.(2020)Furrer, van Zee, Scales, and
+  Sch{\"a}rli}]{furrer2020compositional}
+Daniel Furrer, Marc van Zee, Nathan Scales, and Nathanael Sch{\"a}rli. 2020.
+\newblock \href {https://arxiv.org/abs/2007.08970} {Compositional
+  generalization in semantic parsing: Pre-training vs. specialized
+  architectures}.
+\newblock \emph{Preprint}, arXiv:2007.08970.
+
+\bibitem[{Geifman and El-Yaniv(2017)}]{geifman2017selective}
+Yonatan Geifman and Ran El-Yaniv. 2017.
+\newblock Selective classification for deep neural networks.
+\newblock In \emph{Advances in Neural Information Processing Systems},
+  volume~30, pages 4878--4887.
+
+\bibitem[{Geng et~al.(2021)Geng, Feng, and Qin}]{geng2021rewrite}
+Xinwei Geng, Xiaocheng Feng, and Bing Qin. 2021.
+\newblock \href {https://doi.org/10.18653/v1/2021.emnlp-main.265} {Learning to
+  rewrite for non-autoregressive neural machine translation}.
+\newblock In \emph{Proceedings of the 2021 Conference on Empirical Methods in
+  Natural Language Processing}, pages 3297--3308. Association for Computational
+  Linguistics.
+
+\bibitem[{Giannou et~al.(2023)Giannou, Rajput, Sohn, Lee, Lee, and
+  Papailiopoulos}]{giannou2023looped}
+Angeliki Giannou, Shashank Rajput, Jy-Yong Sohn, Kangwook Lee, Jason~D. Lee,
+  and Dimitris Papailiopoulos. 2023.
+\newblock Looped transformers as programmable computers.
+\newblock In \emph{Proceedings of the 40th International Conference on Machine
+  Learning}, volume 202 of \emph{Proceedings of Machine Learning Research},
+  pages 11398--11442. PMLR.
 
 \bibitem[{Graves(2016)}]{graves2016adaptive}
 Alex Graves. 2016.
 \newblock Adaptive computation time for recurrent neural networks.
 \newblock \emph{arXiv preprint arXiv:1603.08983}.
+
+\bibitem[{Graves et~al.(2014)Graves, Wayne, and Danihelka}]{graves2014neural}
+Alex Graves, Greg Wayne, and Ivo Danihelka. 2014.
+\newblock \href {https://arxiv.org/abs/1410.5401} {Neural turing machines}.
+\newblock \emph{Preprint}, arXiv:1410.5401.
+
+\bibitem[{Gu and Dao(2023)}]{gu2023mamba}
+Albert Gu and Tri Dao. 2023.
+\newblock \href {https://arxiv.org/abs/2312.00752} {Mamba: Linear-time sequence
+  modeling with selective state spaces}.
+\newblock \emph{Preprint}, arXiv:2312.00752.
+
+\bibitem[{Gu et~al.(2022)Gu, Goel, and R{\'e}}]{gu2022s4}
+Albert Gu, Karan Goel, and Christopher R{\'e}. 2022.
+\newblock Efficiently modeling long sequences with structured state spaces.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}.
+\newblock Oral, Honorable Mention; arXiv:2111.00396.
+
+\bibitem[{Gu and Hopkins(2023)}]{gu2023evaluation}
+Zhengyao Gu and Mark Hopkins. 2023.
+\newblock \href {https://doi.org/10.18653/v1/2023.acl-long.437} {On the
+  evaluation of neural selective prediction methods for natural language
+  processing}.
+\newblock In \emph{Proceedings of the 61st Annual Meeting of the Association
+  for Computational Linguistics (Volume 1: Long Papers)}, pages 7888--7899.
+  Association for Computational Linguistics.
+
+\bibitem[{Hansen et~al.(2003)Hansen, M{\"u}ller, and
+  Koumoutsakos}]{hansen2003cma}
+Nikolaus Hansen, Sibylle~D. M{\"u}ller, and Petros Koumoutsakos. 2003.
+\newblock \href {https://doi.org/10.1162/106365603321828970} {Reducing the time
+  complexity of the derandomized evolution strategy with covariance matrix
+  adaptation ({CMA-ES})}.
+\newblock \emph{Evolutionary Computation}, 11(1):1--18.
+
+\bibitem[{Hansen and Ostermeier(2001)}]{hansen2001cma}
+Nikolaus Hansen and Andreas Ostermeier. 2001.
+\newblock \href {https://doi.org/10.1162/106365601750190398} {Completely
+  derandomized self-adaptation in evolution strategies}.
+\newblock \emph{Evolutionary Computation}, 9(2):159--195.
+
+\bibitem[{Haviv et~al.(2019)Haviv, Rivkind, and Barak}]{haviv2019memory}
+Doron Haviv, Alexander Rivkind, and Omri Barak. 2019.
+\newblock Understanding and controlling memory in recurrent neural networks.
+\newblock In \emph{Proceedings of the 36th International Conference on Machine
+  Learning}, volume~97 of \emph{Proceedings of Machine Learning Research},
+  pages 2663--2671. PMLR.
+
+\bibitem[{Herzig and Berant(2021)}]{herzig2021span}
+Jonathan Herzig and Jonathan Berant. 2021.
+\newblock \href {https://doi.org/10.18653/v1/2021.acl-long.74} {Span-based
+  semantic parsing for compositional generalization}.
+\newblock In \emph{Proceedings of the 59th Annual Meeting of the Association
+  for Computational Linguistics}, pages 908--921. Association for Computational
+  Linguistics.
+
+\bibitem[{Horoi et~al.(2020)Horoi, Lajoie, and Wolf}]{horoi2020geometry}
+Stefan Horoi, Guillaume Lajoie, and Guy Wolf. 2020.
+\newblock \href {https://arxiv.org/abs/2001.03255} {Internal representation
+  dynamics and geometry in recurrent neural networks}.
+\newblock \emph{Preprint}, arXiv:2001.03255.
+
+\bibitem[{Huang et~al.(2018)Huang, Chen, Li, Wu, van~der Maaten, and
+  Weinberger}]{huang2018multiscale}
+Gao Huang, Danlu Chen, Tianhong Li, Felix Wu, Laurens van~der Maaten, and
+  Kilian~Q. Weinberger. 2018.
+\newblock \href {https://arxiv.org/abs/1703.09844} {Multi-scale dense networks
+  for resource efficient image classification}.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}.
+
+\bibitem[{Jiang et~al.(2018)Jiang, Kim, Guan, and Gupta}]{jiang2018trust}
+Heinrich Jiang, Been Kim, Melody~Y. Guan, and Maya Gupta. 2018.
+\newblock {To Trust or Not to Trust a Classifier}.
+\newblock In \emph{Advances in Neural Information Processing Systems},
+  volume~31, pages 5541--5552.
+
+\bibitem[{Karpathy et~al.(2015)Karpathy, Johnson, and
+  Fei-Fei}]{karpathy2015rnn}
+Andrej Karpathy, Justin Johnson, and Li~Fei-Fei. 2015.
+\newblock \href {https://arxiv.org/abs/1506.02078} {Visualizing and
+  understanding recurrent networks}.
+\newblock \emph{Preprint}, arXiv:1506.02078.
+\newblock Presented at ICLR 2016 Workshop.
+
+\bibitem[{Katharopoulos et~al.(2020)Katharopoulos, Vyas, Pappas, and
+  Fleuret}]{katharopoulos2020transformers}
+Angelos Katharopoulos, Apoorv Vyas, Nikolaos Pappas, and Fran{\c{c}}ois
+  Fleuret. 2020.
+\newblock {Transformers are {RNNs}: Fast Autoregressive Transformers with
+  Linear Attention}.
+\newblock In \emph{Proceedings of the 37th International Conference on Machine
+  Learning}, volume 119 of \emph{Proceedings of Machine Learning Research},
+  pages 5156--5165. PMLR.
+
+\bibitem[{Kaya et~al.(2019)Kaya, Hong, and Dumitras}]{kaya2019shallowdeep}
+Yigitcan Kaya, Sanghyun Hong, and Tudor Dumitras. 2019.
+\newblock Shallow-deep networks: Understanding and mitigating network
+  overthinking.
+\newblock In \emph{Proceedings of the 36th International Conference on Machine
+  Learning}, volume~97 of \emph{Proceedings of Machine Learning Research},
+  pages 3301--3310. PMLR.
+
+\bibitem[{Keysers et~al.(2020)Keysers, Sch{\"a}rli, Scales
+  et~al.}]{keysers2020measuring}
+Daniel Keysers, Nathanael Sch{\"a}rli, Nathan Scales, et~al. 2020.
+\newblock Measuring compositional generalization: A comprehensive method on
+  realistic data.
+\newblock In \emph{International Conference on Learning Representations (ICLR
+  2020)}.
 
 \bibitem[{Kim and Linzen(2020)}]{kim2020cogs}
 Najoung Kim and Tal Linzen. 2020.
@@ -49,43 +223,262 @@ Najoung Kim and Tal Linzen. 2020.
   interpretation.
 \newblock In \emph{Proceedings of EMNLP}, pages 9087--9105.
 
-\bibitem[{Schuster et~al.(2022)Schuster, Fisch, Gupta, Dehghani, Bahri, Tran,
-  Tay, and Metzler}]{schuster2022calm}
-Tal Schuster, Adam Fisch, Jai Gupta, Mostafa Dehghani, Dara Bahri, Vinh~Q.
-  Tran, Yi~Tay, and Donald Metzler. 2022.
-\newblock Confident adaptive language modeling.
-\newblock In \emph{Advances in Neural Information Processing Systems
-  (NeurIPS)}, pages 17456--17472.
+\bibitem[{Kornblith et~al.(2019)Kornblith, Norouzi, Lee, and
+  Hinton}]{kornblith2019cka}
+Simon Kornblith, Mohammad Norouzi, Honglak Lee, and Geoffrey Hinton. 2019.
+\newblock Similarity of neural network representations revisited.
+\newblock In \emph{Proceedings of the 36th International Conference on Machine
+  Learning (ICML)}, volume~97 of \emph{Proceedings of Machine Learning
+  Research}, pages 3519--3529. PMLR.
 
-\bibitem[{Schuster et~al.(2021)Schuster, Fisch, Jaakkola, and
-  Barzilay}]{schuster2021cats}
-Tal Schuster, Adam Fisch, Tommi Jaakkola, and Regina Barzilay. 2021.
-\newblock Consistent accelerated inference via confident adaptive transformers.
-\newblock In \emph{Proceedings of EMNLP}, pages 4962--4979.
+\bibitem[{Kriegeskorte et~al.(2008)Kriegeskorte, Mur, and
+  Bandettini}]{kriegeskorte2008rsa}
+Nikolaus Kriegeskorte, Marieke Mur, and Peter Bandettini. 2008.
+\newblock \href {https://doi.org/10.3389/neuro.06.004.2008} {Representational
+  similarity analysis --- connecting the branches of systems neuroscience}.
+\newblock \emph{Frontiers in Systems Neuroscience}, 2(4):1--4.
 
-\bibitem[{Schwartz et~al.(2020)Schwartz, Stanovsky, Swayamdipta, Dodge, and
-  Smith}]{schwartz2020right}
-Roy Schwartz, Gabriel Stanovsky, Swabha Swayamdipta, Jesse Dodge, and Noah~A.
-  Smith. 2020.
-\newblock The right tool for the job: Matching model and instance complexities.
-\newblock In \emph{Proceedings of ACL}, pages 6640--6651.
+\bibitem[{Lake and Baroni(2018)}]{lake2018generalization}
+Brenden Lake and Marco Baroni. 2018.
+\newblock Generalization without systematicity: On the compositional skills of
+  sequence-to-sequence recurrent networks.
+\newblock In \emph{Proceedings of the 35th International Conference on Machine
+  Learning (ICML 2018)}, volume~80 of \emph{Proceedings of Machine Learning
+  Research}, pages 2873--2882. PMLR.
 
-\bibitem[{Stanley et~al.(2019)Stanley, Clune, Lehman, and
-  Miikkulainen}]{stanley2019designing}
-Kenneth~O. Stanley, Jeff Clune, Joel Lehman, and Risto Miikkulainen. 2019.
-\newblock Designing neural networks through neuroevolution.
-\newblock \emph{Nature Machine Intelligence}, 1:24--35.
+\bibitem[{Lee et~al.(2018)Lee, Mansimov, and Cho}]{lee2018deterministic}
+Jason Lee, Elman Mansimov, and Kyunghyun Cho. 2018.
+\newblock \href {https://doi.org/10.18653/v1/D18-1149} {Deterministic
+  non-autoregressive neural sequence modeling by iterative refinement}.
+\newblock In \emph{Proceedings of the 2018 Conference on Empirical Methods in
+  Natural Language Processing}, pages 1173--1182. Association for Computational
+  Linguistics.
 
-\bibitem[{Sutskever et~al.(2014)Sutskever, Vinyals, and
-  Le}]{sutskever2014seq2seq}
-Ilya Sutskever, Oriol Vinyals, and Quoc~V. Le. 2014.
-\newblock Sequence to sequence learning with neural networks.
-\newblock In \emph{Advances in Neural Information Processing Systems
-  (NeurIPS)}.
+\bibitem[{Lee et~al.(2020)Lee, Shu, and Cho}]{lee2020iterative}
+Jason Lee, Raphael Shu, and Kyunghyun Cho. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.emnlp-main.73} {Iterative
+  refinement in the continuous space for non-autoregressive neural machine
+  translation}.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in
+  Natural Language Processing}, pages 1006--1015. Association for Computational
+  Linguistics.
 
-\bibitem[{Zilberstein(1996)}]{zilberstein1996anytime}
-Shlomo Zilberstein. 1996.
-\newblock Using anytime algorithms in intelligent systems.
-\newblock \emph{AI Magazine}, 17(3):73--83.
+\bibitem[{Li et~al.(2023)Li, Donatelli, Koller, Linzen, Yao, and
+  Kim}]{li2023slog}
+Bingzhi Li, Lucia Donatelli, Alexander Koller, Tal Linzen, Yuekun Yao, and
+  Najoung Kim. 2023.
+\newblock \href {https://doi.org/10.18653/v1/2023.emnlp-main.194} {{SLOG}: A
+  structural generalization benchmark for semantic parsing}.
+\newblock In \emph{Proceedings of the 2023 Conference on Empirical Methods in
+  Natural Language Processing}, pages 3213--3232. Association for Computational
+  Linguistics.
+
+\bibitem[{Liu et~al.(2020)Liu, Zhou, Wang, Zhao, Deng, and
+  Ju}]{liu2020fastbert}
+Weijie Liu, Peng Zhou, Zhiruo Wang, Zhe Zhao, Haotang Deng, and Qi~Ju. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.acl-main.537} {{F}ast{BERT}:
+  a self-distilling {BERT} with adaptive inference time}.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association
+  for Computational Linguistics}, pages 6035--6044. Association for
+  Computational Linguistics.
+
+\bibitem[{Oren et~al.(2020)Oren, Herzig, Gupta, Gardner, and
+  Berant}]{oren2020improving}
+Inbar Oren, Jonathan Herzig, Nitish Gupta, Matt Gardner, and Jonathan Berant.
+  2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.findings-emnlp.225}
+  {Improving compositional generalization in semantic parsing}.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  EMNLP 2020}, pages 2482--2495. Association for Computational Linguistics.
+
+\bibitem[{Ostrow et~al.(2023)Ostrow, Eisen, Kozachkov, and
+  Fiete}]{ostrow2023dsa}
+Mitchell Ostrow, Adam Eisen, Leo Kozachkov, and Ila Fiete. 2023.
+\newblock Beyond geometry: Comparing the temporal structure of computation in
+  neural circuits with dynamical similarity analysis.
+\newblock In \emph{Advances in Neural Information Processing Systems 36
+  (NeurIPS 2023)}.
+\newblock ArXiv:2306.10168.
+
+\bibitem[{Peng et~al.(2023)Peng, Alcaide, Anthony, Albalak, Arcadinho, Biderman
+  et~al.}]{peng2023rwkv}
+Bo~Peng, Eric Alcaide, Quentin Anthony, Alon Albalak, Samuel Arcadinho, Stella
+  Biderman, et~al. 2023.
+\newblock \href {https://doi.org/10.18653/v1/2023.findings-emnlp.936} {{RWKV}:
+  Reinventing {RNNs} for the transformer era}.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  EMNLP 2023}, pages 14048--14077. Association for Computational Linguistics.
+
+\bibitem[{Qiu et~al.(2022)Qiu, Shaw, Pasupat et~al.}]{qiu2022evaluating}
+Linlu Qiu, Peter Shaw, Panupong Pasupat, et~al. 2022.
+\newblock \href {https://doi.org/10.18653/v1/2022.emnlp-main.624} {Evaluating
+  the impact of model scale for compositional generalization in semantic
+  parsing}.
+\newblock In \emph{Proceedings of the 2022 Conference on Empirical Methods in
+  Natural Language Processing}, pages 9157--9179. Association for Computational
+  Linguistics.
+
+\bibitem[{Raposo et~al.(2024)Raposo, Ritter, Richards, Lillicrap, Humphreys,
+  and Santoro}]{raposo2024mixture}
+David Raposo, Sam Ritter, Blake Richards, Timothy Lillicrap, Peter~Conway
+  Humphreys, and Adam Santoro. 2024.
+\newblock \href {https://arxiv.org/abs/2404.02258} {{Mixture-of-Depths}:
+  Dynamically allocating compute in transformer-based language models}.
+\newblock \emph{Preprint}, arXiv:2404.02258.
+
+\bibitem[{Reed and de~Freitas(2016)}]{reed2016programmer}
+Scott Reed and Nando de~Freitas. 2016.
+\newblock \href {https://arxiv.org/abs/1511.06279} {Neural
+  programmer-interpreters}.
+\newblock In \emph{4th International Conference on Learning Representations,
+  ICLR 2016}.
+
+\bibitem[{Rios and Sahinidis(2013)}]{rios2013df}
+Luis~Miguel Rios and Nikolaos~V. Sahinidis. 2013.
+\newblock \href {https://doi.org/10.1007/s10898-012-9951-y} {Derivative-free
+  optimization: a review of algorithms and comparison of software
+  implementations}.
+\newblock \emph{Journal of Global Optimization}, 56(3):1247--1293.
+
+\bibitem[{Santoro et~al.(2018)Santoro, Faulkner, Raposo, Rae, Chrzanowski,
+  Weber, Wierstra, Vinyals, Pascanu, and Lillicrap}]{santoro2018relational}
+Adam Santoro, Ryan Faulkner, David Raposo, Jack Rae, Mike Chrzanowski,
+  Theophane Weber, Daan Wierstra, Oriol Vinyals, Razvan Pascanu, and Timothy
+  Lillicrap. 2018.
+\newblock Relational recurrent neural networks.
+\newblock In \emph{Advances in Neural Information Processing Systems 31
+  (NeurIPS 2018)}, pages 7310--7321.
+
+\bibitem[{Shaw et~al.(2021)Shaw, Chang, Pasupat, and
+  Toutanova}]{shaw2021compositional}
+Peter Shaw, Ming-Wei Chang, Panupong Pasupat, and Kristina Toutanova. 2021.
+\newblock \href {https://doi.org/10.18653/v1/2021.acl-long.75} {Compositional
+  generalization and natural language variation: Can a semantic parsing
+  approach handle both?}
+\newblock In \emph{Proceedings of the 59th Annual Meeting of the Association
+  for Computational Linguistics}, pages 922--938. Association for Computational
+  Linguistics.
+
+\bibitem[{Stanley and Miikkulainen(2002)}]{stanley2002neat}
+Kenneth~O. Stanley and Risto Miikkulainen. 2002.
+\newblock \href {https://doi.org/10.1162/106365602320169811} {Evolving neural
+  networks through augmenting topologies}.
+\newblock \emph{Evolutionary Computation}, 10(2):99--127.
+
+\bibitem[{Storn and Price(1997)}]{storn1997de}
+Rainer Storn and Kenneth Price. 1997.
+\newblock \href {https://doi.org/10.1023/A:1008202821328} {Differential
+  evolution -- a simple and efficient heuristic for global optimization over
+  continuous spaces}.
+\newblock \emph{Journal of Global Optimization}, 11(4):341--359.
+
+\bibitem[{Such et~al.(2017)Such, Madhavan, Conti, Lehman, Stanley, and
+  Clune}]{such2017neuro}
+Felipe~Petroski Such, Vashisht Madhavan, Edoardo Conti, Joel Lehman, Kenneth~O.
+  Stanley, and Jeff Clune. 2017.
+\newblock \href {https://arxiv.org/abs/1712.06567} {Deep neuroevolution:
+  Genetic algorithms are a competitive alternative for training deep neural
+  networks for reinforcement learning}.
+\newblock \emph{Preprint}, arXiv:1712.06567.
+
+\bibitem[{Sukhbaatar et~al.(2015)Sukhbaatar, Szlam, Weston, and
+  Fergus}]{sukhbaatar2015memory}
+Sainbayar Sukhbaatar, Arthur Szlam, Jason Weston, and Rob Fergus. 2015.
+\newblock End-to-end memory networks.
+\newblock In \emph{Advances in Neural Information Processing Systems 28 (NIPS
+  2015)}, pages 2440--2448.
+
+\bibitem[{Sun et~al.(2023)Sun, Dong, Huang, Ma, Xia, Xue, Wang, and
+  Wei}]{sun2023retentive}
+Yutao Sun, Li~Dong, Shaohan Huang, Shuming Ma, Yuqing Xia, Jilong Xue, Jianyong
+  Wang, and Furu Wei. 2023.
+\newblock \href {https://arxiv.org/abs/2307.08621} {Retentive network: A
+  successor to transformer for large language models}.
+\newblock \emph{Preprint}, arXiv:2307.08621.
+
+\bibitem[{Sussillo and Barak(2013)}]{sussillo2013blackbox}
+David Sussillo and Omri Barak. 2013.
+\newblock \href {https://doi.org/10.1162/NECO_a_00409} {Opening the black box:
+  Low-dimensional dynamics in high-dimensional recurrent neural networks}.
+\newblock \emph{Neural Computation}, 25(3):626--649.
+
+\bibitem[{Teerapittayanon et~al.(2016)Teerapittayanon, McDanel, and
+  Kung}]{teerapittayanon2016branchynet}
+Surat Teerapittayanon, Bradley McDanel, and H.~T. Kung. 2016.
+\newblock \href {https://doi.org/10.1109/ICPR.2016.7900006} {{BranchyNet}: Fast
+  inference via early exiting from deep neural networks}.
+\newblock In \emph{2016 23rd International Conference on Pattern Recognition
+  (ICPR)}, pages 2464--2469. IEEE.
+
+\bibitem[{Tian et~al.(2023)Tian, Mitchell, Zhou et~al.}]{tian2023calibration}
+Katherine Tian, Eric Mitchell, Allan Zhou, et~al. 2023.
+\newblock \href {https://doi.org/10.18653/v1/2023.emnlp-main.330} {Just ask for
+  calibration: Strategies for eliciting calibrated confidence scores from
+  language models fine-tuned with human feedback}.
+\newblock In \emph{Proceedings of the 2023 Conference on Empirical Methods in
+  Natural Language Processing}, pages 5433--5442. Association for Computational
+  Linguistics.
+
+\bibitem[{Vyas et~al.(2020)Vyas, Golub, Sussillo, and
+  Shenoy}]{vyas2020population}
+Saurabh Vyas, Matthew~D. Golub, David Sussillo, and Krishna~V. Shenoy. 2020.
+\newblock \href {https://doi.org/10.1146/annurev-neuro-092619-094115}
+  {Computation through neural population dynamics}.
+\newblock \emph{Annual Review of Neuroscience}, 43(1):249--275.
+
+\bibitem[{Wei{\ss}enhorn et~al.(2022)Wei{\ss}enhorn, Donatelli, and
+  Koller}]{weissenhorn2022compositional}
+Pia Wei{\ss}enhorn, Lucia Donatelli, and Alexander Koller. 2022.
+\newblock \href {https://doi.org/10.18653/v1/2022.starsem-1.4} {Compositional
+  generalization with a broad-coverage semantic parser}.
+\newblock In \emph{Proceedings of the 11th Joint Conference on Lexical and
+  Computational Semantics}, pages 44--54. Association for Computational
+  Linguistics.
+
+\bibitem[{Whitley(1994)}]{whitley1994tutorial}
+Darrell Whitley. 1994.
+\newblock \href {https://doi.org/10.1007/BF00175354} {A genetic algorithm
+  tutorial}.
+\newblock \emph{Statistics and Computing}, 4(2):65--85.
+
+\bibitem[{Xiao et~al.(2025)Xiao, Guo, Sun, Li, Song, and
+  Zhang}]{xiao2025empirical}
+Yisheng Xiao, Pei Guo, Zechen Sun, Juntao Li, Kai Song, and Min Zhang. 2025.
+\newblock \href {https://doi.org/10.18653/v1/2025.acl-long.1443} {An empirical
+  study of iterative refinements for non-autoregressive translation}.
+\newblock In \emph{Proceedings of the 63rd Annual Meeting of the Association
+  for Computational Linguistics (Volume 1: Long Papers)}, pages 29851--29865.
+  Association for Computational Linguistics.
+
+\bibitem[{Xin et~al.(2020)Xin, Tang, Lee, Yu, and Lin}]{xin2020deebert}
+Ji~Xin, Raphael Tang, Jaejun Lee, Yaoliang Yu, and Jimmy Lin. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.acl-main.204} {{DeeBERT}:
+  Dynamic early exiting for accelerating {BERT} inference}.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association
+  for Computational Linguistics}, pages 2246--2251. Association for
+  Computational Linguistics.
+
+\bibitem[{Yang et~al.(2024)Yang, Lee, Nowak, and
+  Papailiopoulos}]{yang2024looped}
+Liu Yang, Kangwook Lee, Robert Nowak, and Dimitris Papailiopoulos. 2024.
+\newblock \href {https://arxiv.org/abs/2311.12424} {Looped transformers are
+  better at learning learning algorithms}.
+\newblock In \emph{The Twelfth International Conference on Learning
+  Representations, ICLR 2024}.
+
+\bibitem[{Zheng and Lapata(2022)}]{zheng2022disentangled}
+Hao Zheng and Mirella Lapata. 2022.
+\newblock \href {https://doi.org/10.18653/v1/2022.acl-long.293} {Disentangled
+  sequence to sequence learning for compositional generalization}.
+\newblock In \emph{Proceedings of the 60th Annual Meeting of the Association
+  for Computational Linguistics}, pages 4256--4268. Association for
+  Computational Linguistics.
+
+\bibitem[{Zhou et~al.(2020)Zhou, Xu, Ge, McAuley, Xu, and
+  Wei}]{zhou2020patience}
+Wangchunshu Zhou, Canwen Xu, Tao Ge, Julian McAuley, Ke~Xu, and Furu Wei. 2020.
+\newblock {BERT} loses patience: Fast and robust inference with early exit.
+\newblock In \emph{Advances in Neural Information Processing Systems},
+  volume~33, pages 18330--18341.
 
 \end{thebibliography}

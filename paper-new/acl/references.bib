@@ -108,3 +108,492 @@
   pages={6640--6651},
   year={2020}
 }
+
+% ---- Recursive and looped computation ----
+@inproceedings{reed2016programmer,
+  title = {Neural Programmer-Interpreters}, author = {Reed, Scott and de Freitas, Nando},
+  booktitle = {4th International Conference on Learning Representations, ICLR 2016}, year = {2016},
+  eprint = {1511.06279}, archivePrefix = {arXiv}, url = {https://arxiv.org/abs/1511.06279}}
+@misc{graves2014neural,
+  title = {Neural Turing Machines}, author = {Graves, Alex and Wayne, Greg and Danihelka, Ivo},
+  year = {2014}, eprint = {1410.5401}, archivePrefix = {arXiv}, primaryClass = {cs.NE}}
+@inproceedings{sukhbaatar2015memory,
+  title = {End-To-End Memory Networks}, author = {Sukhbaatar, Sainbayar and Szlam, Arthur and Weston, Jason and Fergus, Rob},
+  booktitle = {Advances in Neural Information Processing Systems 28 (NIPS 2015)}, pages = {2440--2448}, year = {2015}}
+@inproceedings{dai2019transformerxl,
+  title = {{Transformer-XL}: Attentive Language Models beyond a Fixed-Length Context},
+  author = {Dai, Zihang and Yang, Zhilin and Yang, Yiming and Carbonell, Jaime and Le, Quoc and Salakhutdinov, Ruslan},
+  booktitle = {Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics},
+  pages = {2978--2988}, year = {2019}, publisher = {Association for Computational Linguistics},
+  doi = {10.18653/v1/P19-1285}}
+@inproceedings{santoro2018relational,
+  title = {Relational Recurrent Neural Networks},
+  author = {Santoro, Adam and Faulkner, Ryan and Raposo, David and Rae, Jack and Chrzanowski, Mike and Weber, Theophane and Wierstra, Daan and Vinyals, Oriol and Pascanu, Razvan and Lillicrap, Timothy},
+  booktitle = {Advances in Neural Information Processing Systems 31 (NeurIPS 2018)}, pages = {7310--7321}, year = {2018}}
+@inproceedings{katharopoulos2020transformers,
+  title = {{Transformers are {RNNs}: Fast Autoregressive Transformers with Linear Attention}},
+  author = {Katharopoulos, Angelos and Vyas, Apoorv and Pappas, Nikolaos and Fleuret, Fran{\c{c}}ois},
+  booktitle = {Proceedings of the 37th International Conference on Machine Learning}, series = {Proceedings of Machine Learning Research},
+  volume = {119}, pages = {5156--5165}, year = {2020}, publisher = {PMLR}}
+@inproceedings{giannou2023looped,
+  title = {Looped Transformers as Programmable Computers},
+  author = {Giannou, Angeliki and Rajput, Shashank and Sohn, Jy-Yong and Lee, Kangwook and Lee, Jason D. and Papailiopoulos, Dimitris},
+  booktitle = {Proceedings of the 40th International Conference on Machine Learning}, series = {Proceedings of Machine Learning Research},
+  volume = {202}, pages = {11398--11442}, year = {2023}, publisher = {PMLR}}
+@inproceedings{bulatov2022recurrent,
+  title = {Recurrent Memory Transformer}, author = {Bulatov, Aydar and Kuratov, Yury and Burtsev, Mikhail},
+  booktitle = {Advances in Neural Information Processing Systems 35 (NeurIPS 2022)}, pages = {11079--11091}, year = {2022}}
+@inproceedings{peng2023rwkv,
+  title = {{RWKV}: Reinventing {RNNs} for the Transformer Era},
+  author = {Peng, Bo and Alcaide, Eric and Anthony, Quentin and Albalak, Alon and Arcadinho, Samuel and Biderman, Stella and others},
+  booktitle = {Findings of the Association for Computational Linguistics: EMNLP 2023}, pages = {14048--14077},
+  year = {2023}, publisher = {Association for Computational Linguistics}, doi = {10.18653/v1/2023.findings-emnlp.936}}
+@inproceedings{yang2024looped,
+  title = {Looped Transformers are Better at Learning Learning Algorithms},
+  author = {Yang, Liu and Lee, Kangwook and Nowak, Robert and Papailiopoulos, Dimitris},
+  booktitle = {The Twelfth International Conference on Learning Representations, ICLR 2024}, year = {2024},
+  eprint = {2311.12424}, archivePrefix = {arXiv}}
+@misc{sun2023retentive,
+  title = {Retentive Network: A Successor to Transformer for Large Language Models},
+  author = {Sun, Yutao and Dong, Li and Huang, Shaohan and Ma, Shuming and Xia, Yuqing and Xue, Jilong and Wang, Jianyong and Wei, Furu},
+  year = {2023}, eprint = {2307.08621}, archivePrefix = {arXiv}, primaryClass = {cs.CL}}
+
+% ---- Adaptive depth, early exit, and confidence ----
+@inproceedings{liu2020fastbert,
+  title = {{F}ast{BERT}: a Self-distilling {BERT} with Adaptive Inference Time},
+  author = {Liu, Weijie and Zhou, Peng and Wang, Zhiruo and Zhao, Zhe and Deng, Haotang and Ju, Qi},
+  booktitle = {Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics},
+  pages = {6035--6044}, year = {2020}, publisher = {Association for Computational Linguistics}, doi = {10.18653/v1/2020.acl-main.537}}
+@inproceedings{xin2020deebert,
+  title = {{DeeBERT}: Dynamic Early Exiting for Accelerating {BERT} Inference},
+  author = {Xin, Ji and Tang, Raphael and Lee, Jaejun and Yu, Yaoliang and Lin, Jimmy},
+  booktitle = {Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics},
+  pages = {2246--2251}, year = {2020}, publisher = {Association for Computational Linguistics}, doi = {10.18653/v1/2020.acl-main.204}}
+@inproceedings{teerapittayanon2016branchynet,
+  title = {{BranchyNet}: Fast Inference via Early Exiting from Deep Neural Networks},
+  author = {Teerapittayanon, Surat and McDanel, Bradley and Kung, H. T.},
+  booktitle = {2016 23rd International Conference on Pattern Recognition (ICPR)},
+  pages = {2464--2469}, year = {2016}, publisher = {IEEE}, doi = {10.1109/ICPR.2016.7900006}}
+@inproceedings{huang2018multiscale,
+  title = {Multi-Scale Dense Networks for Resource Efficient Image Classification},
+  author = {Huang, Gao and Chen, Danlu and Li, Tianhong and Wu, Felix and van der Maaten, Laurens and Weinberger, Kilian Q.},
+  booktitle = {International Conference on Learning Representations (ICLR)}, year = {2018},
+  eprint = {1703.09844}, archivePrefix = {arXiv}, primaryClass = {cs.LG}}
+@inproceedings{figurnov2017spatially,
+  title = {Spatially Adaptive Computation Time for Residual Networks},
+  author = {Figurnov, Michael and Collins, Maxwell D. and Zhu, Yukun and Zhang, Li and Huang, Jonathan and Vetrov, Dmitry and Salakhutdinov, Ruslan},
+  booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages = {1039--1048}, year = {2017}, publisher = {IEEE}, doi = {10.1109/CVPR.2017.194}}
+@inproceedings{bolukbasi2017adaptive,
+  title = {Adaptive Neural Networks for Efficient Inference},
+  author = {Bolukbasi, Tolga and Wang, Joseph and Dekel, Ofer and Saligrama, Venkatesh},
+  booktitle = {Proceedings of the 34th International Conference on Machine Learning}, series = {Proceedings of Machine Learning Research},
+  volume = {70}, pages = {527--536}, year = {2017}, publisher = {PMLR}}
+@inproceedings{zhou2020patience,
+  title = {{BERT} Loses Patience: Fast and Robust Inference with Early Exit},
+  author = {Zhou, Wangchunshu and Xu, Canwen and Ge, Tao and McAuley, Julian and Xu, Ke and Wei, Furu},
+  booktitle = {Advances in Neural Information Processing Systems}, volume = {33}, pages = {18330--18341}, year = {2020}}
+@inproceedings{geifman2017selective,
+  title = {Selective Classification for Deep Neural Networks}, author = {Geifman, Yonatan and El-Yaniv, Ran},
+  booktitle = {Advances in Neural Information Processing Systems}, volume = {30}, pages = {4878--4887}, year = {2017}}
+@misc{raposo2024mixture,
+  title = {{Mixture-of-Depths}: Dynamically Allocating Compute in Transformer-Based Language Models},
+  author = {Raposo, David and Ritter, Sam and Richards, Blake and Lillicrap, Timothy and Humphreys, Peter Conway and Santoro, Adam},
+  year = {2024}, eprint = {2404.02258}, archivePrefix = {arXiv}, primaryClass = {cs.LG}}
+@inproceedings{kaya2019shallowdeep,
+  title = {Shallow-Deep Networks: Understanding and Mitigating Network Overthinking},
+  author = {Kaya, Yigitcan and Hong, Sanghyun and Dumitras, Tudor},
+  booktitle = {Proceedings of the 36th International Conference on Machine Learning}, series = {Proceedings of Machine Learning Research},
+  volume = {97}, pages = {3301--3310}, year = {2019}, publisher = {PMLR}}
+@inproceedings{jiang2018trust,
+  title = {{To Trust or Not to Trust a Classifier}},
+  author = {Jiang, Heinrich and Kim, Been and Guan, Melody Y. and Gupta, Maya},
+  booktitle = {Advances in Neural Information Processing Systems}, volume = {31}, pages = {5541--5552}, year = {2018}}
+@article{fedus2022switch,
+  title = {Switch Transformers: Scaling to Trillion Parameter Models with Simple and Efficient Sparsity},
+  author = {Fedus, William and Zoph, Barret and Shazeer, Noam},
+  journal = {Journal of Machine Learning Research}, volume = {23}, number = {120}, pages = {1--39}, year = {2022}}
+
+% ---- Latent dynamics ----
+@article{kriegeskorte2008rsa,
+  title = {Representational Similarity Analysis --- Connecting the Branches of Systems Neuroscience},
+  author = {Kriegeskorte, Nikolaus and Mur, Marieke and Bandettini, Peter},
+  journal = {Frontiers in Systems Neuroscience}, volume = {2}, number = {4}, pages = {1--4}, year = {2008}, doi = {10.3389/neuro.06.004.2008}}
+@inproceedings{kornblith2019cka,
+  title = {Similarity of Neural Network Representations Revisited},
+  author = {Kornblith, Simon and Norouzi, Mohammad and Lee, Honglak and Hinton, Geoffrey},
+  booktitle = {Proceedings of the 36th International Conference on Machine Learning (ICML)}, series = {Proceedings of Machine Learning Research},
+  volume = {97}, pages = {3519--3529}, year = {2019}, publisher = {PMLR}}
+@article{sussillo2013blackbox,
+  title = {Opening the Black Box: Low-Dimensional Dynamics in High-Dimensional Recurrent Neural Networks},
+  author = {Sussillo, David and Barak, Omri}, journal = {Neural Computation}, volume = {25}, number = {3}, pages = {626--649},
+  year = {2013}, doi = {10.1162/NECO_a_00409}}
+@article{vyas2020population,
+  title = {Computation Through Neural Population Dynamics},
+  author = {Vyas, Saurabh and Golub, Matthew D. and Sussillo, David and Shenoy, Krishna V.},
+  journal = {Annual Review of Neuroscience}, volume = {43}, number = {1}, pages = {249--275}, year = {2020}, doi = {10.1146/annurev-neuro-092619-094115}}
+@inproceedings{haviv2019memory,
+  title = {Understanding and Controlling Memory in Recurrent Neural Networks},
+  author = {Haviv, Doron and Rivkind, Alexander and Barak, Omri},
+  booktitle = {Proceedings of the 36th International Conference on Machine Learning}, series = {Proceedings of Machine Learning Research},
+  volume = {97}, pages = {2663--2671}, year = {2019}, publisher = {PMLR}}
+@inproceedings{ostrow2023dsa,
+  title = {Beyond Geometry: Comparing the Temporal Structure of Computation in Neural Circuits with Dynamical Similarity Analysis},
+  author = {Ostrow, Mitchell and Eisen, Adam and Kozachkov, Leo and Fiete, Ila},
+  booktitle = {Advances in Neural Information Processing Systems 36 (NeurIPS 2023)}, year = {2023}, note = {arXiv:2306.10168}}
+@inproceedings{gu2022s4,
+  title = {Efficiently Modeling Long Sequences with Structured State Spaces},
+  author = {Gu, Albert and Goel, Karan and R{\'e}, Christopher},
+  booktitle = {International Conference on Learning Representations (ICLR)}, year = {2022}, note = {Oral, Honorable Mention; arXiv:2111.00396}}
+@misc{gu2023mamba,
+  title = {Mamba: Linear-Time Sequence Modeling with Selective State Spaces}, author = {Gu, Albert and Dao, Tri},
+  year = {2023}, eprint = {2312.00752}, archivePrefix = {arXiv}, primaryClass = {cs.LG}}
+@misc{karpathy2015rnn,
+  title = {Visualizing and Understanding Recurrent Networks}, author = {Karpathy, Andrej and Johnson, Justin and Fei-Fei, Li},
+  year = {2015}, eprint = {1506.02078}, archivePrefix = {arXiv}, primaryClass = {cs.LG}, note = {Presented at ICLR 2016 Workshop}}
+@misc{horoi2020geometry,
+  title = {Internal Representation Dynamics and Geometry in Recurrent Neural Networks},
+  author = {Horoi, Stefan and Lajoie, Guillaume and Wolf, Guy},
+  year = {2020}, eprint = {2001.03255}, archivePrefix = {arXiv}, primaryClass = {cs.LG}}
+
+% ---- Evolutionary optimization ----
+@article{hansen2001cma,
+  title = {Completely derandomized self-adaptation in evolution strategies}, author = {Hansen, Nikolaus and Ostermeier, Andreas},
+  journal = {Evolutionary Computation}, volume = {9}, number = {2}, pages = {159--195}, year = {2001}, doi = {10.1162/106365601750190398}}
+@article{hansen2003cma,
+  title = {Reducing the time complexity of the derandomized evolution strategy with covariance matrix adaptation ({CMA-ES})},
+  author = {Hansen, Nikolaus and M{\"u}ller, Sibylle D. and Koumoutsakos, Petros},
+  journal = {Evolutionary Computation}, volume = {11}, number = {1}, pages = {1--18}, year = {2003}, doi = {10.1162/106365603321828970}}
+@article{storn1997de,
+  title = {Differential Evolution -- a simple and efficient heuristic for global optimization over continuous spaces},
+  author = {Storn, Rainer and Price, Kenneth}, journal = {Journal of Global Optimization}, volume = {11}, number = {4}, pages = {341--359},
+  year = {1997}, doi = {10.1023/A:1008202821328}}
+@article{das2011survey,
+  title = {Differential Evolution: A Survey of the State-of-the-Art}, author = {Das, Swagatam and Suganthan, Ponnuthurai Nagaratnam},
+  journal = {IEEE Transactions on Evolutionary Computation}, volume = {15}, number = {1}, pages = {4--31}, year = {2011}, doi = {10.1109/TEVC.2010.2059031}}
+@article{whitley1994tutorial,
+  title = {A genetic algorithm tutorial}, author = {Whitley, Darrell},
+  journal = {Statistics and Computing}, volume = {4}, number = {2}, pages = {65--85}, year = {1994}, doi = {10.1007/BF00175354}}
+@article{rios2013df,
+  title = {Derivative-free optimization: a review of algorithms and comparison of software implementations},
+  author = {Rios, Luis Miguel and Sahinidis, Nikolaos V.}, journal = {Journal of Global Optimization}, volume = {56}, number = {3}, pages = {1247--1293},
+  year = {2013}, doi = {10.1007/s10898-012-9951-y}}
+@article{stanley2002neat,
+  title = {Evolving neural networks through augmenting topologies}, author = {Stanley, Kenneth O. and Miikkulainen, Risto},
+  journal = {Evolutionary Computation}, volume = {10}, number = {2}, pages = {99--127}, year = {2002}, doi = {10.1162/106365602320169811}}
+@misc{such2017neuro,
+  title = {Deep Neuroevolution: Genetic Algorithms Are a Competitive Alternative for Training Deep Neural Networks for Reinforcement Learning},
+  author = {Such, Felipe Petroski and Madhavan, Vashisht and Conti, Edoardo and Lehman, Joel and Stanley, Kenneth O. and Clune, Jeff},
+  year = {2017}, eprint = {1712.06567}, archivePrefix = {arXiv}, primaryClass = {cs.NE}}
+
+% ---- Semantic parsing and compositional generalization ----
+@inproceedings{lake2018generalization,
+  title = {Generalization without Systematicity: On the Compositional Skills of Sequence-to-Sequence Recurrent Networks},
+  author = {Lake, Brenden and Baroni, Marco}, booktitle = {Proceedings of the 35th International Conference on Machine Learning (ICML 2018)},
+  series = {Proceedings of Machine Learning Research}, volume = {80}, pages = {2873--2882}, year = {2018}, publisher = {PMLR}}
+@inproceedings{keysers2020measuring,
+  title = {Measuring Compositional Generalization: A Comprehensive Method on Realistic Data},
+  author = {Keysers, Daniel and Sch{\"a}rli, Nathanael and Scales, Nathan and others},
+  booktitle = {International Conference on Learning Representations (ICLR 2020)}, year = {2020}}
+@inproceedings{oren2020improving,
+  title = {Improving Compositional Generalization in Semantic Parsing},
+  author = {Oren, Inbar and Herzig, Jonathan and Gupta, Nitish and Gardner, Matt and Berant, Jonathan},
+  booktitle = {Findings of the Association for Computational Linguistics: EMNLP 2020}, pages = {2482--2495},
+  year = {2020}, publisher = {Association for Computational Linguistics}, doi = {10.18653/v1/2020.findings-emnlp.225}}
+@misc{furrer2020compositional,
+  title = {Compositional Generalization in Semantic Parsing: Pre-training vs. Specialized Architectures},
+  author = {Furrer, Daniel and van Zee, Marc and Scales, Nathan and Sch{\"a}rli, Nathanael},
+  year = {2020}, eprint = {2007.08970}, archivePrefix = {arXiv}, primaryClass = {cs.CL}}
+@inproceedings{herzig2021span,
+  title = {Span-based Semantic Parsing for Compositional Generalization}, author = {Herzig, Jonathan and Berant, Jonathan},
+  booktitle = {Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics},
+  pages = {908--921}, year = {2021}, publisher = {Association for Computational Linguistics}, doi = {10.18653/v1/2021.acl-long.74}}
+@inproceedings{shaw2021compositional,
+  title = {Compositional Generalization and Natural Language Variation: Can a Semantic Parsing Approach Handle Both?},
+  author = {Shaw, Peter and Chang, Ming-Wei and Pasupat, Panupong and Toutanova, Kristina},
+  booktitle = {Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics},
+  pages = {922--938}, year = {2021}, publisher = {Association for Computational Linguistics}, doi = {10.18653/v1/2021.acl-long.75}}
+@inproceedings{zheng2022disentangled,
+  title = {Disentangled Sequence to Sequence Learning for Compositional Generalization}, author = {Zheng, Hao and Lapata, Mirella},
+  booktitle = {Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics},
+  pages = {4256--4268}, year = {2022}, publisher = {Association for Computational Linguistics}, doi = {10.18653/v1/2022.acl-long.293}}
+@inproceedings{weissenhorn2022compositional,
+  title = {Compositional generalization with a broad-coverage semantic parser},
+  author = {Wei{\ss}enhorn, Pia and Donatelli, Lucia and Koller, Alexander},
+  booktitle = {Proceedings of the 11th Joint Conference on Lexical and Computational Semantics}, pages = {44--54},
+  year = {2022}, publisher = {Association for Computational Linguistics}, doi = {10.18653/v1/2022.starsem-1.4}}
+@inproceedings{qiu2022evaluating,
+  title = {Evaluating the Impact of Model Scale for Compositional Generalization in Semantic Parsing},
+  author = {Qiu, Linlu and Shaw, Peter and Pasupat, Panupong and others},
+  booktitle = {Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing}, pages = {9157--9179},
+  year = {2022}, publisher = {Association for Computational Linguistics}, doi = {10.18653/v1/2022.emnlp-main.624}}
+@inproceedings{li2023slog,
+  title = {{SLOG}: A Structural Generalization Benchmark for Semantic Parsing},
+  author = {Li, Bingzhi and Donatelli, Lucia and Koller, Alexander and Linzen, Tal and Yao, Yuekun and Kim, Najoung},
+  booktitle = {Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing}, pages = {3213--3232},
+  year = {2023}, publisher = {Association for Computational Linguistics}, doi = {10.18653/v1/2023.emnlp-main.194}}
+
+% ---- Iterative refinement, calibration, non-inferiority ----
+@inproceedings{lee2018deterministic,
+  title = {Deterministic Non-Autoregressive Neural Sequence Modeling by Iterative Refinement},
+  author = {Lee, Jason and Mansimov, Elman and Cho, Kyunghyun},
+  booktitle = {Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing}, pages = {1173--1182},
+  year = {2018}, publisher = {Association for Computational Linguistics}, doi = {10.18653/v1/D18-1149}}
+@inproceedings{lee2020iterative,
+  title = {Iterative Refinement in the Continuous Space for Non-Autoregressive Neural Machine Translation},
+  author = {Lee, Jason and Shu, Raphael and Cho, Kyunghyun},
+  booktitle = {Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing}, pages = {1006--1015},
+  year = {2020}, publisher = {Association for Computational Linguistics}, doi = {10.18653/v1/2020.emnlp-main.73}}
+@inproceedings{geng2021rewrite,
+  title = {Learning to Rewrite for Non-Autoregressive Neural Machine Translation}, author = {Geng, Xinwei and Feng, Xiaocheng and Qin, Bing},
+  booktitle = {Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing}, pages = {3297--3308},
+  year = {2021}, publisher = {Association for Computational Linguistics}, doi = {10.18653/v1/2021.emnlp-main.265}}
+@inproceedings{cheng2022mrp,
+  title = {{MR-P}: A Parallel Decoding Algorithm for Iterative Refinement Non-Autoregressive Translation},
+  author = {Cheng, Hao and Zhang, Zhihua}, booktitle = {Findings of the Association for Computational Linguistics: ACL 2022}, pages = {285--296},
+  year = {2022}, publisher = {Association for Computational Linguistics}, doi = {10.18653/v1/2022.findings-acl.25}}
+@inproceedings{xiao2025empirical,
+  title = {An Empirical Study of Iterative Refinements for Non-autoregressive Translation},
+  author = {Xiao, Yisheng and Guo, Pei and Sun, Zechen and Li, Juntao and Song, Kai and Zhang, Min},
+  booktitle = {Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  pages = {29851--29865}, year = {2025}, publisher = {Association for Computational Linguistics}, doi = {10.18653/v1/2025.acl-long.1443}}
+@inproceedings{tian2023calibration,
+  title = {Just Ask for Calibration: Strategies for Eliciting Calibrated Confidence Scores from Language Models Fine-Tuned with Human Feedback},
+  author = {Tian, Katherine and Mitchell, Eric and Zhou, Allan and others},
+  booktitle = {Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing}, pages = {5433--5442},
+  year = {2023}, publisher = {Association for Computational Linguistics}, doi = {10.18653/v1/2023.emnlp-main.330}}
+@inproceedings{gu2023evaluation,
+  title = {On the Evaluation of Neural Selective Prediction Methods for Natural Language Processing},
+  author = {Gu, Zhengyao and Hopkins, Mark},
+  booktitle = {Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  pages = {7888--7899}, year = {2023}, publisher = {Association for Computational Linguistics}, doi = {10.18653/v1/2023.acl-long.437}}
+@article{docampobayon2025noninferiority,
+  title = {Evaluating NMT using the non-inferiority principle},
+  author = {do Campo Bay{\'o}n, Mar{\'i}a and S{\'a}nchez-Gij{\'o}n, Pilar},
+  journal = {Natural Language Processing}, volume = {31}, number = {4}, pages = {1042--1061},
+  year = {2025}, publisher = {Cambridge University Press}, doi = {10.1017/nlp.2024.4}}
+
+% ---- Additional SciSpace candidate pool (full 77-paper list) ----
+@inproceedings{jernite2017variable,
+  title = {Variable Computation in Recurrent Neural Networks}, author = {Jernite, Yacine and Bowman, Samuel R. and Rush, Alexander M.}, booktitle = {International Conference on Learning Representations (ICLR 2017)}, year = {2017}
+}
+
+@inproceedings{fojo2018comparing,
+  title = {Comparing Fixed and Adaptive Computation Time for Recurrent Neural Networks}, author = {Fojo, Daniel and Arenas, Mario and Lio, Pietro}, booktitle = {International Conference on Learning Representations (ICLR 2018)}, year = {2018}
+}
+
+@inproceedings{liu2021faster,
+  title = {Faster Depth-Adaptive Transformers}, author = {Liu, Yijin and Meng, Fan and Shang, Jingbo and Liu, Zhiyuan and Sun, Maosong}, booktitle = {Proceedings of the 35th AAAI Conference on Artificial Intelligence}, year = {2021}
+}
+
+@inproceedings{neumann2016learning,
+  title = {Learning to Reason with Adaptive Computation}, author = {Neumann, Mark and Sutskever, Ilya}, booktitle = {Advances in Neural Information Processing Systems 29 (NIPS 2016)}, year = {2016}
+}
+
+@inproceedings{hutchins2022block,
+  title = {Block-Recurrent Transformers}, author = {Hutchins, DeLesley and Schlag, Imanol and Wu, Yuhuai and Gehring, Jonas and Ainslie, Joshua and Ontanon, Santiago and Yang, Yiming and Zhang, Biao and Rao, Anchit and Liu, Peter and Riesa, Jason and Zhang, Zhenyi and Baevski, Alexei and Szlam, Arthur and Sutskever, Ilya}, booktitle = {Advances in Neural Information Processing Systems 35 (NeurIPS 2022)}, year = {2022}
+}
+
+@inproceedings{bai2019deep,
+  title = {Deep Equilibrium Models}, author = {Bai, Shaojie and Kolter, J. Zico and Koltun, Vladlen}, booktitle = {Advances in Neural Information Processing Systems 32 (NeurIPS 2019)}, year = {2019}
+}
+
+@inproceedings{li2020deep,
+  title = {Deep Transformers with Latent Depth}, author = {Li, Xian and Zhou, Hao and Zhao, Yanyan and Zhang, Zheng and Yao, Lianhui and Liu, Zhiyuan and Sun, Maosong}, booktitle = {Advances in Neural Information Processing Systems 33 (NeurIPS 2020)}, year = {2020}
+}
+
+@inproceedings{zhu2021leebert,
+  title = {LeeBERT: Learned Early Exit for BERT with Cross-Level Optimization}, author = {Zhu, Wei}, booktitle = {Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics}, year = {2021}, doi = {10.18653/v1/2021.acl-long.231}
+}
+
+@inproceedings{li2021cascadebert,
+  title = {CascadeBERT: Accelerating Inference of Pre-trained Language Models via Calibrated Complete Models Cascade}, author = {Li, Lei and Lin, Yankai and Wang, Sirui and Liu, Zhiyuan and Sun, Maosong}, booktitle = {Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing}, year = {2021}
+}
+
+@inproceedings{li2021accelerating,
+  title = {Accelerating BERT Inference for Sequence Labeling via Early-Exit}, author = {Li, Xiaonan and Li, Junhui and Liu, Yang and Yan, Rui and Tan, Chao}, booktitle = {Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics}, year = {2021}, doi = {10.18653/v1/2021.acl-long.16}
+}
+
+@inproceedings{wu2020dont,
+  title = {Don't Read Too Much Into It: Adaptive Computation for Open-Domain Question Answering}, author = {Wu, Yuxiang and Lu, Yichao and Li, Yujia and Wang, Changzhi and Sun, Weiwei and Yan, Rui and Zhang, Min}, booktitle = {Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing}, year = {2020}, doi = {10.18653/v1/2020.emnlp-main.244}
+}
+
+@article{han2022dynamic,
+  title = {Dynamic Neural Networks: A Survey}, author = {Han, Yizeng and Huang, Gao and Song, Shiji and Yang, Le and Wang, Honghui and Wang, Yujiao}, journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence, 44(11):7436--7456}, year = {2022}, doi = {10.1109/TPAMI.2021.3117837}
+}
+
+@article{rahmath2024early,
+  title = {Early-Exit Deep Neural Network: A Comprehensive Survey}, author = {Rahmath P, Haseena and others}, journal = {ACM Computing Surveys}, year = {2024}, doi = {10.1145/3698767}
+}
+
+@article{scardapane2020why,
+  title = {Why should we add early exits to neural networks}, author = {Scardapane, Simone and Wang, Ruobin and Chou, Pin-Yu and Riri, Fabrizio and Uncini, Aurelio}, journal = {Cognitive Computation, 12:954--976}, year = {2020}, doi = {10.1007/s12559-020-09734-4}
+}
+
+@inproceedings{kim2021length,
+  title = {Length-Adaptive Transformer: Train Once with Length Drop, Use Anytime with Search}, author = {Kim, Gyuwan and Ghazvininejad, Marjan and Zettlemoyer, Luke}, booktitle = {Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics}, year = {2021}, doi = {10.18653/v1/2021.acl-long.508}
+}
+
+@inproceedings{morcos2018insights,
+  title = {Insights on Representational Similarity in Neural Networks with Canonical Correlation}, author = {Morcos, Ari S. and Raghu, Maithra and Bengio, Samy}, booktitle = {Advances in Neural Information Processing Systems 31 (NeurIPS 2018)}, year = {2018}
+}
+
+@article{strobelt2018lstmvis,
+  title = {LSTMVis: A Tool for Visual Analysis of Hidden State Dynamics in Recurrent Neural Networks}, author = {Strobelt, Hendrik and Gehrmann, Sebastian and Pfister, Helwig and Rush, Alexander M.}, journal = {IEEE Transactions on Visualization and Computer Graphics, 24(6):2176--2185}, year = {2018}, doi = {10.1109/TVCG.2017.2744158}
+}
+
+@article{ceni2020interpreting,
+  title = {Interpreting Recurrent Neural Networks Behaviour via Excitable Network Attractors}, author = {Ceni, Andrea and Livi, Lorenzo and Falotico, Egidio and Laschi, Cecilia}, journal = {Cognitive Computation, 12:1157--1174}, year = {2020}, doi = {10.1007/s12559-019-09634-2}
+}
+
+@article{schuessler2024aligned,
+  title = {Aligned and oblique dynamics in recurrent neural networks}, author = {Schuessler, Friedrich and Mastrogiuseppe, Francesca and Putz, Elisa and Barak, Omri}, journal = {eLife, 13:e93060}, year = {2024}, doi = {10.7554/eLife.93060}
+}
+
+@inproceedings{maheswaranathan2019reverse,
+  title = {Reverse Engineering Recurrent Networks for Sentiment Classification Reveals Line Attractor Dynamics}, author = {Maheswaranathan, Niru and Williams, Alex and Golub, Matthew D. and Ganguli, Surya and Shenoy, Krishna V.}, booktitle = {Advances in Neural Information Processing Systems 32 (NeurIPS 2019)}, year = {2019}
+}
+
+@inproceedings{aitken2021geometry,
+  title = {The Geometry of Integration in Text Classification RNNs}, author = {Aitken, Kyle and Lederman, Aida and Fusi, Stefano and Wang, Xiao-Jing}, booktitle = {International Conference on Learning Representations (ICLR 2021)}, year = {2021}
+}
+
+@article{kadar2017representation,
+  title = {Representation of Linguistic Form and Function in Recurrent Neural Networks}, author = {K{\'a}d{\'a}r, {\'A}kos and Chrupa{\l}a, Grzegorz and Alishahi, Afra}, journal = {Computational Linguistics, 43(4):731--758}, year = {2017}, doi = {10.1162/COLI_a_00300}
+}
+
+@inproceedings{hiebert2018interpreting,
+  title = {Interpreting Word-Level Hidden State Behaviour of Character-Level LSTM Language Models}, author = {Hiebert, Avery and Koprinska, Irena and Yacef, Kalina}, booktitle = {Proceedings of the 2018 EMNLP Workshop BlackboxNLP}, year = {2018}, doi = {10.18653/v1/W18-5428}
+}
+
+@article{back2023evolutionary,
+  title = {Evolutionary Algorithms for Parameter Optimization: Thirty Years Later}, author = {B{\"a}ck, Thomas and Hansen, Nikolaus and Rechenberg, Ingo and Schwefel, Hans-Paul}, journal = {Evolutionary Computation, 31(2):81--119}, year = {2023}, doi = {10.1162/evco_a_00325}
+}
+
+@inproceedings{mousavirad2020benchmark,
+  title = {A Benchmark of Recent Population-Based Metaheuristic Algorithms for Multi-Layer Neural Network Training}, author = {Mousavirad, Seyed Jalaleddin and Schaefer, Gerald and Rahmani, Hossein and Akbari, Reza and Khosravi, Meysam}, booktitle = {Proceedings of the 2020 Genetic and Evolutionary Computation Conference}, year = {2020}, doi = {10.1145/3377929.3398144}
+}
+
+@inproceedings{rapin2019exploring,
+  title = {Exploring the MLDA Benchmark on the Nevergrad Platform}, author = {Rapin, Jeremy and Teytaud, Olivier}, booktitle = {Proceedings of the 2019 Genetic and Evolutionary Computation Conference}, year = {2019}, doi = {10.1145/3319619.3326830}
+}
+
+@inproceedings{moriguchi2012cmatweann,
+  title = {CMA-TWEANN: Efficient Optimization of Neural Networks via Self-Adaptation and Seamless Augmentation}, author = {Moriguchi, Hirotaka and Araki, Hiroyuki and Yoshida, Noriyasu and Ikeda, Kiyoshi}, booktitle = {Proceedings of the 2012 Genetic and Evolutionary Computation Conference}, year = {2012}, doi = {10.1145/2330163.2330288}
+}
+
+@inproceedings{faury2019benchmarkinggnn,
+  title = {Benchmarking GNN-CMA-ES on the BBOB Noiseless Testbed}, author = {Faury, Louis and Auger, Anne and Hansen, Nikolaus}, booktitle = {Proceedings of the 2019 Genetic and Evolutionary Computation Conference}, year = {2019}, doi = {10.1145/3319619.3326856}
+}
+
+@inproceedings{varelas2019benchmarking,
+  title = {Benchmarking Large Scale Variants of CMA-ES and L-BFGS-B on the BBOB-LargeScale Testbed}, author = {Varelas, Konstantinos and Auger, Anne and Brockhoff, Dirk and Hansen, Nikolaus}, booktitle = {Proceedings of the 2019 Genetic and Evolutionary Computation Conference}, year = {2019}, doi = {10.1145/3319619.3326893}
+}
+
+@inproceedings{tomczak2020differential,
+  title = {Differential Evolution with Reversible Linear Transformations}, author = {Tomczak, Jakub M. and Weglarz, Krzysztof and Wojciechowski, Maciej}, booktitle = {Proceedings of the 2020 Genetic and Evolutionary Computation Conference}, year = {2020}, doi = {10.1145/3377929.3389972}
+}
+
+@article{arabas2020toward,
+  title = {Toward a Matrix-Free Covariance Matrix Adaptation Evolution Strategy}, author = {Arabas, Jaros{\l}aw and B{\"a}ck, Thomas and Wierzchon, Slawomir T.}, journal = {IEEE Transactions on Evolutionary Computation, 24(2):237--250}, year = {2020}, doi = {10.1109/TEVC.2019.2907266}
+}
+
+@inproceedings{csordas2021devil,
+  title = {The Devil is in the Detail: Simple Tricks Improve Systematic Generalization of Transformers}, author = {Csord{\'a}s, R{\'o}bert and Choshen, Leshem}, booktitle = {Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing}, year = {2021}, doi = {10.18653/v1/2021.emnlp-main.59}
+}
+
+@inproceedings{drozdov2023compositional,
+  title = {Compositional Semantic Parsing with Large Language Models}, author = {Drozdov, Andrew and Rahaman, Nasrin and Chen, Wenhu and Vreqa, Manaal and Yao, Linfeng and Pasupat, Panupong and Chang, Ming-Wei}, booktitle = {International Conference on Learning Representations (ICLR 2023)}, year = {2023}
+}
+
+@inproceedings{yin2021compositional,
+  title = {Compositional Generalization for Neural Semantic Parsing via Span-level Supervised Attention}, author = {Yin, Pengcheng and Zaheer, Manzil and Liang, Percy and Fried, Daniel and Dyer, Chris and Polozov, Alex and Richardson, Matt}, booktitle = {Proceedings of the 2021 Conference of the North American Chapter of the ACL}, year = {2021}, doi = {10.18653/v1/2021.naacl-main.225}
+}
+
+@inproceedings{jiang2021inducing,
+  title = {Inducing Transformer's Compositional Generalization Ability via Auxiliary Sequence Prediction Tasks}, author = {Jiang, Yichen and Bansal, Mohit}, booktitle = {Findings of the Association for Computational Linguistics: EMNLP 2021}, year = {2021}, doi = {10.18653/v1/2021.findings-emnlp.330}
+}
+
+@inproceedings{zheng2021compositional,
+  title = {Compositional Generalization via Semantic Tagging}, author = {Zheng, Hao and Lu, Weiming and Lapata, Mirella}, booktitle = {Findings of the Association for Computational Linguistics: EMNLP 2021}, year = {2021}, doi = {10.18653/v1/2021.findings-emnlp.350}
+}
+
+@inproceedings{lake2019compositional,
+  title = {Compositional Generalization through Meta Sequence-to-Sequence Learning}, author = {Lake, Brenden M.}, booktitle = {Advances in Neural Information Processing Systems 32 (NeurIPS 2019)}, year = {2019}
+}
+
+@inproceedings{guo2020hierarchical,
+  title = {Hierarchical Poset Decoding for Compositional Generalization in Language}, author = {Guo, Yinuo and Gao, Junyang and Shao, Jing and Li, Yujia and Liu, Yanchao and Liu, Zhiyuan and Sun, Maosong}, booktitle = {Advances in Neural Information Processing Systems 33 (NeurIPS 2020)}, year = {2020}
+}
+
+@inproceedings{chi2021align,
+  title = {Align-Refine: Non-Autoregressive Speech Recognition via Iterative Realignment}, author = {Chi, Ethan A. and Chen, Junkun and Zhang, Yu and Li, Yizhe and Zhu, Chen and Wang, Chengyi and Qian, Yao and Liu, Siqi and Wang, Xin and Wu, Yu and Wang, Wei and Xiao, Jun}, booktitle = {Proceedings of the 2021 Conference of the North American Chapter of the ACL}, year = {2021}, doi = {10.18653/v1/2021.naacl-main.154}
+}
+
+@inproceedings{ghazvininejad2019mask,
+  title = {Mask-Predict: Parallel Decoding of Conditional Masked Language Models}, author = {Ghazvininejad, Marjan and Levy, Omer and Liu, Yinhan and Zettlemoyer, Luke}, booktitle = {Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing}, year = {2019}, doi = {10.18653/v1/D19-1633}
+}
+
+@inproceedings{shu2020latent,
+  title = {Latent-Variable Non-Autoregressive Neural Machine Translation with Deterministic Inference Using a Delta Posterior}, author = {Shu, Raphael and Lee, Jason and Cho, Kyunghyun}, booktitle = {Proceedings of the 34th AAAI Conference on Artificial Intelligence}, year = {2020}, doi = {10.1609/aaai.v34i05.6413}
+}
+
+@inproceedings{kasai2020non,
+  title = {Non-Autoregressive Machine Translation with Disentangled Context Transformer}, author = {Kasai, Jungo and Pappas, Nicholas and Peng, Hao and Cross, James and Corro, Camillo and Lu, Yichao and Swayamdipta, Swabha and Smith, Noah A. and Koh, Pang Wei}, booktitle = {Proceedings of the 37th International Conference on Machine Learning}, year = {2020}
+}
+
+@article{mohammadshahi2021recursive,
+  title = {Recursive Non-Autoregressive Graph-to-Graph Transformer for Dependency Parsing with Iterative Refinement}, author = {Mohammadshahi, Alireza and Henderson, James}, journal = {Transactions of the Association for Computational Linguistics, 9:294--310}, year = {2021}, doi = {10.1162/tacl_a_00358}
+}
+
+@inproceedings{hua2020pair,
+  title = {PAIR: Planning and Iterative Refinement in Pre-trained Transformers for Long Text Generation}, author = {Hua, Xinyu and Wang, Mengqian and Zhou, Jie and Huang, Heyan and Chen, Lili and Wang, Xin}, booktitle = {Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing}, year = {2020}, doi = {10.18653/v1/2020.emnlp-main.57}
+}
+
+@inproceedings{ma2019flowseq,
+  title = {FlowSeq: Non-Autoregressive Conditional Sequence Generation with Generative Flow}, author = {Ma, Xuezhe and Chen, Chong and Li, Haoran and Meng, Fandong and Zhou, Jie and Tu, Zhilian}, booktitle = {Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing}, year = {2019}, doi = {10.18653/v1/D19-1437}
+}
+
+@inproceedings{xia2017deliberation,
+  title = {Deliberation Networks: Sequence Generation Beyond One-Pass Decoding}, author = {Xia, Yingce and Tian, Fei and Wu, Lei and Lin, Junyang and Qin, Tao and Yu, Nenghai and Zhou, Jie and Chen, Xilin}, booktitle = {Advances in Neural Information Processing Systems 30 (NIPS 2017)}, year = {2017}
+}
+
+@article{xiao2022survey,
+  title = {A Survey on Non-Autoregressive Generation for Neural Machine Translation and Beyond}, author = {Xiao, Yisheng and Zhang, Min and Yang, Muyun and Guo, Pei and Zhou, Hao and Huang, Yuhua and Li, Juntao and Tan, Jingbo}, journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence}, year = {2022}, doi = {10.1109/TPAMI.2022.3185341}
+}
+
+@inproceedings{guo2017calibration,
+  title = {On Calibration of Modern Neural Networks}, author = {Guo, Chuan and Pleiss, Geoff and Sun, Yu and Weinberger, Kilian Q.}, booktitle = {Proceedings of the 34th International Conference on Machine Learning}, year = {2017}
+}
+
+@inproceedings{geifman2019selectivenet,
+  title = {SelectiveNet: A Deep Neural Network with an Integrated Reject Option}, author = {Geifman, Yonatan and El-Yaniv, Ran}, booktitle = {Proceedings of the 36th International Conference on Machine Learning}, year = {2019}
+}
+
+@inproceedings{wenger2020nonparametric,
+  title = {Non-Parametric Calibration for Classification}, author = {Wenger, Jonathan and Kjellstrom, Hedvig and Tristan, Cemgil}, booktitle = {Proceedings of the 23rd International Conference on Artificial Intelligence and Statistics}, year = {2020}
+}
+
+@inproceedings{krishnan2020improving,
+  title = {Improving Model Calibration with Accuracy Versus Uncertainty Optimization}, author = {Krishnan, Ranganath and Tickoo, Omesh and Iyengar, Sreejit and Orlik, Philipp and Khot, Tushar}, booktitle = {Advances in Neural Information Processing Systems 33 (NeurIPS 2020)}, year = {2020}
+}
+
+@misc{crisostomi2025twoscale,
+  title = {Two-Scale Latent Dynamics for Recurrent-Depth Transformers}, author = {Crisostomi, Donato and others}, year = {2025},
+  eprint = {2509.23314}, archivePrefix = {arXiv}, primaryClass = {cs.LG}
+}
+
+@misc{zhu2025scaling,
+  title = {Scaling Latent Reasoning via Looped Language Models}, author = {Zhu, Rui-Jie and others}, year = {2025},
+  eprint = {2510.25741}, archivePrefix = {arXiv}, primaryClass = {cs.LG}
+}
+
+@misc{fu2025think,
+  title = {Think-at-Hard: Selective Latent Iterations to Improve Reasoning Language Models}, author = {Fu, Tianyu and others}, year = {2025},
+  eprint = {2511.08577}, archivePrefix = {arXiv}, primaryClass = {cs.LG}
+}
+
+@misc{koishekenov2025encode,
+  title = {Encode, Think, Decode: Scaling Test-Time Reasoning with Recursive Latent Thoughts}, author = {Koishekenov, Yeskendir and others}, year = {2025},
+  eprint = {2510.07358}, archivePrefix = {arXiv}, primaryClass = {cs.LG}
+}

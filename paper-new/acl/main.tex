@@ -38,22 +38,24 @@ Recursive sequence models reapply a shared refinement operator to improve a pred
 \section{Introduction}
 \label{sec:intro}
 
-A recursive sequence model reuses a shared refinement cell, so an early mistake can be repaired at a later step without adding parameters. Universal Transformers and recursive GRUs have shown that this extra computation improves reasoning and semantic parsing \citep{dehghani2019universal,graves2016adaptive}. The standard deployment fixes the number of passes in advance and runs every token through the same depth. That choice is cheap to implement and hard to justify at inference time. Tokens differ in difficulty: many are already correct after the first pass, and a few need the extra steps. On COGS \citep{kim2020cogs}, 87--91\% of examples keep their prediction across the first refinement, and only 5--9\% are repaired by it. The question is whether a token whose prediction is already stable needs the remaining refinement steps.
+A recursive sequence model reuses a shared refinement cell, so an early mistake can be repaired at a later step without adding parameters. Treating a Transformer as a recurrent update makes this view general \citep{katharopoulos2020transformers}, and looped Transformers show that repeating a fixed computation can implement algorithms a single pass cannot \citep{giannou2023looped,yang2024looped}. Multiple computational hops and relational recurrence make the same point for earlier architectures \citep{sukhbaatar2015memory,santoro2018relational}. Universal Transformers and recursive GRUs have shown that this extra computation improves reasoning and semantic parsing \citep{dehghani2019universal,graves2016adaptive}. The standard deployment fixes the number of passes in advance and runs every token through the same depth, even though conditional computation and token-level routing let a model spend different amounts on different inputs \citep{fedus2022switch,raposo2024mixture}. Tokens differ in difficulty: many are already correct after the first pass, and a few need the extra steps. On COGS \citep{kim2020cogs}, a benchmark where compositional generalization remains hard \citep{lake2018generalization,oren2020improving}, 87--91\% of examples keep their prediction across the first refinement, and only 5--9\% are repaired by it. The question is whether a token whose prediction is already stable needs the remaining refinement steps.
 
-Accuracy at a fixed depth says little about the computation behind it, since adjacent depths change the prediction on only a handful of tokens. That difference cannot tell us whether the model stored new information or merely rewrote the same state. We therefore record the latent state at every depth for four architectures and compare its norm, displacement, direction, and prediction change across refinements. In the bounded-state models the first refinement produces most of the state change, while later updates shrink to a fraction of that size, and this pattern holds only for seeds whose accuracy saturates after the first step. The unbounded states behave differently: the Transformer's updates stay nearly collinear across depths while its state norm grows steadily across all three refinements. This contrast raises a second issue about the update rule itself. If the fixed refinement rule is not optimal, a low-dimensional step size can be searched at a fixed evaluation budget. Whether a policy frozen on one model still works in another is left as a separate empirical question.
+Accuracy at a fixed depth says little about the computation that produces it. Adjacent depths change the prediction on only a handful of tokens, and later passes can even flip a correct answer, a failure known as overthinking \citep{kaya2019shallowdeep}. That difference cannot tell us whether the model stored new information or merely rewrote the same state. Low-dimensional trajectories, fixed points, and update directions are the standard vocabulary for describing recurrent dynamics \citep{sussillo2013blackbox,vyas2020population,haviv2019memory}, and representation-similarity analysis warns that absolute coordinates from different systems are not directly comparable \citep{kriegeskorte2008rsa,kornblith2019cka}. We therefore record the latent state at every depth for four architectures and compare its norm, displacement, direction, and prediction change. In the bounded-state models the first refinement produces most of the state change, while later updates shrink to a fraction of that size, and this pattern holds only for seeds whose accuracy saturates after the first step. The unbounded states behave differently: the Transformer's updates stay nearly collinear across depths while its state norm grows steadily. This contrast raises a second question about the update itself. Iterative refinement in latent space can change an outcome at constant compute \citep{lee2020iterative,geng2021rewrite}, so the fixed refinement rule need not be the best one. A low-dimensional step size can be searched at a fixed evaluation budget, and evolutionary methods have long searched controller parameters without differentiating through a network \citep{stanley2002neat,such2017neuro}. Whether a policy frozen on one model still works in another remains a separate empirical question.
 
-We present TRACER, a framework that treats recursion as something to measure before it is controlled. Its first component halts a token on confidence available before the refinement it gates. An active-subset executor with forward hooks confirms that skipped refinements are never computed. Its second component records latent trajectories across four architectures and reduces each trajectory to a norm, a displacement, and an update direction. These summaries describe change within a model across refinements and reveal where first-step gains saturate and where they do not. Its third component searches a five-parameter step-size policy under an equal budget of 336 evaluations and tests the frozen policy on held-out data and on three unseen architectures. Together the three components answer the questions raised above, and they share one call-counting definition of executed computation and one evaluation protocol. On COGS, halting preserves accuracy at a quarter of the deepest call count on most seeds, and the audited executor confirms that the saved calls are not executed. Single-sequence latency falls with the call count. The cross-architecture traces show two state regimes rather than one universal refinement dynamic. The evolutionary search returns a median gain of one inner-subset sample. The frozen policy is non-inferior on only part of the target seeds. We report these limits alongside the wins.
+We present TRACER, a framework that treats recursion as something to measure before it is controlled. Its first component halts a token on confidence available before the refinement it gates; confidence-based inference already uses such readouts to adjust depth or abstain \citep{liu2020fastbert,xin2020deebert,geifman2017selective}. An active-subset executor with forward hooks confirms that skipped refinements are never computed. Its second component records latent trajectories across four architectures and reduces each trajectory to a norm, a displacement, and an update direction. These summaries describe change within a model across refinements and reveal where first-step gains saturate and where they do not. Its third component searches a five-parameter step-size policy under an equal budget of 336 evaluations and tests the frozen policy on held-out data and on three unseen architectures. Equal-budget comparison matters because the gain is small relative to seed variation, and non-inferiority testing supplies the right statistical frame for claiming that less compute does not cost accuracy \citep{docampobayon2025noninferiority,gu2023evaluation}. On COGS, halting preserves accuracy at a quarter of the deepest call count on most seeds, and the audited executor confirms that the saved calls are not executed. Single-sequence latency falls with the call count. The cross-architecture traces show two state regimes rather than one universal refinement dynamic. The evolutionary search returns a median gain of one inner-subset sample. The frozen policy is non-inferior on only part of the target seeds. We report these limits alongside the wins.
 
 \section{Related Work}
 \label{sec:related}
 
-Recursive computation reuses one set of parameters across several passes, and Adaptive Computation Time made the number of passes input-dependent with a learned halting unit \citep{graves2016adaptive}. The Universal Transformer tied layers and let depth vary with input, applying the shared transformation to its own previous output and revising an intermediate prediction at each pass \citep{dehghani2019universal}. These lines of work established that repeated computation can improve a prediction without a proportional increase in parameters. Most evaluations still stop at final accuracy: they report what deeper recursion achieves, not how much each individual refinement contributes, how often it changes a decision, or whether the latent state changes at all.
+Recurrent computation has a long history in models that reuse a shared core. Neural programmer-interpreters made the core call subprograms and halt \citep{reed2016programmer}, while neural Turing machines paired a finite controller with an external memory \citep{graves2014neural}. End-to-end memory networks repeated an attention module over several hops \citep{sukhbaatar2015memory}, and relational recurrent networks added point-product attention to the recurrent state \citep{santoro2018relational}. Transformer-XL carried state across segments \citep{dai2019transformerxl}, the recurrent memory transformer added explicit memory tokens \citep{bulatov2022recurrent}, and RWKV reformulated linear attention as a recurrent update \citep{peng2023rwkv}. Retentive networks connect recurrence and attention as three equivalent computational views \citep{sun2023retentive}. These lines of work established that repeated computation can improve a prediction without a proportional increase in parameters. Most evaluations still stop at final accuracy: they report what deeper recursion achieves, not how much each individual refinement contributes, how often it changes a decision, or whether the latent state changes at all.
 
-One response to fixed-depth deployment is to make depth input-dependent. PonderNet learns a distribution over the number of pondering steps \citep{banino2021ponder}, and the Depth-Adaptive Transformer exits at intermediate layers for easy inputs \citep{elbayad2020depth}; confidence-based stopping has also been studied for language modeling \citep{schuster2022calm,schuster2021cats}. These methods train the exit decision jointly with the network and typically report savings through the depth or step count their controller selects. A frozen model offers no such gate to train, so a threshold must read signals already present at the decision point. Its benefit also needs a stricter check: the saving is real only if the decoder omits the gated refinement, which calls for counting executed calls instead of inferring depth.
+Dynamic depth has been studied from several angles. BranchyNet placed early classifiers at intermediate layers \citep{teerapittayanon2016branchynet}, and multi-scale dense networks made every layer an exit point \citep{huang2018multiscale}. Spatially adaptive computation time allocated layers per image position \citep{figurnov2017spatially}, which is the visual analogue of token-level compute allocation. Bolukbasi et al. learned per-layer exits from a global objective \citep{bolukbasi2017adaptive}, and FastBERT and DeeBERT applied confidence-gated exits to pretrained language models \citep{liu2020fastbert,xin2020deebert}. PATience-based exiting used prediction stability rather than a single probability \citep{zhou2020patience}, and mixture-of-depths routed tokens through different layer counts \citep{raposo2024mixture}. Switch Transformers scaled conditional computation by activating only part of the parameters per token \citep{fedus2022switch}. These methods train the exit decision jointly with the network and typically report savings through the depth or step count their controller selects. A frozen model offers no such gate to train, so a threshold must read signals already present at the decision point. The quality of those signals is itself a studied question \citep{jiang2018trust,tian2023calibration}. Savings are real only if the decoder omits the gated refinement, which calls for counting executed calls instead of inferring depth.
 
-Counting calls settles whether refinement ran, not what it did to the representation. Norms, displacement, and directional similarity describe how a representation moves across layers or time steps, and these quantities can show when a model settles on a prediction and when later computation only rewrites that state. A comparison across recursive cells is harder to read this way, because the absolute scale of a state depends on how it was produced and stored.
+Iterative refinement revises an initial output in successive passes. Deterministic non-autoregressive modeling framed each pass as a denoising step \citep{lee2018deterministic}, and latent refinement moved the update into a low-dimensional continuous space \citep{lee2020iterative}. MR-P let a decoder stop when its refinement converged \citep{cheng2022mrp}, and a recent empirical study measured redundant rewrites and confidence changes across refinement steps \citep{xiao2025empirical}. Work on semantic parsing showed that structured rewrites can repair span-level errors that a single pass misses \citep{geng2021rewrite}. In all of these, the number of passes is either fixed or chosen by a trained controller; the present study keeps the passes fixed and asks whether the update applied at each one can be rescaled under a frozen model.
 
-The trajectory readouts also expose the update rule itself as a point of control. Derivative-free methods such as genetic algorithms, differential evolution, and CMA-ES have long been used to optimize networks and to search controller parameters without differentiating through the model \citep{eiben2015introduction,stanley2019designing}. In the latent-control component they serve a narrow role: the recursive model keeps its weights, and the search adjusts only the step size of each executed refinement; the joint variant additionally searches the halting gates (\S\ref{sec:method}). We ask how much a five-parameter update policy gains under a fixed evaluation budget, and whether that gain survives on held-out data and after transfer to another architecture.
+Trajectory readouts give a vocabulary for what a refinement changes. Low-dimensional dynamics in high-dimensional recurrent networks are described by fixed points and state geometry \citep{sussillo2013blackbox,vyas2020population}, with state velocity defining how far a trajectory moves in one step \citep{haviv2019memory}. Dynamical similarity analysis cautions that equivalent computations need not share a geometry \citep{ostrow2023dsa}, and structured state-space models define states whose scale and meaning differ from a gated recurrent state \citep{gu2022s4,gu2023mamba}. Visualizing individual units showed why the LSTM cell state and hidden state must be read apart \citep{karpathy2015rnn}, and geometry studies analyzed representation dynamics layer by layer \citep{horoi2020geometry}. These observations motivate within-model summaries of norm, displacement, and direction, and they rule out ranking architectures by absolute state norm.
+
+Derivative-free search supplies the third component. Genetic algorithms remain a standard black-box optimizer \citep{whitley1994tutorial}, differential evolution uses difference vectors between population members as perturbations \citep{storn1997de,das2011survey}, and CMA-ES adapts a covariance matrix to the search landscape \citep{hansen2001cma,hansen2003cma}. Surveys of derivative-free optimization compare these methods under a common function-value budget \citep{rios2013df}, and evolutionary approaches have searched network topologies and controllers since NEAT \citep{stanley2002neat,such2017neuro}. Here the search adjusts only the step size of an executed refinement; weights stay fixed, and the budget is matched across algorithms. We ask how much a five-parameter update policy gains at constant depth, whether that gain survives on held-out data, and whether it carries to another architecture.
 
 \section{Method}
 \label{sec:method}
@@ -80,7 +82,7 @@ Five algorithms search the same policy under a common budget of 336 evaluations:
 We evaluate TRACER on COGS, a semantic parsing benchmark that maps natural language to logical forms, and hold one setup fixed across three questions: what the extra steps execute, what they change in the latent state, and whether a step-size policy transfers. One executed-call counter and one non-inferiority rule decide all three.
 
 \subsection{Dataset}
-COGS contains 24{,}155 training, 3{,}000 development, 3{,}000 test, and 21{,}000 generalization examples; the official test and generalization splits remain sealed and were never read. Cross-architecture evaluation and latent analysis share one fixed, group-balanced sample of 256 training examples across all models and seeds. Optimizer search runs on an inner subset fixed before search, and each policy selected there is confirmed once on an outer fold of about 640 training examples. A final check applies only the frozen threshold policy to the official 3{,}000-example development set, evaluated once and marked used thereafter.
+COGS tests compositional generalization by mapping natural language to logical forms \citep{kim2020cogs}. The broader difficulty of systematic generalization \citep{keysers2020measuring,furrer2020compositional} has driven structured parsers \citep{herzig2021span,shaw2021compositional} and disentangled models \citep{zheng2022disentangled}, yet scaling alone does not remove it \citep{qiu2022evaluating,li2023slog}, and COGS remains a standard benchmark \citep{weissenhorn2022compositional}. COGS contains 24{,}155 training, 3{,}000 development, 3{,}000 test, and 21{,}000 generalization examples; the official test and generalization splits remain sealed and were never read. Cross-architecture evaluation and latent analysis share one fixed, group-balanced sample of 256 training examples across all models and seeds. Optimizer search runs on an inner subset fixed before search, and each policy selected there is confirmed once on an outer fold of about 640 training examples. A final check applies only the frozen threshold policy to the official 3{,}000-example development set, evaluated once and marked used thereafter.
 
 \subsection{Experimental Environment}
 All experiments use the same local CPU workstation; wall-clock timing fixes the thread count at two. GRU, RNN, LSTM, and T1 are each trained at three seeds, alongside a single-seed Mamba-1-Tiny boundary probe (Table~\ref{tab:models}). We train with Adam at $10^{-3}$, batch size 32, and 15 epochs, using 64-dimensional embeddings and 128-dimensional hidden states for the GRU-family models; the recursive Transformer instead uses a 128-dimensional width. Refinement runs up to three steps under multi-depth supervision weighted $(0.1,0.2,0.3,0.4)$ over $e_0$--$e_3$, with model seeds 0, 1, and 2. Five algorithms search at three optimizer seeds each, with 336 candidate evaluations per run. Non-inferiority holds when the lower bound of a 95\% group-cluster bootstrap interval on $\Delta$EM reaches $-0.5$pp or above; the point estimate alone does not decide it.
@@ -153,7 +155,7 @@ T1 & $0.654$ & $0.815$ & $0.803$ & $0.792$ \\
 \label{tab:depth}
 \end{table}
 
-Figure~\ref{fig:depth} and Table~\ref{tab:depth} show what extra depth adds. Forced exact match rises sharply from $e_0$ to $e_1$ and then flattens: seed-averaged within each architecture, the first refinement delivers 94--98\% of the accuracy gain that $e_3$ reaches on GRU, RNN, and LSTM. The three-seed $e_3$ scores are 0.879/0.844/0.891 (GRU), 0.434/0.547/0.480 (RNN), 0.629/0.313/0.328 (LSTM), and 0.871/0.648/0.855 (T1). T1 also reaches its accuracy peak by $e_1$, but its latent state keeps changing; the trajectory analysis will take up that difference.
+Figure~\ref{fig:depth} and Table~\ref{tab:depth} show what extra depth adds. Forced exact match rises sharply from $e_0$ to $e_1$ and then flattens: seed-averaged within each architecture, the first refinement delivers 94--98\% of the accuracy gain that $e_3$ reaches on GRU, RNN, and LSTM. The three-seed $e_3$ scores are 0.879/0.844/0.891 (GRU), 0.434/0.547/0.480 (RNN), 0.629/0.313/0.328 (LSTM), and 0.871/0.648/0.856 (T1). T1 also reaches its accuracy peak by $e_1$, but its latent state keeps changing; the trajectory analysis will take up that difference.
 
 \begin{figure}[t]
 \centering
@@ -192,7 +194,32 @@ Seed & Policy & $\Delta$EM (pp) & 95\% CI (pp) & $N_{\mathrm{cell}}$ & NI \\
 \label{tab:halting}
 \end{table}
 
-Threshold halting preserves exact-match accuracy while cutting executed calls. Table~\ref{tab:halting} gives the per-seed results relative to each seed's best fixed depth. On the frozen GRU the threshold reproduces the deepest baseline bit-for-bit at 25.7\% of its calls on two seeds; on the third it beats the shallower $e_1$ baseline by 1.86pp at 52.1\% of that baseline's calls, a non-significant gain whose 95\% interval spans zero. Across four architectures the rule is non-inferior or better on 9 of 12 seeds, significantly worse on two (RNN $s_2$, T1 $s_2$), and inconclusive on one (T1 $s_0$). The non-inferiority decision follows the preregistered lower-bound rule, not point estimates: eight of the nine evolutionary policies clear the point-estimate margin, but only two clear the interval bound.
+Threshold halting preserves exact-match accuracy while cutting executed calls. Table~\ref{tab:halt12} gives the full 12-seed halting results on the shared 256-sample manifest. Table~\ref{tab:halting} reports the separate GRU outer-fold experiment (645 examples per seed), where the threshold is compared with each seed's best fixed depth. On the frozen GRU the threshold reproduces the deepest baseline bit-for-bit at 25.7\% of its calls on two seeds; on the third it beats the shallower $e_1$ baseline by 1.86pp at 52.1\% of that baseline's calls, a non-significant gain whose 95\% interval spans zero. Across four architectures the rule is non-inferior or better on 9 of 12 seeds, significantly worse on two (RNN $s_2$, T1 $s_2$), and inconclusive on one (T1 $s_0$). The non-inferiority decision follows the preregistered lower-bound rule, not point estimates: eight of the nine evolutionary policies clear the point-estimate margin, but only two clear the interval bound.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{1.5pt}
+\begin{tabular}{@{}llccccl@{}}
+\toprule
+Arch & Seed & f-$e_3$ EM & halt EM & $\Delta$EM & 95\% CI & NI \\ \midrule
+GRU & $s_0$ & $0.879$ & $0.879$ & $+0.00$ & $[0.00,0.00]$ & \checkmark \\
+GRU & $s_1$ & $0.844$ & $0.844$ & $+0.00$ & $[0.00,0.00]$ & \checkmark \\
+GRU & $s_2$ & $0.891$ & $0.891$ & $+0.00$ & $[0.00,0.00]$ & \checkmark \\
+RNN & $s_0$ & $0.434$ & $0.438$ & $+0.39$ & $[0.00,1.17]$ & \checkmark \\
+RNN & $s_1$ & $0.547$ & $0.551$ & $+0.39$ & $[0.00,1.17]$ & \checkmark \\
+RNN & $s_2$ & $0.480$ & $0.461$ & $-1.95$ & $[-3.91,-0.39]$ & $\times$ \\
+LSTM & $s_0$ & $0.629$ & $0.629$ & $+0.00$ & $[0.00,0.00]$ & \checkmark \\
+LSTM & $s_1$ & $0.312$ & $0.312$ & $+0.00$ & $[0.00,0.00]$ & \checkmark \\
+LSTM & $s_2$ & $0.328$ & $0.328$ & $+0.00$ & $[0.00,0.00]$ & \checkmark \\
+T1 & $s_0$ & $0.871$ & $0.848$ & $-2.34$ & $[-5.47,0.78]$ & $\ ?$ \\
+T1 & $s_1$ & $0.648$ & $0.703$ & $+5.47$ & $[1.17,10.16]$ & \checkmark \\
+T1 & $s_2$ & $0.856$ & $0.809$ & $-4.69$ & $[-7.81,-1.95]$ & $\times$ \\
+\bottomrule
+\end{tabular}
+\caption{Halting on 256 samples; $\Delta$EM vs. forced $e_3$, NI by LCB$_{95}\geq-0.5$pp. $\times$: significant loss; $?$: inconclusive. Nine non-inferior, two negative, one inconclusive.}
+\label{tab:halt12}
+\end{table}
 
 \begin{figure}[t]
 \centering
@@ -264,31 +291,14 @@ T1 & 5.38 & 1.79 & 0.95 & 0.0027 \\
 \label{tab:latstat}
 \end{table}
 
-The third line asks whether the update itself can be improved. Table~\ref{tab:optagg} aggregates 45 equal-budget searches across five optimizers. Every algorithm has a median gain of $+0.52$pp, one sample of the 192-example inner subset, and mean gains range from $+0.41$pp for sep-CMA-ES to $+0.81$pp for GA and DE. The baseline has a standard deviation of 2.4pp across model seeds, several times the search effect, and the single $+2.08$pp run is an outlier. Random search is competitive and no single optimizer wins consistently. Figure~\ref{fig:optcurves} shows the best-so-far gain of each run over its own baseline. The input ablations show that a time-only policy and a dynamics-only policy each reproduce the full GA gain on $s_0$, whereas an entropy-only policy does not, so the gain cannot be attributed uniquely to a schedule or to the input dynamics. \begin{table}[t]
-\centering
-\footnotesize
-\setlength{\tabcolsep}{1.5pt}
-\begin{tabular}{lcccc|ccc}
-\toprule
-& \multicolumn{4}{c|}{Search (inner EM gain, pp)} & \multicolumn{3}{c}{Ablation (GA, $s_0$)} \\
-Seed & RS & GA & DE & CMA & A: $k/K$ & B: $H$ & C: $D,A$ \\
-\midrule
-$s_0$ & $+0.00$ & $+0.52$ & $+0.52$ & $+0.00$ & $+0.52$ & $+0.00$ & $+0.52$ \\
-$s_1$ & $+1.04$ & $+1.56$ & $+1.04$ & $+2.08$ & n/a & n/a & n/a \\
-$s_2$ & $+0.52$ & $+0.52$ & $+1.04$ & $+0.00$ & n/a & n/a & n/a \\
-\bottomrule
-\end{tabular}
-\caption{\textbf{Step-size policies improve fixed-depth exact match at constant compute.} Fixed-depth (constant $N_{\mathrm{cell}}$) improvements over the original $\alpha{\approx}1$ update on the inner subset ($n{=}192$); all searches use exactly 336 evaluations, and CMA denotes sep-CMA-ES. A hand-designed linearly decaying schedule ($\alpha_k = 1.0-0.5k/K$, i.e., $[1.0, 0.833, 0.667]$ at depth 3) and fixed $\alpha \in \{0.75, 0.5, 0.25\}$ never exceed the $\alpha{\approx}1$ baseline. Ablations on $s_0$ restrict the policy input to a single feature group; the full-feature GA result corresponds to the GA column.}
-\label{tab:latent}
-\end{table}
+The third line asks whether the update itself can be improved. Table~\ref{tab:opt5} aggregates all 45 equal-budget searches across the five optimizers, including MGA. Every algorithm has a median gain of $+0.52$pp, one sample of the 192-example inner subset, and mean gains range from $+0.41$pp for sep-CMA-ES to $+0.81$pp for GA and DE. The baseline has a standard deviation of 2.4pp across model seeds, several times the search effect, and the single $+2.08$pp run is an outlier. Random search is competitive and no single optimizer wins consistently. Figure~\ref{fig:optcurves} shows the best-so-far gain of each run over its own baseline. The input ablations show that a time-only policy and a dynamics-only policy each reproduce the full GA gain on $s_0$, whereas an entropy-only policy does not, so the gain cannot be attributed uniquely to a schedule or to the input dynamics.
 
 \begin{table}[t]
 \centering
 \footnotesize
 \begin{tabular}{@{}lcccc@{}}
 \toprule
-Algorithm & Mean (pp) & Median (pp) & Std (pp) & Win \\
-\midrule
+Algorithm & Mean (pp) & Median (pp) & Std (pp) & Win \\ \midrule
 RS & $+0.64$ & $+0.52$ & 0.63 & 67\% \\
 GA & $+0.81$ & $+0.52$ & 0.64 & 89\% \\
 MGA & $+0.46$ & $+0.52$ & 0.17 & 89\% \\
@@ -296,9 +306,11 @@ DE & $+0.81$ & $+0.52$ & 0.53 & 89\% \\
 sepCMA & $+0.41$ & $+0.52$ & 0.35 & 67\% \\
 \bottomrule
 \end{tabular}
-\caption{Forty-five-search aggregation; gain in pp vs.\ $\alpha\!\equiv\!1$ on the 192-example inner subset.}
-\label{tab:optagg}
-\end{table}
+\caption{All five optimizers in the 45-search study (3 model seeds $\times$ 5 algorithms $\times$ 3 optimizer seeds, 336 evaluations each). Gains are in pp over the $\alpha\equiv1$ baseline on the 192-example inner subset; one example equals $0.52$pp. MGA is reported as a separate algorithm.}
+\label{tab:opt5}
+\end{table} 
+
+
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{figures/optimizer_curves.png}
@@ -306,7 +318,24 @@ sepCMA & $+0.41$ & $+0.52$ & 0.35 & 67\% \\
 \label{fig:optcurves}
 \end{figure}
 
-The selected policy is frozen before any outer evaluation. On the GRU's own outer fold, one of three seeds meets the non-inferiority bound; of the other two, one fails marginally and one clearly fails. Moving that single frozen GRU policy to RNN, LSTM, and T1 gives four non-inferior seeds out of nine, five inconclusive, and no significant loss, as Table~\ref{tab:trans} details. A separate frozen threshold policy evaluated once on the untouched COGS development set reproduces the held-out compute ratios for two seeds and differs by 0.003 on the third. Table~\ref{tab:confirm} separates gains that survive confirmation from gains seen only on the inner subset.
+The selected policy is frozen before any outer evaluation. On the GRU's own outer fold, one of three seeds meets the non-inferiority bound; of the other two, one fails marginally and one clearly fails. Moving that single frozen GRU policy to RNN, LSTM, and T1 gives four non-inferior seeds out of nine, five inconclusive, and no significant loss, as Table~\ref{tab:trans} details. A separate frozen threshold policy evaluated once on the untouched COGS development set reproduces the held-out compute ratios for two seeds and differs by 0.003 on the third. Table~\ref{tab:alpha_confirm} confirms the three GRU step-size policies on a 640-sample outer fold: only seed 2 meets the non-inferiority bound, and seed 0 misses it by 0.019pp.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\begin{tabular}{@{}llccl@{}}
+\toprule
+Seed & Best & Outer $\Delta$EM & 95\% CI (pp) & NI \\ \midrule
+$s_0$ & DE & $+0.000$ & $[-0.519,+0.527]$ & $\times$ \\
+$s_1$ & GA & $-0.469$ & $[-1.357,+0.000]$ & $\times$ \\
+$s_2$ & DE & $+0.000$ & $[-0.469,+0.538]$ & \checkmark \\
+\bottomrule
+\end{tabular}
+\caption{Outer-fold confirmation of the three GRU step-size policies ($n=640$ per seed). Only seed 2 meets the non-inferiority bound; seed 0 misses it by 0.019pp (LCB $-0.519$pp).}
+\label{tab:alpha_confirm}
+\end{table}
+
+Table~\ref{tab:confirm} reports a separate earlier joint-control experiment on a 645-sample fold.
 
 \begin{table}[t]
 \centering
@@ -383,10 +412,28 @@ Limited computing resources kept the models small and the number of architecture
 
 \bibliography{references}
 
+
+\begin{table}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{1.5pt}
+\begin{tabular}{lcccc|ccc}
+\toprule
+& \multicolumn{4}{c|}{Search (inner EM gain, pp)} & \multicolumn{3}{c}{Ablation (GA, $s_0$)} \\
+Seed & RS & GA & DE & CMA & A: $k/K$ & B: $H$ & C: $D,A$ \\
+\midrule
+$s_0$ & $+0.00$ & $+0.52$ & $+0.52$ & $+0.00$ & $+0.52$ & $+0.00$ & $+0.52$ \\
+$s_1$ & $+1.04$ & $+1.56$ & $+1.04$ & $+2.08$ & n/a & n/a & n/a \\
+$s_2$ & $+0.52$ & $+0.52$ & $+1.04$ & $+0.00$ & n/a & n/a & n/a \\
+\bottomrule
+\end{tabular}
+\caption{Historical four-algorithm pilot under an earlier protocol (RS, GA, DE, sep-CMA-ES; no MGA). Superseded by Table~\ref{tab:opt5} in Chapter~\ref{sec:results}. \textbf{Step-size policies improve fixed-depth exact match at constant compute.} Fixed-depth (constant $N_{\mathrm{cell}}$) improvements over the original $\alpha{\approx}1$ update on the inner subset ($n{=}192$); all searches use exactly 336 evaluations, and CMA denotes sep-CMA-ES. A hand-designed linearly decaying schedule ($\alpha_k = 1.0-0.5k/K$, i.e., $[1.0, 0.833, 0.667]$ at depth 3) and fixed $\alpha \in \{0.75, 0.5, 0.25\}$ never exceed the $\alpha{\approx}1$ baseline. Ablations on $s_0$ restrict the policy input to a single feature group; the full-feature GA result corresponds to the GA column.}
+\label{tab:latent_hist}
+\end{table}
 \appendix
 \section{Equal-Budget Search Across Five Optimizers}
 \label{app:search}
-Across $3$ model seeds $\times$ $5$ algorithms (RS, GA, MGA, DE, sep-CMA-ES) $\times$ $3$ optimizer seeds $=45$ searches, each with a budget of $336$ candidate evaluations, gains are small and quantized to the inner subset's $1/192=0.52$pp. Table~\ref{tab:optagg} aggregates over the $9$ runs per algorithm. Every algorithm's median is $+0.52$pp; the mean ranges from $+0.41$pp (sepCMA) to $+0.81$pp (GA, DE), and win rates are 67--89\%. The single $+2.08$pp run is an outlier, not evidence of an algorithm ranking. Baseline EM varies by $2.4$pp across model seeds, several times the search effect. With three optimizer seeds per cell this is a finite-budget comparison, not a general optimizer study. Figure~\ref{fig:optcurves} shows best-so-far gain over each run's own baseline (pooling raw EM across different baselines would be misleading).
+Across $3$ model seeds $\times$ $5$ algorithms (RS, GA, MGA, DE, sep-CMA-ES) $\times$ $3$ optimizer seeds $=45$ searches, each with a budget of $336$ candidate evaluations, gains are small and quantized to the inner subset's $1/192=0.52$pp. Table~\ref{tab:opt5} in Chapter~\ref{sec:results} aggregates over the $9$ runs per algorithm. Every algorithm's median is $+0.52$pp; the mean ranges from $+0.41$pp (sepCMA) to $+0.81$pp (GA, DE), and win rates are 67--89\%. The single $+2.08$pp run is an outlier, not evidence of an algorithm ranking. Baseline EM varies by $2.4$pp across model seeds, several times the search effect. With three optimizer seeds per cell this is a finite-budget comparison, not a general optimizer study. Figure~\ref{fig:optcurves} shows best-so-far gain over each run's own baseline (pooling raw EM across different baselines would be misleading).
 
 
 
@@ -415,7 +462,7 @@ Under the shared 256-sample protocol, the fixed $(0.85,0.90)$ threshold is non-i
 
 \section{Detailed Result Tables}
 \label{app:tables}
-The main text reports the headline numbers; this appendix collects the full per-seed evidence so that every claim can be checked against the raw artifacts. Table~\ref{tab:halting} gives the per-seed halting results, Table~\ref{tab:frontier} compares the fixed threshold with the cheapest searched policy, and Table~\ref{tab:confirm} records the one-shot confirmation. Under this same outer protocol the fixed threshold is non-inferior on all three GRU seeds, whereas two of the nine evolutionary policies are non-inferior; this is why the main text treats the search gain as small. The feature-group ablations on $s_0$ (Table~\ref{tab:halting} and Figure~\ref{fig:latent}) show a gain of $+0.00$pp for the entropy-only mask B. Tables~\ref{tab:decomp}, \ref{tab:devconfirm}, and \ref{tab:latent} provide the policy decomposition, the development-set check, and the latent dynamics statistics. Figures~\ref{fig:latent} and \ref{fig:traj} show the search curves and the depth trajectories.
+The main text reports the headline numbers; this appendix collects the full per-seed evidence so that every claim can be checked against the raw artifacts. Table~\ref{tab:halting} gives the per-seed halting results, Table~\ref{tab:frontier} compares the fixed threshold with the cheapest searched policy, and Table~\ref{tab:confirm} records the one-shot confirmation. Under this same outer protocol the fixed threshold is non-inferior on all three GRU seeds, whereas two of the nine evolutionary policies are non-inferior; this is why the main text treats the search gain as small. The feature-group ablations on $s_0$ (Table~\ref{tab:halting} and Figure~\ref{fig:latent}) show a gain of $+0.00$pp for the entropy-only mask B. Tables~\ref{tab:decomp} and \ref{tab:devconfirm} provide the policy decomposition, the development-set check, and the latent dynamics statistics. Figures~\ref{fig:latent} and \ref{fig:traj} show the search curves and the depth trajectories.
 
 
 

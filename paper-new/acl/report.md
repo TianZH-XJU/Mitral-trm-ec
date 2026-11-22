@@ -1,70 +1,55 @@
-# Best-Paper-Writing Skill 润色报告
+# TRACER 论文修改报告（当前版本）
 
-目标文件：`paper/acl/main.tex`（Causal Confidence Halting for Frozen Recursive Sequence Models）
-模式：Mode B（完整草稿润色）。机械指标原稿已达标，本次聚焦语义层润色 + 排版修复。
-修改前备份：`/tmp/bpw_check/main.tex.bak`；更早版本在 `_backup/paper_acl_original/`。
+目标文件：`paper-new/acl/main.tex`（英文主稿）、`paper-new/acl/zh/zh_main.tex`（中文全译）。
+论文标题：**TRACER: Token-level Recursive Analysis, Control, and Evolutionary Refinement for Sequence Models**。
 
-## 逆向拆解（Step 0–1）
+本报告取代旧版 `report.md`（其内容针对前稿 "Causal Confidence Halting for Frozen Recursive Sequence Models"，仅作历史记录）。
 
-| 字段 | 草稿内容 | 状态 |
-|---|---|---|
-| Task | 冻结递归序列模型的运行时控制（COGS + GRU encoder–decoder，每 token ≤3 次精炼） | present |
-| Dominant prior | ACT / PonderNet / depth-adaptive transformer：训练内嵌 gate，开销按预测退出深度计 | present |
-| Gap | 冻结模型无法拟合 gate；预测深度 ≠ 实际省掉的调用，可能虚报节省 | present |
-| Insight | 高置信 token 在精炼下保持不变，故精炼前的置信分数可判断该步是否值得执行 | present |
-| Method | 两阶段阈值 (τ₀=0.85, τ₁=0.90) + 运行时拦截精确计数 + 进化步长策略 | present |
-| Closest work | CALM（schuster2022calm）：逐时间步置信退出；差异：冻结模型、执行调用计数 | present |
-| Headline numbers | 25.7% 调用率保精度（两 seed）；s2 +1.86pp @ 52.1%；+2.1pp 步长增益 | present |
-| Handle / Stance | causal confidence halting；控制器预算应花在记账与确认而非更复杂的控制器 | present |
+## 一、章节结构
 
-必填字段齐全，未提问、未新增任何数据/文献/声明。
-
-## 逐句变更表（original → revised → 理由）
-
-| 原句 | 改后 | 理由 |
-|---|---|---|
-| (Abstract) "Adaptive Computation Time \citep{graves2016adaptive} and later halting methods train a gate inside the network, so their savings are predicted exit depths rather than executed calls." | 去掉 `\citep`，句尾加 "and a frozen model admits no gate to train." | 摘要默认不放引用；gap 需同时给失败与原因（award 模板 credit → gap with reason），此句使 gap 对 frozen 模型成立 |
-| (Abstract) "the threshold retains the exact-match accuracy of the deepest fixed depth while reducing executed calls to 25.7% of that baseline on two seeds and 52.1% of the shallower $e_1$ baseline on the third" | "retains exact-match accuracy while cutting executed calls to 25.7% of the deepest baseline on two seeds; on the third seed it improves accuracy by 1.86pp at 52.1% of the calls" | 主张与 headline 数字同句；补入 s2 的 +1.86pp（Table 1 已有），避免第三个 seed 的增益被隐藏 |
-| (Intro §5) "...and 52.1% of the shallower $e_1$ baseline on the third." | "...while gaining 1.86pp EM on the third." | 摘要/引言/表格三处主张同强度（Step 7 语义检查项） |
-| (§4.2 body) "reducing the measured $N_{\mathrm{cell}}$ count of counted recurrent-cell invocations" | "reducing executed recurrent-cell calls" | "count of counted invocations" 冗余 |
-| (§4.2 body) "...which it beats by 1.86pp EM (seed 2)" | 同上合并进前句 | 消除 "while...while" 双连 |
-| (§4.2 body) "...essentially solved by the threshold, and we did not expand the optimizer comparison further." | 删尾句 | 范围说明已在 §setup（"optimizer comparisons are exploratory"）；避免 defensive 语气 |
-
-未改动：Title（无破折号、含 handle）、Related Work、Method、Conclusion、Limitations、§negative（负面结果为一等公民，保留原样）。
-
-## 排版修复
-
-1. 三张表移除 `\resizebox{\linewidth}{!}`（缩放导致字号不一致）；改 `\footnotesize` + `\tabcolsep` 1.5–2.5pt，自然宽度恰好单栏放下。
-2. 列标签压缩：`sep-CMA-ES` → `CMA-ES`、`Non-inf.` → `NI`、`A: only $k/K$` → `A: $k/K$`，含义移入 caption（"CMA-ES denotes sep-CMA-ES"、"NI denotes non-inferiority"）。
-3. 浮动体 `[H]` 强制就地 → 表格 `[t]`、图 `[tb]`；移除不再使用的 `float` 包。
-4. 编译验证（TinyTeX latexmk）：**8 页，0 error，0 overfull hbox**，引用/交叉引用无 undefined。
-
-## check_draft / style_metrics 摘要
-
-- `check_draft.py`：0 error / 0 warning / 0 note（修改前后均通过）。
-- `style_metrics.py`（abstract+intro 合计）：句长均值 22.8（corpus p50=23.3）、连接词 0.91/100w（p50=0.94）、冒号句 16.7%（<p90）、participial tail 0%、hedge/booster 0：全部位于获奖论文语料区间内。
-
-## 留给 Limitations 的备注（刻意未写入摘要/引言）
-
-- held-out fold 有历史暴露（51 个样本 ID 重叠）；s2 的非劣效 LCB 仅高出门限 0.0025pp，接近边界；$N_{\mathrm{cell}}$ 非 total-FLOPs。原稿 Limitations 一节已完整覆盖，未改动。
-
-## TODO 清单
-
-无 `[TODO]` 残留；references.bib 14 条均被引用，无缺失文献。
-
----
-
-# 第二轮润色（集成用户框架图之后）
-
-用户提供了自绘的 method overview 框架图（TikZ），集成后按 `check_figures.py` 的 NOTE 逐项修复：
-
-| 变更 | 理由 |
+| 章节 | 内容 |
 |---|---|
-| 图代码加入导言依赖（tikz + 5 个库 + 4 个 Okabe-Ito 颜色），`figure*` 插入正文 | 集成用户框架图，编号成为 Figure 1 |
-| 图块从 Method 移至引言第 2 段后，浮动到第 2 页顶部 | NOTE 1：award 惯例 Figure 1 应在 p.1–2（双栏 21/26 在 p.1） |
-| 引言第 3 段方法句加 `(Figure~\ref{fig:method_overview})` | NOTE 3：29/55 award 论文在引言引用 Figure 1 |
-| 7 个 caption 首句统一加 `\textbf{}`，其中 2 个与表格逐字重复的 opener 改写（"Equal-budget evolutionary search improves the latent update at fixed depth."、"Joint EC gains vanish under one-shot confirmation."） | NOTE 2：caption 标题风格统一；避免同一 opener 出现两次 |
-| 框架图 caption 硬编码 `(\S3)` → `(\S\ref{sec:method})` | 章节号动态引用，避免重排后失效 |
-| Method 开头段落加 `(Figure~\ref{fig:method_overview})` 引用 | 图在正文有引用点 |
+| 1 Introduction | 三段，无子标题 |
+| 2 Related Work | 五段：递归/循环计算、动态深度与早退、迭代精化、潜状态动力学、无导数搜索 |
+| 3 Method | 八段连续叙述 |
+| 4 Experiments | 仅 4.1 Dataset、4.2 Environment、4.3 Design |
+| **5 Results and Analysis** | **独立第五章，无 subsection，按三条主线用连续段落展开** |
+| 6 Conclusion / 7 Limitations | 结论四段；局限性一个自然段 |
+| References / Appendix | 参考文献；完整逐种子证据与补充实验 |
 
-**复检结果**：`check_draft.py` 0 error / 0 warning / 0 note（注意：抽取引言时需剔除 figure* 块，否则 TikZ 代码会被当作正文误报）；`check_figures.py` 0 error / 0 warning / 0 note；8 页；无 undefined 引用。剩余 2 条 overfull 警告（31.5pt / 0.9pt）来自框架图内部嵌套 tikz 节点的度量，整图经 `\resizebox` 缩放后页面无可见溢出，判定为无害，未改动用户图代码。
+## 二、已移入第五章正文的图表（正文共 5 图 + 11 表）
+
+- 图 `fig:depth`：四架构×3 seed 的 e0–e3 强制准确率曲线（由 stage2 eval JSON 生成）
+- 图 `fig:transitions`：相邻深度四类转移率（由 seq_transitions JSON 生成）
+- 图 `fig:frontier`：阈值与等预算搜索策略的准确率—计算前沿
+- 图 `fig:latcross`：跨架构六项潜状态指标曲线
+- 图 `fig:optcurves`：五算法 336 预算下的 best-so-far 增益曲线
+- 表 `tab:depth`、`tab:halt12`（12 架构—种子停算，含 EM/ΔEM/CI/NI）、`tab:halting`、`tab:frontier`、`tab:wall`、`tab:latstat`、`tab:opt5`（RS/GA/MGA/DE/sep-CMA-ES 五算法）、`tab:alpha_confirm`（外层 1/3）、`tab:trans`（迁移 4/9）、`tab:confirm`、`tab:devconfirm`
+
+附录保留完整逐种子证据、历史四算法表（`tab:latent_hist`，明确标注已被 `tab:opt5` 取代）、hook 审计、墙钟协议与更长配置表。
+
+## 三、数据口径与结果纪律
+
+- 45 次搜索 = 3 模型种子 × 5 算法 × 3 优化器种子，每次 336 评估；MGA 作为独立算法列入正文表 `tab:opt5`。
+- 192 样本内层子集上 1 个样本 = 0.52pp，为收益分辨率下限。
+- 外层确认 1/3（seed 0 LCB −0.519pp，差 0.019pp 未过界）；迁移 4/9 非劣、5/9 不确定、0 显著负。
+- 停算 9/12 非劣或更优、2 显著负（RNN s2、T1 s2）、1 不确定（T1 s0）；52,458 tokens 零 refinement call；GRU/RNN/LSTM 墙钟比 0.43–0.64，T1 逐样本执行器 0.297，两者不合并。
+- latent 六指标按组 bootstrap；有界态与无界态分开描述，绝对范数不排名；Mamba 单 seed（e3=0.246，未过 0.30 门槛）仅作边界性负结果。
+- T1 s2 的 e3 以原始 JSON 0.85546875 为准，正文统一写作 0.856（三位小数四舍五入）。
+
+## 四、参考文献
+
+- `references.bib` 共 **128** 条（含用户提供的 77 篇候选池与 subagent 联网核验条目）；编译后 `main.bbl` 含 **62** 条，即正文实际使用 **62 个唯一引用键**（目标 ≥60）。
+- 区分同行评审论文（`@inproceedings`/`@article`，含 DOI 或 ACL Anthology/官方 proceedings 链接）与 arXiv 预印本（`@misc` + `archivePrefix` + `eprint`）。
+- 引用嵌入 Introduction（3 段以内）、Related Work（5 段）、Dataset，按论点分组，未堆砌到单句。
+
+## 五、交付前检查
+
+- 英文：`pdflatex ×2 + bibtex`，14 页，无 undefined citation、无 undefined reference、无 overfull。
+- 中文：`xelatex + bibtex + xelatex ×2`，24 页，无 undefined。
+- `manuscript_consistency_audit.py`：**170 checks, 0 FAIL**。
+- 中文版已同步全部结构、图表、数据与引用。
+
+## 六、历史实验口径
+
+J1/J4 联合控制、645 样本 fold 与 256 样本跨架构协议、192 样本内层与 640 样本外层属于不同实验批次，正文明确区分，未合并统计；旧四算法表仅以历史补充形式置于附录。
