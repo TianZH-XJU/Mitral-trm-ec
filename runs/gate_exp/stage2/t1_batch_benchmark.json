@@ -1,0 +1,36 @@
+{
+ "protocol": "forced depth-3 only; decode_fixed_t1_batch (paymax semantics); B=1 uses first 16 samples, B=4/8/32 use first 64; 2 warmup+10 repeats threads=2 no hooks; NOT a halt/e3 ratio and NOT comparable to active-subset batch ratios",
+ "threads": 2,
+ "models": {
+  "t1": {
+   "b1": {
+    "median_ms_per_sample": 99.05009687281563,
+    "p10_ms_per_sample": 98.08604499885405,
+    "p90_ms_per_sample": 100.64067812527355,
+    "n_passes": 10,
+    "speedup_vs_b1": 1.0
+   },
+   "b4": {
+    "median_ms_per_sample": 41.50361796882862,
+    "p10_ms_per_sample": 40.125446249658125,
+    "p90_ms_per_sample": 42.30136687565391,
+    "n_passes": 10,
+    "speedup_vs_b1": 2.38654126363652
+   },
+   "b8": {
+    "median_ms_per_sample": 28.787837499749003,
+    "p10_ms_per_sample": 28.658149062175653,
+    "p90_ms_per_sample": 29.675708593640593,
+    "n_passes": 10,
+    "speedup_vs_b1": 3.4406925102894315
+   },
+   "b32": {
+    "median_ms_per_sample": 23.146812499817315,
+    "p10_ms_per_sample": 22.89553656219141,
+    "p90_ms_per_sample": 23.648531562594144,
+    "n_passes": 10,
+    "speedup_vs_b1": 4.279211095419613
+   }
+  }
+ }
+}
