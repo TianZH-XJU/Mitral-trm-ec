@@ -424,12 +424,32 @@ def train_model(model_name, seed):
     return model
 
 
-def validate(model_name, model, seed):
-    """Quick forced-depth EM check on a 64-sample gate_train subset."""
-    src_stoi, tgt_itos = H.load_vocab()
+def balanced_subset(n=256):
+    """Same group-balanced 256 protocol as the main architectures."""
+    from collections import defaultdict
     gt = H.load_split_rows("gate_train")
-    sub = gt[:64]
-    for depth in (0, 1, 3):
+    key = H.key_fn()
+    by_g = defaultdict(list)
+    for r in gt:
+        by_g[key(r["src"])].append(r)
+    groups = sorted(by_g)
+    sub, i = [], 0
+    while len(sub) < n:
+        for g in groups:
+            if i < len(by_g[g]) and len(sub) < n:
+                sub.append(by_g[g][i])
+            if len(sub) >= n:
+                break
+        i += 1
+    return sub
+
+
+def validate(model_name, model, seed):
+    """Forced-depth EM on the group-balanced 256 subset (n=256),
+    depths e0-e3 -- same protocol as RNN/LSTM/T1."""
+    src_stoi, tgt_itos = H.load_vocab()
+    sub = balanced_subset(256)
+    for depth in (0, 1, 2, 3):
         ems = []
         for r in sub:
             toks = model.decode(r["src"], src_stoi, tgt_itos,
