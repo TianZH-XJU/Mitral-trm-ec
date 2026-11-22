@@ -65,7 +65,8 @@ def balanced_subset(n=256):
 # GRU active-subset decoder (base + refinement), hook-counted
 # --------------------------------------------------------------- #
 @torch.no_grad()
-def active_decode_gru(model, srcs, src_stoi, policy, tag_layers=True):
+def active_decode_gru(model, srcs, src_stoi, policy, tag_layers=True,
+                      count=True):
     B = len(srcs)
     srcb, slenb = H.pad_batch([H.to_ids(s, src_stoi) for s in srcs])
     enc_out, h = model.encoder(srcb, slenb)
@@ -80,18 +81,18 @@ def active_decode_gru(model, srcs, src_stoi, policy, tag_layers=True):
     tag = {"layer": None}
 
     hooks = []
+    if count:
+        def mk_hook(name):
+            def fn(module, args):
+                counts[name] += int(args[0].shape[0])
+            return fn
 
-    def mk_hook(name):
-        def fn(module, args):
-            counts[name] += int(args[0].shape[0])
-        return fn
-
-    hooks.append(model.dec_cell.register_forward_pre_hook(
-        mk_hook("base")))
-    hooks.append(model.refine.register_forward_pre_hook(
-        lambda m, a: counts.__setitem__(
-            "refine_" + str(tag["layer"]),
-            counts["refine_" + str(tag["layer"])] + int(a[0].shape[0]))))
+        hooks.append(model.dec_cell.register_forward_pre_hook(
+            mk_hook("base")))
+        hooks.append(model.refine.register_forward_pre_hook(
+            lambda m, a: counts.__setitem__(
+                "refine_" + str(tag["layer"]),
+                counts["refine_" + str(tag["layer"])] + int(a[0].shape[0]))))
 
     try:
         for _ in range(MAX_LEN):
@@ -189,7 +190,8 @@ def active_decode_gru(model, srcs, src_stoi, policy, tag_layers=True):
 # RNN/LSTM active-subset decoder with hooks (base subset + carry)
 # --------------------------------------------------------------- #
 @torch.no_grad()
-def active_decode_recurrent(model, srcs, src_stoi, tau, is_lstm):
+def active_decode_recurrent(model, srcs, src_stoi, tau, is_lstm,
+                            count=True):
     B = len(srcs)
     enc_out, mask, (hh0, cc0) = RE.encode_clean(
         model, srcs, src_stoi)
@@ -201,14 +203,14 @@ def active_decode_recurrent(model, srcs, src_stoi, tau, is_lstm):
     tokens = [[] for _ in range(B)]
     depth_hist = [defaultdict(int) for _ in range(B)]
     counts = defaultdict(int)
-
-    def mk_hook(name):
-        def fn(module, args):
-            counts[name] += int(args[0].shape[0])
-        return fn
-
-    hb = model.base.register_forward_pre_hook(mk_hook("base"))
-    hr = model.refine.register_forward_pre_hook(mk_hook("refine_all"))
+    hb = hr = None
+    if count:
+        def mk_hook(name):
+            def fn(module, args):
+                counts[name] += int(args[0].shape[0])
+            return fn
+        hb = model.base.register_forward_pre_hook(mk_hook("base"))
+        hr = model.refine.register_forward_pre_hook(mk_hook("refine_all"))
     try:
         for _ in range(MAX_LEN):
             active = ~done
@@ -282,8 +284,10 @@ def active_decode_recurrent(model, srcs, src_stoi, tau, is_lstm):
             done |= pred == H.EOS
             prev = pred_m
     finally:
-        hb.remove()
-        hr.remove()
+        if hb is not None:
+            hb.remove()
+        if hr is not None:
+            hr.remove()
 
     out = []
     for i in range(B):

@@ -1045,3 +1045,51 @@ n=64 轨迹, 与 EM 的 n=256 需分开标注; c_znorm 尺度差异只作
    量子化~0.39pp, -0.5pp阈值贴边敏感. T1 s1名义显著正经
    Bonferroni校正后不显著. 尺度错配(GRU D~0.31/T1~1.75)是
    假说且方向与观察相反, 不写成解释.
+\n
+## 第三十四阶段: P0/P1 实验执行清单全部完成 (2026-11-22)
+
+### 阶段1: 实验结果完整性 (3/3)
+- 45 optimizer JSON齐全/budget336; 等价性回归PASS;
+  五算法汇总 optimizer_summary.json (eafc063)
+
+### 阶段2: 实际执行路径审计 (5/5)
+- runtime_audit.json: GRU/RNN/LSTM active-subset + hook,
+  12场景token/N_cell/depth全等, 24/24 hook等式 (17fc302)
+- runtime_benchmark.json: GRU/RNN/LSTM batch1/4/8/32,
+  halt/e3 ratio 0.43-0.64 (3d832fb)
+- t1_wallclock.json: T1 per-sample执行器 halt/e3=0.297 (ce2c2d1)
+  (执行器不同不可直接横比; T1 wall几乎1:1跟随N_cell)
+
+### 阶段3: 跨架构潜状态统一分析 (6/6)
+- crossarch_eval_manifest.json (256样本256组, 与eval同序)
+- crossarch_latent_summary.json: 4架构x3seed x 256样本,
+  6指标+CI, anchor check diff=0 (664d991)
+- mamba_s0.json: 64样本描述性 decoder latent+SSM state (4a2f34d)
+- crossarch_latent_figure.png + crossarch_latent_table.md (95752f1)
+- 关键: 有界门控态(GRU/RNN/LSTM-h 0.7-0.96) vs 无界累积态
+  (LSTM-c/T1 5-8); 首次精化主导在有界态成立, T1是另一体制
+  (更新共线cos~0.95, 范数单调增) — 不写成普适结论
+
+### 阶段4: 跨架构结果收敛 (4/4)
+- transfer_summary.json: GRU alpha对RNN/LSTM/T1 9seed,
+  4/9非劣, 5/9 INCONCLUSIVE, 0显著负 (73a8837)
+- 结合GRU alpha_confirm 1/3: 贡献三收敛为
+  '单策略零样本迁移可行性+强seed依赖', 非跨架构通用
+- attention不一致/Mamba边界的论文表述纪律写入NOTES (4c61b21)
+
+### 论文表述纪律汇总 (供 main.tex 更新)
+1. 贡献一: 5环证据链(预测不变/hook计数可信/N_cell节省74%/
+   wall-clock ratio 0.30-0.64/公共开销差额解释); 旧paymax墙钟
+   (0.31-0.54)与新active-subset墙钟是两套独立执行器, 分开报告
+2. 贡献二: 跨架构框架(4架构x3seed统一协议+CI)但'首次精化主导'
+   仅限e1后饱和的seed; T1有界/无界状态是不同regime; 绝对
+   state_norm不跨架构比; Mamba单seed描述性不进主表
+3. 贡献三: 4/9迁移+1/3本架构确认; seed波动主导, 架构排序无
+   统计支撑(每架构3seed Fisher p=1.0); bootstrap端点量子化
+   0.39pp阈值贴边; T1 s1名义显著正经Bonferroni校正后不显著;
+   不主张跨架构通用
+4. RNN/LSTM attention与GRU不同(dot-product vs Bahdanau)+参数量
+   不等: 写成'统一数据/任务下不同架构变体行为比较', 不归因于
+   循环单元本身
+5. Mamba: 单seed未过e3>=0.30门槛(e3=.246), 描述性附录, 不报
+   均值/不改判据/不进headline
