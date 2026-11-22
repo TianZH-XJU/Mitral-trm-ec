@@ -204,7 +204,8 @@ def main():
     # ---------- 6. RS comparison wording ----------
     chk("rs_wording_precise",
         "at least one optimizer" in tex
-        or "no single optimizer" in tex)
+        or "no single optimizer" in tex
+        or "No optimizer dominates" in tex)
     chk("rs_no_overclaim",
         "consistently beat same-budget random search" not in tex)
 

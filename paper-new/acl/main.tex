@@ -32,7 +32,7 @@
 \maketitle
 
 \begin{abstract}
-We study runtime control of frozen recursive sequence models, where a latent state is refined up to three times before each output token. Most tokens already carry the correct prediction after the base step. Adaptive Computation Time and later halting methods train a gate inside the network, so their savings are predicted exit depths rather than executed calls, and a frozen model admits no gate to train. We present causal confidence halting, a two-stage threshold that stops a token on confidence using only signals available before the refinement it gates. Because high-confidence tokens are stable across depths, stopping there preserves the prediction a deeper step would have produced. On COGS with a frozen GRU encoder--decoder, the threshold retains exact-match accuracy while cutting executed calls to 25.7\% of the deepest baseline on two seeds; on the third seed it improves accuracy by 1.86pp at 52.1\% of the calls. A preregistered confidence-bound criterion confirms non-inferiority on all three seeds, and runtime interception verifies every counted call. At fixed depth, evolutionary step-size policies outperform the original update by up to $+2.1$pp at constant compute. We release the instrumented executor, per-evaluation search logs, and the full confirmation protocol.
+We study runtime control of frozen recursive sequence models, where a latent state is refined up to three times before each output token. Most tokens already carry the correct prediction after the base step. Adaptive Computation Time and later halting methods train a gate inside the network, so their savings are predicted exit depths rather than executed calls, and a frozen model admits no gate to train. We present causal confidence halting, a two-stage threshold that stops a token on confidence using only signals available before the refinement it gates. Because high-confidence tokens are stable across depths, stopping there preserves the prediction a deeper step would have produced. On COGS with a frozen GRU encoder--decoder, the threshold retains exact-match accuracy while cutting executed calls to 25.7\% of the deepest baseline on two seeds; on the third seed it improves accuracy by 1.86pp at 52.1\% of the calls. A preregistered confidence-bound criterion confirms non-inferiority on all three seeds (marginally on one), and runtime interception verifies every counted call. A 45-search equal-budget study across five optimizers yields only a median $+0.52$pp gain (one inner-subset sequence), with no optimizer dominating random search. We release the instrumented executor, per-evaluation search logs, and the full confirmation protocol.
 \end{abstract}
 
 \section{Introduction}
@@ -342,7 +342,7 @@ The observation that resolves this gap is local to each token: high-confidence p
 
 In contrast to learned halting \citep{graves2016adaptive,banino2021ponder} and confidence-based early exit \citep{schuster2022calm}, our procedure changes what is measured as much as what is decided. Prior methods train a gate and infer cost from exit depths; ours freezes the entire model and obtains cost by intercepting the refinement module at runtime. The difference is checkable: forced-depth decoding reproduces frozen trajectories exactly, and a forced stop at the base-step gate executes zero refinement calls. Exact call counting therefore turns a compute ratio into an audited quantity.
 
-On three frozen model seeds of COGS, the two-stage threshold retains the exact-match accuracy of each seed's best fixed depth, using 25.7\% of the deepest baseline's calls on two seeds and 52.1\% of the shallower $e_1$ baseline while gaining 1.86pp EM on the third. A preregistered confidence-bound criterion, applied once to frozen policies on a held-out fold, confirms non-inferiority on all three seeds, and the same frozen policy passes the same criterion unchanged on an untouched development split at compute ratios identical to the third decimal. The same accounting extends to the latent update itself: at fixed depth, evolutionary step-size policies outperform the original update by up to $+2.1$pp. Halting and step-size control are thus measured on a single scale of actually executed calls.
+On three frozen model seeds of COGS, the two-stage threshold retains the exact-match accuracy of each seed's best fixed depth, using 25.7\% of the deepest baseline's calls on two seeds and 52.1\% of the shallower $e_1$ baseline while gaining 1.86pp EM on the third. A preregistered confidence-bound criterion, applied once to frozen policies on a held-out fold, confirms non-inferiority on all three seeds, and the same frozen policy passes the same criterion unchanged on an untouched development split at compute ratios matching to within 0.003 (seeds 0--1 to the third decimal; seed 2 differs by 0.003). The same accounting extends to the latent update itself: across 45 equal-budget searches, the median gain is $+0.52$pp, exactly one inner-subset sequence, and between-seed variance exceeds the effect. Halting and step-size control are thus measured on a single scale of actually executed calls.
 
 Our stance follows from where the gains come from. On frozen models, the controller-complexity budget is better spent on accounting and confirmation than on richer controllers, because the halting decision is already determined by a signal the base step emits. We therefore study two control dimensions, whether to continue and how to update, and keep them separate so that fixed-depth experiments isolate latent dynamics at constant compute before joint policies are tested on the accuracy--compute frontier of Table~\ref{tab:frontier}. The mechanism, the equal-budget comparisons, and the confirmation protocol follow in the next two sections.
 
@@ -518,7 +518,7 @@ $s_2$ & $+0.52$ & $+0.52$ & $+1.04$ & $+0.00$ & n/a & n/a & n/a \\
 \label{tab:latent}
 \end{table}
 
-At fixed depth the compute is constant, so any EM change is a pure latent-dynamics effect. Evolutionary step-size policies outperform the original update on all seeds, by up to $+2.08$pp (Table~\ref{tab:latent}, Figure~\ref{fig:latent}). On every seed at least one optimizer beats same-budget random search, but no single optimizer does so consistently: on $s_2$, GA merely matches RS and sep-CMA falls below it. A hand-designed linearly decaying schedule over the three steps and all fixed step sizes fail to exceed the baseline. The feature-group ablations on $s_0$ are decisive: a time-index-only policy (A) and a latent-dynamics-only policy (C, using $D$ and $A$) each reproduce the full-feature GA gain exactly ($+0.52$pp), whereas an entropy-only policy (B) does not ($+0.00$pp). The full five-feature state is never necessary, and since dynamics features alone also suffice, the gain cannot be attributed to a pure time schedule either. Figure~\ref{fig:traj} shows the displacement and direction-consistency statistics that motivate these features.
+At fixed depth the compute is constant, so any EM change is a pure latent-dynamics effect. Across 45 equal-budget searches (5 algorithms $\times$ 3 model seeds $\times$ 3 optimizer seeds), gains are small and algorithm-agnostic: every algorithm's median is $+0.52$pp, exactly one of the 192 inner-subset examples, and between-seed baseline variance (2.4pp) exceeds the search effect; the single $+2.08$pp run is an outlier, not a ranking (Appendix~\ref{app:search}). No optimizer dominates same-budget random search across seeds, and a hand-designed linearly decaying schedule and all fixed step sizes fail to exceed the baseline. The feature-group ablations on $s_0$ are decisive: a time-index-only policy (A) and a latent-dynamics-only policy (C, using $D$ and $A$) each reproduce the full-feature GA gain exactly ($+0.52$pp), whereas an entropy-only policy (B) does not ($+0.00$pp). The full five-feature state is never necessary, and since dynamics features alone also suffice, the gain cannot be attributed to a pure time schedule either. Figure~\ref{fig:traj} shows the displacement and direction-consistency statistics that motivate these features.
 
 What did the winning policy actually change? Per-token logs answer directly. The learned $\alpha$ is a schedule in disguise: it damps only the first refinement (mean 0.76 at step 0, at least 0.997 thereafter), leaving the deeper steps untouched. Its predictions differ from the original update only at a handful of late, high-entropy positions, six calls across all 645 held-out examples, and on the inner subset the $+0.52$pp gain amounts to exactly one sequence. The searched gains are therefore concentrated where the model is least certain and the trajectory most nearly balanced, an observation that the confirmation analysis of \S\ref{sec:exp-joint} will sharpen into a general conclusion about searched controllers on frozen models.
 
@@ -583,7 +583,7 @@ $s_2$ & $+1.86$ & $-0.16$ & 1 / 14 & $-2.02$ & $+0.00$ \\
 \subsection{Fresh-Split Confirmation and Robustness Checks}
 \label{sec:exp-fresh}
 
-A confirmation on the held-out fold leaves one residual question: the fold belongs to the training distribution, and its groups were visible to earlier development of the same model line. We therefore evaluated the frozen preregistered policy once more on the official COGS development set ($n{=}3{,}000$), which the frozen checkpoints never trained on and which no experiment reported here had read. The threshold passes the same preregistered non-inferiority criterion on all three seeds, with compute ratios within $0.002$ of the held-out-fold values (Table~\ref{tab:devconfirm}); the measured savings, not merely the operating point, are stable across splits. The official development set is thereafter marked as used.
+A confirmation on the held-out fold leaves one residual question: the fold belongs to the training distribution, and its groups were visible to earlier development of the same model line. We therefore evaluated the frozen preregistered policy once more on the official COGS development set ($n{=}3{,}000$), which the frozen checkpoints never trained on and which no experiment reported here had read. The threshold passes the same preregistered non-inferiority criterion on all three seeds, with compute ratios within $0.003$ of the held-out-fold values (Table~\ref{tab:devconfirm}); the measured savings, not merely the operating point, are stable across splits. The official development set is thereafter marked as used.
 
 \begin{table}[t]
 \centering
@@ -600,7 +600,7 @@ $s_2$ / $e_1$ & 96.77 & 96.97 & $+0.20$ & $[-0.10, +0.51]$ & 0.5182 & \checkmark
 \bottomrule
 \end{tabular}%
 }
-\caption{\textbf{One-shot confirmation on untouched data.} Official COGS development set ($n{=}3{,}000$; group-cluster paired bootstrap, 20{,}000 resamples), evaluated once with the frozen preregistered threshold and each seed's frozen best fixed depth. The compute ratios match the held-out-fold values (0.2575 / 0.2570 / 0.5212) to the third decimal, so the executed-call savings themselves transfer across splits.}
+\caption{\textbf{One-shot confirmation on untouched data.} Official COGS development set ($n{=}3{,}000$; group-cluster paired bootstrap, 20{,}000 resamples), evaluated once with the frozen preregistered threshold and each seed's frozen best fixed depth. The compute ratios match the held-out-fold values (0.2575 / 0.2570 / 0.5212) for seeds 0--1 to the third decimal; seed 2 differs by 0.003 (0.6\% relative), so the executed-call savings transfer across splits to within a fraction of a percent.}
 \label{tab:devconfirm}
 \end{table}
 
@@ -610,11 +610,13 @@ Executed calls are this paper's currency, but a deployment pays in time, so we m
 
 Batching has the larger effect. Serving decodes batches, and within a batch-step every active row pays the maximum depth that any row needs; the gates still act per row, so predictions are unchanged, but part of the saving is spent on rows that did not need the work. Measured with an executor that charges every active row the batch maximum, the executed-call ratio rises from the nominal 0.26 to 0.27 at batch size 4, 0.28--0.29 at 8, and 0.34--0.36 at 32, giving back 4--11\% of the saving at moderate batch sizes and about a third of it at 32, where the wall-clock speedup over the deepest baseline settles at $\times$1.85--1.9 on seeds 0--1. Continuous batching that regroups tokens by needed depth would restore the nominal ratio at the price of scheduling, which is a deployment decision rather than a property of the policy. What the measurement establishes is narrower and more useful: the call counts are honest, the single-sequence speedup is real, and the gap between the two is an accounting choice that a serving stack can make explicit.
 
-\subsection{Does the Mechanism Transfer Beyond the GRU?}
+\textbf{A second, independent executor.} All numbers above use a \emph{pay-max} executor. We also timed an \emph{active-subset} executor that gathers only rows still decoding and skips finished ones (Appendices~\ref{app:runtime}--\ref{app:wallbench}). On GRU/RNN/LSTM the halt/forced-$e_3$ wall-clock ratio is 0.43--0.64 ($b{=}1$: 0.43--0.45; $b{=}32$: 0.58--0.64); the gap to the 0.26 call ratio is a shared base/attention/projection/Python overhead of $\approx$2.1--2.3 refinement-equivalents paid by both arms. On T1 a third, per-sample executor gives 0.297, whose wall-clock tracks the call ratio nearly one-to-one. These are separate measurements with different executor semantics; they are reported side by side, never averaged or multiplied.
+
+\subsection{Transfer Probes Beyond the Frozen GRU}
 \label{sec:exp-trans}
 The halting design leans on two properties of the frozen model: most tokens are already correct after the base step, and confidence identifies them. Neither property is specific to recurrent cells, so we probed transfer with a small recursive Transformer (798{,}633 parameters) trained from scratch under the same protocol. Its decoder applies a causal Transformer base block to produce the per-position latent, then re-applies a separate weight-shared refinement block up to three times with soft feedback in the query; the prediction head is shared across depths, context keys are the emitted tokens alone, and training uses the same multi-depth supervision as the R2 family on the same base split with the same frozen vocabulary.
 
-The pilot reproduces the structure that motivates halting, and then the halting result itself. Forced EM climbs from 68.8\% at $e_0$ to 87.1\% at $e_3$ on the gate-training subset, and the $e_0 \rightarrow e_1$ transition is preserve-dominant (68.0\%) with repair outweighing harm by more than 20:1 (18.4\% vs.\ 0.8\%); on the held-out fold, forced $e_3$ reaches 96.0\%. The preregistered thresholds transfer verbatim at the level of the mechanism: thr(0.85, 0.90) decodes the held-out fold with 0.256 of the deepest baseline's calls at EM within 0.93pp of it (bootstrap CI $[-2.59, +0.27]$pp). What changes is only the operating constant. The Transformer's confidence distribution is shifted, so the last percent needs a higher pair: $(0.99, 0.99)$ recovers the full forced-depth EM of 96.0\% at 0.266 of the calls, and every threshold pair we tried stays inside the 0.25--0.27 compute band. Causal confidence halting with audited executed calls therefore survives a change of refinement operator, with the same counter and the same two-constant policy family; scaling the pilot beyond one seed and one small model remains future work.
+The pilot probes whether the mechanism carries over, and it does so with qualifications. Forced EM climbs from 68.8\% at $e_0$ to 87.1\% at $e_3$ on the gate-training subset, and the $e_0 \rightarrow e_1$ transition is preserve-dominant (68.0\%) with repair outweighing harm by more than 20:1 (18.4\% vs.\ 0.8\%); on the held-out fold, forced $e_3$ reaches 96.0\%. The preregistered thresholds applied verbatim to this single Transformer seed give 0.256 of the deepest baseline's calls at EM within 0.93pp of it, but the CI $[-2.59,+0.27]$pp has a lower bound 2.09pp below our $-0.5$pp non-inferiority margin, so this pilot \emph{fails} the bound and is indicative only. What changes is only the operating constant. The Transformer's confidence distribution is shifted, so the last percent needs a higher pair: $(0.99, 0.99)$ recovers the full forced-depth EM of 96.0\% at 0.266 of the calls, and every threshold pair we tried stays inside the 0.25--0.27 compute band. Causal confidence halting with audited executed calls therefore transfers the \emph{mechanism} across a change of refinement operator, with the same counter and two-constant family, but early pilot numbers above come from a 645-example single-seed study. With the full three-seed, 256-sample protocol (Appendices~\ref{app:transfer}--\ref{app:transfer-full}), the depth-saturation pattern replicates where $e_1$ already saturates, yet the accuracy effect is seed-dependent: 9 of 12 architecture-seeds are non-inferior or better, 2 are significantly worse (RNN $s_2$, T1 $s_2$), and 1 inconclusive. These are architecture \emph{variants} under a shared task: attention type (dot-product QKV vs.\ additive Bahdanau) and parameter count (343K/689K/560K/799K) also differ, so differences are not attributed to the recurrent cell alone. Scaling to more seeds and models remains future work.
 
 \subsection{Release and Verification}
 \label{sec:exp-release}
@@ -622,11 +624,98 @@ Every experiment above is preregistered before execution, and the released mater
 
 \section{Conclusion}
 \label{sec:conclusion}
-On a frozen recursive GRU model, the reliable way to exploit uneven refinement benefit is a simple, causal, audited confidence threshold. It retains full accuracy at 25.7--25.8\% of the deepest ($e_3$) compute on two seeds and 52.1\% of the shallower $e_1$ baseline compute on the third, and it passes one-shot non-inferiority evaluation on all three seeds, both on the held-out fold and on the untouched development split at compute ratios identical to the third decimal. Because the executor counts every base and refinement call, these ratios are measured savings rather than inferred depths. The same accounting shows where controller complexity pays: equal-budget evolutionary search adds at most 2.1\% compute savings to halting, while fixed-depth step-size policies improve the latent update by up to $+2.1$pp. Our stance is that on frozen models the controller budget is better spent on accounting and confirmation than on richer controllers. Making latent refinement control transferable calls for changing the refinement operator or its training, rather than post-hoc search over a frozen one. We release the causal executor, exact call-count tests, equal-budget controls, mechanism ablations, and the one-shot confirmation protocol as minimum practice for adaptive-computation research.
+On a frozen recursive GRU model, the reliable way to exploit uneven refinement benefit is a simple, causal, audited confidence threshold. It retains full accuracy at 25.7--25.8\% of the deepest ($e_3$) compute on two seeds and 52.1\% of the shallower $e_1$ baseline compute on the third, and it passes one-shot non-inferiority evaluation on all three seeds, both on the held-out fold and on the untouched development split at compute ratios agreeing to within 0.003 across seeds. Because the executor counts every base and refinement call, these ratios are measured savings rather than inferred depths. The same accounting shows where controller complexity pays: equal-budget evolutionary search adds at most 2.1\% compute savings to halting, while fixed-depth step-size policies give a median $+0.52$pp (one sequence) across 45 searches, with no optimizer ranking supported. A single frozen \emph{step-size} policy transfers zero-shot to 4 of 9 target seeds with no significant failures, but seed variability dominates and no architecture ranking is supported. Separately, the fixed-threshold halting mechanism is non-inferior or better on 9 of 12 architecture-seeds, with two significantly negative cases whose mechanism is not fully determined here. Making latent refinement control transferable calls for changing the refinement operator or its training, rather than post-hoc search over a frozen one. We release the causal executor, exact call-count tests, equal-budget controls, mechanism ablations, and the one-shot confirmation protocol as minimum practice for adaptive-computation research.
 
 \section*{Limitations}
-Results come from one dataset, one small GRU architecture, and recursion depth $\leq 3$; optimizer seeds are single, so optimizer comparisons are exploratory, and the Transformer pilot of \S\ref{sec:exp-trans} is a single-seed transfer probe rather than a scaled study. Ablations were run on one model seed as preregistered; they show the full input state is unnecessary in that seed, not that individual input features are never useful. Wall-clock latency does not shrink exactly in proportion to call counts because the gate signal costs a fraction of a refinement call itself, and batched execution pays the maximum depth within a batch; both effects are measured in \S\ref{sec:exp-wall}, and call counts remain the primary metric. $N_{\mathrm{cell}}$ counts decoder base and refinement cell invocations only; encoder computation, output projection, softmax, and the gates themselves are not equivalently counted, so it is not a total-FLOPs measure. Group keys used for fold construction, sampling, and bootstrap resampling were derived from the logical forms of the full training split; they never enter any policy as input, but fold structure is not fully independent of the label vocabulary. The sealed COGS test and generalization sets remain unread; the official development set has been used exactly once, as preregistered, for the confirmation of \S\ref{sec:exp-fresh}.
+Results come from one dataset and recursion depth $\leq 3$; optimizer comparisons use three optimizer seeds and are exploratory. The four-architecture probes are not controlled ablations: attention type and parameter count differ alongside the recurrent cell, so differences are not attributed to the cell alone; architecture-seed counts (three each) give no power for ranking. Absolute latent-state norms are not comparable across architectures; the first-refinement-dominance pattern holds only where depth-1 already saturates, and T1 follows a different regime. The Mamba probe is a single seed below the $e_3\!\geq\!0.30$ acceptance gate and is descriptive only. Ablations were run on one model seed as preregistered; they show the full input state is unnecessary in that seed, not that individual input features are never useful. Wall-clock latency does not shrink exactly in proportion to call counts because the gate signal costs a fraction of a refinement call itself, and batched execution pays the maximum depth within a batch; both effects are measured in \S\ref{sec:exp-wall}, and call counts remain the primary metric. $N_{\mathrm{cell}}$ counts decoder base and refinement cell invocations only; encoder computation, output projection, softmax, and the gates themselves are not equivalently counted, so it is not a total-FLOPs measure. Group keys used for fold construction, sampling, and bootstrap resampling were derived from the logical forms of the full training split; they never enter any policy as input, but fold structure is not fully independent of the label vocabulary. The sealed COGS test and generalization sets remain unread; the official development set has been used exactly once, as preregistered, for the confirmation of \S\ref{sec:exp-fresh}.
 
 \bibliography{references}
+
+\appendix
+\section{Equal-Budget Search Across Five Optimizers}
+\label{app:search}
+Across $3$ model seeds $\times$ $5$ algorithms (RS, GA, MGA, DE, sep-CMA-ES) $\times$ $3$ optimizer seeds $=45$ searches, each with a budget of $336$ candidate evaluations, gains are small and quantized to the inner subset's $1/192=0.52$pp. Table~\ref{tab:optagg} aggregates over the $9$ runs per algorithm. Every algorithm's median is $+0.52$pp; the mean ranges from $+0.41$pp (sepCMA) to $+0.81$pp (GA, DE), and win rates are 67--89\%. The single $+2.08$pp run is an outlier, not evidence of an algorithm ranking. Baseline EM varies by $2.4$pp across model seeds, several times the search effect. With three optimizer seeds per cell this is a finite-budget comparison, not a general optimizer study. Figure~\ref{fig:optcurves} shows best-so-far gain over each run's own baseline (pooling raw EM across different baselines would be misleading).
+\begin{table}[t]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+Algorithm & Mean (pp) & Median (pp) & Std (pp) & Win \\
+\midrule
+RS & $+0.64$ & $+0.52$ & 0.63 & 67\% \\
+GA & $+0.81$ & $+0.52$ & 0.64 & 89\% \\
+MGA & $+0.46$ & $+0.52$ & 0.17 & 89\% \\
+DE & $+0.81$ & $+0.52$ & 0.53 & 89\% \\
+sepCMA & $+0.41$ & $+0.52$ & 0.35 & 67\% \\
+\bottomrule
+\end{tabular}
+\caption{Forty-five-search aggregation; gain in pp vs.\ $\alpha\!\equiv\!1$ on the 192-example inner subset.}
+\label{tab:optagg}
+\end{table}
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/optimizer_curves.png}
+\caption{Best-so-far gain over each run's own baseline (means of nine runs).}
+\label{fig:optcurves}
+\end{figure}
+
+\section{Executed-Call Audit of the Active-Subset Executor}
+\label{app:runtime}
+To verify that $N_{\mathrm{cell}}$ reflects executed work rather than a predicted-exit label, we implemented a forward-hook-instrumented decoder in which \emph{both} the base and refinement cells run only on active/continuing rows. Across GRU, Vanilla RNN and LSTM $\times$ \{forced $e_0$, forced $e_1$, forced $e_3$, threshold $(0.85,0.90)$\} $=12$ settings on the 256-sample manifest, per-sample tokens, $N_{\mathrm{cell}}$ and depth histograms match the reference decoder exactly ($12/12$). The hooks satisfy $\sum \mathrm{base\_rows}=\sum n_{\mathrm{gen}}$ and $\sum \mathrm{refine\_rows}=\sum N_{\mathrm{cell}}-\sum \mathrm{base\_rows}$ in all $24$ checks. Under forced $e_0$, all $52{,}458$ generated tokens across the three models trigger zero refinement calls. Hence $N_{\mathrm{cell}}$ is the actual row-wise call count of an output-equivalent implementation.
+
+\section{Wall-Clock Benchmarks and Executor Semantics}
+\label{app:wallbench}
+Table~\ref{tab:wall} reports the active-subset executor's halt/forced-$e_3$ wall-clock ratios ($b{=}1$: 16 manifest samples; $b{=}4/8/32$: 64; 2 warmup + 10 interleaved passes; two CPU threads; no hooks). The 12 halt-versus-forced latency distributions are disjoint. The gap between the $\approx$0.26 call ratio and the 0.43--0.64 time ratio is shared overhead (base step, attention, output projection, gating, per-step Python work) of $\approx$2.1--2.3 refinement-equivalents at small batch, paid by both arms. Ratios approach one as batch grows because batched refinements are cheaper per call and gather/full-buffer costs scale with batch. A separate per-sample T1 executor gives halt/e3 $=0.297$ on the same 16 samples; its T1 forced-depth pay-max batch scaling is $\times2.39/\times3.44/\times4.28$ at $b{=}4/8/32$, which is \emph{not} a halt/e3 ratio and must not be multiplied with it. Absolute latency is not comparable across batches (different $N$) or executors.
+\begin{table}[t]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+Model & $b{=}1$ & $b{=}4$ & $b{=}8$ & $b{=}32$ \\
+\midrule
+GRU & 0.439 & 0.440 & 0.484 & 0.577 \\
+RNN & 0.452 & 0.468 & 0.555 & 0.640 \\
+LSTM & 0.430 & 0.471 & 0.538 & 0.611 \\
+\bottomrule
+\end{tabular}
+\caption{Active-subset executor: halt/forced-$e_3$ median wall-clock ratio.}
+\label{tab:wall}
+\end{table}
+
+\section{Cross-Architecture Latent Dynamics}
+\label{app:latent}
+Using a fixed group-balanced 256-sample manifest, we record four-depth free-running latent trajectories for GRU, RNN, LSTM (hidden $h$ and cell $c$ separately) and T1 across three seeds each, and compute state norm $\Vert z_k\Vert/\sqrt d$, update norm, relative update, direction cosine, total displacement, and prediction-change rate (95\% group-cluster bootstrap CIs). Two regimes emerge: bounded gated states (GRU 0.891--0.900, RNN 0.916--0.922, LSTM-$h$ 0.680--0.691) and unbounded accumulators (LSTM-$c$ 5.47--7.86, T1 5.16--5.63); the latter rise monotonically with depth and are not directly comparable in absolute norm. First-refinement dominance (75--92\% of total displacement at $e_1$; prediction flips decay 5--11$\times$) holds where depth 1 saturates; T1 instead shows persistently collinear updates ($\cos\!\approx\!0.95$) and is a different regime. Figure~\ref{fig:latcross} and the released table summarize all metrics. A single-seed Mamba-1-Tiny ($d{=}64$, 149K parameters; e3 EM 0.246 below the 0.30 gate) is reported descriptively only, including its internal SSM state norm, and is excluded from the main table.
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/crossarch_latent_figure.png}
+\caption{Six latent-dynamics metrics across depth; seed ranges shaded.}
+\label{fig:latcross}
+\end{figure}
+
+\section{Zero-Shot Transfer of the Frozen Step-Size Policy}
+\label{app:transfer}
+Freezing GRU $s_0$'s GA policy (weights and feature-normalization statistics) and applying it unchanged to RNN/LSTM/T1 on the same 256 samples gives $4/9$ non-inferior seeds (LCB$_{95}\!\geq\!-0.5$pp; RNN $s_1,s_2$, T1 $s_0,s_1$), $5/9$ inconclusive, and no significant negative (Table~\ref{tab:trans}). The policy's own architecture-level confirmation is $1/3$ (outer fold, 640 samples; $s_2$ passes with LCB $-0.469$pp, $s_0$ fails marginally at $-0.519$pp). Bootstrap endpoints are quantized to $1/256=0.39$pp, so the $-0.5$pp threshold is edge-sensitive; T1 $s_1$'s nominal gain ($+3.52$pp, CI $[+0.39,+6.64]$) does not survive Bonferroni correction over nine tests; architecture-seed counts give no ranking power (Fisher $p=1.0$ for T1 $2/3$ vs.\ LSTM $0/3$). A feature-scale mismatch (GRU $D\!\approx\!0.31$, RNN $\approx\!0.89$, T1 $\approx\!1.75$) is a candidate mechanism whose predicted direction is opposite to the observed ranking, hence unverified.
+\begin{table}[t]
+\centering
+\begin{tabular}{lccl}
+\toprule
+Target & Seed & $\Delta$ (pp) & 95\% CI (pp) / verdict \\
+\midrule
+RNN & 0 & $-0.39$ & $[-1.17,0.00]$ inconclusive \\
+RNN & 1 & $+1.17$ & $[-0.39,3.12]$ non-inferior \\
+RNN & 2 & $+0.39$ & $[0.00,1.17]$ non-inferior \\
+LSTM & 0 & $-0.78$ & $[-1.95,0.00]$ inconclusive \\
+LSTM & 1 & $+0.78$ & $[-0.78,2.34]$ inconclusive \\
+LSTM & 2 & $-0.39$ & $[-1.17,0.00]$ inconclusive \\
+T1 & 0 & $+2.34$ & $[0.00,4.69]$ non-inferior \\
+T1 & 1 & $+3.52$ & $[0.39,6.64]$ non-inferior \\
+T1 & 2 & $-0.39$ & $[-2.73,1.95]$ inconclusive \\
+\bottomrule
+\end{tabular}
+\caption{Frozen GRU-s0 alpha policy: per-seed EM difference vs.\ forced $e_3$.}
+\label{tab:trans}
+\end{table}
+
+\section{Full Halting Transfer Across Architecture-Seeds}
+\label{app:transfer-full}
+Under the shared 256-sample protocol, the fixed $(0.85,0.90)$ threshold is non-inferior or better on $9$ of $12$ architecture-seeds (GRU $3/3$ bit-exact, LSTM $3/3$ bit-exact, RNN $s_0,s_1$, T1 $s_1$), significantly negative on $2$ (RNN $s_2$: $-1.95$pp $[-3.91,-0.39]$; T1 $s_2$: $-4.69$pp $[-7.81,-1.95]$), and inconclusive on $1$ (T1 $s_0$: $-2.34$pp $[-5.47,+0.78]$). Cell savings of 67--74\% hold throughout, but must be read as loss-free only where the forced-depth curve saturates after $e_1$; LSTM $s_1/s_2$'s bit-exact result rests on weak baselines ($e_3\!\approx\!0.31$--$0.33$) with little headroom to lose. The rule supported by the evidence is conditional: halting preserves accuracy where depth-1 saturation already holds, not universally.
 
 \end{document}
