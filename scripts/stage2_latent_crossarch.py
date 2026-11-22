@@ -28,6 +28,7 @@ Output: runs/gate_exp/stage2/crossarch_latent/*.json + summary + figure
 import json
 import math
 import os
+import shutil
 import sys
 from collections import defaultdict
 
@@ -186,6 +187,11 @@ def main():
             print(f"GRU R2 s{seed} latent missing, skip")
             continue
         zs = torch.load(path, map_location="cpu")
+        # persist 256-sample vector file in the unified directory
+        # (copy, not move: anchor check still reads the source)
+        dst = f"{SUBDIR}/gru_s{seed}.pt"
+        if not os.path.exists(dst):
+            shutil.copyfile(path, dst)
         model = H.load_model("R2", seed)
         model.eval()
         logits = gru_recomputepred(model, zs, H.load_vocab()[1])
@@ -250,9 +256,15 @@ def main():
                     model, manifest["sources"], src_stoi, depth=3)
             is_lstm = (arch == "lstm")
             per_sample = []
-            for zs in zs_list:
-                # zs: (T,4,d) float16; LSTM d=256 = h||c
-                z = torch.stack(zs).float()
+            saved = {}
+            assert len(zs_list) == len(src_ids) == 256
+            for idx, zs in zip(src_ids, zs_list):
+                # persist (T,4,128|256) float16 latent vector
+                z16 = (torch.stack(zs) if zs else
+                       torch.zeros(0, 4, 256 if is_lstm else 128,
+                                   dtype=torch.float16))
+                saved[int(idx)] = z16
+                z = z16.float()
                 if is_lstm:
                     h, c = z[..., :128], z[..., 128:]
                     m_h = compute_metrics(h, None)
@@ -274,6 +286,9 @@ def main():
                         lg = model.out(z.reshape(-1, z.shape[-1])).reshape(
                             z.shape[0], z.shape[1], -1)
                     per_sample.append(compute_metrics(z, lg))
+            # persist all 256 vectors with idx alignment assertion
+            assert set(saved) == set(int(x) for x in src_ids)
+            torch.save(saved, f"{SUBDIR}/{arch}_s{seed}.pt")
             metric_keys_all = list(per_sample[0]["0"].keys()) + [
                 "pred_change"]
             aggregated = agg_per_sample(per_sample, metric_keys_all)
